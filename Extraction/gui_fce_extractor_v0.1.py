@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import tkMessageBox
+import tkinter.messagebox
 
-import tkFileDialog
-from Tkinter import *
+import tkinter.filedialog
+from tkinter import *
 
 import os
 import xlrd
@@ -14,7 +14,7 @@ excelName = ""
 csvName = ""
 
 def openFile():
-    filename = tkFileDialog.askopenfilename(parent=root,title=textMsg,filetypes=[('MS excel 97-2003','.xls'), ('MS excel 07','.xlsx')])
+    filename = tkinter.filedialog.askopenfilename(parent=root,title=textMsg,filetypes=[('MS excel 97-2003','.xls'), ('MS excel 07','.xlsx')])
     openButton["text"] = str(filename)if filename else textMsg
     global excelName
     excelName = openButton["text"]
@@ -68,7 +68,7 @@ def extract():
 		# Add to temporary list varible survey
 		for sheet_name in sheet_names:
 		    sheet = workbook.sheet_by_name(sheet_name)
-		    print sheet_name
+		    print(sheet_name)
 		    total = int(sheet.cell_value(s_info['total'].row, s_info['total'].col)) # get total response
 		    course_code = sheet.cell_value(s_info['course'].row, s_info['course'].col)          # get course code
 		    course_title = sheet.cell_value(s_info['title'].row, s_info['title'].col)           # get course title
@@ -85,7 +85,7 @@ def extract():
 		    for s in survey:
 		        s.csvsave(writer)
 
-		tkMessageBox.showinfo("title name","Message: Extraction Complete")
+		tkinter.messagebox.showinfo("title name","Message: Extraction Complete")
 
 
 # used to store cell reference in the workbook
@@ -131,23 +131,23 @@ class FCESurvey (object):
         self.year = year
         self.semester = semester
     def print_survey(self):
-        print 'Course: %s   Instructor %s' % (self.course_code, self.instructor)
-        keys = self.response.keys()
+        print('Course: %s   Instructor %s' % (self.course_code, self.instructor))
+        keys = list(self.response.keys())
         keys.sort()
         for k in keys:
-            print self.response[k]
+            print(self.response[k])
     def rprint(self):
 #        print 'Course: %s   Instructor %s' % (self.course_code, self.instructor)
-        keys = self.response.keys()
+        keys = list(self.response.keys())
         keys.sort()
         for i in range(self.total):
             for k in keys:
-                print str(self.response[k][i]) + ',',
-            print ','.join([self.course_code,self.instructor])
+                print(str(self.response[k][i]) + ',', end=' ')
+            print(','.join([self.course_code,self.instructor]))
 
     # save responses to file(csv)
     def csvsave(self, writer):
-        keys = self.response.keys()
+        keys = list(self.response.keys())
         keys.sort()
         for i in range(self.total):
             row = []
@@ -168,7 +168,7 @@ def get_response(sheet, row, col):
         cell_value = sheet.cell_value(row, col)
         if type(cell_value) is float:
             return cell_value
-        elif type(cell_value) is str and cell_value in non_response.keys():
+        elif type(cell_value) is str and cell_value in list(non_response.keys()):
             return non_response[cell_value.lower()]
     else:
         return '0'
@@ -196,15 +196,15 @@ def get_course(sheet, total, start_row = 8, start_col = 9):
     for col in range(start_col, start_col+window*total, window):
         last_index = 0
         tmp_count = 0
-        for index, row in enumerate(range(start_course, start_course+qCourse),last_index):
+        for index, row in enumerate(list(range(start_course, start_course+qCourse)),last_index):
             course_sheet[index].append(get_response(sheet, row,col))
             tmp_count = index +1
         last_index = tmp_count
-        for index, row in enumerate(range(start_instr, start_instr+qInstr),last_index):
+        for index, row in enumerate(list(range(start_instr, start_instr+qInstr)),last_index):
             course_sheet[index].append(get_response(sheet, row,col))
             tmp_count = index +1
         last_index = tmp_count
-        for index, row in enumerate(range(start_stud, start_stud+qStud),last_index):
+        for index, row in enumerate(list(range(start_stud, start_stud+qStud)),last_index):
             course_sheet[index].append(get_response(sheet, row,col))
     return course_sheet
 
