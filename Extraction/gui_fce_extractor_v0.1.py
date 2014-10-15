@@ -78,7 +78,7 @@ def extract():
 		    survey.append(course_survey)                                                        # Add course_survey to survey list
 
 		# Write survey list to csv file
-		with open(csvName, 'wb') as csvfile:
+		with open(csvName, 'wt') as csvfile:
 		    writer = csv.writer(csvfile, dialect='excel',delimiter=',', quoting=csv.QUOTE_MINIMAL) # Object of csv file
 		    writer.writerow(header) # Write headers(indicator) to file
 		    # Write responses to csv file
