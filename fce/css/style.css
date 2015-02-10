@@ -252,6 +252,7 @@ body {
 /* Button 1e */
 .btn-1e {
 	overflow: hidden;
+	width:170px;
 }
 .btn-1e:after {
 	width: 100%;

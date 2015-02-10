@@ -1,0 +1,14 @@
+.border {
+	border: 2px solid #ccc;
+	border-radius: 3%;
+	padding: 30px 1px;
+}
+.round {
+	
+	border: solid 1px grey;
+	border-radius: 10%;
+}
+.error {
+	color:red;
+	font-size: small;
+}
