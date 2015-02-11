@@ -26,6 +26,7 @@
 		}
 		else {
 			header('Location: ../index.html?err=Key is incorrect');
+			exit();
 		}
 	}
 ?>
