@@ -4,11 +4,18 @@
 	padding: 30px 1px;
 }
 .round {
-	
+	padding: 5px;
 	border: solid 1px grey;
-	border-radius: 10%;
+	border-radius: 5%;
 }
 .error {
 	color:red;
 	font-size: small;
+}
+.w5 {
+	width:5%;
+	text-align: center;
+}
+.w70 {
+	width: 70%;
 }

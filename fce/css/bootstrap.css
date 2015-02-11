@@ -141,6 +141,8 @@ input::-moz-focus-inner {
 }
 input {
   line-height: normal;
+  border-radius: 5%;
+
 }
 input[type="checkbox"],
 input[type="radio"] {
@@ -1110,7 +1112,7 @@ pre code {
     width: 10%;
   }
   .col-md-5 {
-    width: 41.66666667%;
+    width: 100%;
   }
   .col-md-4 {
     width: 33.33333333%;
