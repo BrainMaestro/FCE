@@ -5,7 +5,7 @@ session_start();
 if (isset($_POST['email'], $_POST['password'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
-    if ($stmt = $mysqli->prepare("SELECT name, usertype, password, school FROM User WHERE email = ? LIMIT 1")) {
+    if ($stmt = $mysqli->prepare("SELECT name, user_type, password, school FROM User WHERE email = ? LIMIT 1")) {
         $stmt->bind_param('s', $email); 
         $stmt->execute();    
         $stmt->store_result();
