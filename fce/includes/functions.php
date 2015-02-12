@@ -60,5 +60,6 @@ function getCurrentSemester() {
     $semester .= $year; // Appends the year. Ex: Spring 2015
 
     return $semester;
+}
 ?>
 
