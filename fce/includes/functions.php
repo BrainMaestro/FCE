@@ -16,7 +16,7 @@ function generateKeys() {
 function insertKeys($crn, $eval_type) {
 
     $keyArray = []; // Array to keep track of generated keys
-    $result = $mysqli->query("SELECT enrolled FROM section WHERE crn = '$crn'") 
+    $result = $mysqli->query("SELECT enrolled FROM section WHERE crn = '$crn'");
     $row = $result->fetch_assoc();
     $enrolled = $row['enrolled']; // Number of students in section and therefore, number of keys to be generated
 
