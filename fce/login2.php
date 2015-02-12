@@ -1,5 +1,6 @@
 <?php
 	include_once 'db_connect.php';
+	include_once 'functions.php';
 	
 	//This method filters html input from input may be harmful
 	function fix_string($string) {
@@ -31,7 +32,11 @@
 		
 		if ($get_keys->num_rows == 1 and $given_out == 0) { //if key is found, only one row should be gotten and the key has not been given out
 			$_SESSION['crn'] = $key_crn; //The class for which evaluation is to be done is stored for later use when storing evaluation
-			$mysqli->execute("UPDATE AcessKeys SET given_out = '1' WHERE key = $key_value");
+			$_SESSION['key_value'] = $key_value; //the key used is stored as a session
+			$_SESSION['start'] = time(); //taking in logged in time
+			$_SESSION['expire'] = $_SESSION['start'] + (90 * 60); //ending session an hour and thirty minutes later
+			
+			$mysqli->query("UPDATE AcessKeys SET given_out = '1' WHERE key = $key_value");
 			
 			if ($key_eval_type == "mid") { //check to determine evaluation type like midterm evaluation
 				header("Location: mid_evaluation.php"); //page that is returned based on check

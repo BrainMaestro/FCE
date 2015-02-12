@@ -61,5 +61,16 @@ function getCurrentSemester() {
 
     return $semester;
 }
+
+//Method that checks if time to use a key has expired
+function checkSessionKeys() {
+	$now = time() //checking time when page is opened
+	 
+	if ($now > $_SESSION['expire']){
+		session_destroy();
+		echo "Your session has expired! <a href='http://localhost/fce/fce/index2.html'>Go Back Here</a>";
+	}
+}
+
 ?>
 
