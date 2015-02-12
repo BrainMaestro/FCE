@@ -27,3 +27,21 @@
 	padding: 5px;
 	margin-bottom: 10px;
 }
+.evaltable table {
+	border: 2px solid #ccc;
+
+	width: 100%;
+}
+.evaltable td {
+	border: 1px solid #ccc;
+	padding: 5px;
+
+}
+.eval {
+	padding: 4px;
+	border: 1px solid #ccc;
+}
+.thead {
+	color: #000;
+	font-size: 17px;
+}
