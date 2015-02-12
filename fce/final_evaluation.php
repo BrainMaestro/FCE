@@ -5,9 +5,12 @@ include_once 'includes/functions.php';
 if (isset($_POST['submit'])) {
 
     if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-        $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $_SESSION['crn'],$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
+        $eval_type = "final";
+        // $crn = $_SESSION['crn'];
+        $crn = 1;
+        $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
             $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$_POST['q16'],
-            $_POST['q17'],$_POST['q18'],"final"); 
+            $_POST['q17'],$_POST['q18'],$eval_type); 
         $stmt->execute();  
     } else {
         header("Location: ../index.html?err=Database error: cannot prepare statement");
