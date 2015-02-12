@@ -55,6 +55,20 @@ include_once 'includes/functions.php';
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                        <li><a>Final Evaluation Form</a></li>
+                        <?php
+                        // $crn = $_SESSION['crn'];
+                        $crn = 1;
+                        $semester = getCurrentSemester();
+                        $result = $mysqli->query("SELECT course_code, faculty_email, course_title, semester FROM section where crn='$crn'");
+                        $row = $result->fetch_assoc();
+                        $result2 = $mysqli->query("SELECT name from user WHERE email='$row[faculty_email]'");
+                        $row2 = $result2 ->fetch_assoc();
+                        echo "<li><a>$row[semester]</a></li>";
+                        echo "<li><a>$row[course_code]</a></li>";
+                        echo "<li><a>$row[course_title]</a></li>";
+                        echo "<li><a>$row2[name]</a></li>";
+                        ?>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                     <!-- start soc_icons -->
@@ -64,14 +78,6 @@ include_once 'includes/functions.php';
         <div class="container">
             <div class="main row para">
                 <div class="col-md-5 images_1_of_4 bg1" class="">
-                    <h3>AUN COURSE EVALUATION FORM<br></h3>
-                    <?php
-                    $crn = $_SESSION['crn'];
-                    $semester = getCurrentSemester();
-                    echo $semester;
-                    $result=$mysqli->query("SELECT ")
-                    ?>
-
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
                     1-5, to each questions 1-18. <br>For each response, please use the following scale.<br>
                     5 = excellent (exceptional, exemplary)<br>
@@ -170,7 +176,7 @@ include_once 'includes/functions.php';
                             <td class="w5"><input type="radio" name="q8" value="2"></td>
                             <td class="w5"><input type="radio" name="q8" value="3"></td>
                             <td class="w5"><input type="radio" name="q8" value="4"></td>
-                            <td class="w5"><input type="radio" name="q8" value="5"></td>>
+                            <td class="w5"><input type="radio" name="q8" value="5"></td>
                         </tr>
                         <tr>
                             <td class="w5">9</td>
