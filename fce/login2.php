@@ -1,6 +1,6 @@
 <?php
-	include_once 'db_connect.php';
-	include_once 'functions.php';
+	include_once 'includes/db_connect.php';
+	include_once 'includesfunctions.php';
 	
 	//This method filters html input from input may be harmful
 	function fix_string($string) {
