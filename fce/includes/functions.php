@@ -1,6 +1,8 @@
 <?php
 include_once 'db_connect.php';
 
+session_start();
+
 // Method that generates keys for use
 function generateKeys() {
 
@@ -68,7 +70,8 @@ function checkSessionKeys() {
 	 
 	if ($now > $_SESSION['expire']){
 		session_destroy();
-		header("Location: index2.html?err=You session has expired");
+		$_SESSION['err'] = "You session has expired";
+		header("Location: ../index.php");
 	}
 }
 

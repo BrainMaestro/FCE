@@ -2,21 +2,6 @@
 	include_once './db_connect.php';
 	include_once './functions.php';
 	
-	/*
-	//This method filters html input from input may be harmful
-	function fix_string($string) {
-		return htmlentities(mysql_fix_string($string));
-	}
-	
-	//This method filters php or mysql input that may be harmful
-	function mysql_fix_string($string) {
-		if (get_magic_quotes_gpc()) {
-			$string = stripslashes($string);
-		}
-		return mysql_real_escape_string($string);
-	}
-	*/
-	
 	session_start();
 	if (isset($_POST['key_value'])){ //Checking to see if any key has been submitted
 		$key_value = $_POST['key_value']; //calling functions that handle siffing of input

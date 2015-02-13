@@ -5,7 +5,8 @@ include_once 'includes/functions.php';
 session_start();
 
 if (!isset($_SESSION['key_value'])) {
-	header("Location: index2.html?err=You do not have access");
+	$_SESSION['err'] = "You do not have access";
+	header("Location: index.php");
 }
 
 checkSessionKeys();
@@ -15,7 +16,6 @@ if (isset($_POST['submit'])) {
     if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "final";
         $crn = $_SESSION['crn'];
-        //$crn = 1;
         $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
             $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$_POST['q16'],
             $_POST['q17'],$_POST['q18'],$eval_type); 
@@ -24,7 +24,8 @@ if (isset($_POST['submit'])) {
 		session_destroy();
 		header("Location: ./thankyou.html");
     } else {
-        header("Location: ../index.html?err=Database error: cannot prepare statement");
+		$_SESSION['err'] = "Database error: cannot prepare statement";
+        header("Location: index.php");
         exit();
     }
 }
@@ -87,7 +88,6 @@ if (isset($_POST['submit'])) {
                         <?php
                         $crn = $_SESSION['crn'];
                         $key_value = $_SESSION['key_value'];
-                        //$crn = 1;
                         $semester = getCurrentSemester();
                         $result = $mysqli->query("SELECT course_code, faculty_email, course_title, semester FROM section where crn='$crn'");
                         $row = $result->fetch_assoc();
