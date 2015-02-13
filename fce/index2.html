@@ -53,9 +53,9 @@
     });
         </script>
         <!-- //Owl Carousel Assets -->
-        <!----font-Awesome----->
+        <!--font-Awesome-->
         <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
-        <!----font-Awesome----->
+        <!--font-Awesome-->
     </head>
     <body>
         <div class="header_bg">
@@ -94,7 +94,7 @@
                 <div class="col-md-6 images_1_of_4 bg1 text-center"></div>		
                 <div class="col-md-3 images_1_of_4 bg1 text-center border">
                     <form method="post" name="" class="para" action="login2.php">
-                        <input type="text" name='key_value' placeholder=" Access Key" class="round" required="required"><br>
+                        <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
                         <BR><br>
                         <button class="fa-btn btn-1 btn-1e">EVALUATE</button>
                         <div class="error">The key is invalid</div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="col-md-6 images_1_of_4 bg1 text-center"></div>	
                 <div class="col-md-3 images_1_of_4 bg1 text-center border">
-                    <form method="" name="" class="para">
+                    <form method="post" action="includes/login.php" class="para">
                         <input type="text" name="email" placeholder=" Email" class="round"><BR><BR>
                         <input type="password" name="password" placeholder=" Password" class="round">
                         <p></p>
