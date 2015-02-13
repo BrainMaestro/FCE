@@ -6,11 +6,15 @@
 .round {
 	padding: 5px;
 	border: solid 1px grey;
-	border-radius: 5%;
+	border-radius: 0%;
 }
 .error {
 	color:red;
 	font-size: small;
+}
+.errorborder {
+	border: 1px solid #ccc;
+	padding: 30px 1px;
 }
 .w5 {
 	width:5%;
