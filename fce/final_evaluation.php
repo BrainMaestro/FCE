@@ -2,16 +2,21 @@
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
 
+session_start();
+
 if (isset($_POST['submit'])) {
 
     if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "final";
-        // $crn = $_SESSION['crn'];
-        $crn = 1;
+        $crn = $_SESSION['crn'];
+        //$crn = 1;
         $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
             $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$_POST['q16'],
             $_POST['q17'],$_POST['q18'],$eval_type); 
-        $stmt->execute();  
+        $stmt->execute(); 
+		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn'");
+		session_destroy();
+		header("Location: .../thankyou.html");
     } else {
         header("Location: ../index.html?err=Database error: cannot prepare statement");
         exit();
@@ -73,8 +78,8 @@ if (isset($_POST['submit'])) {
                         <ul class="nav navbar-nav">
                         <li><a>Final Evaluation Form</a></li>
                         <?php
-                        // $crn = $_SESSION['crn'];
-                        $crn = 1;
+                        $crn = $_SESSION['crn'];
+                        //$crn = 1;
                         $semester = getCurrentSemester();
                         $result = $mysqli->query("SELECT course_code, faculty_email, course_title, semester FROM section where crn='$crn'");
                         $row = $result->fetch_assoc();
