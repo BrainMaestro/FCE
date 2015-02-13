@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
         $stmt->execute(); 
 		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn'");
 		session_destroy();
-		header("Location: .../thankyou.html");
+		header("Location: ./thankyou.html");
     } else {
         header("Location: ../index.html?err=Database error: cannot prepare statement");
         exit();
