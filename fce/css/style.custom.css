@@ -71,3 +71,7 @@
 	text-align: center;
 	font-size:15px;
 }
+th {
+	padding: 5px;
+	color: #000;
+}
