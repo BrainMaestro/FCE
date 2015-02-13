@@ -29,10 +29,11 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
+
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>FCE Student</title>
+        <title>FCE Final Evaluation</title>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -85,6 +86,7 @@ if (isset($_POST['submit'])) {
                         <li><a>Final Evaluation Form</a></li>
                         <?php
                         $crn = $_SESSION['crn'];
+                        $key_value = $_SESSION['key_value'];
                         //$crn = 1;
                         $semester = getCurrentSemester();
                         $result = $mysqli->query("SELECT course_code, faculty_email, course_title, semester FROM section where crn='$crn'");
@@ -95,6 +97,7 @@ if (isset($_POST['submit'])) {
                         echo "<li><a>$row[course_code]</a></li>";
                         echo "<li><a>$row[course_title]</a></li>";
                         echo "<li><a>$row2[name]</a></li>";
+                        echo "<li><a>Key: $key_value</a></li>";
                         ?>
                         </ul>
                     </div><!-- /.navbar-collapse -->
@@ -106,7 +109,6 @@ if (isset($_POST['submit'])) {
             <div class="main row para">
                           <div class="col-md-5 images_1_of_4 bg1">
                     <div class="banner-msg">
-                    <h3>AUN COURSE EVALUATION FORM<br></h3>
 
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
                     1-5, to each questions 1-18. <br>For each response, please use the following scale.<br>
