@@ -10,37 +10,16 @@ if (isset($_POST['email'], $_POST['password'])) {
         $stmt->execute();    
         $stmt->store_result();
 
-        $stmt->bind_result($name, $usertype, $db_password, $school);
+        $stmt->bind_result($name, $user_type, $db_password, $school);
         $stmt->fetch();
         if ($stmt->num_rows == 1) {
         	if ($db_password == $password) {
-        		
-        		//One can add session variables here
 
-        		if ($usertype == "admin") {
-        			header("Location: ../Admin/home.html");
-        			exit();
+                $_SESSION['name'] = $name;
+                $_SESSION['user_type'] = $user_type;
+                $_SESSION['school'] = $school;
 
-        		} elseif($usertype == "topOga") {
-        			header("Location: ../TopOga/home.html");
-        			exit();
-
-        		} elseif($usertype == "dean") {
-        			header("Location: ../Dean/home.html");
-        			exit();
-
-        		} elseif($usertype == "secretary") {
-        			header("Location: ../Secretary/home.html");
-        			exit();
-
-        		} elseif($usertype == "faculty") {
-        			header("Location: ../Faculty/home.html");
-        			exit();
-
-        		} else {
-        			header("Location: ../index.html?err=Something horrible has happened");
-        			exit();
-        		}
+                header("Location: ../users/$user_type". ".php"); // Simple statement that works for all user types
 
         	} else {
         		header("Location: ../index.html?err=Wrong Password");

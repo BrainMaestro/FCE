@@ -1,6 +1,6 @@
 <?php
-	include_once 'includes/db_connect.php';
-	include_once 'includes/functions.php';
+	include_once './db_connect.php';
+	include_once './functions.php';
 	
 	/*
 	//This method filters html input from input may be harmful
