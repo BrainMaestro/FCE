@@ -57,6 +57,26 @@ if (isset($_POST['submit'])) {
         <!--font-Awesome-->
         <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
         <!--font-Awesome-->
+        <script type="text/javascript">
+        function startTimer() {
+            var fiveMinutes = 60 * 30,
+                display = document.getElementById("time"),
+                mins, seconds;
+            setInterval(function() {
+                mins = parseInt(fiveMinutes / 60)
+                seconds = parseInt(fiveMinutes % 60);
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                mins = mins < 10 ? "0" + mins : mins;
+
+                display.innerHTML = mins + ":" + seconds;
+                fiveMinutes--;
+
+                if (fiveMinutes < 0) {
+                    fiveMinutes = 60 * 30;
+                }
+            }, 1000);
+        }
+        </script>
     </head>
     <body>
         <div class="header_bg">
@@ -98,6 +118,8 @@ if (isset($_POST['submit'])) {
                         echo "<li><a>$row[course_title]</a></li>";
                         echo "<li><a>$row2[name]</a></li>";
                         echo "<li><a>Key: $key_value</a></li>";
+                        echo "<li><a>Time Left: <span id='time' class='error'>30:00</span></a></li>";
+                        echo "<script>startTimer();</script>";
                         ?>
                         </ul>
                     </div><!-- /.navbar-collapse -->

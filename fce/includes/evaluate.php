@@ -20,7 +20,7 @@
 			$_SESSION['crn'] = $key_crn; //The class for which evaluation is to be done is stored for later use when storing evaluation
 			$_SESSION['key_value'] = $key_value1; //the key used is stored as a session
 			$_SESSION['start'] = time(); //taking in logged in time
-			$_SESSION['expire'] = $_SESSION['start'] + (10); //ending session an hour and thirty minutes later
+			$_SESSION['expire'] = $_SESSION['start'] + (1800); //ending session thirty minutes later
 			
 			$mysqli->query("UPDATE AccessKeys SET given_out = '1' WHERE key_value = '$key_value1'");
 			
