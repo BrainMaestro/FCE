@@ -6,7 +6,7 @@ include_once '../includes/functions.php';
     }
     $crn_array = array();
     $course_code_array = array();
-    $email = $_SESSION['email'] = 'a.b@aun.edu.ng';   
+    $email = $_SESSION['email'];   
     $query = mysqli_query($con, "SELECT crn, course_code, school, semester from section where faculty_email='$email'"); 
     while ($row = mysqli_fetch_array($query)) {
         array_push($crn_array, $row[0]);
@@ -62,16 +62,16 @@ include_once '../includes/functions.php';
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-                        <li><a>Faculty</a></li>
-                        <?php
-                        $semester = getCurrentSemester();
-                        $school = $_SESSION['school'] = 'SAS';
-                        $name = $_SESSION['name'];
-                        echo "<li><a>$semester</a></li>";
-                        echo "<li><a>$school</a></li>";
-                        echo "<li><a>$name</a></li>";
-                        ?>
-                        </ul>
+                <li><a>Faculty</a></li>
+                <?php
+                $semester = getCurrentSemester();
+                $school = $_SESSION['school'] = 'SAS';
+                $name = $_SESSION['name'];
+                echo "<li><a>$semester</a></li>";
+                echo "<li><a>$school</a></li>";
+                echo "<li><a>$name</a></li>";
+                ?>
+                </ul>
 		    </div>
 		</nav>
 	</div>

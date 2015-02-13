@@ -8,12 +8,6 @@
         header('Location: ../index.php');
     }
 ?>
-<!--A Design by W3layouts
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -33,9 +27,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-<!----font-Awesome----->
+<!--font-Awesome-->
    	<link rel="stylesheet" href="../fonts/css/font-awesome.min.css">
-<!----font-Awesome----->
+<!--font-Awesome-->
 </head>
 <body>
 <div class="header_bg1">
@@ -63,14 +57,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		      <ul class="nav navbar-nav">
                         <li><a>Course Report</a></li>
                         <?php
-                        $semester = getCurrentSemester();
-                        $school = $_SESSION['school'] = 'SAS';
+                        $result = $mysqli->query("SELECT semester FROM section WHERE crn='$course_no'");
+                        $result = $result->fetch_assoc();
+                        $school = $_SESSION['school'];
                         $name = $_SESSION['name'];
-                        echo "<li><a>$semester</a></li>";
+                        echo "<li><a>$result[semester]</a></li>";
                         echo "<li><a>$school</a></li>";
                         echo "<li><a>$name</a></li>";
-                        if ($eval_type == 'mid') {echo "<li><a>midterm</a></li>";}else{echo "<li><a>$eval_type</a></li>";}
-                        echo "<li><a>$course_no</a></li>";
+                        if ($eval_type == 'mid') {
+                            echo "<li><a>midterm evaluation</a></li>";
+                        }
+                        else {
+                            echo "<li><a>$eval_type" . " evaluation</a></li>";
+                        }
+                        echo "<li><a>CRN: $course_no</a></li>";
                         ?>
                         </ul>
 		    </div>
