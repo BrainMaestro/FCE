@@ -4,6 +4,12 @@ include_once 'includes/functions.php';
 
 session_start();
 
+if (!isset($_SESSION['key_value'])) {
+	header("Location: index2.html?err=You do not have access");
+}
+
+checkSessionKeys();
+
 if (isset($_POST['submit'])) {
 
     if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {

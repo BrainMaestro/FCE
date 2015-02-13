@@ -68,7 +68,7 @@ function checkSessionKeys() {
 	 
 	if ($now > $_SESSION['expire']){
 		session_destroy();
-		echo "Your session has expired! <a href='http://localhost/fce/fce/index2.html'>Go Back Here</a>";
+		header("Location: index2.html?err=You session has expired");
 	}
 }
 
