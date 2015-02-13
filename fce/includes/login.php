@@ -18,6 +18,7 @@ if (isset($_POST['email'], $_POST['password'])) {
                 $_SESSION['name'] = $name;
                 $_SESSION['user_type'] = $user_type;
                 $_SESSION['school'] = $school;
+                $_SESSION['email'] = $email;
 
                 header("Location: ../users/$user_type". ".php"); // Simple statement that works for all user types
 
