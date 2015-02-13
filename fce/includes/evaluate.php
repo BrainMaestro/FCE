@@ -39,10 +39,10 @@
 			
 			$mysqli->query("UPDATE AccessKeys SET given_out = '1' WHERE key_value = '$key_value1'");
 			
-			header("Location: $key_eval_type" . "_evaluation.php"); // Take the class to the correct evaluation form based on the eval type
+			header("Location: ../$key_eval_type" . "_evaluation.php"); // Take the class to the correct evaluation form based on the eval type
 		}
 		else {
-			header('Location: index2.html?err=Key is used or incorrect'); //Error when the key is not found in the database
+			header('Location: index.html?err=Key is used or incorrect'); //Error when the key is not found in the database
 		}
 	}
 ?>
