@@ -68,6 +68,7 @@ function checkSessionKeys() {
 	 
 	if ($now > $_SESSION['expire']){
 		session_destroy();
+        session_start();
 		$_SESSION['err'] = "You session has expired";
 		header("Location: ../index.php");
 	}

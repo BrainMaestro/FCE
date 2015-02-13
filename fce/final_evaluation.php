@@ -2,14 +2,14 @@
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
 
-session_start();
+// session_start();
+
+checkSessionKeys();
 
 if (!isset($_SESSION['key_value'])) {
 	$_SESSION['err'] = "You do not have access";
 	header("Location: index.php");
 }
-
-checkSessionKeys();
 
 if (isset($_POST['submit'])) {
 
