@@ -75,3 +75,13 @@ th {
 	padding: 5px;
 	color: #000;
 }
+.dean_form input {
+	border:none;
+	background-color: #fff;
+}
+.border3 {
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-bottom: 5px;
+	width: 50%;
+}
