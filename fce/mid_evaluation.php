@@ -13,12 +13,11 @@ if (!isset($_SESSION['key_value'])) {
 
 if (isset($_POST['submit'])) {
 
-    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-        $eval_type = "final";
+    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+        $eval_type = "mid";
         $crn = $_SESSION['crn'];
-        $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
-            $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$_POST['q16'],
-            $_POST['q17'],$_POST['q18'],$eval_type); 
+        $stmt->bind_param('iiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
+            $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$eval_type); 
         $stmt->execute(); 
 		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn'");
 		session_destroy();
@@ -34,7 +33,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>FCE Final Evaluation</title>
+        <title>FCE Mid Evaluation</title>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -106,7 +105,7 @@ if (isset($_POST['submit'])) {
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                        <li><a>Final Evaluation Form</a></li>
+                        <li><a>Mid Evaluation Form</a></li>
                         <?php
                         $crn = $_SESSION['crn'];
                         $key_value = $_SESSION['key_value'];
@@ -135,7 +134,7 @@ if (isset($_POST['submit'])) {
                     <div class="banner-msg">
 
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
-                    1-5, to each questions 1-18. <br>For each response, please use the following scale.<br>
+                    1-5, to each questions 1-15. <br>For each response, please use the following scale.<br>
                     5 = excellent (exceptional, exemplary)<br>
                     4 = very good (high quality, better than average)<br>
                     3 = good (reasonable well done, acceptable)<br>
@@ -146,7 +145,7 @@ if (isset($_POST['submit'])) {
                     <table class="evaltable">
                         <tr>
                             <td class="w5"></td>
-                            <td class="w70"><strong class="thead">Course</strong></td>
+                            <td class="w70"><strong class="thead">Evaluation</strong></td>
                             <td class="w5">1</td>
                             <td class="w5">2</td>
                             <td class="w5">3</td>
@@ -155,7 +154,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">1</td>
-                            <td class="w70"><strong>Organization</strong> (Course was well organized, material was presented in a logical sequence, instructional time was used effectively and important points emphasized.</td>
+                            <td class="w70"><strong>Professor's Adherence to time </strong>(Professor arrives in the classroom on time.</td>
                             <td class="w5"><input type="radio" name="q1" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q1" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q1" value="3" required="required"></td>
@@ -164,7 +163,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">2</td>
-                            <td class="w70"><strong>Learning Outcomes and Objectives</strong> (Goals and educational objectives were clear, faculty expectations of students were clear, grading policy was clearly explained)</td>
+                            <td class="w70"><strong>Professor's preparedness to Teach </strong>(My professor arrives in the classroom prepared)</td>
                             <td class="w5"><input type="radio" name="q2" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q2" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q2" value="3" required="required"></td>
@@ -173,7 +172,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">3</td>
-                            <td class="w70"><strong>Content </strong>(Course content facilitated student ability to achieve course goals and objectives, and when applicable, was relevant to career preparation)</td>
+                            <td class="w70"><strong>Professor's Accessibility in Class </strong>(My professor is accessible in class)</td>
                             <td class="w5"><input type="radio" name="q3" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q3" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q3" value="3" required="required"></td>
@@ -182,7 +181,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">4</td>
-                            <td class="w70"><strong>Assessment </strong>(Material on exams was related to material covered either in class or in course assignments, students were treated equitably)</td>
+                            <td class="w70"><strong>Professor's Availability in Class </strong>(My professor is available during office hours)</td>
                             <td class="w5"><input type="radio" name="q4" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q4" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q4" value="3" required="required"></td>
@@ -191,14 +190,14 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">5</td>
-                            <td class="w70"><strong>Overall </strong>(The course objectives were met)</td>
+                            <td class="w70"><strong>Asking Questions in Class </strong>(I feel comfortable asking questions during class)</td>
                             <td class="w5"><input type="radio" name="q5" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q5" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q5" value="3" required="required"></td>
                             <td class="w5"><input type="radio" name="q5" value="4" required="required"></td>
                             <td class="w5"><input type="radio" name="q5" value="5" required="required"></td>
                         </tr>
-                        <tr ><td></td></tr>
+                        <!--<tr ><td></td></tr>
                         <tr>
                             <td class="w5"></td>
                             <td class="w70"><strong class="thead">Instructor</strong></td>
@@ -207,10 +206,10 @@ if (isset($_POST['submit'])) {
                             <td class="w5">3</td>
                             <td class="w5">4</td>
                             <td class="w5">5</td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td class="w5">6</td>
-                            <td class="w70"><strong>Organization </strong>(Instructor presented material in an organized fashion; emphasized important points) </td>
+                            <td class="w70"><strong>Explanation of Concepts </strong>(My professor explains the material and concepts well) </td>
                             <td class="w5"><input type="radio" name="q6" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q6" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q6" value="3" required="required"></td>
@@ -219,7 +218,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">7</td>
-                            <td class="w70"><strong>Clarity </strong>(Instructor communicated effectively, explained well, presented content clearly, and gave comprehensible response to  questions)</td>
+                            <td class="w70"><strong>Professor's Teaching Consistency </strong>(My professor is consistent in his teaching )</td>
                             <td class="w5"><input type="radio" name="q7" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q7" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q7" value="3" required="required"></td>
@@ -228,7 +227,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">8</td>
-                            <td class="w70"><strong>Enthusiasm </strong>(Instructor was dynamic and energetic, stimulated learner interest, and enjoyed teaching)</td>
+                            <td class="w70"><strong>Use of e-Book </strong>(My professor uses e-books)</td>
                             <td class="w5"><input type="radio" name="q8" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q8" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q8" value="3" required="required"></td>
@@ -237,7 +236,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">9</td>
-                            <td class="w70"><strong>Up to Date </strong>(Instructor discussed recent development in the field, directed students to current reference materials, and provided additional materials to cover current topics)</td>
+                            <td class="w70"><strong>Use of Digital Instructional Technologies </strong>(My professor uses other digital instructional technology such as Electronic Journal Articles, Youtube, TED Talks, computer programs, videos, online resources, or social media)</td>
                             <td class="w5"><input type="radio" name="q9" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q9" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q9" value="3" required="required"></td>
@@ -246,7 +245,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">10</td>
-                            <td class="w70"><strong>Contribution </strong>(Instructor discussed recent development in the field, directed students to current reference materials, and provided additional materials to cover current topics)</td>
+                            <td class="w70"><strong>Learning compliance with the Syllabus </strong>(I am learning what is in the course description/syllabus)</td>
                             <td class="w5"><input type="radio" name="q10" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q10" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q10" value="3" required="required"></td>
@@ -255,7 +254,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">11</td>
-                            <td class="w70"><strong>Professionalism </strong>(Instructor demonstrated role model qualities that were of use to students)</td>
+                            <td class="w70"><strong>Use of Digital Skills </strong>(I am using digital and other on-line skills in this course)</td>
                             <td class="w5"><input type="radio" name="q11" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q11" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q11" value="3" required="required"></td>
@@ -264,14 +263,14 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">12</td>
-                            <td class="w70"><strong>Attitude </strong>(Instructor was concerned about students learning the material, encourages class participation, was receptive to different perspectives)</td>
+                            <td class="w70"><strong>Relevance of Assignments </strong>(My professor’s assignments are relevant to the course)</td>
                             <td class="w5"><input type="radio" name="q12" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q12" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q12" value="3" required="required"></td>
                             <td class="w5"><input type="radio" name="q12" value="4" required="required"></td>
                             <td class="w5"><input type="radio" name="q12" value="5" required="required"></td>
                         </tr>
-                        <tr ><td></td></tr>
+                        <!--<tr ><td></td></tr>
                         <tr>
                             <td class="w5"></td>
                             <td class="w70"><strong class="thead"> Student</strong></td>
@@ -280,10 +279,10 @@ if (isset($_POST['submit'])) {
                             <td class="w5">3</td>
                             <td class="w5">4</td>
                             <td class="w5">5</td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td class="w5">13</td>
-                            <td class="w70">I attended and participated in class sessions</td>
+                            <td class="w70"><strong>Grading Policies </strong>My professors grading policies are fair and consistent with the syllabus</td>
                             <td class="w5"><input type="radio" name="q13" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q13" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q13" value="3" required="required"></td>
@@ -292,7 +291,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">14</td>
-                            <td class="w70">I completed assignments on time</td>
+                            <td class="w70"><strong>Relevance of Course content to future career prospects </strong>My professor relates course content and skills to my future career </td>
                             <td class="w5"><input type="radio" name="q14" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q14" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q14" value="3" required="required"></td>
@@ -301,40 +300,14 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">15</td>
-                            <td class="w70">I learned the required information for the course</td>
+                            <td class="w70"><strong>American Style Education </strong>My professor teaches in accordance with the interactive American style of education that is the way AUN claims to be different</td>
                             <td class="w5"><input type="radio" name="q15" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q15" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q15" value="3" required="required"></td>
                             <td class="w5"><input type="radio" name="q15" value="4" required="required"></td>
                             <td class="w5"><input type="radio" name="q15" value="5" required="required"></td>
                         </tr>
-                        <tr>
-                            <td class="w5">16</td>
-                            <td class="w70">I used my laptop and technology successfully in this course.</td>
-                            <td class="w5"><input type="radio" name="q16" value="1" required="required"></td>
-                            <td class="w5"><input type="radio" name="q16" value="2" required="required"></td>
-                            <td class="w5"><input type="radio" name="q16" value="3" required="required"></td>
-                            <td class="w5"><input type="radio" name="q16" value="4" required="required"></td>
-                            <td class="w5"><input type="radio" name="q16" value="5" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td class="w5">17</td>
-                            <td class="w70">I used the library as part of this class</td>
-                            <td class="w5"><input type="radio" name="q17" value="1" required="required"></td>
-                            <td class="w5"><input type="radio" name="q17" value="2" required="required"></td>
-                            <td class="w5"><input type="radio" name="q17" value="3" required="required"></td>
-                            <td class="w5"><input type="radio" name="q17" value="4" required="required"></td>
-                            <td class="w5"><input type="radio" name="q17" value="5" required="required"></td>
-                        </tr>
-                        <tr>
-                            <td class="w5">18</td>
-                            <td class="w70">I used at least one learning support program (writing center, math, lab, tutor, etc)</td>
-                            <td class="w5"><input type="radio" name="q18" value="1" required="required"></td>
-                            <td class="w5"><input type="radio" name="q18" value="2" required="required"></td>
-                            <td class="w5"><input type="radio" name="q18" value="3" required="required"></td>
-                            <td class="w5"><input type="radio" name="q18" value="4" required="required"></td>
-                            <td class="w5"><input type="radio" name="q18" value="5" required="required"></td>
-                        </tr>
+                       
                     </table>
                 
                     <br>

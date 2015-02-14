@@ -69,7 +69,7 @@ function checkSessionKeys() {
 		session_destroy();
         session_start();
 		$_SESSION['err'] = "Your session has expired";
-		header("Location: ../index.php");
+		header("Location: index.php");
 	}
 }
 
