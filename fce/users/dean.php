@@ -15,7 +15,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>FCE Secretary</title>
+<title>FCE Dean</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />

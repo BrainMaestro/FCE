@@ -19,7 +19,7 @@ include_once '../includes/functions.php';
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>FCE Instructor</title>
+<title>FCE Faculty</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
