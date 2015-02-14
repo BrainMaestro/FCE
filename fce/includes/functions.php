@@ -74,5 +74,23 @@ function checkSessionKeys() {
 	}
 }
 
+function unlockSection($crn, $eval_type) {
+    $mysqli->query("UPDATE section SET locked='0' WHERE crn='$crn'");
+    insertKeys($crn, $eval_type);
+}
+
+function lockSection($crn, $eval_type) {
+    $sql = "UPDATE section SET locked='1', ";
+
+    if ($eval_type == 'final')
+        $sql .= "final_evaluation = '1'";
+    else
+        $sql .= "mid_evaluation = '1'";
+
+    $sql .= "WHERE crn='$crn'";
+    $mysqli->query($sql);
+    deleteKeys($crn, $eval_type);
+}
+
 ?>
 
