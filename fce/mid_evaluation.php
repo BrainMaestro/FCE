@@ -13,7 +13,8 @@ if (!isset($_SESSION['key_value'])) {
 
 if (isset($_POST['submit'])) {
 
-    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, evaluation_type)
+		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "mid";
         $crn = $_SESSION['crn'];
         $stmt->bind_param('iiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
