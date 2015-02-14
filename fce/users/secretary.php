@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
                 <li><a>Secretary</a></li>
                 <?php
                 $semester = getCurrentSemester();
-                $school = $_SESSION['school'] = 'SAS';
+                $school = $_SESSION['school'];
                 $name = $_SESSION['name'];
                 echo "<li><a>$semester</a></li>";
                 echo "<li><a>$school</a></li>";

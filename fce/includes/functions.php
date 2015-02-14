@@ -90,7 +90,7 @@ function unlockSection($crn, $eval_type, $mysqli) {
 
     $mysqli->query("UPDATE section SET locked='0' WHERE crn='$crn'");
     insertKeys($crn, $eval_type, $mysqli);
-    header("Location: ../section.php");
+    header("Location: ../users/section.php");
 }
 
 function lockSection($crn, $eval_type, $mysqli) {
