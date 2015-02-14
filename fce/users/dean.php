@@ -1,16 +1,28 @@
 <?php
-	session_start();
+	include '../includes/functions.php';
+
 	$con = mysqli_connect("localhost", "root", "", "fce");
     	if (mysqli_connect_errno()) {
         	echo "Failed to connect to MySQL: " . mysqli_connect_errno();
     	}
-    	$course_code_array = array();
-    	$email = $_SESSION['email'] = 'c.d@aun.edu.ng';   
-		$query = mysqli_query($con, "SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
-		while ($row = mysqli_fetch_array($query)) {
-            array_push($course_code_array, $row[0]);
-        }
-  
+    	if (!isset($_SESSION['email'])) {
+        	header("Location: ../index.php");
+    	}
+    	if (isset($_POST['submit'])) {
+    		$course_code_array = array(); 
+    		$sch = $_POST['school'];
+			$query = mysqli_query($con, "SELECT distinct(course_code) from section where school = '$sch'");
+			while ($row = mysqli_fetch_array($query)) {
+	            array_push($course_code_array, $row[0]);
+	        }
+    	} else {
+	    	$course_code_array = array();
+	    	$email = $_SESSION['email'] = 'c.d@aun.edu.ng';   
+			$query = mysqli_query($con, "SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
+			while ($row = mysqli_fetch_array($query)) {
+	            array_push($course_code_array, $row[0]);
+	        }
+  		}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -58,8 +70,18 @@
 		    </div>
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav">
-		      </ul>
+		    	<ul class="nav navbar-nav">
+		    		<li><a>Dean</a></li>
+                	<?php
+                		$semester = getCurrentSemester();
+                		$school = $_SESSION['school'];
+		                $name = $_SESSION['name'];
+		                echo "<li><a>$semester</a></li>";
+		                echo "<li><a>$school</a></li>";
+		                echo "<li><a>$name</a></li>";
+                	?>
+                </ul>
+		      
 		    </div>
 		</nav>
 	</div>
