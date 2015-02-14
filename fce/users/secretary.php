@@ -1,20 +1,18 @@
 <?php
+include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
-    // $con = mysqli_connect("localhost", "root", "", "fce");
-    // if (mysqli_connect_errno()) {
-    //     echo "Failed to connect to MySQL: " . mysqli_connect_errno();
-    // }
-    // $crn_array = array();
-    // $course_code_array = array();
-    // $email = $_SESSION['email'];   
-    // $query = mysqli_query($con, "SELECT crn, course_code, school, semester from section where faculty_email='$email'"); 
-    // while ($row = mysqli_fetch_array($query)) {
-    //     array_push($crn_array, $row[0]);
-    //     array_push($course_code_array, $row[1]);
-    //     $sch = $row[2];
-    //     $sem = $row[3];
-    // }
     
+if (isset($_POST['submit'])) {
+
+	$_SESSION['crn'] = $_POST['crn'];
+	$_SESSION['eval_type'] = $_POST['eval_type'];
+
+	if ($_POST['submit'] == 'lock')
+		lockSection($_POST['crn'], $_POST['eval_type'], $mysqli);
+	else
+		unlockSection($_POST['crn'], $_POST['eval_type'], $mysqli);
+}
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -88,7 +86,7 @@ include_once '../includes/functions.php';
 	                    <option value="0">Unlocked</option>
 	                    <option value="%">All</option>
 	                </select>
-					<input type="submit" name="filter" value="submit">
+					<input type="submit" name="filter" value="choose">
 				</form>	
 			</div>	
 
@@ -105,7 +103,7 @@ include_once '../includes/functions.php';
 			
 				<!-- <div class="clearfix"></div>
 				<div style="height:25px"></div> -->
-				<form action="section.php" method="post">
+				<form action="secretary.php" method="post">
 					<table width="100%">
 						<caption><h3>Sections</h3><hr></caption>
 						<thead>
@@ -123,7 +121,8 @@ include_once '../includes/functions.php';
 						</thead>
 						<tbody>
 						<?php
-						$result = $mysqli->query("SELECT * FROM section");
+						$result = $mysqli->query("SELECT * FROM section WHERE locked = '1'");
+						$status = '1';
 
 						if (isset($_POST['filter'])) {
 							$status = $_POST['status'];
@@ -150,7 +149,12 @@ include_once '../includes/functions.php';
 						}
 						echo '</tbody></table>';
 
-						if (isset($status)) {
+						if (isset($status) && $status !== '%') {
+							echo '<br><select name="eval_type" class="input-sm" required>
+			                    <option selected value="">--Choose Evaluation Type--</option>
+			                    <option value="mid">Midterm</option>
+			                    <option value="final">Final</option>
+			                </select><br>';
 							if ($status == 1)
                     			echo "<button class='fa-btn btn-1 btn-1e' name='submit' value='unlock'>Unlock</button>";
                     		elseif ($status == 0)

@@ -1,5 +1,4 @@
 <?php
-include_once 'db_connect.php';
 
 // Method that generates keys for use
 function generateKeys() {
@@ -13,7 +12,7 @@ function generateKeys() {
 }
 
 // Method that inserts keys for use
-function insertKeys($crn, $eval_type) {
+function insertKeys($crn, $eval_type, $mysqli) {
 
     $keyArray = []; // Array to keep track of generated keys
     $result = $mysqli->query("SELECT enrolled FROM section WHERE crn = '$crn'");
@@ -36,9 +35,9 @@ function insertKeys($crn, $eval_type) {
 }
 
 // Method that deletes keys after use
-function deleteKeys($crn, $eval_type) {
+function deleteKeys($crn, $eval_type, $mysqli) {
 
-    $mysqli->query("DELETE FROM AccessKeys WHERE crn='$crn' AND key_eval_type='$eval_type'");
+    $mysqli->query("DELETE FROM AccessKeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
 }
 
 // Method that gets the current semester from the server time
@@ -69,28 +68,43 @@ function checkSessionKeys() {
 	if ($now > $_SESSION['expire']){
 		session_destroy();
         session_start();
-		$_SESSION['err'] = "You session has expired";
+		$_SESSION['err'] = "Your session has expired";
 		header("Location: ../index.php");
 	}
 }
 
-function unlockSection($crn, $eval_type) {
+function unlockSection($crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT * FROM section WHERE crn='$crn'");
+    $row = $result->fetch_assoc();
+
+    // Checks if the type of evaluation for which the section is to be unlocked has already occurred
+    // Will include error messages eventually
+    if ($eval_type == 'final') { 
+        if ($row['final_evaluation'] == '1')
+            return;
+    }
+    else {
+        if ($row['mid_evaluation'] == '1')
+            return;
+    }
+
     $mysqli->query("UPDATE section SET locked='0' WHERE crn='$crn'");
-    insertKeys($crn, $eval_type);
+    insertKeys($crn, $eval_type, $mysqli);
+    header("Location: ../section.php");
 }
 
-function lockSection($crn, $eval_type) {
+function lockSection($crn, $eval_type, $mysqli) {
     $sql = "UPDATE section SET locked='1', ";
 
+    // Sets the type of evaluation that was completed as done
     if ($eval_type == 'final')
         $sql .= "final_evaluation = '1'";
     else
         $sql .= "mid_evaluation = '1'";
 
-    $sql .= "WHERE crn='$crn'";
+    $sql .= " WHERE crn='$crn'";
     $mysqli->query($sql);
-    deleteKeys($crn, $eval_type);
+    deleteKeys($crn, $eval_type, $mysqli);
 }
-
 ?>
 
