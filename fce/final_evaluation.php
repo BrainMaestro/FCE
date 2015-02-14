@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
         <script type="text/javascript">
         function startTimer() {
             //var fiveMinutes = 60 * 30,
-			var fiveMinutes = 60,
+			var fiveMinutes = 60000,
                 display = document.getElementById("time"),
                 mins, seconds;
             setInterval(function() {
@@ -120,7 +120,7 @@ if (isset($_POST['submit'])) {
                         echo "<li><a>$row[course_title]</a></li>";
                         echo "<li><a>$row2[name]</a></li>";
                         echo "<li><a>Key: $key_value</a></li>";
-                        echo "<li><a>Time Left: <span id='time' class='error'>30:00</span></a></li>";
+                        echo "<li><a>Time Left: <span id='time' class='error'>00:00</span></a></li>";
                         echo "<script>startTimer();</script>";
                         ?>
                         </ul>
