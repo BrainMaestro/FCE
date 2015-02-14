@@ -3,23 +3,23 @@
 <head>
 <title>FCE Secretary</title>
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
-<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
-<link href="css/style.custom.css" rel='stylesheet' type='text/css' />
+<link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!--[if lt IE 9]>
      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- start plugins -->
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<!----font-Awesome----->
-   	<link rel="stylesheet" href="fonts/css/font-awesome.min.css">
-<!----font-Awesome----->
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<!--font-Awesome-->
+   	<link rel="stylesheet" href="../fonts/css/font-awesome.min.css">
+<!--font-Awesome-->
 </head>
 <body>
 <div class="header_bg1">
@@ -58,24 +58,14 @@
 			<div class="col-md-8 blog_left">
 				<div class="border2">
 					<h4><a href="single-page.html">SEN 306 - Object oriented Software Construction</a></h4>
-
-					<p class="para">Instructor: Apkar Salatian</p>
-					<p class="para">Total Number of students: 8</p>
-					<p class="para">Class Time: 1:15 - 2:45</p>
-					<p class="para">Venue: AS 224</p>
 					<div class="read_more">
-						<a href="single-page.html" class="fa-btn btn-1 btn-1e">LOCK</a>
+						<a href="single-page.html" class="fa-btn btn-1 btn-1e">UNLOCK</a>
 					</div>
 				</div>
 				<div class="border2">
 					<h4><a href="single-page.html">SEN 306 - Object oriented Software Construction</a></h4>
-
-					<p class="para">Instructor: Apkar Salatian</p>
-					<p class="para">Total Number of students: 8</p>
-					<p class="para">Class Time: 1:15 - 2:45</p>
-					<p class="para">Venue: AS 224</p>
 					<div class="read_more">
-						<a href="single-page.html" class="fa-btn btn-1 btn-1e">LOCK</a>
+						<a href="single-page.html" class="fa-btn btn-1 btn-1e">UNLOCK</a>
 					</div>
 				</div>
 			</div>

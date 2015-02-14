@@ -1,28 +1,13 @@
 <?php
-include_once '../includes/functions.php';
-    $con = mysqli_connect("localhost", "root", "", "fce");
-    if (mysqli_connect_errno()) {
-        echo "Failed to connect to MySQL: " . mysqli_connect_errno();
-    }
+	include '../includes/functions.php';
     if (!isset($_SESSION['email'])) {
         header("Location: ../index.php");
     }
-    $crn_array = array();
-    $course_code_array = array();
-    $email = $_SESSION['email'];   
-    $query = mysqli_query($con, "SELECT crn, course_code, school, semester from section where faculty_email='$email'"); 
-    while ($row = mysqli_fetch_array($query)) {
-        array_push($crn_array, $row[0]);
-        array_push($course_code_array, $row[1]);
-        $sch = $row[2];
-        $sem = $row[3];
-    }
-    
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>FCE Faculty</title>
+<title>FCE Provost</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -65,10 +50,10 @@ include_once '../includes/functions.php';
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-                <li><a>Faculty</a></li>
+                <li><a>Provost</a></li>
                 <?php
                 $semester = getCurrentSemester();
-                $school = $_SESSION['school'] = 'SAS';
+                $school = $_SESSION['school'];
                 $name = $_SESSION['name'];
                 echo "<li><a>$semester</a></li>";
                 echo "<li><a>$school</a></li>";
@@ -87,25 +72,20 @@ include_once '../includes/functions.php';
 				
 			<div class="col-md-4 blog_right news_letter">
 				
-				<form action="report.php" method="post">
-					<select name="eval_type" class="input-sm" required>
-	                    <option selected value="">--Choose Evaluation Type--</option>
-	                    <option value="mid">Midterm</option>
-	                    <option value="final">Final</option>
+				<form action="dean.php" method="post">
+					<select name="semester" class="input-sm">
+	                    <option selected value="">--Choose Semester--</option>
+	                    <option value=<?php echo getCurrentSemester();?>><?php echo getCurrentSemester();?></option>
 	                </select>
                    
 					<div class="clearfix"></div>
 					<div style="height:25px"></div>
-                    <?php
-					echo '<select name="crn" class="input-sm" required>';
-                    echo "<option selected value=''>--Choose course--</option>";
-                    $i = 0;
-                    while($i < count($course_code_array)) {
-	                    echo "<option value='$crn_array[$i]'>$course_code_array[$i] - $crn_array[$i]</option>";
-                        $i++;
-                    }
-                    echo '</select>';
-                    ?>
+					<select name="school" class="input-sm">
+	                    <option selected value="">--Choose School--</option>
+	                    <option value="SITC">SITC</option>
+	                    <option value="SAS">SAS</option>
+	                    <option value="SBE">SBE</option>
+	                </select>
 					<div class="clearfix"></div>
 					<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="submit" value="SUBMIT"></span>
 				</form>

@@ -128,8 +128,9 @@ session_start();
                 <div class="col-md-6 images_1_of_4 bg1 text-center"></div>		
                 <div class="col-md-3 images_1_of_4 bg1 text-center border">
                     <form method="post" name="" class="para" action="includes/evaluate.php">
+                        <p></p>
                         <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
-                        <br><br><br>
+                        <br><br><p></p>
                         <button class="fa-btn btn-1 btn-1e">EVALUATE</button>
                     </form>
                 </div>
