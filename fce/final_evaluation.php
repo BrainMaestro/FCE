@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
             <div class="container">
                 <div class="row header">
                     <div class="logo navbar-left">
-                        <h1><a href="index.html">Faculty Course Evaluation</a></h1>
+                        <h1><a href="index.php">Faculty Course Evaluation</a></h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>

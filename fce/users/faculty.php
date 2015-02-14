@@ -36,7 +36,7 @@ include_once '../includes/functions.php';
 <script type="text/javascript" src="../js/bootstrap.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <!--font-Awesome-->
-   	<link rel="stylesheet" href="fonts/css/font-awesome.min.css">
+   	<link rel="stylesheet" href="../fonts/css/font-awesome.min.css">
 <!--font-Awesome-->
 </head>
 <body>
@@ -44,7 +44,7 @@ include_once '../includes/functions.php';
 <div class="container">
 	<div class="row header">
 		<div class="logo navbar-left">
-			<h1><a href="index.html">Faculty Course Evaluation</a></h1>
+			<h1><a href="../index.php">Faculty Course Evaluation</a></h1>
 		</div>
 		
 	</div>
@@ -104,7 +104,7 @@ include_once '../includes/functions.php';
                     echo '</select>';
                     ?>
 					<div class="clearfix"></div>
-					<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="submit" value="SUBMIT"></span>
+                    <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
 				</form>
 			</div>	
 			</div>
