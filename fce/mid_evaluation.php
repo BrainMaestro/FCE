@@ -141,7 +141,7 @@ if (isset($_POST['submit'])) {
                     2 = margin (slightly below average, needs improvement)<br>
                     1 = poor (far below average, not acceptable)<br><br>
                     </div>
-                    <form action="./final_evaluation.php" method="POST">
+                    <form action="./mid_evaluation.php" method="POST">
                     <table class="evaltable">
                         <tr>
                             <td class="w5"></td>
