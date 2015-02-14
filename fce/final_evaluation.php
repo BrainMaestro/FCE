@@ -59,7 +59,8 @@ if (isset($_POST['submit'])) {
         <!--font-Awesome-->
         <script type="text/javascript">
         function startTimer() {
-            var fiveMinutes = 60 * 30,
+            //var fiveMinutes = 60 * 30,
+			var fiveMinutes = 60,
                 display = document.getElementById("time"),
                 mins, seconds;
             setInterval(function() {
@@ -72,7 +73,8 @@ if (isset($_POST['submit'])) {
                 fiveMinutes--;
 
                 if (fiveMinutes < 0) {
-                    fiveMinutes = 60 * 30;
+                    //fiveMinutes = 60 * 30;
+					windows.location.href = 'index.php';
                 }
             }, 1000);
         }
