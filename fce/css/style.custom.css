@@ -91,3 +91,9 @@ th {
 .green {
 	color: green;
 }
+.right {
+	float: right;
+}
+.left {
+	float: left;
+}

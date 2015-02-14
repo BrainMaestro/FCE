@@ -23,7 +23,6 @@ include_once '../includes/functions.php';
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
-<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!--[if lt IE 9]>
@@ -31,6 +30,7 @@ include_once '../includes/functions.php';
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/style.custom.css" rel="stylesheet" type="text/css" media="all" />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -79,17 +79,30 @@ include_once '../includes/functions.php';
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
+		<div class="row para"><br><br>
+			<div class="col-xs-4 left h_search">
+				<form action="secretary.php" method='post'>
+					<select name="status" class="input-sm" required>
+	                    <option selected value="">--Choose Section Status--</option>
+	                    <option value="1">Locked</option>
+	                    <option value="0">Unlocked</option>
+	                    <option value="%">All</option>
+	                </select>
+					<input type="submit" name="filter" value="submit">
+				</form>	
+			</div>	
+
+			<div class="h_search col-xs-4 right">
+				<form>
+					<input type="text" class="text" value="Search course" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search course';}">
+					<input type="submit" value="search">
+				</form>
+			</div>
+		</div>
+
 		<div class="main row para">
 			<div class="col-xs-12">		
-			<form action="secretary.php" method='GET'>
-				<select name="status" class="input-sm" required>
-                    <option selected value="">--Choose Section Status--</option>
-                    <option value="1">Locked</option>
-                    <option value="0">Unlocked</option>
-                    <option value="%">All</option>
-                </select><br>
-				<input type="submit" name="filter" value="submit">
-			</form>		
+			
 				<!-- <div class="clearfix"></div>
 				<div style="height:25px"></div> -->
 				<form action="section.php" method="post">
@@ -112,8 +125,8 @@ include_once '../includes/functions.php';
 						<?php
 						$result = $mysqli->query("SELECT * FROM section");
 
-						if (isset($_GET['filter'])) {
-							$status = $_GET['status'];
+						if (isset($_POST['filter'])) {
+							$status = $_POST['status'];
 							$result = $mysqli->query("SELECT * FROM section WHERE locked LIKE '$status'");
 						}
 
@@ -139,9 +152,9 @@ include_once '../includes/functions.php';
 
 						if (isset($status)) {
 							if ($status == 1)
-                    			echo "<button class='fa-btn btn-1 btn-1e' name='submit' value='lock'>Lock</button>";
-                    		elseif ($status == 0)
                     			echo "<button class='fa-btn btn-1 btn-1e' name='submit' value='unlock'>Unlock</button>";
+                    		elseif ($status == 0)
+                    			echo "<button class='fa-btn btn-1 btn-1e' name='submit' value='lock'>Lock</button>";
 						}
 						?>
 				</form>
