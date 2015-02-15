@@ -24,7 +24,7 @@
 <html>
 <head>
 
-Favicon Kini -->
+<!--Favicon Kini -->Favicon Kini -->
         <link rel="apple-touch-icon" sizes="57x57" href="../images/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="../images/favicons/apple-touch-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="../images/favicons/apple-touch-icon-72x72.png">
