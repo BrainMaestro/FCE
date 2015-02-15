@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
 
         <!-- End of Favicon Kini -->
 	
-        <title>FCE Final Evaluation</title>
+        <title>Final Evaluation</title>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />

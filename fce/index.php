@@ -1,5 +1,5 @@
 <?php
-session_start();
+include_once './includes/db_connect.php'
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -25,7 +25,7 @@ session_start();
         <meta name="theme-color" content="#ffffff">
 
         <!-- End of Favicon Kini -->
-        <title> Login</title>
+        <title>Login</title>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
