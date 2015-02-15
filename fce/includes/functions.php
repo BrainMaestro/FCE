@@ -61,6 +61,10 @@ function getCurrentSemester() {
     return $semester;
 }
 
+function setKey($key_value, $status, $mysqli) {
+    $mysqli->query("UPDATE AccessKeys SET $status = '1' WHERE key_value = '$key_value'");
+}
+
 //Method that checks if time to use a key has expired
 function checkSessionKeys() {
 	$now = time(); //checking time when page is opened
