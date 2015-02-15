@@ -21,7 +21,6 @@ while ($row = $result->fetch_array()) {
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
-<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!--[if lt IE 9]>
@@ -29,6 +28,7 @@ while ($row = $result->fetch_array()) {
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -102,7 +102,7 @@ while ($row = $result->fetch_array()) {
                     echo '</select>';
                     ?>
 					<div class="clearfix"></div>
-                    <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
+                    <button class="black-btn" name='submit'>SUBMIT</button>
 				</form>
 			</div>	
 			</div>

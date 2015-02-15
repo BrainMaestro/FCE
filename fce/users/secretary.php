@@ -74,32 +74,26 @@ if (isset($_POST['submit'])) {
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
-		<div class="row para"><br><br>
-			<div class="col-xs-4 left h_search">
+		<div class="main row para">	
+            <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>		
+			<div class="col-xs-4 text-center border">
 				<form action="secretary.php" method='post'>
+	                Leave search bar empty to search all sections<br><br>
 					<select name="status" class="input-sm" required>
 	                    <option selected value="">--Choose Section Status--</option>
 	                    <option value="1">Locked</option>
 	                    <option value="0">Unlocked</option>
 	                    <option value="%">All</option>
-	                </select>
-					<input type="submit" name="filter" value="choose">
+	                </select><br><br>
+					<input type="text" class="round" name="search" placeholder="Ex: AUN 101"><br><br>
+					<input class="black-btn" type="submit" name="filter" value="search">
 				</form>	
 			</div>	
-
-			<div class="h_search col-xs-4 right">
-				<form>
-					<input type="text" class="text" value="Search course" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search course';}">
-					<input type="submit" value="search">
-				</form>
-			</div>
+            <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>
 		</div>
 
-		<div class="main row para">
-			<div class="col-xs-12">		
-			
-				<!-- <div class="clearfix"></div>
-				<div style="height:25px"></div> -->
+		<div class="row para">
+			<div class="col-xs-12 text-center">		
 				<form action="secretary.php" method="post">
 						<?php
 						$result = $mysqli->query("SELECT * FROM section WHERE locked = '1'");
@@ -107,10 +101,14 @@ if (isset($_POST['submit'])) {
 
 						if (isset($_POST['filter'])) {
 							$status = $_POST['status'];
-							$result = $mysqli->query("SELECT * FROM section WHERE locked LIKE '$status'");
+							$sql = "SELECT * FROM section WHERE locked LIKE '$status'";
+
+							if (isset($_POST['search']))
+								$sql .= " AND course_code LIKE '%$_POST[search]%'";
+							$result = $mysqli->query($sql);
 						}
 
-						echo "<table width='100%''>
+						echo "<table width='100%' class='not-center'>
 						<caption><h3>Sections</h3><hr></caption>
 						<thead>
 							<tr>";
@@ -128,6 +126,8 @@ if (isset($_POST['submit'])) {
 						</thead>
 						<tbody>";
 						
+						if ($result->num_rows == 0)
+							echo "<h4>No section matches your criteria</h4>";
 
 						for($i = 0; $i < $result->num_rows; $i++) {
 							$row = $result->fetch_assoc();
@@ -148,18 +148,18 @@ if (isset($_POST['submit'])) {
 							echo "<td>$midterm</td>";
 							echo "<td>$final</td></tr>";
 						}
-						echo '</tbody></table>';
+						echo '</tbody></table><hr>';
 
-						if (isset($status) && $status !== '%') {
+						if (isset($status) && $status !== '%' && $result->num_rows > 0) {
 							echo '<br><select name="eval_type" class="input-sm" required>
 			                    <option selected value="">--Choose Evaluation Type--</option>
 			                    <option value="mid">Midterm</option>
 			                    <option value="final">Final</option>
-			                </select><br>';
+			                </select><br><br>';
 							if ($status == 1)
-                    			echo "<button class='fa-btn btn-1 btn-1e' name='submit' value='unlock'>Unlock</button>";
+                    			echo "<button class='black-btn margin' name='submit' value='unlock'>Unlock</button>";
                     		elseif ($status == 0)
-                    			echo "<button class='fa-btn btn-1 btn-1e' name='submit' value='lock'>Lock</button>";
+                    			echo "<button class='black-btn margin' name='submit' value='lock'>Lock</button>";
 						}
 						?>
 				</form>

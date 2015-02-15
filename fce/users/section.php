@@ -104,7 +104,7 @@ include_once '../includes/db_connect.php';
 					echo "<input type='hidden' name='crn' value='$crn'>";
 					echo "<input type='hidden' name='eval_type' value='$eval_type'>";
 					?>
-					<button class='fa-btn btn-1 btn-1e' name='submit' value='lock'>Lock</button>
+					<input class='black-btn' name='submit' type="submit" value='lock'>
 				</form>
 			</div>
 		</div>
