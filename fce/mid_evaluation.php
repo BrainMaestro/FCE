@@ -13,14 +13,14 @@ if (!isset($_SESSION['key_value'])) {
 
 if (isset($_POST['submit'])) {
 
-    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, evaluation_type)
+    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, eval_type)
 		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "mid";
         $crn = $_SESSION['crn'];
         $stmt->bind_param('iiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
             $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$eval_type); 
         $stmt->execute(); 
-		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn' AND eval_type='$eval_type'");
+		setKey($_SESSION['key_value'], "used", $mysqli);
 		session_destroy();
 		header("Location: ./thankyou.html");
     } else {
@@ -313,7 +313,7 @@ if (isset($_POST['submit'])) {
                 
                     <br>
 
-                    <textarea class="eval" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea>
+                    <!-- <textarea class="eval" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea> -->
                     <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
                 </form>
                 </div>

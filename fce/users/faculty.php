@@ -1,4 +1,5 @@
 <?php
+include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
     $con = mysqli_connect("localhost", "root", "", "fce");
     if (mysqli_connect_errno()) {

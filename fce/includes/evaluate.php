@@ -22,7 +22,7 @@
 			$_SESSION['start'] = time(); //taking in logged in time
 			$_SESSION['expire'] = $_SESSION['start'] + (1800); //ending session thirty minutes later
 			
-			$mysqli->query("UPDATE AccessKeys SET given_out = '1' WHERE key_value = '$key_value1'");
+        	setKey($key_value1, "given_out", $mysqli);
 			
 			header("Location: ../$key_eval_type" . "_evaluation.php"); // Take the class to the correct evaluation form based on the eval type
 		}

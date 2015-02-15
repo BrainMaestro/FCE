@@ -1,12 +1,14 @@
 <?php
-    include 'avg.php';
-    include_once '../includes/functions.php';
-    if (isset($_POST['submit'])) {
-        $eval_type = $_POST['eval_type'];
-        $course_no = $_POST['crn'];  
-    } else {
-        header('Location: ../index.php');
-    }
+include 'avg.php';
+include_once '../includes/db_connect.php';
+include_once '../includes/functions.php';
+if (isset($_POST['submit'])) {
+    $eval_type = $_POST['eval_type'];
+    $course_no = $_POST['crn'];  
+} 
+else {
+    header('Location: ../index.php');
+}
 ?>
 <!DOCTYPE HTML>
 <html>

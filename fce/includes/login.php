@@ -1,7 +1,7 @@
 <?php
 include_once 'db_connect.php';
 
-session_start();
+// session_start();
 if (isset($_POST['email'], $_POST['password'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];

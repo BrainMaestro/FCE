@@ -59,7 +59,7 @@ include_once '../includes/db_connect.php';
                 echo "<li><a>$row[semester]</a></li>";
                 echo "<li><a>$row[course_title]</a></li>";
                 echo "<li><a>$row2[name]</a></li>";
-                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn'")->fetch_assoc();
+                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
                 ?>
@@ -90,7 +90,7 @@ include_once '../includes/db_connect.php';
 							$row = $result->fetch_assoc();
 							$sn = $i+1;
 							echo "<tr><td>$sn</td>";
-							echo "<td>$row[key_value]</td>";
+							echo "<td style='font-family: monospace;'>$row[key_value]</td>";
 							$given_out = ($row['given_out'] == 1) ? "Yes" : "No";
 							$used = ($row['used'] == 1) ? "Yes" : "No";
 							echo "<td>$given_out</td>";

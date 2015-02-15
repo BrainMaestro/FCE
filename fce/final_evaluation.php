@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
             $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$_POST['q16'],
             $_POST['q17'],$_POST['q18'],$eval_type); 
         $stmt->execute(); 
-		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn' AND eval_type='$eval_type'");
+        setKey($_SESSION['key_value'], "used", $mysqli);
 		session_destroy();
 		header("Location: ./thankyou.html");
     } else {
@@ -339,7 +339,7 @@ if (isset($_POST['submit'])) {
                 
                     <br>
 
-                    <textarea class="eval" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea>
+                    <!-- <textarea class="eval" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea> -->
                     <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
                 </form>
                 </div>
