@@ -110,5 +110,45 @@ function lockSection($crn, $eval_type, $mysqli) {
     $mysqli->query($sql);
     deleteKeys($crn, $eval_type, $mysqli);
 }
+
+function count_scale($scale, $question, $crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT count($question) FROM evaluation WHERE $question='$scale' 
+     AND crn='$crn' AND eval_type = '$eval_type'");
+
+    while ($row = $result->fetch_array())
+        echo $row[0];
+}
+
+function avg_question($question, $crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT round(avg($question), 2) from evaluation where crn = '$crn'
+     and eval_type = '$eval_type'");
+    
+    while ($row = $result->fetch_array())
+        echo $row[0];
+}
+
+function avg_course($crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT round((avg(q1)+avg(q2)+avg(q3)+avg(q4)+avg(q5))/5, 2) from evaluation where 
+                                        crn = '$crn' and eval_type = '$eval_type'");
+    
+    while ($row = $result->fetch_array())
+        echo $row[0];
+}
+
+function avg_instructor($crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT round((avg(q6)+avg(q7)+avg(q8)+avg(q9)+avg(q10)+avg(q11)+avg(q12))/7, 2) from 
+                                        evaluation where crn = '$crn'  and eval_type = '$eval_type'");
+    
+    while ($row = $result->fetch_array())
+        echo $row[0];
+}
+
+function avg_student($crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT round((avg(q13)+avg(q14)+avg(q15)+avg(q16)+avg(q17)+avg(q18))/6, 2) from evaluation 
+                                        where crn = '$crn'  and eval_type = '$eval_type'");
+    
+    while ($row = $result->fetch_array())
+        echo $row[0];
+}
 ?>
 
