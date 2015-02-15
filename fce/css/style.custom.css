@@ -124,3 +124,23 @@ th {
 .not-center th {
 	padding-left: 0px;
 }
+.adminAdd input {
+	width: 230px;
+}
+.adminAdd select {
+	width: 230px;
+}
+div.hr {
+background: #ccc  no-repeat scroll center;
+margin-left: 15em;
+margin-right: 15em;
+width:800px;
+height:2px;
+clear: both;
+}
+
+div.hr hr {
+display: none;
+}
+.fceteam {
+}
