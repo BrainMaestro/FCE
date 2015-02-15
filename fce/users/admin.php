@@ -8,7 +8,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>FCE Provost</title>
+<title>FCE Admin</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -51,7 +51,7 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-                <li><a>Provost</a></li>
+                <li><a>Admin</a></li>
                 <?php
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
@@ -74,11 +74,20 @@
 			<div class="col-md-4 blog_right news_letter">
 				
 				<form action="dean.php" method="post">
-					<select name="semester" class="input-sm">
-	                    <option selected value="">--Choose Semester--</option>
-	                    <option value=<?php echo getCurrentSemester();?>><?php echo getCurrentSemester();?></option>
-	                </select>
-                   
+					<?php
+					$con = mysqli_connect("localhost", "root", "", "fce");
+    				if (mysqli_connect_errno()) {
+				        echo "Failed to connect to MySQL: " . mysqli_connect_errno();
+				    }
+				    echo '<select name="semester" class="input-sm">';
+				    echo '<option selected value="">--Choose Semester--</option>';
+				    $query = mysqli_query($con, "SELECT semester from semester");
+					while ($row = mysqli_fetch_array($query)) {
+	            		echo "<option value='$row[0]'>$row[0]</option>";
+	       			}
+	       			echo '</select>';
+					?>
+
 					<div class="clearfix"></div>
 					<div style="height:25px"></div>
 					<select name="school" class="input-sm">
