@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
         $stmt->bind_param('iiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
             $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$eval_type); 
         $stmt->execute(); 
-		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn'");
+		$mysqli->query("UPDATE AccessKeys SET used = '1' WHERE key_crn = '$crn' AND eval_type='$eval_type'");
 		session_destroy();
 		header("Location: ./thankyou.html");
     } else {

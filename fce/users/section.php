@@ -50,15 +50,18 @@ include_once '../includes/db_connect.php';
 		      <ul class="nav navbar-nav">
 		      <li><a>Section</a></li>
                 <?php
-                $row = $mysqli->query("SELECT * FROM section WHERE crn='$_SESSION[crn]'")->fetch_assoc();
+                $crn = $_GET['crn'];
+                $eval_type = $_GET['eval_type'];
+                $row = $mysqli->query("SELECT * FROM section WHERE crn='$crn'")->fetch_assoc();
                 echo "<li><a>$row[course_code]</a></li>";
                 echo "<li><a>$row[school]</a></li>";
-                $result2 = $mysqli->query("SELECT name from user WHERE email='$row[faculty_email]'");
-                $row2 = $result2 ->fetch_assoc();
+                $row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
                 echo "<li><a>$row[semester]</a></li>";
-                echo "<li><a>$row[course_code]</a></li>";
                 echo "<li><a>$row[course_title]</a></li>";
                 echo "<li><a>$row2[name]</a></li>";
+                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn'")->fetch_assoc();
+                echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
+
                 ?>
 		      </ul>
 		    </div>
@@ -69,13 +72,40 @@ include_once '../includes/db_connect.php';
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
-		<div class="main row">
+		<div class="main row para">
 			<div class="col-md-8 blog_left">
-				<div class="border2">
-					<form action='production.php' method='post'>
-					
-					</form>
-				</div>
+				<table width="100%">
+					<caption><h3>Key Details</h3><hr></caption>
+					<thead>
+						<th>S/N</th>
+						<th>Key</th>
+						<th>Given Out</th>
+						<th>Used</th>
+					</thead>
+					<tbody>
+						<?php
+						$result = $mysqli->query("SELECT * FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
+						$keyArray = []; // For storing the keys to display boldly
+						for($i = 0; $i < $result->num_rows; $i++) {
+							$row = $result->fetch_assoc();
+							$sn = $i+1;
+							echo "<tr><td>$sn</td>";
+							echo "<td>$row[key_value]</td>";
+							$given_out = ($row['given_out'] == 1) ? "Yes" : "No";
+							$used = ($row['used'] == 1) ? "Yes" : "No";
+							echo "<td>$given_out</td>";
+							echo "<td>$used</td></tr>";
+						}
+						?>
+					</tbody>
+				</table>
+				<form action="secretary.php" method="post"> <!-- Sends back to secretary page and locks class -->
+					<?php
+					echo "<input type='hidden' name='crn' value='$crn'>";
+					echo "<input type='hidden' name='eval_type' value='$eval_type'>";
+					?>
+					<button class='fa-btn btn-1 btn-1e' name='submit' value='lock'>Lock</button>
+				</form>
 			</div>
 		</div>
 	</div>

@@ -4,9 +4,6 @@ include_once '../includes/functions.php';
     
 if (isset($_POST['submit'])) {
 
-	$_SESSION['crn'] = $_POST['crn'];
-	$_SESSION['eval_type'] = $_POST['eval_type'];
-
 	if ($_POST['submit'] == 'lock')
 		lockSection($_POST['crn'], $_POST['eval_type'], $mysqli);
 	else
@@ -104,22 +101,6 @@ if (isset($_POST['submit'])) {
 				<!-- <div class="clearfix"></div>
 				<div style="height:25px"></div> -->
 				<form action="secretary.php" method="post">
-					<table width="100%">
-						<caption><h3>Sections</h3><hr></caption>
-						<thead>
-							<tr>
-								<th></th>
-								<th>CRN</th>
-								<th>Course Code</th>
-								<th>Course Title</th>
-								<th>Instructor</th>
-								<th>Enrolled</th>
-								<th>Status</th>
-								<th>Midterm Evaluation</th>
-								<th>Final Evaluation</th>
-							</tr>
-						</thead>
-						<tbody>
 						<?php
 						$result = $mysqli->query("SELECT * FROM section WHERE locked = '1'");
 						$status = '1';
@@ -129,10 +110,30 @@ if (isset($_POST['submit'])) {
 							$result = $mysqli->query("SELECT * FROM section WHERE locked LIKE '$status'");
 						}
 
+						echo "<table width='100%''>
+						<caption><h3>Sections</h3><hr></caption>
+						<thead>
+							<tr>";
+								if ($status != '%')
+									echo "<th></th>";
+								echo "<th>CRN</th>
+								<th>Course Code</th>
+								<th>Course Title</th>
+								<th>Instructor</th>
+								<th>Enrolled</th>
+								<th>Status</th>
+								<th>Midterm Evaluation</th>
+								<th>Final Evaluation</th>
+							</tr>
+						</thead>
+						<tbody>";
+						
+
 						for($i = 0; $i < $result->num_rows; $i++) {
 							$row = $result->fetch_assoc();
 							echo "<tr>";
-							echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
+							if ($status != '%')
+								echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
 							echo "<td>$row[crn]</td>";
 							echo "<td>$row[course_code]</td>";
 							echo "<td>$row[course_title]</td>";
