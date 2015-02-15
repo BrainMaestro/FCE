@@ -1,31 +1,30 @@
 <?php
+	$result1 = $mysqli->query("SELECT * FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
+	$keyArray1 = [];
+	
+	echo "<div class='slider_bg'>";
+	echo "<div class='container'>";
+	echo "<div id='da-slider' class='da-slider text-center'>";
+	
+	for($i = 0; $i < $result1->num_rows; $i++) {
+		$row = $result1->fetch_assoc();
+		$sn = $i+1;
+		
+		echo "<div class='da-slide'>";
+		echo "<p>$sn</p>";
+		echo "<h2>$row[key_value]</h2>";
+		echo "</div>";
+	}
+
+	echo "</div></div></div>";
+?>
+
+<?php
 include_once '../includes/db_connect.php';
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
-
-<!-- Favicon Kini -->
-        <link rel="apple-touch-icon" sizes="57x57" href="images/favicons/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="images/favicons/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="images/favicons/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="images/favicons/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="images/favicons/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="images/favicons/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="images/favicons/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="images/favicons/apple-touch-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-touch-icon-180x180.png">
-        <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="images/favicons/android-chrome-192x192.png" sizes="192x192">
-        <link rel="icon" type="image/png" href="images/favicons/favicon-96x96.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16">
-        <link rel="manifest" href="images/favicons/manifest.json">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png">
-        <meta name="theme-color" content="#ffffff">
-
-        <!-- End of Favicon Kini -->
-
 <title>Section</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
@@ -45,6 +44,48 @@ include_once '../includes/db_connect.php';
 <!--font-Awesome-->
    	<link rel="stylesheet" href="../fonts/css/font-awesome.min.css">
 <!--font-Awesome-->
+
+<!-- start slider -->
+<link href="../css/slider.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../js/modernizr.custom.28468.js"></script>
+<script type="text/javascript" src="../js/jquery.cslider.js"></script>
+
+<script type="text/javascript">
+			$(function() {
+
+				$('#da-slider').cslider({
+					autoplay : true,
+					bgincrement : 450
+				});
+
+			});
+		</script>
+		
+<!-- Owl Carousel Assets -->
+<link href="css/owl.carousel.css" rel="stylesheet">
+<script src="js/owl.carousel.js"></script>
+		<script>
+			$(document).ready(function() {
+
+				$("#owl-demo").owlCarousel({
+					items : 4,
+					lazyLoad : true,
+					autoPlay : true,
+					navigation : true,
+					navigationText : ["", ""],
+					rewindNav : false,
+					scrollPerPage : false,
+					pagination : false,
+					paginationNumbers : false,
+				});
+
+			});
+		</script>
+		<!-- //Owl Carousel Assets -->
+<!----font-Awesome----->
+   	<link rel="stylesheet" href="fonts/css/font-awesome.min.css">
+<!----font-Awesome----->		
+
 </head>
 <body>
 <div class="header_bg1">
@@ -81,8 +122,8 @@ include_once '../includes/db_connect.php';
                 echo "<li><a>$row[semester]</a></li>";
                 echo "<li><a>$row[course_title]</a></li>";
                 echo "<li><a>$row2[name]</a></li>";
-                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
-                echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
+                //$row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
+                //echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
                 ?>
 		      </ul>
@@ -92,6 +133,73 @@ include_once '../includes/db_connect.php';
 	<div class="clearfix"></div>
 </div>
 </div>
+
+<script type="text/javascript">
+	document.write("<div class='slider_bg'>");
+	document.write("<div class='container'>");
+	document.write("<div id='da-slider' class='da-slider'>");
+	
+	displayKeys();
+	
+	function getnum() {
+		var num = 1;
+		return num
+	}
+	
+	function increaseKey() {
+		var num = getnum();
+		var keyvalues = document.getElementsByName('items[]');
+		
+		if (num > keyvalues.length) {
+			num = 0;
+		}
+		else {
+			num++;
+		}
+		
+		return num;
+	}
+	
+	function decreaseKey() {
+		var num = getnum();
+		num--
+		return num;
+	}
+	
+	function displayKeys() {
+		
+		var keyvalues = document.getElementsByName('items[]');
+		var keys_array = [];
+		num = 2;
+		
+		/*var num = getnum();
+		if (num > keyvalues.length) {
+			num = 0;
+		}
+		if (num < 0) {
+			num = keyvalues.length;
+		}*/
+		
+		for (var i = 0; i < keyvalues.length; i++) {
+			keys_array.push(keyvalues[i].value);
+		}
+		
+		document.write("<div class='da-slide'>");
+		document.write("<p>" + num + "</p>");
+		document.write("<h2>" + keys_array + "</h2>");
+		document.write("</div>");
+	}
+	
+	document.write("</div></div></div>");
+	
+	
+	document.write("<div class='text-center'>");
+	document.write("<input class='black-btn' name='previous_key' type='button' value='Previous Key' onclick='this.innerHTML=Date()'>"); 
+	document.write("<input class='black-btn' name='next_key' type='button' value='Next Key' onclick=' return increaseKey(this)'>"); 
+	document.write("</div>");
+
+</script>
+
 <div class="main_bg"><!-- start main -->
 	<div class="container">
 		<div class="main row para">
@@ -112,7 +220,7 @@ include_once '../includes/db_connect.php';
 							$row = $result->fetch_assoc();
 							$sn = $i+1;
 							echo "<tr><td>$sn</td>";
-							echo "<td style='font-family: monospace;'>$row[key_value]</td>";
+							echo "<td name='items[]' value='$row[key_value]' style='font-family: monospace;'>$row[key_value]</td>";
 							$given_out = ($row['given_out'] == 1) ? "Yes" : "No";
 							$used = ($row['used'] == 1) ? "Yes" : "No";
 							echo "<td>$given_out</td>";
@@ -132,16 +240,14 @@ include_once '../includes/db_connect.php';
 		</div>
 	</div>
 </div><!-- end main -->
-<FOOTER>
-        <div class="footer_bg"><!-- start footer -->
-            <div class="container">
-                <div class="row  footer">
-                    <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> The FCE Team</a></span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </FOOTER>
+<div class="footer_bg"><!-- start footer -->
+	<div class="container">
+		<div class="row  footer">
+			<div class="copy text-center">
+				<p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="http://w3layouts.com/"> W3Layouts</a></span></p>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>

@@ -13,6 +13,28 @@ if (isset($_POST['sbmt_mid'])) {
 <!DOCTYPE HTML>
 <html>
 <head>
+
+<!-- Favicon Kini -->
+        <link rel="apple-touch-icon" sizes="57x57" href="images/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="images/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="images/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="images/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="images/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="images/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="images/favicons/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="images/favicons/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="images/favicons/manifest.json">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- End of Favicon Kini -->
+
 <title>FCE Report</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
@@ -260,14 +282,16 @@ if (isset($_POST['sbmt_mid'])) {
         </div>
     </div>
 </div><!-- end main -->
-<div class="footer_bg"><!-- start footer -->
-    <div class="container">
-        <div class="row  footer">
-            <div class="copy text-center">
-                <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="http://w3layouts.com/"> W3Layouts</a></span></p>
+<FOOTER>
+        <div class="footer_bg"><!-- start footer -->
+            <div class="container">
+                <div class="row  footer">
+                    <div class="copy text-center">
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> The FCE Team</a></span></p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </FOOTER>
 </body>
 </html>
