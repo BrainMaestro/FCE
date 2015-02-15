@@ -1,23 +1,17 @@
 <?php
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
-    $con = mysqli_connect("localhost", "root", "", "fce");
-    if (mysqli_connect_errno()) {
-        echo "Failed to connect to MySQL: " . mysqli_connect_errno();
-    }
-    if (!isset($_SESSION['email'])) {
-        header("Location: ../index.php");
-    }
-    $crn_array = array();
-    $course_code_array = array();
-    $email = $_SESSION['email'];   
-    $query = mysqli_query($con, "SELECT crn, course_code, school, semester from section where faculty_email='$email'"); 
-    while ($row = mysqli_fetch_array($query)) {
-        array_push($crn_array, $row[0]);
-        array_push($course_code_array, $row[1]);
-        $sch = $row[2];
-        $sem = $row[3];
-    }
+
+$crn_array = array();
+$course_code_array = array();
+$email = $_SESSION['email'];   
+$result = $mysqli->query("SELECT crn, course_code, school, semester from section where faculty_email='$email'"); 
+while ($row = $result->fetch_array()) {
+    array_push($crn_array, $row[0]);
+    array_push($course_code_array, $row[1]);
+    $sch = $row[2];
+    $sem = $row[3];
+}
     
 ?>
 <!DOCTYPE HTML>
