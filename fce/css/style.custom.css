@@ -97,3 +97,30 @@ th {
 .left {
 	float: left;
 }
+.black-btn {
+	font-family: "open_sansregular";
+	background: none repeat scroll 0% 0% #3B3B3B;
+	color: #FFF;
+	text-transform: uppercase;
+	font-size: 13px;
+	padding: 12px 20px;
+	border: medium none;
+	border-radius: 5%;
+	cursor: pointer;
+	width: 160px;
+	line-height: 1.5em;
+	outline: medium none;
+	transition: all 0.3s ease-in-out 0s;
+}
+.black-btn:hover {
+	background: #FF5454;
+}
+.margin {
+	margin-bottom: 30px;
+}
+.not-center {
+	text-align: left;
+}
+.not-center th {
+	padding-left: 0px;
+}
