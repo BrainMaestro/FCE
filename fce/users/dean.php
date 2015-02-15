@@ -1,5 +1,6 @@
 <?php
 	include '../includes/functions.php';
+	session_start();
 
 	$con = mysqli_connect("localhost", "root", "", "fce");
     	if (mysqli_connect_errno()) {
