@@ -125,8 +125,8 @@ if (isset($_POST['submit'])) {
                         }
                         echo '</select>';
                         ?>
-                        <div class="clearfix"></div>
-                        <button class="fa-btn btn-1 btn-1e" name='sbmt_semester'>SUBMIT</button>
+                        <br><br>
+                        <button class="black-btn" name='sbmt_semester'>SUBMIT</button>
                     </form>
                 <?php
                 }
@@ -155,8 +155,8 @@ if (isset($_POST['submit'])) {
                         }
                         echo '</select>';
                         ?> 
-    					<div class="clearfix"></div>
-                        <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
+    					<br><br>
+                        <button class="black-btn" name='submit'>SUBMIT</button>
     				</form>
                 <?php
                 }

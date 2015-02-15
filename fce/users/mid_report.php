@@ -230,7 +230,7 @@ if (isset($_POST['sbmt_mid'])) {
                         </tr>
                         <tr>
                             <td class="w5">12</td>
-                            <td class="w65"><strong>Relevance of Assignments </strong>(My professor’s assignments are relevant to the course)</td>
+                            <td class="w65"><strong>Relevance of Assignments </strong>(My professor's assignments are relevant to the course)</td>
                             <td class="w5"><?php count_scale(1,'q12', $course_no, $eval_type, $mysqli)?></td>
                             <td class="w5"><?php count_scale(2,'q12', $course_no, $eval_type, $mysqli)?></td>
                             <td class="w5"><?php count_scale(3,'q12', $course_no, $eval_type, $mysqli)?></td>
@@ -275,7 +275,7 @@ if (isset($_POST['sbmt_mid'])) {
                             <td class="w5"></td>
                             <td class="w5"></td>
                             <td class="w5"></td>
-                            <td class="w5">></td>
+                            <td class="w5"></td>
                         </tr>
                     </table>
             </div>
