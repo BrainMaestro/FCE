@@ -2,9 +2,6 @@
 	session_start();
 	include '../includes/functions.php';
 	include '../includes/db_connect.php';
-    if (!isset($_SESSION['email'])) {
-        header("Location: ../index.php");
-    }
 ?>
 <!DOCTYPE HTML>
 <html>

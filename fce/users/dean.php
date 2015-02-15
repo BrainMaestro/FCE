@@ -1,29 +1,23 @@
 <?php
 	include '../includes/functions.php';
-	session_start();
-
-	$con = mysqli_connect("localhost", "root", "", "fce");
-    	if (mysqli_connect_errno()) {
-        	echo "Failed to connect to MySQL: " . mysqli_connect_errno();
-    	}
-    	if (!isset($_SESSION['email'])) {
-        	header("Location: ../index.php");
-    	}
+	include '../includes/db_connect.php';
     	if (isset($_POST['submit'])) { //form from the admin page
     		$course_code_array = array(); 
     		$sch = $_POST['school'];
     		$semester = $_POST['semester'];
-			$query = mysqli_query($con, "SELECT distinct(course_code) from section where school = '$sch' and semester = $semester");
-			while ($row = mysqli_fetch_array($query)) {
-	            array_push($course_code_array, $row[0]);
-	        }
+			$result = $mysqli->query("SELECT distinct(course_code) from section where school = '$sch' and semester = $semester");
+	        for($i = 0; $i < $result->num_rows; $i++) {
+                $row = $result->fetch_array();
+                array_push($course_code_array, $row[0]);
+            }
     	} else { //what loads for the dean
 	    	$course_code_array = array();
 	    	$email = $_SESSION['email'];   
-			$query = mysqli_query($con, "SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
-			while ($row = mysqli_fetch_array($query)) {
-	            array_push($course_code_array, $row[0]);
-	        }
+			$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
+			for($i = 0; $i < $result->num_rows; $i++) {
+                $row = $result->fetch_array();
+                array_push($course_code_array, $row[0]);
+            }
   		}
 ?>
 <!DOCTYPE HTML>
@@ -102,8 +96,9 @@
 				echo "<h4><a>$course_code_array[$i]</a></h4>";
 				//Final
 				echo '<div class="border3">'; 
-        		$query = mysqli_query($con, "SELECT crn, faculty_email from section where course_code = '$course_code_array[$i]'");
-				while ($row = mysqli_fetch_array($query)) {
+        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$i]'");
+				for($i = 0; $i < $result->num_rows; $i++) {
+                	$row = $result->fetch_array();
 					echo "<form class='dean_form' action='final_report.php' method='post'>";
 					echo "<input type='text' style='width:20px' value='final' name='eval_type' readonly> - ";
 					echo "<input type='text' value='$row[0]' name='crn' style='width:20px' readonly> - ";
@@ -114,8 +109,9 @@
         		echo '</div>';
         		//Midterm
         		echo '<div class="border3">';
-        		$query = mysqli_query($con, "SELECT crn, faculty_email from section where course_code = '$course_code_array[$i]'");
-				while ($row = mysqli_fetch_array($query)) {
+        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$i]'");
+				for($i = 0; $i < $result->num_rows; $i++) {
+                	$row = $result->fetch_array();
 					echo "<form class='dean_form' action='midterm_report.php' method='post'>";
 					echo "<input type='text' value='mid' style='width:18px' name='eval_type' readonly>term - ";
 					echo "<input type='text' value='$row[0]' name='crn' style='width:20px' readonly> - ";
