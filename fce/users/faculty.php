@@ -1,18 +1,25 @@
 <?php
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
+if (isset($_POST['sbmt_semester'])) {
+    $semester = $_POST['semester'];
+    $crn_array = array();
+    $course_code_array = array();
+    $email = $_SESSION['email'];   
+    $result = $mysqli->query("SELECT crn, course_code from section where faculty_email='$email' and semester ='$semester'"); 
 
-$crn_array = array();
-$course_code_array = array();
-$email = $_SESSION['email'];   
-$result = $mysqli->query("SELECT crn, course_code, school, semester from section where faculty_email='$email'"); 
-while ($row = $result->fetch_array()) {
-    array_push($crn_array, $row[0]);
-    array_push($course_code_array, $row[1]);
-    $sch = $row[2];
-    $sem = $row[3];
+    for($i = 0; $i < $result->num_rows; $i++) {
+        $row = $result->fetch_assoc();
+        array_push($crn_array, $row['crn']);
+        array_push($course_code_array, $row['course_code']);
+    }
 }
+if (isset($_POST['submit'])) {
+    $_SESSION['eval_type'] = $eval_type = $_POST['eval_type'];
+    $_SESSION['crn'] = $_POST['crn'];
+    header("Location: $eval_type" . "_report.php");
     
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -63,7 +70,7 @@ while ($row = $result->fetch_array()) {
                 <li><a>Faculty</a></li>
                 <?php
                 $semester = getCurrentSemester();
-                $school = $_SESSION['school'] = 'SAS';
+                $school = $_SESSION['school'];
                 $name = $_SESSION['name'];
                 echo "<li><a>$semester</a></li>";
                 echo "<li><a>$school</a></li>";
@@ -78,32 +85,60 @@ while ($row = $result->fetch_array()) {
 <div class="main_bg"><!-- start main -->
 	<div class="container">
 		<div class="main row">
-			<div class="col-md-8 blog_left">
+			<div class=" blog_left">
 				
-			<div class="col-md-4 blog_right news_letter">
-				
-				<form action="report.php" method="post">
-					<select name="eval_type" class="input-sm" required>
-	                    <option selected value="">--Choose Evaluation Type--</option>
-	                    <option value="mid">Midterm</option>
-	                    <option value="final">Final</option>
-	                </select>
-                   
-					<div class="clearfix"></div>
-					<div style="height:25px"></div>
-                    <?php
-					echo '<select name="crn" class="input-sm" required>';
-                    echo "<option selected value=''>--Choose course--</option>";
-                    $i = 0;
-                    while($i < count($course_code_array)) {
-	                    echo "<option value='$crn_array[$i]'>$course_code_array[$i] - $crn_array[$i]</option>";
-                        $i++;
-                    }
-                    echo '</select>';
-                    ?>
-					<div class="clearfix"></div>
-                    <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
-				</form>
+			<div class=" blog_right text-center">
+				<?php 
+                if (!(isset($_POST['sbmt_semester']))) {
+                ?>
+    				<form action="" method="post">
+                        <?php
+
+                        echo '<select name="semester" class="input-sm" required>';
+                        echo '<option selected value="">--Choose Semester--</option>';
+                        $result = $mysqli->query("SELECT semester from semester");
+                        for($i = 0; $i < $result->num_rows; $i++) {
+                            $row = $result->fetch_assoc();
+                            echo "<option value='$row[semester]'>$row[semester]</option>";
+                        }
+                        echo '</select>';
+                        ?>
+                        <div class="clearfix"></div>
+                        <button class="fa-btn btn-1 btn-1e" name='sbmt_semester'>SUBMIT</button>
+                    </form>
+                <?php
+                }
+                ?>
+
+                <?php 
+                if (isset($_POST['sbmt_semester'])) {
+                ?>
+                    <form action="" method="post">
+
+                       <div style="height:25px"></div>
+    					<select name="eval_type" class="input-sm" required>
+    	                    <option selected value="">--Choose Evaluation Type--</option>
+    	                    <option value="mid">Midterm</option>
+    	                    <option value="final">Final</option>
+    	                </select>
+
+    					<div style="height:25px"></div>
+                        <?php
+    					echo '<select name="crn" class="input-sm" required>';
+                        echo "<option selected value=''>--Choose course--</option>";
+                        $i = 0;
+                        while($i < count($course_code_array)) {
+    	                    echo "<option value='$crn_array[$i]'>$course_code_array[$i] - $crn_array[$i]</option>";
+                            $i++;
+                        }
+                        echo '</select>';
+                        ?> 
+    					<div class="clearfix"></div>
+                        <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
+    				</form>
+                <?php
+                }
+                ?>
 			</div>	
 			</div>
 		</div>

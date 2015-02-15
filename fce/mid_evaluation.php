@@ -271,16 +271,6 @@ if (isset($_POST['submit'])) {
                             <td class="w5"><input type="radio" name="q12" value="4" required="required"></td>
                             <td class="w5"><input type="radio" name="q12" value="5" required="required"></td>
                         </tr>
-                        <!--<tr ><td></td></tr>
-                        <tr>
-                            <td class="w5"></td>
-                            <td class="w70"><strong class="thead"> Student</strong></td>
-                            <td class="w5">1</td>
-                            <td class="w5">2</td>
-                            <td class="w5">3</td>
-                            <td class="w5">4</td>
-                            <td class="w5">5</td>
-                        </tr>-->
                         <tr>
                             <td class="w5">13</td>
                             <td class="w70"><strong>Grading Policies </strong>My professors grading policies are fair and consistent with the syllabus</td>
@@ -308,7 +298,6 @@ if (isset($_POST['submit'])) {
                             <td class="w5"><input type="radio" name="q15" value="4" required="required"></td>
                             <td class="w5"><input type="radio" name="q15" value="5" required="required"></td>
                         </tr>
-                       
                     </table>
                 
                     <br>

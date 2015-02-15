@@ -150,5 +150,14 @@ function avg_student($crn, $eval_type, $mysqli) {
     while ($row = $result->fetch_array())
         echo $row[0];
 }
+
+function avg_midterm($crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT round((avg(q1)+avg(q2)+avg(q3)+avg(q4)+avg(q5)+avg(q6) +avg(q7)+avg(q8)+avg(q9)+avg(q10)+avg(q11)+avg(q12)+avg(q13)+avg(q14)+avg(q15))/15, 2)
+                                from evaluation where crn = '$crn' and eval_type = '$eval_type'");
+    
+    while ($row = $result->fetch_array())
+        echo $row[0];
+}
+
 ?>
 

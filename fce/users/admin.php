@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	include '../includes/functions.php';
+	include '../includes/db_connect.php';
     if (!isset($_SESSION['email'])) {
         header("Location: ../index.php");
     }
@@ -75,22 +76,20 @@
 				
 				<form action="dean.php" method="post">
 					<?php
-					$con = mysqli_connect("localhost", "root", "", "fce");
-    				if (mysqli_connect_errno()) {
-				        echo "Failed to connect to MySQL: " . mysqli_connect_errno();
-				    }
-				    echo '<select name="semester" class="input-sm">';
+					
+				    echo '<select name="semester" class="input-sm" required>';
 				    echo '<option selected value="">--Choose Semester--</option>';
-				    $query = mysqli_query($con, "SELECT semester from semester");
-					while ($row = mysqli_fetch_array($query)) {
-	            		echo "<option value='$row[0]'>$row[0]</option>";
-	       			}
+				    $result = $mysqli->query("SELECT semester from semester");
+				    for($i = 0; $i < $result->num_rows; $i++) {
+						$row = $result->fetch_assoc();
+						echo "<option value='$row[semester]'>$row[semester]</option>";
+					}
 	       			echo '</select>';
 					?>
 
 					<div class="clearfix"></div>
 					<div style="height:25px"></div>
-					<select name="school" class="input-sm">
+					<select name="school" class="input-sm" required>
 	                    <option selected value="">--Choose School--</option>
 	                    <option value="SITC">SITC</option>
 	                    <option value="SAS">SAS</option>
