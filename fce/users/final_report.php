@@ -2,7 +2,7 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-if ((!isset($_SESSION['user_type'])) or ($_SESSION['user_type'] == "secretary")){
+if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary")){
 	session_destroy();
     session_start();
 	$_SESSION['err'] = "You do not have access";
