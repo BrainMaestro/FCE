@@ -97,14 +97,14 @@
 	<a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
 	<a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
 </div>
-<div class="main_bg"><!-- start main -->
-	<div class="container">
-		<div class="main row">
-			<div class="col-md-8 blog_left">
+<div class="main_bg "><!-- start main -->
+	<div class="container ">
+		<div class="main row ">
+			<div class="blog_left ">
 				
-			<div class="col-md-4 blog_right news_letter">
+			<div class="blog_right news_letter">
 				
-				<form action="dean.php" method="post">
+				<form action="dean.php" method="post" class="text-center">
 					<?php
 					
 				    echo '<select name="semester" class="input-sm" required>';
@@ -124,6 +124,7 @@
 	                    <option value="SITC">SITC</option>
 	                    <option value="SAS">SAS</option>
 	                    <option value="SBE">SBE</option>
+	                    <option value="%">All Schools</option>
 	                </select>
 
 					<div class="clearfix"></div>
