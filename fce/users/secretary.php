@@ -170,7 +170,10 @@ if (isset($_POST['submit'])) {
 							if ($status != '%')
 								echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
 							echo "<td>$row[crn]</td>";
-							echo "<td>$row[course_code]</td>";
+							if ($status == '0')
+								echo "<td><a href='section.php?crn=$row[crn]'>$row[course_code]</a></td>";
+							else
+								echo "<td>$row[course_code]</td>";
 							echo "<td>$row[course_title]</td>";
 							$row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
 							echo "<td>$row2[name]</td>";
