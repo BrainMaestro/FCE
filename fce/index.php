@@ -126,12 +126,8 @@ include_once './includes/db_connect.php'
                     <div class="error">
                         <?php
                             if (isset($_SESSION['erre'])) {
-                            $err = $_SESSION['erre'];
-                            
-                            
-                            echo "Sorry, $err";
-                            
-
+                            $err = $_SESSION['erre'];                            
+                            echo "<h5>Sorry, $err</h5>";
                             unset($_SESSION['erre']); // Destroys the err session variable
                             }
                         ?>
@@ -149,12 +145,8 @@ include_once './includes/db_connect.php'
                     <div class="error">
                         <?php
                             if (isset($_SESSION['errl'])) {
-                            $err = $_SESSION['errl'];
-                            
-                            
-                            echo "Sorry, $err";
-                            
-
+                            $err = $_SESSION['errl'];                            
+                            echo "<h5>Sorry, $err</h5>";
                             unset($_SESSION['errl']); // Destroys the err session variable
                             }
                         ?>
