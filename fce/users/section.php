@@ -5,9 +5,9 @@ include_once '../includes/functions.php';
 checkUser("secretary");
 
 $crn = $_GET['crn'];
-$status = $mysqli->query("SELECT locked FROM section WHERE crn='$crn'")->fetch_assoc();
+$status = checkSectionStatus($crn);
 
-if ((!isset($_GET['crn'])) || ($status['locked']) == 1) {
+if ($status == true) {
 	header("Location: secretary.php");
 }
 

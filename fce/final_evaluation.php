@@ -12,7 +12,14 @@ if (!isset($_SESSION['key_value'])) {
 }
 
 if (isset($_POST['submit'])) {
-
+	
+	$crn = $_SESSION['crn'];
+	$status = checkSectionStatus($crn);
+	if ($status == true) {
+		session_destroy();
+		header("Location: index.php");
+	}
+	
     if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "final";
         $crn = $_SESSION['crn'];
