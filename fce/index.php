@@ -113,17 +113,7 @@ include_once './includes/db_connect.php'
             </div>
         </div>
         <div class="container" style="margin-top: 30px">
-        <?php
-            if (isset($_SESSION['err'])) {
-                $err = $_SESSION['err'];
-                echo '<div class="row">
-                <div class="col-xs-3 bg1 text-center"></div>';
-                echo "<div class='error errorborder col-xs-6 text-center'><h4>Error! $err</h4></div>";
-                echo '<div class="col-xs-3 bg1 text-center"></div></div><br>';
-
-                unset($_SESSION['err']); // Destroys the err session variable
-            }
-            ?>
+        
             <div class="main row">
                 <div class="col-md-6 images_1_of_4 bg1 text-center"></div>		
                 <div class="col-md-3 images_1_of_4 bg1 text-center border">
@@ -133,6 +123,20 @@ include_once './includes/db_connect.php'
                         <br><br><p></p>
                         <button class="fa-btn btn-1 btn-1e">EVALUATE</button>
                     </form>
+                    <div class="error">
+                        <?php
+                            if (isset($_SESSION['erre'])) {
+                            $err = $_SESSION['erre'];
+                            
+                            
+                            echo "Sorry, $err";
+                            
+
+                            unset($_SESSION['erre']); // Destroys the err session variable
+                            }
+                        ?>
+                        
+                    </div>
                 </div>
                 <div class="col-md-6 images_1_of_4 bg1 text-center"></div>	
                 <div class="col-md-3 images_1_of_4 bg1 text-center border">
@@ -142,6 +146,20 @@ include_once './includes/db_connect.php'
                         <p></p>
                         <button class="fa-btn btn-1 btn-1e">LOG IN</button>
                     </form>
+                    <div class="error">
+                        <?php
+                            if (isset($_SESSION['errl'])) {
+                            $err = $_SESSION['errl'];
+                            
+                            
+                            echo "Sorry, $err";
+                            
+
+                            unset($_SESSION['errl']); // Destroys the err session variable
+                            }
+                        ?>
+                        
+                    </div>
                 </div>	
                 <div class="col-md-6 images_1_of_4 bg1 text-center"></div>	
             </div>

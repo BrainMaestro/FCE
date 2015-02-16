@@ -72,7 +72,7 @@ function checkSessionKeys() {
 	if ($now > $_SESSION['expire']){
 		session_destroy();
         session_start();
-		$_SESSION['err'] = "Your session has expired";
+		$_SESSION['erre'] = "Your session has expired";
 		header("Location: index.php");
 	}
 }
@@ -170,14 +170,14 @@ function checkUser($page){
 	//$user_type = $_SESSION['user_type'];
 	//$email = $_SESSION['email'];
 	if(!isset($_SESSION['email'])) {
-		$_SESSION['err'] = "You do not have access";
+		$_SESSION['errl'] = "You do not have access";
         header("Location: ../index.php");
     }
 	
 	if ($page != $_SESSION['user_type']) {
 		session_destroy();
         session_start();
-		$_SESSION['err'] = "You do not have access";
+		$_SESSION['errl'] = "You do not have access";
 		header("Location: ../index.php");
 	}
 }

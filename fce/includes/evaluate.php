@@ -27,7 +27,7 @@
 			header("Location: ../$key_eval_type" . "_evaluation.php"); // Take the class to the correct evaluation form based on the eval type
 		}
 		else {
-			$_SESSION['err'] = "Key is used or incorrect";
+			$_SESSION['erre'] = "the key was used or incorrect";
 			header('Location: ../index.php'); //Error when the key is not found in the database
 		}
 	}

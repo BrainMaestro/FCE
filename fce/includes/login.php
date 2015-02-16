@@ -23,19 +23,19 @@ if (isset($_POST['email'], $_POST['password'])) {
                 header("Location: ../users/$user_type". ".php"); // Simple statement that works for all user types
 
         	} else {
-                $_SESSION['err'] = "Wrong Email or Password";
+                $_SESSION['errl'] = "wrong Email or Password";
         		header("Location: ../index.php");
         	}
         } else {
-            $_SESSION['err'] = "No Such User";
+            $_SESSION['errl'] = "No Such User";
             header("Location: ../index.php");
         }
     } else {
-        $_SESSION['err'] = "Database error: cannot prepare statement";
+        $_SESSION['errl'] = "database error: cannot prepare statement";
         header("Location: ../index.php");
     }
 
 } else { 
-    $_SESSION['err'] = "Could not process login";
+    $_SESSION['errl'] = "could not process login";
     header("Location: ../index.php");
 } 
