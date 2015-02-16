@@ -120,10 +120,17 @@
 	                    <option value="SAS">SAS</option>
 	                    <option value="SBE">SBE</option>
 	                </select>
+
 					<div class="clearfix"></div>
 					<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="submit" value="SUBMIT"></span>
 				</form>
+
 			</div>	
+			<div class="col-xs-4 text-center border adminAdd">
+				<br /><br /><br /><br />
+			<a href="./admin_add_user.php"><button class="black-btn">Add User</button></a><br /><br />
+			<a href="./admin_add_section.php"><button class="black-btn">Add Section</button></a>
+		</div>
 			</div>
 		</div>
 	</div>
