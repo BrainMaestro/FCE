@@ -157,7 +157,12 @@ if (isset($_POST['submit'])) {
 						<tbody>";
 						
 						if ($result->num_rows == 0)
-							echo "<h4>No section matches your criteria</h4>";
+							echo "<h4 class='error'>No section matches your criteria</h4>";
+						elseif (isset($_SESSION['err'])) {
+							echo "<h4 class='error'>$_SESSION[err]</h4>";
+							unset($_SESSION['err']);
+						}
+
 
 						for($i = 0; $i < $result->num_rows; $i++) {
 							$row = $result->fetch_assoc();

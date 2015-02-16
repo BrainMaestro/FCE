@@ -11,7 +11,6 @@
 }
 .error {
 	color:red;
-	font-size: small;
 }
 .errorborder {
 	border: 1px solid #ccc;
