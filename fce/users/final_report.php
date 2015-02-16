@@ -116,8 +116,24 @@ if (isset($_POST['sbmt_final'])) {
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">
-        <div class="main row">
-
+        <div class="main row para">
+			<div class="banner-msg">
+				Scale:<br>
+				5 = excellent (exceptional, exemplary)<br>
+                4 = very good (high quality, better than average)<br>
+                3 = good (reasonable well done, acceptable)<br>
+                2 = margin (slightly below average, needs improvement)<br>
+                1 = poor (far below average, not acceptable)<br><br>
+				
+				<?php
+					$count_crn = $_SESSION['crn'];	
+					$count_eval_type = $_SESSION['eval_type'];
+					$count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
+					$count_registered = $mysqli->query("SELECT enrolled FROM section WHERE crn='$count_crn'")->fetch_assoc();
+					echo "<span style=\"text-align: right;\">Total Response: $count_response[filled]<br>";
+					echo "Total Registered: $count_registered[enrolled]</span>";	
+				?>
+			</div>
                 <table align="center" class="para" width="100%">
                         <tr>
                             <th class="w5"></th>
