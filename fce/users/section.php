@@ -128,7 +128,8 @@ if ($status == true) {
 		      <li><a>Section</a></li>
                 <?php
                 $crn = $_GET['crn'];
-                $eval_type = $_GET['eval_type'];
+    			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM section WHERE crn='$crn'")->fetch_assoc();
+                $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
                 $row = $mysqli->query("SELECT * FROM section WHERE crn='$crn'")->fetch_assoc();
                 echo "<li><a>$row[course_code]</a></li>";
                 echo "<li><a>$row[school]</a></li>";
@@ -136,8 +137,8 @@ if ($status == true) {
                 echo "<li><a>$row[semester]</a></li>";
                 echo "<li><a>$row[course_title]</a></li>";
                 echo "<li><a>$row2[name]</a></li>";
-                //$row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
-                //echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
+                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
+                echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
                 ?>
 		      </ul>
@@ -155,13 +156,7 @@ if ($status == true) {
 			<h2 id="key1" value=""> null</h2>
 			<script type="text/javascript">
 			
-			//displayKeys();	
-			
 			function displayKeys() {
-				//document.write("<div class='da-slide'>");
-				//document.write("<p>" + 1 + "</p>");
-				//document.write("<h2>" + "howis"+ "</h2>");
-				//document.write("</div>");
 				document.getElementsByName('key1').innerHTML=comment;
 			}
 			
@@ -182,8 +177,6 @@ if ($status == true) {
 				for (var i = 0; i < keyvalues.length; i++) {
 					keys_array.push(keyvalues[i].value);
 				}
-				
-				//alert(keys_array[key2]);
 				
 				document.getElementById('key1').innerHTML = keys_array[global_key];
 				document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
@@ -215,7 +208,6 @@ if ($status == true) {
 					<tbody>
 						<?php
 						$result = $mysqli->query("SELECT * FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
-						$keyArray = []; // For storing the keys to display boldly
 						for($i = 0; $i < $result->num_rows; $i++) {
 							$row = $result->fetch_assoc();
 							$sn = $i+1;
@@ -234,7 +226,6 @@ if ($status == true) {
 				<form action="secretary.php" method="post"> <!-- Sends back to secretary page and locks class -->
 					<?php
 					echo "<input type='hidden' name='crn' value='$crn'>";
-					echo "<input type='hidden' name='eval_type' value='$eval_type'>";
 					?>
 					<input class='black-btn' name='submit' type="submit" value='lock'>
 				</form>

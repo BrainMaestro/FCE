@@ -77,34 +77,40 @@ function checkSessionKeys() {
 	}
 }
 
-function unlockSection($crn, $eval_type, $mysqli) {
+function unlockSection($crn, $mysqli) {
     $result = $mysqli->query("SELECT * FROM section WHERE crn='$crn'");
     $row = $result->fetch_assoc();
 
     // Checks if the type of evaluation for which the section is to be unlocked has already occurred
-    // Will include error messages eventually
-    if ($eval_type == 'final') { 
-        if ($row['final_evaluation'] == '1')
-            return;
+    $eval_type = 'mid';
+
+    if ($row['mid_evaluation'] == '1' && $row['final_evaluation'] == '1') { 
+        $_SESSION['err'] = "Class cannot be unlocked again";
+        return;
     }
-    else {
-        if ($row['mid_evaluation'] == '1')
-            return;
-    }
+    elseif ($row['mid_evaluation'] == '1')
+        $eval_type = 'final';
 
     $mysqli->query("UPDATE section SET locked='0' WHERE crn='$crn'");
     insertKeys($crn, $eval_type, $mysqli);
-    header("Location: ../users/section.php?crn=$crn&eval_type=$eval_type");
+    header("Location: ../users/section.php?crn=$crn");
 }
 
-function lockSection($crn, $eval_type, $mysqli) {
+function lockSection($crn, $mysqli) {
     $sql = "UPDATE section SET locked='1', ";
 
+    $row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM section WHERE crn='$crn'")->fetch_assoc();
+    $eval_type = "";
+
     // Sets the type of evaluation that was completed as done
-    if ($eval_type == 'final')
-        $sql .= "final_evaluation = '1'";
-    else
+    if ($row['mid_evaluation'] == '0') {
         $sql .= "mid_evaluation = '1'";
+        $eval_type = "mid";
+    }
+    else {
+        $sql .= "final_evaluation = '1'";
+        $eval_type = "final";
+    }
 
     $sql .= " WHERE crn='$crn'";
     $mysqli->query($sql);

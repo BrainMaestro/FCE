@@ -118,8 +118,8 @@
 		<div class="main row">
 			<div class="col-md-8 blog_left">
 			<?php
-			$i = 0;
-        	while ($i < count($course_code_array)) {
+			$j = 0;
+        	while ($j < count($course_code_array)) {
         		
         		echo '<div class="border2">';
 				echo "<h4><a>$course_code_array[$i]</a></h4>";
@@ -150,7 +150,7 @@
         		}
         		echo '</div>';
         		echo '</div>';
-        		$i++;
+        		$j++;
         	} 
 			?>
 			</div>

@@ -7,9 +7,9 @@ checkUser("secretary");
 if (isset($_POST['submit'])) {
 
 	if ($_POST['submit'] == 'lock')
-		lockSection($_POST['crn'], $_POST['eval_type'], $mysqli);
+		lockSection($_POST['crn'], $mysqli);
 	else
-		unlockSection($_POST['crn'], $_POST['eval_type'], $mysqli);
+		unlockSection($_POST['crn'], $mysqli);
 }
 
 ?>
@@ -181,11 +181,6 @@ if (isset($_POST['submit'])) {
 						echo '</tbody></table><hr>';
 
 						if (isset($status) && $status !== '%' && $result->num_rows > 0) {
-							echo '<br><select name="eval_type" class="input-sm" required>
-			                    <option selected value="">--Choose Evaluation Type--</option>
-			                    <option value="mid">Midterm</option>
-			                    <option value="final">Final</option>
-			                </select><br><br>';
 							if ($status == 1)
                     			echo "<button class='black-btn margin' name='submit' value='unlock'>Unlock</button>";
                     		elseif ($status == 0)
