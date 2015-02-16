@@ -46,7 +46,7 @@
 
         <!-- End of Favicon Kini -->
 
-<title> Dean</title>
+<title>Dean</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />

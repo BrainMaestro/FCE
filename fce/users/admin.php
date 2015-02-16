@@ -28,7 +28,7 @@
 
         <!-- End of Favicon Kini -->
 
-<title>FCE Admin</title>
+<title>Admin</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
