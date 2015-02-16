@@ -2,20 +2,18 @@
 	include '../includes/db_connect.php';
 	include '../includes/functions.php';
 	
-	
+	checkUser("dean");
 	
     	if (isset($_POST['submit'])) { //form from the admin page
-    		checkUser("admin");
     		$course_code_array = array(); 
     		$sch = $_POST['school'];
     		$semester = $_POST['semester'];
-			$result = $mysqli->query("SELECT distinct(course_code) from section where school like '%$sch' and semester = '$semester'");
+			$result = $mysqli->query("SELECT distinct(course_code) from section where school = '$sch' and semester = $semester");
 	        for($i = 0; $i < $result->num_rows; $i++) {
                 $row = $result->fetch_array();
                 array_push($course_code_array, $row[0]);
             }
     	} else { //what loads for the dean
-    		checkUser("dean");
 	    	$course_code_array = array();
 	    	$email = $_SESSION['email'];   
 			$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
@@ -74,7 +72,6 @@
 <div class="header_bg1">
 <div class="container">
 	<div class="row header">
-
 		<div class="logo navbar-left">
 			<h1><a href="index.html">Faculty Course Evaluation</a></h1>
 		</div>
@@ -119,53 +116,43 @@
 <div class="main_bg"><!-- start main -->
 	<div class="container">
 		<div class="main row">
-			<div class=" blog_left">
-			<table width='100%' class='evaltable para dean_form'>
-				<caption><h3>Reports</h3><hr></caption>
-					<tr>
-						<th>Course Code</th>
-						<th>Evaluation Type</th>
-						<th>CRN</th>
-						<th>Instructor</th>
-						<th>View Report</th>
-					</tr>
-		<?php
+			<div class="col-md-8 blog_left">
+			<?php
 			$j = 0;
         	while ($j < count($course_code_array)) {
-        	echo '<tr>';
-			
+        		
+        		echo '<div class="border2">';
+				echo "<h4><a>$course_code_array[$i]</a></h4>";
 				//Final
-        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$j]'");
+				echo '<div class="border3">'; 
+        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$i]'");
 				for($i = 0; $i < $result->num_rows; $i++) {
                 	$row = $result->fetch_array();
-					echo "<form class='para' action='final_report.php' method='post'>";
-					echo "<td>$course_code_array[$j]</td>";
-					echo "<td><input type='text' style='width:30px' value='final' name='eval_type' readonly></td>";
-					echo "<td><input type='text' value='$row[0]' name='crn' style='width:40px' readonly></td>";
-					echo "<td><span>$row[1]</span></td>";
-            		echo "<td><a><input type='submit' name='sbmt_final' value='View Report'></a></td>";
+					echo "<form class='dean_form' action='final_report.php' method='post'>";
+					echo "<input type='text' style='width:20px' value='final' name='eval_type' readonly> - ";
+					echo "<input type='text' value='$row[0]' name='crn' style='width:20px' readonly> - ";
+					echo "<span>$row[1]</span>";
+            		echo "<a><input type='submit' name='sbmt_final' value='View Report'></a><br>";
             		echo '</form>';
         		}
-        	echo '</tr>';
+        		echo '</div>';
         		//Midterm
-        	echo '<tr>';
-        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$j]'");
+        		echo '<div class="border3">';
+        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$i]'");
 				for($i = 0; $i < $result->num_rows; $i++) {
                 	$row = $result->fetch_array();
-					echo "<form class='dean_form para' action='mid_report.php' method='post'>";
-					echo "<td>$course_code_array[$j]</td>";
-					echo "<td><input type='text' value='mid' style='width:25px' name='eval_type' readonly>term</td>";
-					echo "<td><input type='text' value='$row[0]' name='crn' style='width:20px' readonly></td>";
-            		echo "<td><span>$row[1]</span></td>";
-            		echo "<td><a><input type='submit' name='sbmt_mid' value='View Report'></a></td>";
+					echo "<form class='dean_form' action='midterm_report.php' method='post'>";
+					echo "<input type='text' value='mid' style='width:18px' name='eval_type' readonly>term - ";
+					echo "<input type='text' value='$row[0]' name='crn' style='width:20px' readonly> - ";
+            		echo "<span>$row[1]</span>";
+            		echo "<a><input type='submit' name='sbmt_mid' value='View Report'></a><br>";
             		echo '</form>';
         		}
-        	echo '</tr>';
+        		echo '</div>';
+        		echo '</div>';
         		$j++;
-        	}
-			
-			 
-			?></table>
+        	} 
+			?>
 			</div>
 		</div>
 	</div>
