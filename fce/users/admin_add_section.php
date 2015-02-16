@@ -14,7 +14,7 @@
         $stmt->bind_param('isssssiiii', $_POST['crn'],$_POST['course_code'],$_POST['faculty_email'],$semester,$_POST['school'],
             $_POST['course_title'], $locked, $mid_evaluation, $final_evaluation, $_POST['enrolled']); 
         $stmt->execute(); 
-        //header("Location: ./admin.php");
+        header("Location: ./admin.php");
     } else {
         $_SESSION['err'] = "Database error: cannot prepare statement";
         header("Location: ../index.php");

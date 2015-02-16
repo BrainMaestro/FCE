@@ -92,6 +92,11 @@
 	</div>
 </div>
 </div>
+<div class="text-center">
+	<br></br>
+	<a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
+	<a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
+</div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
 		<div class="main row">
@@ -126,11 +131,6 @@
 				</form>
 
 			</div>	
-			<div class="col-xs-4 text-center border adminAdd">
-				<br /><br /><br /><br />
-			<a href="./admin_add_user.php"><button class="black-btn">Add User</button></a><br /><br />
-			<a href="./admin_add_section.php"><button class="black-btn">Add Section</button></a>
-		</div>
 			</div>
 		</div>
 	</div>
