@@ -10,7 +10,8 @@
         $locked = '1';
         $mid_evaluation = '0';
         $final_evaluation = '0';
-        $stmt->bind_param('isssssiiii', $_POST['crn'],$_POST['course_code'],$_POST['faculty_email'],$_POST['semester'],$_POST['school'],
+        $semester = getCurrentSemester();
+        $stmt->bind_param('isssssiiii', $_POST['crn'],$_POST['course_code'],$_POST['faculty_email'],$semester,$_POST['school'],
             $_POST['course_title'], $locked, $mid_evaluation, $final_evaluation, $_POST['enrolled']); 
         $stmt->execute(); 
         //header("Location: ./admin.php");
@@ -113,17 +114,22 @@
                 <div class="col-xs-4 text-center border adminAdd">
                 <form method="POST" action="./admin_add_section.php">
                         <h2>Add Section Details</h2><br />
-                        <label>CRN </label><br /><input type="text" class="round" name="crn" placeholder="Ex: 201497" required="required"/> <br />
-                        <label>Course Code </label> <br /><input type="text" class="round" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br />
-                        <label>Faculty Email </label><br /> <input type="text" class="round" name="faculty_email" placeholder="Ex: a.b@aun.edu.ng" required="required"/> <br />
-                        <label>Semester </label> <br /><input type="text" class="round" name="semester" placeholder="Ex: Spring 2015" required="required"/> <br />
+                        <label>CRN </label><br /><input type="text" class="round" name="crn" placeholder="Ex: 201497" required="required"/> <br /><br />
+                        <label>Course Code </label> <br /><input type="text" class="round" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br /><br />
+                        <label>Faculty Email </label><br /> <input type="text" class="round" name="faculty_email" placeholder="Ex: a.b@aun.edu.ng" required="required"/> <br /><br />
+                        <!-- <label>Semester </label> <br /><input type="text" class="round" name="semester" placeholder="Ex: Spring 2015" required="required"/> <br /> -->
                         <label>School </label><br /><select class="input-sm" name="school" required="required">
-                                                        <option selected value="">--Choose School--</option>
-                                                        <option value="SITC">SITC</option>
-                                                        <option value="SAS">SAS</option>
-                                                        <option value="SBE">SBE</option>
-                                                    </select><br />
-                        <label>Course Title </label> <br /><input type="text" class="round" name="course_title" placeholder="Ex: Discrete Structures I" required="required"/> <br />
+                            <option selected value="">--Choose School--</option>
+                            <?php
+                            $result = $mysqli->query("SELECT * FROM school");
+
+                            for ($i = 0; $i < $result->num_rows; $i++) {
+                                $row = $result->fetch_array();
+                                echo "<option value='$row[0]'>$row[0]</option>";
+                            }
+                            ?>
+                        </select><br /><br />
+                        <label>Course Title </label> <br /><input type="text" class="round" name="course_title" placeholder="Ex: Discrete Structures I" required="required"/> <br /><br />
                         <label>Enrolled</label><br /><input name="enrolled" class="round" type="text" placeholder="Ex: 5" required="required"/><br /><br />
 
                         <button class="black-btn" name="submit">Add Section</button>

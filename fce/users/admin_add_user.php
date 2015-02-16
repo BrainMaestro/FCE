@@ -109,25 +109,32 @@
             <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>      
                 <div class="col-xs-4 text-center border adminAdd">
                 <form method="POST" action="./admin_add_user.php">
-                        <h2>Add User Details</h2><br />
-                        <label>First Name </label><br /><input type="text" class="round" name="firstname" placeholder="Ex: Aisha" required="required"/> <br />
-                        <label>Last Name </label> <br /><input type="text" class="round" name="lastname" placeholder="Ex: Alaedu" required="required"/> <br />
-                        <label>Email </label><br /><input type="text" class="round" name="email" placeholder="Ex: ezinwa.hamza@aun.edu.ng" required="required"/> <br />
-                        <label>User Type </label><br /><select class="input-sm" name="usertype" required="required">
-                                                            <option selected value="">--Choose User Type--</option>
-                                                            <option value="faculty">Faculty</option>
-                                                            <option value="secretary">Secretary</option>
-                                                            <option value="admin">Admin</option>
-                                                            <option value="dean">Dean</option>
-                                                        </select><br />
+                    <h2>Add User Details</h2><br />
+                    <label>First Name </label><br /><input type="text" class="round" name="firstname" placeholder="Ex: Aisha" required="required"/> <br /><br />
+                    <label>Last Name </label> <br /><input type="text" class="round" name="lastname" placeholder="Ex: Alaedu" required="required"/> <br /><br />
+                    <label>Email </label><br /><input type="text" class="round" name="email" placeholder="Ex: ezinwa.hamza@aun.edu.ng" required="required"/> <br /><br />
+                    <label>User Type </label><br />
+                    <select class="input-sm" name="usertype" required="required">
+                        <option selected value="">--Choose User Type--</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="secretary">Secretary</option>
+                        <option value="admin">Admin</option>
+                        <option value="dean">Dean</option>
+                    </select><br /><br />
 
-                        <label>School </label><br /><select class="input-sm" name="school" required="required">
+                    <label>School </label><br />
+                    <select class="input-sm" name="school" required="required">
                         <option selected value="">--Choose School--</option>
-                        <option value="SITC">SITC</option>
-                        <option value="SAS">SAS</option>
-                        <option value="SBE">SBE</option>
-                    </select><br />
-                        <label>Password</label><br /><input name="password" class="round" type="text" placeholder="New Password" required="required"/><br /><br />
+                        <?php
+                        $result = $mysqli->query("SELECT * FROM school");
+
+                        for ($i = 0; $i < $result->num_rows; $i++) {
+                            $row = $result->fetch_array();
+                            echo "<option value='$row[0]'>$row[0]</option>";
+                        }
+                        ?>
+                    </select><br /><br />
+                    <label>Password</label><br /><input name="password" class="round" type="text" placeholder="New Password" required="required"/><br /><br />
 
                         <button class="black-btn" name="submit">Add User</button>
                 </form>
