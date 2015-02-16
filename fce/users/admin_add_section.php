@@ -1,10 +1,9 @@
 <?php
-    include '../includes/db_connect.php';
-    include '../includes/functions.php';
+    include_once '../includes/db_connect.php';
+    include_once '../includes/functions.php';
     
-    if(!isset($_SESSION['email'])) {
-        header("Location: ../index.php");
-    }
+    checkUser("admin");
+	
     if (isset($_POST['submit'])) {
 
     if ($stmt = $mysqli->prepare("INSERT INTO Section VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {

@@ -159,5 +159,22 @@ function avg_midterm($crn, $eval_type, $mysqli) {
         echo $row[0];
 }
 
+//Method to check if user has acess to page
+function checkUser($page){
+	//$user_type = $_SESSION['user_type'];
+	//$email = $_SESSION['email'];
+	if(!isset($_SESSION['email'])) {
+		$_SESSION['err'] = "You do not have access";
+        header("Location: ../index.php");
+    }
+	
+	if ($page != $_SESSION['user_type']) {
+		session_destroy();
+        session_start();
+		$_SESSION['err'] = "You do not have access";
+		header("Location: ../index.php");
+	}
+}
+
 ?>
 

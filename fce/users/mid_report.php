@@ -2,6 +2,13 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
+if ((!isset($_SESSION['user_type'])) or ($_SESSION['user_type'] == "secretary")){
+	session_destroy();
+    session_start();
+	$_SESSION['err'] = "You do not have access";
+	header("Location: ../index.php");
+}
+
 if (isset($_POST['sbmt_mid'])) {
     $eval_type= $_POST['eval_type'];
     $course_no = $_POST['crn'];  

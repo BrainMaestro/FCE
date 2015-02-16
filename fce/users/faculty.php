@@ -1,6 +1,9 @@
 <?php
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
+
+checkUser("faculty");
+
 if (isset($_POST['sbmt_semester'])) {
     $semester = $_POST['semester'];
     $crn_array = array();

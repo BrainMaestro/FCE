@@ -1,6 +1,8 @@
 <?php
-	include '../includes/db_connect.php';
-	include '../includes/functions.php';
+	include_once '../includes/db_connect.php';
+	include_once '../includes/functions.php';
+	
+	checkUser("admin");
 	
 ?>
 <!DOCTYPE HTML>

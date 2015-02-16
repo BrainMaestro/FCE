@@ -2,6 +2,8 @@
 	include '../includes/db_connect.php';
 	include '../includes/functions.php';
 	
+	checkUser("dean");
+	
     	if (isset($_POST['submit'])) { //form from the admin page
     		$course_code_array = array(); 
     		$sch = $_POST['school'];
