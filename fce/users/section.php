@@ -53,7 +53,11 @@ include_once '../includes/db_connect.php';
 		<div class="logo navbar-left">
 			<h1><a href="../index.php">Faculty Course Evaluation</a></h1>
 		</div>
-		
+		<div class="h_search navbar-right">
+			<form action="../includes/logout.php" method="post">
+				<button class='black-btn margin' name='logout' value='logout'>Logout</button>
+			</form>
+		</div>
 		<div class="clearfix"></div>
 	</div>
 	<div class="row h_menu">
