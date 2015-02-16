@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
 							$result = $mysqli->query($sql);
 						}
 
-						echo "<table width='100%' class='not-center'>
+						echo "<table width='100%' class='not-center evaltable'>
 						<caption><h3>Sections</h3><hr></caption>
 						<thead>
 							<tr>";

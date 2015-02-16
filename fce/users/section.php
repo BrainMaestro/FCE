@@ -130,6 +130,7 @@ if ($status == true) {
                 $crn = $_GET['crn'];
     			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM section WHERE crn='$crn'")->fetch_assoc();
                 $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
+                $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
                 $row = $mysqli->query("SELECT * FROM section WHERE crn='$crn'")->fetch_assoc();
                 echo "<li><a>$row[course_code]</a></li>";
                 echo "<li><a>$row[school]</a></li>";
@@ -137,6 +138,7 @@ if ($status == true) {
                 echo "<li><a>$row[semester]</a></li>";
                 echo "<li><a>$row[course_title]</a></li>";
                 echo "<li><a>$row2[name]</a></li>";
+                echo "<li><a>$term</a></li>";
                 $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
@@ -196,8 +198,9 @@ if ($status == true) {
 <div class="main_bg"><!-- start main -->
 	<div class="container">
 		<div class="main row para">
-			<div class="col-md-8 blog_left">
-				<table width="100%">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-6 text-center border4">
+				<table width="100%" class="not-center evaltable">
 					<caption><h3>Key Details</h3><hr></caption>
 					<thead>
 						<th>S/N</th>
@@ -223,6 +226,7 @@ if ($status == true) {
 					</tbody>
 				</table>
 				<script>getKeys("0")</script>
+				<br><br>
 				<form action="secretary.php" method="post"> <!-- Sends back to secretary page and locks class -->
 					<?php
 					echo "<input type='hidden' name='crn' value='$crn'>";

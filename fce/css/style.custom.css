@@ -3,6 +3,21 @@
 	border-radius: 3%;
 	padding: 30px 1px;
 }
+.border2 {
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+.border3 {
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-bottom: 5px;
+	width: 50%;
+}
+.border4 {
+	border: 1px solid #ccc;
+	padding:20px;
+}
 .round {
 	padding: 5px;
 	border: solid 1px grey;
@@ -26,11 +41,7 @@
 .w65 {
 	width:65%;
 }
-.border2 {
-	border: 1px solid #ccc;
-	padding: 5px;
-	margin-bottom: 10px;
-}
+
 .evaltable table {
 	border: 2px solid #ccc;
 
@@ -78,23 +89,11 @@ th {
 	border:none;
 	background-color: #fff;
 }
-.border3 {
-	border: 1px solid #ccc;
-	padding: 5px;
-	margin-bottom: 5px;
-	width: 50%;
-}
 .red {
 	color: red;
 }
 .green {
 	color: green;
-}
-.right {
-	float: right;
-}
-.left {
-	float: left;
 }
 .black-btn {
 	font-family: "open_sansregular";
