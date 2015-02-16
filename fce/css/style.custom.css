@@ -128,17 +128,24 @@ th {
 .adminAdd select {
 	width: 230px;
 }
-div.hr {
-background: #ccc  no-repeat scroll center;
-margin-left: 15em;
-margin-right: 15em;
-width:800px;
-height:2px;
-clear: both;
+
+hr {
+	border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
 }
 
-div.hr hr {
-display: none;
+.thankyouMsg a,
+a:link,
+a:visited,
+a:active {
+    color: #000000; /*color of your choosing*/
+    text-decoration: none;
+    font-weight: normal;
 }
-.fceteam {
+.thankyouMsg a:hover {
+	color:#F00;
 }
