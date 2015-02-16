@@ -183,7 +183,7 @@ function checkUser($page){
 }
 
 //Method to check if a class has been locked for restriction
-function checkSectionStatus($sec_crn) {
+function checkSectionStatus($sec_crn, $mysqli) {
 	$status = $mysqli->query("SELECT locked FROM section WHERE crn='$sec_crn'")->fetch_assoc();
 	if ($status['locked'] == 1) {
 		return true;

@@ -14,7 +14,7 @@ if (!isset($_SESSION['key_value'])) {
 if (isset($_POST['submit'])) {
 	
 	$crn = $_SESSION['crn'];
-	$status = checkSectionStatus($crn);
+	$status = checkSectionStatus($crn, $mysqli);
 	if ($status == true) {
 		session_destroy();
 		header("Location: index.php");

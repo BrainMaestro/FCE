@@ -5,7 +5,7 @@ include_once '../includes/functions.php';
 checkUser("secretary");
 
 $crn = $_GET['crn'];
-$status = checkSectionStatus($crn);
+$status = checkSectionStatus($crn, $mysqli);
 
 if ($status == true) {
 	header("Location: secretary.php");
