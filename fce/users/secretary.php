@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
 			<div class="col-xs-12 text-center">		
 				<form action="secretary.php" method="post">
 						<?php
-						$result = $mysqli->query("SELECT * FROM section WHERE locked = '1'");
+						$result = $mysqli->query("SELECT * FROM section WHERE locked = '1' AND semester = '$semester'");
 						$status = '1';
 
 						if (isset($_POST['filter'])) {
@@ -134,6 +134,7 @@ if (isset($_POST['submit'])) {
 
 							if (isset($_POST['search']))
 								$sql .= " AND course_code LIKE '%$_POST[search]%'";
+							$sql .= " AND semester = '$semester'";
 							$result = $mysqli->query($sql);
 						}
 
