@@ -388,6 +388,13 @@ if (isset($_POST['sbmt_final'])) {
                             <td class="w5"></td>
                         </tr>
                     </table>
+					<?php
+						$rep_user_type = $_SESSION['user_type'];
+					
+						echo "<form action='$rep_user_type.php' method='post'>";
+						echo "<br><input class='black-btn' name='back_report' type='submit' value='Back'>";
+						echo "</form>";
+					?>
             </div>
         </div>
     </div>
