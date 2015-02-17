@@ -39,37 +39,6 @@
         <!-- start slider -->
         <link href="css/slider.css" rel="stylesheet" type="text/css" media="all" />
         <link href="css/style.custom.css" rel='stylesheet' type='text/css' />
-        <script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
-        <script type="text/javascript" src="js/jquery.cslider.js"></script>
-        <script type="text/javascript">
-            $(function() {
-
-                $('#da-slider').cslider({
-                    autoplay: true,
-                    bgincrement: 450
-                });
-
-            });
-        </script>
-        <!-- Owl Carousel Assets -->
-        <link href="css/owl.carousel.css" rel="stylesheet">
-        <script src="js/owl.carousel.js"></script>
-        <script>
-    $(document).ready(function() {
-
-        $("#owl-demo").owlCarousel({
-            items: 4,
-            lazyLoad: true,
-            autoPlay: true,
-            navigation: true,
-            navigationText: ["", ""],
-            rewindNav: false,
-            scrollPerPage: false,
-            pagination: false,
-            paginationNumbers: false,
-        });
-
-    });
         </script>
         <!-- //Owl Carousel Assets -->
         <!--font-Awesome-->
@@ -81,7 +50,7 @@
             <div class="container">
                 <div class="row header">
                     <div class="logo navbar-left">
-                        <h1><a href="index2.html">Faculty Course Evaluation</a></h1>
+                        <h1><a href="index.php">Faculty Course Evaluation</a></h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -108,20 +77,52 @@
                 </nav>
             </div>
         </div>
-        <div class="container" style="margin-top: 30px">
-            <div class="thankyouMsg">
-                <h1>Thank you for your response. </h1><h1>Have a nice day.</h1>
-                <hr></hr>
-                <h3> Credits to the FCE Team </h3>
-                <a href="#"><p id="chizzy">Chizzy</p></a>
-                <a href="#"><p id="ezinwa">BrainMaestro</p></a>
-                <a href="#"><p id="aisha">Aisha-Alimi</p></a>
-                <a href="#"><p id="skaex">SkaeX</p></a>
-                <hr></hr>
-
-                <a class="fa-btn btn-1 btn-1e" id="thank" href="./index.php">Go back</a>
-
+        <div class="container">
+        <div class="main row para">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6 text-center thankyouMsg">
+                <h2>Have a nice day.</h2>
+                <hr>
+                <table class="not-center evaltable" width="100%">
+                    <caption><h3 id="fceteam">Credits to the FCE Team</h3></caption>
+                    <thead>
+                        <th>Developer</th>
+                        <th>Role</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="aisha">Aisha Alimi</td>
+                            <td>User Interface Designer</td>
+                        </tr>
+                        <tr>
+                            <td id="chizzy">Chizzy Alaedu</td>
+                            <td>Project Manager</td>
+                        </tr>
+                        <tr>
+                            <td id="ezinwa">Ezinwa Okpoechi</td>
+                            <td>Software Architect</td>
+                        </tr>
+                        <tr>
+                            <td id="skaex">Abdulmajid Hamza</td>
+                            <td>Program Logic Designer</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
             </div>
+        </div>
+        <div class="text-center">
+        <?php
+        if (isset($_SESSION['email'])) {
+            $user_type = $_SESSION['user_type'];
+            echo "<form action='$rep_user_type.php' method='post'>";
+            echo "<br><input class='black-btn' name='back_report' type='submit' value='Back'>";
+            echo "</form>";
+        }
+        else
+            echo '<a class="fa-btn btn-1 btn-1e" id="thank" href="./index.php">Go back</a>';
+        ?>
+            
         </div>
 
     <FOOTER>
@@ -129,7 +130,7 @@
             <div class="container">
                 <div class="row  footer">
                     <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> The FCE Team</a></span></p>
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="thankyou.php#fceteam"> The FCE Team</a></span></p>
                     </div>
                 </div>
             </div>

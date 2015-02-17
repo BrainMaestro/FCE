@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
         $stmt->execute(); 
 		setKey($_SESSION['key_value'], "used", $mysqli);
 		session_destroy();
-		header("Location: ./thankyou.html");
+		header("Location: ./thankyou.php");
     } else {
 		$_SESSION['err'] = "Database error: cannot prepare statement";
         header("Location: index.php");
@@ -343,7 +343,7 @@ if (isset($_POST['submit'])) {
             <div class="container">
                 <div class="row  footer">
                     <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> The FCE Team</a></span></p>
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="thankyou.php#fceteam"> The FCE Team</a></span></p>
                     </div>
                 </div>
             </div>

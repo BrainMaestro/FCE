@@ -44,37 +44,6 @@ include_once './includes/db_connect.php'
         <link href="css/slider.css" rel="stylesheet" type="text/css" media="all" />
         <link href="css/style.custom.css" rel='stylesheet' type='text/css' />
         <script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
-        <script type="text/javascript" src="js/jquery.cslider.js"></script>
-        <script type="text/javascript">
-            $(function() {
-
-                $('#da-slider').cslider({
-                    autoplay: true,
-                    bgincrement: 450
-                });
-
-            });
-        </script>
-        <!-- Owl Carousel Assets -->
-        <link href="css/owl.carousel.css" rel="stylesheet">
-        <script src="js/owl.carousel.js"></script>
-        <script>
-    $(document).ready(function() {
-
-        $("#owl-demo").owlCarousel({
-            items: 4,
-            lazyLoad: true,
-            autoPlay: true,
-            navigation: true,
-            navigationText: ["", ""],
-            rewindNav: false,
-            scrollPerPage: false,
-            pagination: false,
-            paginationNumbers: false,
-        });
-
-    });
-        </script>
         <!-- //Owl Carousel Assets -->
         <!--font-Awesome-->
         <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
@@ -115,8 +84,8 @@ include_once './includes/db_connect.php'
         <div class="container" style="margin-top: 30px">
         
             <div class="main row">
-                <div class="col-md-6 images_1_of_4 bg1 text-center"></div>		
-                <div class="col-md-3 images_1_of_4 bg1 text-center border">
+                <div class="col-md-6 text-center"></div>		
+                <div class="col-md-3 text-center border">
                     <form method="post" name="" class="para" action="includes/evaluate.php">
                         <p></p>
                         <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
@@ -134,8 +103,8 @@ include_once './includes/db_connect.php'
                         
                     </div>
                 </div>
-                <div class="col-md-6 images_1_of_4 bg1 text-center"></div>	
-                <div class="col-md-3 images_1_of_4 bg1 text-center border">
+                <div class="col-md-6 text-center"></div>	
+                <div class="col-md-3 text-center border">
                     <form method="post" action="includes/login.php" class="para">
                         <input type="text" name="email" placeholder=" Email" class="round"><BR><BR>
                         <input type="password" name="password" placeholder=" Password" class="round">
@@ -153,7 +122,7 @@ include_once './includes/db_connect.php'
                         
                     </div>
                 </div>	
-                <div class="col-md-6 images_1_of_4 bg1 text-center"></div>	
+                <div class="col-md-6 text-center"></div>	
             </div>
             
         </div>
@@ -163,7 +132,7 @@ include_once './includes/db_connect.php'
             <div class="container">
                 <div class="row  footer">
                     <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> The FCE Team</a></span></p>
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="thankyou.php#fceteam"> The FCE Team</a></span></p>
                     </div>
                 </div>
             </div>
