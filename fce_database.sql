@@ -15,11 +15,11 @@ CREATE SCHEMA IF NOT EXISTS `fce` DEFAULT CHARACTER SET utf8 COLLATE utf8_genera
 USE `fce` ;
 
 -- -----------------------------------------------------
--- Table `fce`.`School`
+-- Table `fce`.`school`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`School` ;
+DROP TABLE IF EXISTS `fce`.`school` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`School` (
+CREATE TABLE IF NOT EXISTS `fce`.`school` (
   `school` VARCHAR(4) NOT NULL,
   `school_description` VARCHAR(70) NULL,
   PRIMARY KEY (`school`))
@@ -27,11 +27,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fce`.`User`
+-- Table `fce`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`User` ;
+DROP TABLE IF EXISTS `fce`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`User` (
+CREATE TABLE IF NOT EXISTS `fce`.`user` (
   `email` VARCHAR(70) NOT NULL,
   `name` VARCHAR(70) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
@@ -42,22 +42,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fce`.`Semester`
+-- Table `fce`.`semester`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`Semester` ;
+DROP TABLE IF EXISTS `fce`.`semester` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`Semester` (
+CREATE TABLE IF NOT EXISTS `fce`.`semester` (
   `semester` VARCHAR(11) NOT NULL,
   PRIMARY KEY (`semester`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fce`.`Section`
+-- Table `fce`.`section`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`Section` ;
+DROP TABLE IF EXISTS `fce`.`section` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`Section` (
+CREATE TABLE IF NOT EXISTS `fce`.`section` (
   `crn` INT NOT NULL AUTO_INCREMENT,
   `course_code` VARCHAR(7) NOT NULL,
   `faculty_email` VARCHAR(70) NOT NULL,
@@ -74,28 +74,28 @@ CREATE TABLE IF NOT EXISTS `fce`.`Section` (
   INDEX `faculty_email_idx` (`faculty_email` ASC),
   CONSTRAINT `semester`
     FOREIGN KEY (`semester`)
-    REFERENCES `fce`.`Semester` (`semester`)
+    REFERENCES `fce`.`semester` (`semester`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `school`
     FOREIGN KEY (`school`)
-    REFERENCES `fce`.`School` (`school`)
+    REFERENCES `fce`.`school` (`school`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `faculty_email`
     FOREIGN KEY (`faculty_email`)
-    REFERENCES `fce`.`User` (`email`)
+    REFERENCES `fce`.`user` (`email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fce`.`Evaluation`
+-- Table `fce`.`evaluation`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`Evaluation` ;
+DROP TABLE IF EXISTS `fce`.`evaluation` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`Evaluation` (
+CREATE TABLE IF NOT EXISTS `fce`.`evaluation` (
   `crn` INT NOT NULL,
   `q1` INT NOT NULL,
   `q2` INT NOT NULL,
@@ -119,18 +119,18 @@ CREATE TABLE IF NOT EXISTS `fce`.`Evaluation` (
   INDEX `evaluation_course_code_idx` (`crn` ASC),
   CONSTRAINT `evaluation_course_crn`
     FOREIGN KEY (`crn`)
-    REFERENCES `fce`.`Section` (`crn`)
+    REFERENCES `fce`.`section` (`crn`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fce`.`Interface`
+-- Table `fce`.`interface`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`Interface` ;
+DROP TABLE IF EXISTS `fce`.`interface` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`Interface` (
+CREATE TABLE IF NOT EXISTS `fce`.`interface` (
   `syllabus` INT NULL,
   `outcome` INT NULL,
   `content` INT NULL,
@@ -156,11 +156,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fce`.`AccessKeys`
+-- Table `fce`.`accesskeyss`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fce`.`AccessKeys` ;
+DROP TABLE IF EXISTS `fce`.`accesskeyss` ;
 
-CREATE TABLE IF NOT EXISTS `fce`.`AccessKeys` (
+CREATE TABLE IF NOT EXISTS `fce`.`accesskeyss` (
   `key_value` VARCHAR(7) NOT NULL,
   `given_out` TINYINT(1) NOT NULL DEFAULT 0,
   `used` TINYINT(1) NOT NULL DEFAULT 0,
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `fce`.`AccessKeys` (
   INDEX `key_crn_idx` (`key_crn` ASC),
   CONSTRAINT `key_crn`
     FOREIGN KEY (`key_crn`)
-    REFERENCES `fce`.`Section` (`crn`)
+    REFERENCES `fce`.`section` (`crn`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -181,33 +181,33 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `fce`.`School`
+-- Data for table `fce`.`school`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fce`;
-INSERT INTO `fce`.`School` (`school`, `school_description`) VALUES ('SAS', NULL);
-INSERT INTO `fce`.`School` (`school`, `school_description`) VALUES ('SBE', NULL);
-INSERT INTO `fce`.`School` (`school`, `school_description`) VALUES ('SITC', NULL);
+INSERT INTO `fce`.`school` (`school`, `school_description`) VALUES ('SAS', NULL);
+INSERT INTO `fce`.`school` (`school`, `school_description`) VALUES ('SBE', NULL);
+INSERT INTO `fce`.`school` (`school`, `school_description`) VALUES ('SITC', NULL);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `fce`.`User`
+-- Data for table `fce`.`user`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fce`;
-INSERT INTO `fce`.`User` (`email`, `name`, `password`, `user_type`, `school`) VALUES ('admin@aun.edu.ng', 'admin', 'admin', 'admin', 'SAS');
+INSERT INTO `fce`.`user` (`email`, `name`, `password`, `user_type`, `school`) VALUES ('admin@aun.edu.ng', 'admin', 'admin', 'admin', 'SAS');
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `fce`.`Semester`
+-- Data for table `fce`.`semester`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fce`;
-INSERT INTO `fce`.`Semester` (`semester`) VALUES ('Spring 2015');
+INSERT INTO `fce`.`semester` (`semester`) VALUES ('Spring 2015');
 
 COMMIT;
 
