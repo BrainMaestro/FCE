@@ -4,4 +4,4 @@ RewriteEngine on
 # Rewrite user URLs
 #   Input:  /admin/
 #   Output: users/admin.php
-RewriteRule ^admin/?$ users/admin.php
+#RewriteRule ^admin/?$ users/admin.php

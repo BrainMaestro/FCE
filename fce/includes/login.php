@@ -20,7 +20,8 @@ if (isset($_POST['email'], $_POST['password'])) {
                 $_SESSION['school'] = $school;
                 $_SESSION['email'] = $email;
 
-                header("Location: ../$user_type"); // Simple statement that works for all user types
+                // header("Location: ../$user_type"); // Simple statement that works for all user types
+                header("Location: ../users/$user_type.php"); // Simple statement that works for all user types
 
         	} else {
                 $_SESSION['errl'] = "wrong Email or Password";
