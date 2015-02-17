@@ -235,6 +235,15 @@ if ($status == true) {
 				</form>
 			</div>
 		</div>
+		<div class="text-center">
+		<?php
+			$rep_user_type = $_SESSION['user_type'];
+					
+			echo "<a href='$rep_user_type.php'>";
+			echo "<button class='black-btn'>Back</button>";
+			echo "</a>";
+		?>
+		</div>
 	</div>
 </div><!-- end main -->
 <FOOTER>
