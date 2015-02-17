@@ -3,7 +3,19 @@
 	include_once '../includes/functions.php';
 	
 	checkUser("admin");
-	
+	if (isset($_POST['sch_submit'])) { 
+
+		$course_code_array = array();
+		$school_array =array(); 
+		$sch = $_POST['school'];
+		$semester = $_POST['semester'];
+		$result = $mysqli->query("SELECT distinct(course_code), school from section where school like '%$sch' and semester = '$semester'");
+        for($i = 0; $i < $result->num_rows; $i++) {
+            $row = $result->fetch_array();
+            array_push($course_code_array, $row[0]);
+            array_push($school_array, $row[1]);
+        }
+	} 
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -103,10 +115,8 @@
 			<div class="blog_left ">
 				
 			<div class="blog_right news_letter">
-				
-				<form action="dean.php" method="post" class="text-center">
-					<?php
-					
+		<?php
+				echo '<form action="" method="post" class="text-center">';
 				    echo '<select name="semester" class="input-sm" required>';
 				    echo '<option selected value="">--Choose Semester--</option>';
 				    $result = $mysqli->query("SELECT semester from semester");
@@ -115,21 +125,74 @@
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
 	       			echo '</select>';
-					?>
 
-					<div class="clearfix"></div>
-					<div style="height:25px"></div>
-					<select name="school" class="input-sm" required>
-	                    <option selected value="">--Choose School--</option>
-	                    <option value="SITC">SITC</option>
-	                    <option value="SAS">SAS</option>
-	                    <option value="SBE">SBE</option>
-	                    <option value="%">All Schools</option>
-	                </select>
+					echo '<div class="clearfix"></div>
+						<div style="height:25px"></div>
+						<select name="school" class="input-sm" required>
+		                    <option selected value="">--Choose School--</option>
+		                    <option value="SITC">SITC</option>
+		                    <option value="SAS">SAS</option>
+		                    <option value="SBE">SBE</option>
+		                    <option value="%">All Schools</option>
+		                </select>
 
-					<div class="clearfix"></div>
-					<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="submit" value="SUBMIT"></span>
-				</form>
+						<div class="clearfix"></div>
+						<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="sch_submit" value="SUBMIT"></span>
+				</form>';
+			
+			if (isset($_POST['sch_submit'])) {  
+
+				echo "<table width='100%' class='evaltable para dean_form'>
+				<caption><h3>Reports</h3><hr></caption>
+					<tr>
+						<th>Course Code</th>
+						<th>Evaluation Type</th>
+						<th>CRN</th>
+						<th>Instructor</th>
+						<th>School</th>
+						<th>View Report</th>
+					</tr>";
+
+				$j = 0;
+	        	while ($j < count($course_code_array)) {
+	        	echo '<tr>';
+				
+					//Final
+	        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$j]'");
+					for($i = 0; $i < $result->num_rows; $i++) {
+	                	$row = $result->fetch_array();
+						echo "<form class='para' action='final_report.php' method='post'>";
+						echo "<td>$course_code_array[$j]</td>";
+						echo "<td><input type='text' style='width:30px' value='final' name='eval_type' readonly></td>";
+						echo "<td><input type='text' value='$row[0]' name='crn' style='width:40px' readonly></td>";
+						echo "<td><span>$row[1]</span></td>";
+						echo "<td>$school_array[$j]</td>";
+	            		echo "<td><a><input type='submit' name='sbmt_final' value='View Report'></a></td>";
+	            		echo '</form>';
+	        		}
+	        	echo '</tr>';
+	        		//Midterm
+	        	echo '<tr>';
+	        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$j]'");
+					for($i = 0; $i < $result->num_rows; $i++) {
+	                	$row = $result->fetch_array();
+						echo "<form class='dean_form para' action='mid_report.php' method='post'>";
+						echo "<td>$course_code_array[$j]</td>";
+						echo "<td><input type='text' value='mid' style='width:30px' name='eval_type' readonly>term</td>";
+						echo "<td><input type='text' value='$row[0]' name='crn' style='width:20px' readonly></td>";
+	            		echo "<td><span>$row[1]</span></td>";
+	            		echo "<td>$school_array[$j]</td>";
+	            		echo "<td><a><input type='submit' name='sbmt_mid' value='View Report'></a></td>";
+	            		echo '</form>';
+	        		}
+	        	echo '</tr>';
+	        		$j++;
+	        	}
+	        	echo '</table>';
+        	}
+			
+			 
+			?>
 
 			</div>	
 			</div>

@@ -1,20 +1,9 @@
 <?php
 	include '../includes/db_connect.php';
 	include '../includes/functions.php';
-	
-	if (isset($_POST['submit'])) { //form from the admin page
-		checkUser("admin");
-		$course_code_array = array(); 
-		$sch = $_POST['school'];
-		$semester = $_POST['semester'];
-		$result = $mysqli->query("SELECT distinct(course_code) from section where school like '%$sch' and semester = '$semester'");
-        for($i = 0; $i < $result->num_rows; $i++) {
-            $row = $result->fetch_array();
-            array_push($course_code_array, $row[0]);
-        }
-	} 
-	else { //what loads for the dean
-		checkUser("dean");
+
+	checkUser("dean");
+	if (isset($_POST['sem_submit'])) { 
     	$course_code_array = array();
     	$email = $_SESSION['email'];   
 		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
@@ -22,7 +11,8 @@
             $row = $result->fetch_array();
             array_push($course_code_array, $row[0]);
         }
-	}
+    }
+	
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -118,17 +108,36 @@
 <div class="main_bg"><!-- start main -->
 	<div class="container">
 		<div class="main row">
-			<div class=" blog_left">
-			<table width='100%' class='evaltable para dean_form'>
-				<caption><h3>Reports</h3><hr></caption>
-					<tr>
-						<th>Course Code</th>
-						<th>Evaluation Type</th>
-						<th>CRN</th>
-						<th>Instructor</th>
-						<th>View Report</th>
-					</tr>
+
+			<div class=" blog_right news_letter">
+			
 		<?php
+
+					echo '<form action="" method="post" class="text-center">';
+				    echo '<select name="semester" class="input-sm" required>';
+				    echo '<option selected value="">--Choose Semester--</option>';
+				    $result = $mysqli->query("SELECT semester from semester");
+				    for($i = 0; $i < $result->num_rows; $i++) {
+						$row = $result->fetch_assoc();
+						echo "<option value='$row[semester]'>$row[semester]</option>";
+					}
+	       			echo '</select>';
+	       			echo '<div class="clearfix"></div>';
+					echo '<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="sem_submit" value="SUBMIT"></span>';
+					echo '</form>';
+
+		if (isset($_POST['sem_submit'])) {
+
+			echo "<table width='100%' class='evaltable para dean_form'>
+					<caption><h3>Reports</h3><hr></caption>
+						<tr>
+							<th>Course Code</th>
+							<th>Evaluation Type</th>
+							<th>CRN</th>
+							<th>Instructor</th>
+							<th>View Report</th>
+						</tr>";
+
 			$j = 0;
         	while ($j < count($course_code_array)) {
         	echo '<tr>';
@@ -143,8 +152,6 @@
 					echo "<td><input type='text' value='$row[0]' name='crn' style='width:40px' readonly></td>";
 					echo "<td><span>$row[1]</span></td>";
             		echo "<td><a><input type='submit' name='sbmt_final' value='View Report'></a></td>";
-            		$_SESSION['crn'] = $row[0];
-            		$_SESSION['eval_type'] = 'final';
             		echo '</form>';
         		}
         	echo '</tr>';
@@ -159,16 +166,15 @@
 					echo "<td><input type='text' value='$row[0]' name='crn' style='width:20px' readonly></td>";
             		echo "<td><span>$row[1]</span></td>";
             		echo "<td><a><input type='submit' name='sbmt_mid' value='View Report'></a></td>";
-            		$_SESSION['crn'] = $row[0];
-            		$_SESSION['eval_type'] = 'mid';
             		echo '</form>';
         		}
         	echo '</tr>';
         		$j++;
         	}
-			
+        	echo '</table>';
+		}	
 			 
-			?></table>
+			?>
 			</div>
 		</div>
 	</div>
