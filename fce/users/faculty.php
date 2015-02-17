@@ -20,7 +20,7 @@ if (isset($_POST['sbmt_semester'])) {
 if (isset($_POST['submit'])) {
     $_SESSION['eval_type'] = $eval_type = $_POST['eval_type'];
     $_SESSION['crn'] = $_POST['crn'];
-    header("Location: $eval_type" . "_report.php");
+    header("Location: $eval_type" . "_report.php?crn=$_POST[crn]");
     
 }
 ?>
