@@ -149,3 +149,60 @@ hr {
 .thankyouMsg a:hover {
 	color:#F00;
 }
+
+#tabbox
+{
+	height:40px
+}
+#panel
+{
+	background-color:#FFF;
+	height:300px;
+	
+}
+.tab
+{
+background: #FFF;
+display: block;
+height: 40px;
+line-height: 40px;
+text-align: center;
+width: 80px;
+float: right;
+font-weight: bold;
+-webkit-border-top-left-radius: 0px;
+-webkit-border-top-right-radius: 0px;
+-moz-border-radius: 3px 3px 0px 0px;
+}
+.loginbox {
+	padding: 0px;
+	border-radius: 3px;
+}
+.loginbox a
+{
+color: #000;
+margin: 0;
+padding: 0;
+text-decoration: none;
+}
+.evaluate
+{
+	margin-left:8px;
+	
+}
+.select
+{
+	background-color:#dedede;
+	
+}
+#loginbox
+{
+	height:300px;
+	padding:10px;
+}
+#evalbox
+{
+	height:300px;
+	padding:10px;
+	display:none;
+}
