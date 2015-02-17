@@ -2,28 +2,27 @@
 	include '../includes/db_connect.php';
 	include '../includes/functions.php';
 	
-	
-	
-    	if (isset($_POST['submit'])) { //form from the admin page
-    		checkUser("admin");
-    		$course_code_array = array(); 
-    		$sch = $_POST['school'];
-    		$semester = $_POST['semester'];
-			$result = $mysqli->query("SELECT distinct(course_code) from section where school like '%$sch' and semester = '$semester'");
-	        for($i = 0; $i < $result->num_rows; $i++) {
-                $row = $result->fetch_array();
-                array_push($course_code_array, $row[0]);
-            }
-    	} else { //what loads for the dean
-    		checkUser("dean");
-	    	$course_code_array = array();
-	    	$email = $_SESSION['email'];   
-			$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
-			for($i = 0; $i < $result->num_rows; $i++) {
-                $row = $result->fetch_array();
-                array_push($course_code_array, $row[0]);
-            }
-  		}
+	if (isset($_POST['submit'])) { //form from the admin page
+		checkUser("admin");
+		$course_code_array = array(); 
+		$sch = $_POST['school'];
+		$semester = $_POST['semester'];
+		$result = $mysqli->query("SELECT distinct(course_code) from section where school like '%$sch' and semester = '$semester'");
+        for($i = 0; $i < $result->num_rows; $i++) {
+            $row = $result->fetch_array();
+            array_push($course_code_array, $row[0]);
+        }
+	} 
+	else { //what loads for the dean
+		checkUser("dean");
+    	$course_code_array = array();
+    	$email = $_SESSION['email'];   
+		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
+		for($i = 0; $i < $result->num_rows; $i++) {
+            $row = $result->fetch_array();
+            array_push($course_code_array, $row[0]);
+        }
+	}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -144,6 +143,8 @@
 					echo "<td><input type='text' value='$row[0]' name='crn' style='width:40px' readonly></td>";
 					echo "<td><span>$row[1]</span></td>";
             		echo "<td><a><input type='submit' name='sbmt_final' value='View Report'></a></td>";
+            		$_SESSION['crn'] = $row[0];
+            		$_SESSION['eval_type'] = 'final';
             		echo '</form>';
         		}
         	echo '</tr>';
@@ -154,10 +155,12 @@
                 	$row = $result->fetch_array();
 					echo "<form class='dean_form para' action='mid_report.php' method='post'>";
 					echo "<td>$course_code_array[$j]</td>";
-					echo "<td><input type='text' value='mid' style='width:25px' name='eval_type' readonly>term</td>";
+					echo "<td><input type='text' value='mid' style='width:30px' name='eval_type' readonly>term</td>";
 					echo "<td><input type='text' value='$row[0]' name='crn' style='width:20px' readonly></td>";
             		echo "<td><span>$row[1]</span></td>";
             		echo "<td><a><input type='submit' name='sbmt_mid' value='View Report'></a></td>";
+            		$_SESSION['crn'] = $row[0];
+            		$_SESSION['eval_type'] = 'mid';
             		echo '</form>';
         		}
         	echo '</tr>';
