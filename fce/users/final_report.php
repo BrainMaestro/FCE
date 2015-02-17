@@ -16,6 +16,8 @@ if (isset($_POST['sbmt_final'])) {
     $eval_type = $_SESSION['eval_type'];
     $course_no = $_SESSION['crn'];
 }
+$course_no = $_GET['crn'];
+$eval_type = "final";
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -126,8 +128,8 @@ if (isset($_POST['sbmt_final'])) {
                 1 = poor (far below average, not acceptable)<br><br>
 				
 				<?php
-					$count_crn = $_SESSION['crn'];	
-					$count_eval_type = $_SESSION['eval_type'];
+					$count_crn = $course_no;	
+					$count_eval_type = $eval_type;
 					$count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
 					$count_registered = $mysqli->query("SELECT enrolled FROM section WHERE crn='$count_crn'")->fetch_assoc();
 					echo "<span style=\"text-align: right;\">Total Response: $count_response[filled]<br>";

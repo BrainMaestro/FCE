@@ -139,9 +139,9 @@ hr {
 }
 
 .thankyouMsg a,
-a:link,
-a:visited,
-a:active {
+.thankyouMsg a:link,
+.thankyouMsg a:visited,
+.thankyouMsg a:active {
     color: #000000; /*color of your choosing*/
     text-decoration: none;
     font-weight: normal;

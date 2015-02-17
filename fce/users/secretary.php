@@ -127,6 +127,8 @@ if (isset($_POST['submit'])) {
 						<?php
 						$result = $mysqli->query("SELECT * FROM section WHERE locked = '1' AND semester = '$semester'");
 						$status = '1';
+						$caption = 'Locked ';
+						$color = 'red';
 
 						if (isset($_POST['filter'])) {
 							$status = $_POST['status'];
@@ -136,24 +138,41 @@ if (isset($_POST['submit'])) {
 								$sql .= " AND course_code LIKE '%$_POST[search]%'";
 							$sql .= " AND semester = '$semester'";
 							$result = $mysqli->query($sql);
+
+							switch ($status) { // Colors the table caption like the status column
+							case '0':
+								$caption = 'Unlocked ';
+								$color = 'green';
+								break;
+
+							case '1':
+								$caption = 'Locked ';
+								$color = 'red';
+								break;
+							
+							default:
+								$caption = 'All ';
+								$color = '';
+								break;
+							}
 						}
 
 						echo "<table width='100%' class='not-center evaltable'>
-						<caption><h3>Sections</h3><hr></caption>
-						<thead>
-							<tr>";
-								if ($status != '%')
-									echo "<th></th>";
-								echo "<th>CRN</th>
-								<th>Course Code</th>
-								<th>Course Title</th>
-								<th>Instructor</th>
-								<th>Enrolled</th>
-								<th>Status</th>
-								<th>Midterm Evaluation</th>
-								<th>Final Evaluation</th>
-							</tr>
-						</thead>
+						<caption><h3 class='$color'>$caption Sections</h3><hr></caption>
+						<thead>";
+							if ($status != '%')
+								echo "<th></th>";
+							echo "<th>CRN</th>
+							<th>Course Code</th>
+							<th>Course Title</th>
+							<th>Instructor</th>
+							<th>Enrolled</th>
+							<th>Status</th>
+							<th>Midterm Evaluation</th>
+							<th>Final Evaluation</th>";
+							if ($status == '0')
+								echo "<th>Section Keys</th>";
+						echo "</thead>
 						<tbody>";
 						
 						if ($result->num_rows == 0)
@@ -170,10 +189,7 @@ if (isset($_POST['submit'])) {
 							if ($status != '%')
 								echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
 							echo "<td>$row[crn]</td>";
-							if ($status == '0')
-								echo "<td><a href='section.php?crn=$row[crn]'>$row[course_code]</a></td>";
-							else
-								echo "<td>$row[course_code]</td>";
+							echo "<td>$row[course_code]</td>";
 							echo "<td>$row[course_title]</td>";
 							$row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
 							echo "<td>$row2[name]</td>";
@@ -184,7 +200,11 @@ if (isset($_POST['submit'])) {
 							$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
 							echo "<td class='$color'>$locked</td>";
 							echo "<td>$midterm</td>";
-							echo "<td>$final</td></tr>";
+							echo "<td>$final</td>";
+							if ($status == '0')
+								echo "<td><a href='section.php?crn=$row[crn]' target='_blank'>$row[course_code] Keys</a></td>";
+							else
+							echo "</tr>";
 						}
 						echo '</tbody></table><hr>';
 
