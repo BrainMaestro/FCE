@@ -5,8 +5,9 @@
 	checkUser("dean");
 	if (isset($_POST['sem_submit'])) { 
     	$course_code_array = array();
-    	$email = $_SESSION['email'];   
-		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email')");
+    	$email = $_SESSION['email'];
+    	$semester = $_POST['semester'];   
+		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email') and semester = '$semester'");
 		for($i = 0; $i < $result->num_rows; $i++) {
             $row = $result->fetch_array();
             array_push($course_code_array, $row[0]);
