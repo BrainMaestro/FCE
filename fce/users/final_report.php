@@ -9,13 +9,13 @@ if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary"))
 	header("Location: ../index.php");
 }
 
-if (isset($_POST['sbmt_final'])) {
-    $eval_type= $_POST['eval_type'];
-    $course_no = $_POST['crn'];  
-} else {
-    $eval_type = $_SESSION['eval_type'];
-    $course_no = $_SESSION['crn'];
-}
+// if (isset($_POST['sbmt_final'])) {
+//     $eval_type= $_POST['eval_type'];
+//     $course_no = $_POST['crn'];  
+// } else {
+//     $eval_type = $_SESSION['eval_type'];
+//     $course_no = $_SESSION['crn'];
+// }
 $course_no = $_GET['crn'];
 $eval_type = "final";
 ?>

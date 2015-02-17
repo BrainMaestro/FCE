@@ -155,38 +155,27 @@
 
 				$j = 0;
 	        	while ($j < count($course_code_array)) {
-	        	echo '<tr>';
-				
-					//Final
-	        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$j]'");
-					for($i = 0; $i < $result->num_rows; $i++) {
-	                	$row = $result->fetch_array();
-						echo "<form class='para' action='final_report.php' method='post'>";
-						echo "<td>$course_code_array[$j]</td>";
-						echo "<td><input type='text' style='width:30px' value='final' name='eval_type' readonly></td>";
-						echo "<td><input type='text' value='$row[0]' name='crn' style='width:40px' readonly></td>";
-						echo "<td><span>$row[1]</span></td>";
-						echo "<td>$school_array[$j]</td>";
-	            		echo "<td><a><input type='submit' name='sbmt_final' value='View Report'></a></td>";
-	            		echo '</form>';
-	        		}
-	        	echo '</tr>';
-	        		//Midterm
-	        	echo '<tr>';
-	        		$result = $mysqli->query("SELECT crn, faculty_email from section where course_code = '$course_code_array[$j]'");
-					for($i = 0; $i < $result->num_rows; $i++) {
-	                	$row = $result->fetch_array();
-						echo "<form class='dean_form para' action='mid_report.php' method='post'>";
-						echo "<td>$course_code_array[$j]</td>";
-						echo "<td><input type='text' value='mid' style='width:30px' name='eval_type' readonly>term</td>";
-						echo "<td><input type='text' value='$row[0]' name='crn' style='width:20px' readonly></td>";
-	            		echo "<td><span>$row[1]</span></td>";
-	            		echo "<td>$school_array[$j]</td>";
-	            		echo "<td><a><input type='submit' name='sbmt_mid' value='View Report'></a></td>";
-	            		echo '</form>';
-	        		}
-	        	echo '</tr>';
-	        		$j++;
+		        	echo '<tr>';
+		        		$result = $mysqli->query("SELECT crn, faculty_email, mid_evaluation, final_evaluation from section where course_code = '$course_code_array[$j]'");
+						for($i = 0; $i < $result->num_rows; $i++) {
+		                	$row = $result->fetch_array();
+							echo "<td>$course_code_array[$j]</td>";
+							echo "<td>$row[0]</td>";
+							echo "<td>$row[1]</td>";
+							echo "<td>$school_array[$j]</td>";
+							if ($row[2] == 0) {
+								echo "<td>No Midterm Report</td>";
+							} else {
+								echo "<td><a href='mid_report.php?crn=$row[0]'>Midterm Report</a></td>";
+							}
+							if ($row[3] == 0) {
+								echo "<td>No Final Report</td>";
+							} else {
+								echo "<td><a href='final_report.php?crn=$row[0]'>Final Report</a></td>";
+							}
+		        		}
+		        	echo '</tr>';
+	        	$j++;
 	        	}
 	        	echo '</table>';
         	}
