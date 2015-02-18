@@ -6,8 +6,9 @@
 	if (isset($_POST['sem_submit'])) { 
     	$course_code_array = array();
     	$email = $_SESSION['email'];
-    	$semester = $_POST['semester'];   
-		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email') and semester = '$semester'");
+    	$semester = $_POST['semester'];
+    	$search = $_POST['search']; 
+		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email') and semester = '$semester' and course_code like '%$search%'");
 		for($i = 0; $i < $result->num_rows; $i++) {
             $row = $result->fetch_array();
             array_push($course_code_array, $row[0]);
@@ -108,12 +109,10 @@
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
-		<div class="main row">
-
+		<div class="main row ">
 			<div class=" blog_right news_letter">
 			
 		<?php
-
 					echo '<form action="" method="post" class="text-center">';
 				    echo '<select name="semester" class="input-sm" required>';
 				    echo '<option selected value="">--Choose Semester--</option>';
@@ -122,11 +121,11 @@
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
-	       			echo '</select>';
-	       			echo '<div class="clearfix"></div>';
-					echo '<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="sem_submit" value="SUBMIT"></span>';
+	       			echo '</select><br><br>';
+	       			echo '<input type="text" name="search" class="round" placeholder="Ex: AUN 101">';
+	       			echo '<div class="clearfix"></div><br><br>';
+					echo '<span  class="black-btn"><input type="submit" name="sem_submit" value="SUBMIT"></span>';
 					echo '</form>';
-
 		if (isset($_POST['sem_submit'])) {
 
 			echo "<table width='100%' class='evaltable para dean_form'>

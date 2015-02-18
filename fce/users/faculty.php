@@ -8,21 +8,25 @@ if (isset($_POST['sbmt_semester'])) {
     $semester = $_POST['semester'];
     $crn_array = array();
     $course_code_array = array();
-    $email = $_SESSION['email'];   
-    $result = $mysqli->query("SELECT crn, course_code from section where faculty_email='$email' and semester ='$semester'"); 
-
+    $email = $_SESSION['email']; 
+    $_SESSION['eval'] = $eval_type = $_POST['eval_type'];
+    if ($eval_type == 'mid') {
+        $result = $mysqli->query("SELECT crn, course_code from section where faculty_email='$email' and semester ='$semester' and mid_evaluation = 1");
+    }  else {
+        $result = $mysqli->query("SELECT crn, course_code from section where faculty_email='$email' and semester ='$semester' and final_evaluation = 1");
+    }
+     
     for($i = 0; $i < $result->num_rows; $i++) {
         $row = $result->fetch_assoc();
         array_push($crn_array, $row['crn']);
         array_push($course_code_array, $row['course_code']);
     }
 }
-if (isset($_POST['submit'])) {
-    $_SESSION['eval_type'] = $eval_type = $_POST['eval_type'];
-    $_SESSION['crn'] = $_POST['crn'];
-    header("Location: $eval_type" . "_report.php?crn=$_POST[crn]");
-    
-}
+    if (isset($_POST['submit'])) {
+        $eval = $_SESSION['eval'];
+        header("Location: $eval" . "_report.php?crn=$_POST[crn]");
+        
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -132,6 +136,13 @@ if (isset($_POST['submit'])) {
                         }
                         echo '</select>';
                         ?>
+
+                       <div style="height:25px"></div>
+                        <select name="eval_type" class="input-sm" required>
+                            <option selected value="">--Choose Evaluation Type--</option>
+                            <option value="mid">Midterm</option>
+                            <option value="final">Final</option>
+                        </select>
                         <br><br>
                         <button class="black-btn" name='sbmt_semester'>SUBMIT</button>
                     </form>
@@ -144,14 +155,6 @@ if (isset($_POST['submit'])) {
                 ?>
                     <form action="" method="post">
 
-                       <div style="height:25px"></div>
-    					<select name="eval_type" class="input-sm" required>
-    	                    <option selected value="">--Choose Evaluation Type--</option>
-    	                    <option value="mid">Midterm</option>
-    	                    <option value="final">Final</option>
-    	                </select>
-
-    					<div style="height:25px"></div>
                         <?php
     					echo '<select name="crn" class="input-sm" required>';
                         echo "<option selected value=''>--Choose course--</option>";

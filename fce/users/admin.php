@@ -9,7 +9,8 @@
 		$school_array =array(); 
 		$sch = $_POST['school'];
 		$semester = $_POST['semester'];
-		$result = $mysqli->query("SELECT distinct(course_code), school from section where school like '%$sch' and semester = '$semester'");
+    	$search = $_POST['search']; 
+		$result = $mysqli->query("SELECT distinct(course_code), school from section where school like '%$sch' and semester = '$semester' and course_code like '%$search%'");
         for($i = 0; $i < $result->num_rows; $i++) {
             $row = $result->fetch_array();
             array_push($course_code_array, $row[0]);
@@ -135,9 +136,9 @@
 		                    <option value="SBE">SBE</option>
 		                    <option value="%">All Schools</option>
 		                </select>
-
-						<div class="clearfix"></div>
-						<span  class="fa-btn btn-1 btn-1e "><input type="submit" name="sch_submit" value="SUBMIT"></span>
+		                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
+						<div class="clearfix"></div><br><br>
+						<span  class="black-btn"><input type="submit" name="sch_submit" value="SUBMIT"></span>
 				</form>';
 			
 			if (isset($_POST['sch_submit'])) {  
