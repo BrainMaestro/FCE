@@ -1,20 +1,8 @@
 <?php
-	include '../includes/db_connect.php';
-	include '../includes/functions.php';
+include '../includes/db_connect.php';
+include '../includes/functions.php';
 
-	checkUser("dean");
-	if (isset($_POST['sem_submit'])) { 
-    	$course_code_array = array();
-    	$email = $_SESSION['email'];
-    	$semester = $_POST['semester'];
-    	$search = $_POST['search']; 
-		$result = $mysqli->query("SELECT distinct(course_code) from section where school = (select school from user where email = '$email') and semester = '$semester' and course_code like '%$search%'");
-		for($i = 0; $i < $result->num_rows; $i++) {
-            $row = $result->fetch_array();
-            array_push($course_code_array, $row[0]);
-        }
-    }
-	
+checkUser("dean");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -109,63 +97,85 @@
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
-		<div class="main row ">
-			<div class=" blog_right news_letter">
-			
-		<?php
-					echo '<form action="" method="post" class="text-center">';
-				    echo '<select name="semester" class="input-sm" required>';
-				    echo '<option selected value="">--Choose Semester--</option>';
+		<div class="main row para">	
+            <div class="col-xs-4 text-center"></div>		
+			<div class="col-xs-4 text-center border">
+				<form action="" method='post'>
+	                Leave search bar empty to search all sections<br><br>
+	                <?php
+	                echo '<select name="semester" class="input-sm">';
+				    echo '<option selected value="%">--Choose Semester--</option>';
 				    $result = $mysqli->query("SELECT semester from semester");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
 	       			echo '</select><br><br>';
-	       			echo '<input type="text" name="search" class="round" placeholder="Ex: AUN 101">';
-	       			echo '<div class="clearfix"></div><br><br>';
-					echo '<span  class="black-btn"><input type="submit" name="sem_submit" value="SUBMIT"></span>';
-					echo '</form>';
-		if (isset($_POST['sem_submit'])) {
+	                ?>
+					<input type="text" class="round" name="search" placeholder="Ex: AUN 101"><br><br>
+					<input class="black-btn" type="submit" name="filter" value="search">
+				</form>	
+			</div>	
+            <div class="col-xs-4 text-center"></div>
+		</div>
+		<div class="row para">
+			<div class="text-center">
+			
+				<?php
+				// if (isset($_POST['filter'])) {
+		        $result = $mysqli->query("SELECT * from section where semester = '$semester' 
+		        	AND school='$_SESSION[school]'");
 
-			echo "<table width='100%' class='evaltable para dean_form'>
-					<caption><h3>Reports</h3><hr></caption>
-						<tr>
+				if (isset($_POST['filter'])) {
+
+					$sql = "SELECT * FROM section WHERE school='$_SESSION[school]'";
+					if (isset($_POST['semester']))
+						$sql .= " AND semester LIKE '%$_POST[semester]%'";
+
+					if (isset($_POST['search'])) {
+						$sql .= " AND course_code LIKE '%$_POST[search]%'";
+					}
+
+					$result = $mysqli->query($sql);
+				}
+
+				if ($result->num_rows == 0)
+					echo "<h4 class='error'>No section matches your criteria</h4>";
+				else {
+					echo "<table width='100%' class='evaltable para dean_form not-center'>
+							<caption><h3>Reports</h3><hr></caption>
+						<thead>
 							<th>Course Code</th>
 							<th>CRN</th>
 							<th>Instructor</th>
 							<th>Midterm</th>
 							<th>Final</th>
-						</tr>";
+						</thead>";
 
-			$j = 0;
-        	while ($j < count($course_code_array)) {
-	        	echo '<tr>';
-				
-	        		$result = $mysqli->query("SELECT crn, faculty_email, mid_evaluation, final_evaluation from section where course_code = '$course_code_array[$j]'");
+					
+					
 					for($i = 0; $i < $result->num_rows; $i++) {
-	                	$row = $result->fetch_array();
-						echo "<td>$course_code_array[$j]</td>";
-						echo "<td>$row[0]</td>";
-						echo "<td>$row[1]</td>";
-						if ($row[2] == 0) {
-								echo "<td>No Midterm Report</td>";
-							} else {
-								echo "<td><a href='mid_report.php?crn=$row[0]'>Midterm Report</a></td>";
-							}
-							if ($row[3] == 0) {
-								echo "<td>No Final Report</td>";
-							} else {
-								echo "<td><a href='final_report.php?crn=$row[0]'>Final Report</a></td>";
-							}
-	        		}
-	        	echo '</tr>';
-        	$j++;
-        	}
-        	echo '</table>';
-		}	
-			 
-			?>
+			        	$row = $result->fetch_assoc();
+						echo "<tr>";
+						echo "<td>$row[course_code]</td>";
+						echo "<td>$row[crn]</td>";
+						echo "<td>$row[faculty_email]</td>";
+
+						if ($row['mid_evaluation'] == 0)
+							echo "<td>No Midterm Report</td>";
+						else
+							echo "<td><a href='mid_report.php?crn=$row[crn]'>Midterm Report</a></td>";
+
+						if ($row['final_evaluation'] == 0)
+							echo "<td>No Final Report</td>";
+						else
+							echo "<td><a href='final_report.php?crn=$row[crn]'>Final Report</a></td>";
+						
+						echo "</tr>";
+					}
+					echo '</tbody></table><hr>';
+				}				 
+				?>
 			</div>
 		</div>
 	</div>
