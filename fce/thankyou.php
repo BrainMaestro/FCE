@@ -120,7 +120,7 @@
             echo "</form>";
         }
         else
-            echo '<a class="fa-btn btn-1 btn-1e" id="thank" href="./index.php">Go back</a>';
+            echo '<a class="black-btn" id="thank" href="./index.php">Go back</a>';
         ?>
             
         </div>
