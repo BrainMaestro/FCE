@@ -26,34 +26,6 @@ include_once './includes/db_connect.php'
 
         <!-- End of Favicon Kini -->
         <title>Login</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-        <script type="application/javascript">
-            $(document).ready(function()
-            {
-                
-            $(".tab").click(function()
-            {
-                var X=$(this).attr('id');
-             
-            if(X=='evaluate')
-            {
-                $("#login").removeClass('select');
-                $("#evaluate").addClass('select');
-                $("#loginbox").slideUp();
-                $("#evalbox").slideDown();
-            }
-            else
-            {
-                $("#evaluate").removeClass('select');
-                $("#login").addClass('select');
-                $("#evalbox").slideUp();
-                $("#loginbox").slideDown();
-            }
-             
-            });
-
-            });
-        </script>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -112,57 +84,9 @@ include_once './includes/db_connect.php'
         <div class="container" style="margin-top: 30px">
         
             <div class="main row">
-                <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>      
-                <div class="col-xs-4 text-center border loginbox">
-                    <div id="tabbox">
-                        <a href="#" id="evaluate" class="tab evaluate">Login</a>
-                        <a href="#" id="login" class="tab select">Evaluate</a>
-                        </div>
-                        <div id="panel">
-                        <div id="loginbox"><form method="post" name="" class="para" action="includes/evaluate.php">
-                                                <p></p>
-                                                <br /><br />
-                                                <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
-                                                <br><br><p></p>
-                                                <button class="black-btn">EVALUATE</button>
-                                            </form>
-                                            <div class="error">
-                                                <?php
-                                                    if (isset($_SESSION['erre'])) {
-                                                    $err = $_SESSION['erre'];                            
-                                                    echo "<h5>Sorry, $err</h5>";
-                                                    unset($_SESSION['erre']); // Destroys the err session variable
-                                                    }
-                                                    if (isset($_SESSION['errl'])) {
-                                                    $err = $_SESSION['errl'];                            
-                                                    echo "<h5>Sorry, $err</h5>";
-                                                    unset($_SESSION['errl']); // Destroys the err session variable
-                                                    }
-                                                ?>
-                                                
-                                            </div>
-                    </div>
-                        <div id="evalbox"><form method="post" action="includes/login.php" class="para"><br /><br />
-                                                <input type="text" name="email" placeholder=" Email" class="round down"><BR><BR>
-                                                <input type="password" name="password" placeholder=" Password" class="round">
-                                                <p></p>
-                                                <button class="black-btn">LOG IN</button>
-                                            </form>
-                                            <!--<div class="error">
-                                                <?php
-                                                    if (isset($_SESSION['errl'])) {
-                                                    $err = $_SESSION['errl'];                            
-                                                    echo "<h5>Sorry, $err</h5>";
-                                                    unset($_SESSION['errl']); // Destroys the err session variable
-                                                    }
-                                                ?>
-                                            </div>-->
-
-                            
-                        </div>
-
-                        </div>
-                    <!--<form method="post" name="" class="para" action="includes/evaluate.php">
+                <div class="col-md-6 text-center"></div>		
+                <div class="col-md-3 text-center border">
+                    <form method="post" name="" class="para" action="includes/evaluate.php">
                         <p></p>
                         <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
                         <br><br><p></p>
@@ -195,7 +119,7 @@ include_once './includes/db_connect.php'
                             unset($_SESSION['errl']); // Destroys the err session variable
                             }
                         ?>
-                        -->
+                        
                     </div>
                 </div>	
                 <div class="col-md-6 text-center"></div>	
