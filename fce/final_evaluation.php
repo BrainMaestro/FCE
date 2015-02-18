@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
 		header("Location: index.php");
 	}
 	
-    if ($stmt = $mysqli->prepare("INSERT INTO Evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "final";
         $crn = $_SESSION['crn'];
         $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
@@ -369,7 +369,7 @@ if (isset($_POST['submit'])) {
                     <br>
 
                     <!-- <textarea class="eval" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea> -->
-                    <button class="fa-btn btn-1 btn-1e" name='submit'>SUBMIT</button>
+                    <button class="black-btn" name='submit'>SUBMIT</button>
                 </form>
                 </div>
             </div>

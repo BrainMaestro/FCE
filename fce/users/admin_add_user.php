@@ -6,7 +6,7 @@
  
     if (isset($_POST['submit'])) {
 
-    if ($stmt = $mysqli->prepare("INSERT INTO User VALUES(?, ?, ?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO user VALUES(?, ?, ?, ?, ?)")) {
         $name = $_POST['firstname']." ".$_POST['lastname'];
         $stmt->bind_param('sssss', $_POST['email'],$name,$_POST['password'],$_POST['usertype'],$_POST['school']); 
         $stmt->execute(); 
@@ -140,7 +140,7 @@
                 </form>
                 
             </div>  
-            <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>
+            <div class="col-xs-4 text-center"></div>
         </div>
         
     </div>
