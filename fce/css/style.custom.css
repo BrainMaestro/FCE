@@ -152,7 +152,7 @@ hr {
 
 #tabbox
 {
-	height:40px
+	height:40px;
 }
 #panel
 {
@@ -188,7 +188,11 @@ text-decoration: none;
 .evaluate
 {
 	margin-left:8px;
+	font-size:14px;
 	
+}
+#login {
+	font-size:14px;
 }
 .select
 {
@@ -206,3 +210,4 @@ text-decoration: none;
 	padding:10px;
 	display:none;
 }
+
