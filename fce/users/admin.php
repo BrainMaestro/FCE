@@ -116,6 +116,7 @@ checkUser("admin");
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
+					echo '</select>';
 
 				echo '<div class="clearfix"></div>
 					<div style="height:25px"></div>
