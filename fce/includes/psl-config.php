@@ -1,7 +1,7 @@
 <?php
 define("HOST", "localhost"); 		 
 define("USER", "root"); 				
-define("PASSWORD", ""); 				
+define("PASSWORD", "root"); 				
 define("DATABASE", "fce");     
 
 define("CAN_REGISTER", "any");

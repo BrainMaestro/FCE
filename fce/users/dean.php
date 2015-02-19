@@ -29,7 +29,7 @@ checkUser("dean");
 
         <!-- End of Favicon Kini -->
 
-<title>Dean</title>
+<title>Dean | Home</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -145,8 +145,9 @@ checkUser("dean");
 					echo "<table width='100%' class='evaltable para dean_form not-center'>
 							<caption><h3>Reports</h3><hr></caption>
 						<thead>
-							<th>Course Code</th>
 							<th>CRN</th>
+							<th>Course Code</th>
+							
 							<th>Instructor</th>
 							<th>Midterm</th>
 							<th>Final</th>
@@ -164,12 +165,12 @@ checkUser("dean");
 						if ($row['mid_evaluation'] == 0)
 							echo "<td>No Midterm Report</td>";
 						else
-							echo "<td><a href='mid_report.php?crn=$row[crn]'>Midterm Report</a></td>";
+							echo "<td><a target='_blank' href='mid_report.php?crn=$row[crn]'>View Midterm Report</a></td>";
 
 						if ($row['final_evaluation'] == 0)
 							echo "<td>No Final Report</td>";
 						else
-							echo "<td><a href='final_report.php?crn=$row[crn]'>Final Report</a></td>";
+							echo "<td><a target='_blank' href='final_report.php?crn=$row[crn]'>View Final Report</a></td>";
 						
 						echo "</tr>";
 					}

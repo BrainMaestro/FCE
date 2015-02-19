@@ -1,28 +1,38 @@
 <?php
-	include_once '../includes/db_connect.php';
-	include_once '../includes/functions.php';
-	
-	checkUser("admin");
-	if (isset($_POST['sch_submit'])) { 
+include_once '../includes/db_connect.php';
+include_once '../includes/functions.php';
 
-		$course_code_array = array();
-		$school_array =array(); 
-		$sch = $_POST['school'];
-		$semester = $_POST['semester'];
-    	$search = $_POST['search']; 
-		$result = $mysqli->query("SELECT distinct(course_code), school from section where school like '%$sch' and semester = '$semester' and course_code like '%$search%'");
-        for($i = 0; $i < $result->num_rows; $i++) {
-            $row = $result->fetch_array();
-            array_push($course_code_array, $row[0]);
-            array_push($school_array, $row[1]);
-        }
-	} 
+checkUser("faculty");
+
+if (isset($_POST['sbmt_semester'])) {
+    $semester = $_POST['semester'];
+    $crn_array = array();
+    $course_code_array = array();
+    $email = $_SESSION['email']; 
+    $_SESSION['eval'] = $eval_type = $_POST['eval_type'];
+    if ($eval_type == 'mid') {
+        $result = $mysqli->query("SELECT crn, course_code from section where faculty_email='$email' and semester ='$semester' and mid_evaluation = 1");
+    }  else {
+        $result = $mysqli->query("SELECT crn, course_code from section where faculty_email='$email' and semester ='$semester' and final_evaluation = 1");
+    }
+     
+    for($i = 0; $i < $result->num_rows; $i++) {
+        $row = $result->fetch_assoc();
+        array_push($crn_array, $row['crn']);
+        array_push($course_code_array, $row['course_code']);
+    }
+}
+    if (isset($_POST['submit'])) {
+        $eval = $_SESSION['eval'];
+        header("Location: $eval" . "_report.php?crn=$_POST[crn]");
+        
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
 
-<!-- Favicon Kini -->
+<!--Favicon Kini -->
         <link rel="apple-touch-icon" sizes="57x57" href="../images/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="../images/favicons/apple-touch-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="../images/favicons/apple-touch-icon-72x72.png">
@@ -43,7 +53,7 @@
 
         <!-- End of Favicon Kini -->
 
-<title>Admin | Home</title>
+<title>Faculty</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -60,7 +70,7 @@
 <script type="text/javascript" src="../js/bootstrap.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <!--font-Awesome-->
-   	<link rel="stylesheet" href="fonts/css/font-awesome.min.css">
+   	<link rel="stylesheet" href="../fonts/css/font-awesome.min.css">
 <!--font-Awesome-->
 </head>
 <body>
@@ -68,13 +78,9 @@
 <div class="container">
 	<div class="row header">
 		<div class="logo navbar-left">
-			<h1><a href="index.html">Faculty Course Evaluation</a></h1>
+			<h1><a href="../index.php">Faculty Course Evaluation</a></h1>
 		</div>
 		<div class="h_search navbar-right">
-			<?php
-				$t=time();
-				echo(date("g:i A D, M d, Y",$t));
-			?>
 			<form action="../includes/logout.php" method="post">
 				<button class='black-btn margin' name='logout' value='logout'>Logout</button>
 			</form>
@@ -94,7 +100,7 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-                <li><a>Admin</a></li>
+                <li><a>Faculty</a></li>
                 <?php
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
@@ -109,98 +115,66 @@
 	</div>
 </div>
 </div>
-<div class="text-center">
-	<br></br>
-	<a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
-	<a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
-</div>
-<div class="main_bg "><!-- start main -->
-	<div class="container ">
-		<div class="main row para">
-			<!--<div class="blog_left ">-->
-			<div>
+<div class="main_bg"><!-- start main -->
+	<div class="container">
+		<div class="main row">
+			<div class=" blog_left">
 				
-			<div class="col-xs-4 text-center"></div>  
-			<div>      
-            <div class="col-xs-4 text-center border">
-		<?php
-				echo '<form action="" method="post" class="text-center">';
-				echo 'Leave search bar empty to search all sections<br><br>';
+			<div class=" blog_right text-center">
+				<?php 
+                if (!(isset($_POST['sbmt_semester']))) {
+                ?>
+    				<form action="" method="post">
+                        <?php
 
-				    echo '<select name="semester" class="input-sm" required>';
-				    echo '<option selected value="">--Choose Semester--</option>';
-				    $result = $mysqli->query("SELECT semester from semester");
-				    for($i = 0; $i < $result->num_rows; $i++) {
-						$row = $result->fetch_assoc();
-						echo "<option value='$row[semester]'>$row[semester]</option>";
-					}
-	       			echo '</select>';
+                        echo '<select name="semester" class="input-sm" required>';
+                        echo '<option selected value="">--Choose Semester--</option>';
+                        $result = $mysqli->query("SELECT semester from semester");
+                        for($i = 0; $i < $result->num_rows; $i++) {
+                            $row = $result->fetch_assoc();
+                            echo "<option value='$row[semester]'>$row[semester]</option>";
+                        }
+                        echo '</select>';
+                        ?>
 
-					echo '<div class="clearfix"></div>
-						<div style="height:25px"></div>
-						<select name="school" class="input-sm" required>
-		                    <option selected value="">--Choose School--</option>
-		                    <option value="SITC">SITC</option>
-		                    <option value="SAS">SAS</option>
-		                    <option value="SBE">SBE</option>
-		                    <option value="%">All Schools</option>
-		                </select><br /><br />
-		                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
-						<div class="clearfix"></div><br /><br />
-						<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
-				</form></div>';
-			
-			if (isset($_POST['sch_submit'])) {  
+                       <div style="height:25px"></div>
+                        <select name="eval_type" class="input-sm" required>
+                            <option selected value="">--Choose Evaluation Type--</option>
+                            <option value="mid">Midterm</option>
+                            <option value="final">Final</option>
+                        </select>
+                        <br><br>
+                        <button class="black-btn" name='sbmt_semester'>SUBMIT</button>
+                    </form>
+                <?php
+                }
+                ?>
 
-				echo "<table width='100%' class='evaltable para dean_form'>
-				<caption><h3>Reports</h3><hr></caption>
-					<tr>
-						<th>Course Code</th>
-						<th>CRN</th>
-						<th>Instructor</th>
-						<th>Enrolled</th>
-						<th>School</th>
-						<th>Midterm Reports</th>
-						<th>Final Reports</th>
-					</tr>";
+                <?php 
+                if (isset($_POST['sbmt_semester'])) {
+                ?>
+                    <form action="" method="post">
 
-				$j = 0;
-	        	while ($j < count($course_code_array)) {
-		        	echo '<tr>';
-		        		$result = $mysqli->query("SELECT crn, faculty_email, mid_evaluation, final_evaluation,enrolled from section where course_code = '$course_code_array[$j]'");
-						for($i = 0; $i < $result->num_rows; $i++) {
-		                	$row = $result->fetch_array();
-		          
-							echo "<td>$course_code_array[$j]</td>";
-							echo "<td>$row[0]</td>";
-							echo "<td>$row[1]</td>";
-							echo "<td>$row[4]</td>";
-							echo "<td>$school_array[$j]</td>";
-							if ($row[2] == 0) {
-								echo "<td>No Midterm Report</td>";
-							} else {
-								echo "<td><a target='_blank' href='mid_report.php?crn=$row[0]'>View Midterm Report</a></td>";
-							}
-							if ($row[3] == 0) {
-								echo "<td>No Final Report</td>";
-							} else {
-								echo "<td><a target='_blank' href='final_report.php?crn=$row[0]'>View Final Report</a></td>";
-							}
-		        		}
-		        	echo '</tr>';
-	        	$j++;
-	        	}
-	        	echo '</table>';
-        	}
-			
-			 
-			?>
-
+                        <?php
+    					echo '<select name="crn" class="input-sm" required>';
+                        echo "<option selected value=''>--Choose course--</option>";
+                        $i = 0;
+                        while($i < count($course_code_array)) {
+    	                    echo "<option value='$crn_array[$i]'>$course_code_array[$i] - $crn_array[$i]</option>";
+                            $i++;
+                        }
+                        echo '</select>';
+                        ?> 
+    					<br><br>
+                        <button class="black-btn" name='submit'>SUBMIT</button>
+    				</form>
+                <?php
+                }
+                ?>
 			</div>	
 			</div>
 		</div>
 	</div>
-	<hr></hr>
 </div><!-- end main -->
 <FOOTER>
         <div class="footer_bg"><!-- start footer -->
