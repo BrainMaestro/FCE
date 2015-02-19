@@ -2,7 +2,7 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-//checkUser("faculty");
+checkUser("faculty");
 
 if (isset($_POST['sbmt_semester'])) {
     $semester = $_POST['semester'];
@@ -53,7 +53,7 @@ if (isset($_POST['sbmt_semester'])) {
 
         <!-- End of Favicon Kini -->
 
-<title>Faculty | Home</title>
+<title>Faculty</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -117,25 +117,14 @@ if (isset($_POST['sbmt_semester'])) {
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
-<<<<<<< HEAD
-		<div class="main row ">
-            <div class="col-xs-4 text-center"></div>
-			<div class="col-xs-4 text-center">
-				<?php 
-                if (!(isset($_POST['sbmt_semester']))) {
-                ?>
-                
-    				<form action="" method="post" class="border">
-=======
-        <div class="main row para"> 
-            <div class="col-xs-4 text-center"></div>        
-            <div class="col-xs-4 text-center border">
+		<div class="main row">
+			<div class=" blog_left">
+				
+			<div class=" blog_right text-center">
 				<?php 
                 if (!(isset($_POST['sbmt_semester']))) {
                 ?>
     				<form action="" method="post">
-                        Please select semester and evaluation<br><br>
->>>>>>> origin/master
                         <?php
 
                         echo '<select name="semester" class="input-sm" required>';
@@ -157,7 +146,6 @@ if (isset($_POST['sbmt_semester'])) {
                         <br><br>
                         <button class="black-btn" name='sbmt_semester'>SUBMIT</button>
                     </form>
-                </div>
                 <?php
                 }
                 ?>
@@ -165,7 +153,7 @@ if (isset($_POST['sbmt_semester'])) {
                 <?php 
                 if (isset($_POST['sbmt_semester'])) {
                 ?>
-                    <form action="" method="post" class="border">
+                    <form action="" method="post">
 
                         <?php
     					echo '<select name="crn" class="input-sm" required>';
@@ -183,72 +171,8 @@ if (isset($_POST['sbmt_semester'])) {
                 <?php
                 }
                 ?>
-                <div class="col-xs-4 text-center"></div>
 			</div>	
 			</div>
-                        <div class="text-center">
-            
-                <?php
-                // if (isset($_POST['filter'])) {
-                $result = $mysqli->query("SELECT * from section where semester = '$semester' 
-                    AND faculty_email='$_SESSION[email]'");
-
-                if (isset($_POST['filter'])) {
-
-                    $sql = "SELECT * FROM section WHERE email='$_SESSION[email]'";
-                    if (isset($_POST['semester']))
-                        $sql .= " AND semester LIKE '%$_POST[semester]%'";
-
-                    if (isset($_POST['search'])) {
-                        $sql .= " AND course_code LIKE '%$_POST[search]%'";
-                    }
-
-                    $result = $mysqli->query($sql);
-                }
-
-                if ($result->num_rows == 0)
-                    echo "<h4 class='error'>No section matches your criteria</h4>";
-                else {
-                    echo "<table width='100%' class='evaltable para dean_form not-center'>
-                            <caption><h3>Reports</h3><hr></caption>
-                        <thead>
-                             <th>CRN</th>
-                            <th>Course Code</th>
-                            <th>Course Title</th>
-                            <th>Enrolled</th>
-                            <th>Midterm</th>
-                            <th>Final</th>
-
-                        </thead>";
-
-                    
-                    
-                    for($i = 0; $i < $result->num_rows; $i++) {
-                        $row = $result->fetch_assoc();
-                        echo "<tr>";
-                        echo "<td>$row[crn]</td>";
-                        echo "<td>$row[course_code]</td>";
-                        echo "<td>$row[course_title]</td>";
-                        echo "<td>$row[enrolled]</td>";
-                        
-                        //echo "<td>$row[faculty_email]</td>";
-
-                        if ($row['mid_evaluation'] == 0)
-                            echo "<td>No Midterm Report</td>";
-                        else
-                            echo "<td><a target='_blank' href='mid_report.php?crn=$row[crn]'>View Midterm Report</a></td>";
-
-                        if ($row['final_evaluation'] == 0)
-                            echo "<td>No Final Report</td>";
-                        else
-                            echo "<td><a target='_blank' href='final_report.php?crn=$row[crn]'>View Final Report</a></td>";
-                        
-                        echo "</tr>";
-                    }
-                    echo '</tbody></table><hr>';
-                }                
-                ?>
-            </div>
 		</div>
 	</div>
 </div><!-- end main -->

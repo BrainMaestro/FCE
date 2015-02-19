@@ -88,7 +88,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
+                <li><a href="./admin.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
                 <li><a>Admin</a></li>
+
                 <?php
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];

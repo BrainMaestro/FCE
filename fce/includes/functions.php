@@ -167,8 +167,6 @@ function avg_midterm($crn, $eval_type, $mysqli) {
 
 //Method to check if user has acess to page
 function checkUser($page){
-	//$user_type = $_SESSION['user_type'];
-	//$email = $_SESSION['email'];
 	if(!isset($_SESSION['email'])) {
 		$_SESSION['errl'] = "You do not have access";
         header("Location: ../index.php");
@@ -185,12 +183,29 @@ function checkUser($page){
 //Method to check if a class has been locked for restriction
 function checkSectionStatus($sec_crn, $mysqli) {
 	$status = $mysqli->query("SELECT locked FROM section WHERE crn='$sec_crn'")->fetch_assoc();
-	if ($status['locked'] == 1) {
+	
+    if ($status['locked'] == 1) {
 		return true;
 	}
 	else {
 		return false;
 	}
+}
+
+// Method to check if a user is already logged in. Sends the user back if the
+// Also checks if an evaluation has already been started.
+function goBack($mysqli) {
+
+    if (isset($_SESSION['email'])) {
+        $user_type = $_SESSION['user_type'];
+        header("Location: ./users/$user_type.php"); // Take the user to the correct page form based on the user type
+    }
+
+    elseif (isset($_SESSION['key_value'])) {
+        $key_value = $_SESSION['key_value'];
+        $eval_type = $_SESSION['eval_type'];
+        header("Location: ../$eval_type" . "_evaluation.php"); // Take the class to the correct evaluation form based on the eval type
+    }
 }
 
 ?>

@@ -43,7 +43,7 @@
 
         <!-- End of Favicon Kini -->
 
-<title>Admin</title>
+<title>Admin | Home</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -71,6 +71,10 @@
 			<h1><a href="index.html">Faculty Course Evaluation</a></h1>
 		</div>
 		<div class="h_search navbar-right">
+			<?php
+				$t=time();
+				echo(date("g:i A D, M d, Y",$t));
+			?>
 			<form action="../includes/logout.php" method="post">
 				<button class='black-btn margin' name='logout' value='logout'>Logout</button>
 			</form>
@@ -112,6 +116,7 @@
 </div>
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
+<<<<<<< HEAD
 		<div class="main row para">	
             <div class="col-xs-4 text-center"></div>		
 			<div class="col-xs-4 text-center border">
@@ -120,11 +125,27 @@
 	                <?php
 	                echo '<select name="semester" class="input-sm">';
 				    echo '<option selected value="%">--Choose Semester--</option>';
+=======
+		<div class="main row para">
+			<!--<div class="blog_left ">-->
+			<div>
+				
+			<div class="col-xs-4 text-center"></div>  
+			<div>      
+            <div class="col-xs-4 text-center border">
+		<?php
+				echo '<form action="" method="post" class="text-center">';
+				echo 'Leave search bar empty to search all sections<br><br>';
+
+				    echo '<select name="semester" class="input-sm" required>';
+				    echo '<option selected value="">--Choose Semester--</option>';
+>>>>>>> origin/master
 				    $result = $mysqli->query("SELECT semester from semester");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
+<<<<<<< HEAD
 	       			echo '</select><br><br>';
 	                ?>
 	                <select name="school" class="input-sm" required>
@@ -142,38 +163,59 @@
 		</div>
 		
 			<?php
+=======
+	       			echo '</select>';
+
+					echo '<div class="clearfix"></div>
+						<div style="height:25px"></div>
+						<select name="school" class="input-sm" required>
+		                    <option selected value="">--Choose School--</option>
+		                    <option value="SITC">SITC</option>
+		                    <option value="SAS">SAS</option>
+		                    <option value="SBE">SBE</option>
+		                    <option value="%">All Schools</option>
+		                </select><br /><br />
+		                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
+						<div class="clearfix"></div><br /><br />
+						<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
+				</form></div>';
+			
+>>>>>>> origin/master
 			if (isset($_POST['sch_submit'])) {  
 
 				echo "<table width='100%' class='evaltable para dean_form not-center'>
 				<caption><h3>Reports</h3><hr></caption>
 					<tr>
 						<th>Course Code</th>
-						<th>Evaluation Type</th>
 						<th>CRN</th>
 						<th>Instructor</th>
+						<th>Enrolled</th>
 						<th>School</th>
-						<th>View Report</th>
+						<th>Midterm Reports</th>
+						<th>Final Reports</th>
 					</tr>";
 
 				$j = 0;
 	        	while ($j < count($course_code_array)) {
 		        	echo '<tr>';
-		        		$result = $mysqli->query("SELECT crn, faculty_email, mid_evaluation, final_evaluation from section where course_code = '$course_code_array[$j]'");
+		        		$result = $mysqli->query("SELECT crn, faculty_email, mid_evaluation, final_evaluation,enrolled from section where course_code = '$course_code_array[$j]'");
 						for($i = 0; $i < $result->num_rows; $i++) {
 		                	$row = $result->fetch_array();
+		          
 							echo "<td>$course_code_array[$j]</td>";
 							echo "<td>$row[0]</td>";
 							echo "<td>$row[1]</td>";
+							echo "<td>$row[4]</td>";
 							echo "<td>$school_array[$j]</td>";
 							if ($row[2] == 0) {
 								echo "<td>No Midterm Report</td>";
 							} else {
-								echo "<td><a href='mid_report.php?crn=$row[0]'>Midterm Report</a></td>";
+								echo "<td><a target='_blank' href='mid_report.php?crn=$row[0]'>View Midterm Report</a></td>";
 							}
 							if ($row[3] == 0) {
 								echo "<td>No Final Report</td>";
 							} else {
-								echo "<td><a href='final_report.php?crn=$row[0]'>Final Report</a></td>";
+								echo "<td><a target='_blank' href='final_report.php?crn=$row[0]'>View Final Report</a></td>";
 							}
 		        		}
 		        	echo '</tr>';
@@ -189,6 +231,7 @@
 			</div>
 		</div>
 	</div>
+	<hr></hr>
 </div><!-- end main -->
 <FOOTER>
         <div class="footer_bg"><!-- start footer -->

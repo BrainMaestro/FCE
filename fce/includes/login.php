@@ -1,7 +1,9 @@
 <?php
 include_once 'db_connect.php';
+include_once 'function.php';
 
 // session_start();
+goBack($mysqli);
 if (isset($_POST['email'], $_POST['password'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];

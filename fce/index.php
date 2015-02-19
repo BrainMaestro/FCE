@@ -1,9 +1,7 @@
 <?php
 include_once './includes/db_connect.php';
-if (isset($_SESSION['email'])) {
-	$user_type = $_SESSION['user_type'];
-	header("Location: ./users/$user_type.php");
-}
+include_once './includes/functions.php';
+goBack($mysqli);
 ?>
 <!DOCTYPE HTML>
 <html>
