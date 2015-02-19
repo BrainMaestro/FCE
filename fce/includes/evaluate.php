@@ -2,7 +2,7 @@
 	include_once './db_connect.php';
 	include_once './functions.php';
 	
-	session_start();
+	goBack($mysqli);
 	if (isset($_POST['key_value'])){ //Checking to see if any key has been submitted
 		$key_value = $_POST['key_value']; //calling functions that handle siffing of input
 		$get_key = $mysqli->prepare("SELECT * FROM accesskeys WHERE key_value = ?"); //Mysql query to determine if the key exists
@@ -21,7 +21,8 @@
 			$_SESSION['key_value'] = $key_value1; //the key used is stored as a session
 			$_SESSION['start'] = time(); //taking in logged in time
 			$_SESSION['expire'] = $_SESSION['start'] + (1800); //ending session thirty minutes later
-			
+			$_SESSION['eval_type'] = $key_eval_type;
+
         	setKey($key_value1, "given_out", $mysqli);
 			
 			header("Location: ../$key_eval_type" . "_evaluation.php"); // Take the class to the correct evaluation form based on the eval type
