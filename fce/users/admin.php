@@ -102,7 +102,6 @@ checkUser("admin");
 </div>
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
-<<<<<<< HEAD
 		<div class="main row para">	
             <div class="col-xs-4 text-center"></div>		
 			<div class="col-xs-4 text-center border">
@@ -112,7 +111,6 @@ checkUser("admin");
 	                echo '<select name="semester" class="input-sm">';
 				    echo '<option selected value="%">--Choose Semester--</option>';
 
->>>>>>> origin/master
 				    $result = $mysqli->query("SELECT semester from semester");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
