@@ -148,7 +148,7 @@
 		                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
 						<div class="clearfix"></div><br /><br />
 						<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
-				</form></div>';
+				</form></div><br><br><br>';
 			
 			if (isset($_POST['sch_submit'])) {  
 
