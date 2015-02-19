@@ -2,7 +2,7 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-checkUser("faculty");
+//checkUser("faculty");
 
 if (isset($_POST['sbmt_semester'])) {
     $semester = $_POST['semester'];
@@ -117,14 +117,14 @@ if (isset($_POST['sbmt_semester'])) {
 </div>
 <div class="main_bg"><!-- start main -->
 	<div class="container">
-		<div class="main row">
-			<div class=" blog_left">
-				
-			<div class=" blog_right text-center">
+		<div class="main row ">
+            <div class="col-xs-4 text-center"></div>
+			<div class="col-xs-4 text-center">
 				<?php 
                 if (!(isset($_POST['sbmt_semester']))) {
                 ?>
-    				<form action="" method="post">
+                
+    				<form action="" method="post" class="border">
                         <?php
 
                         echo '<select name="semester" class="input-sm" required>';
@@ -146,6 +146,7 @@ if (isset($_POST['sbmt_semester'])) {
                         <br><br>
                         <button class="black-btn" name='sbmt_semester'>SUBMIT</button>
                     </form>
+                </div>
                 <?php
                 }
                 ?>
@@ -153,7 +154,7 @@ if (isset($_POST['sbmt_semester'])) {
                 <?php 
                 if (isset($_POST['sbmt_semester'])) {
                 ?>
-                    <form action="" method="post">
+                    <form action="" method="post" class="border">
 
                         <?php
     					echo '<select name="crn" class="input-sm" required>';
@@ -171,6 +172,7 @@ if (isset($_POST['sbmt_semester'])) {
                 <?php
                 }
                 ?>
+                <div class="col-xs-4 text-center"></div>
 			</div>	
 			</div>
 		</div>

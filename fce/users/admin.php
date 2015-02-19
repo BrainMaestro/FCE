@@ -112,38 +112,39 @@
 </div>
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
-		<div class="main row ">
-			<div class="blog_left ">
-				
-			<div class="blog_right news_letter">
-		<?php
-				echo '<form action="" method="post" class="text-center">';
-				    echo '<select name="semester" class="input-sm" required>';
-				    echo '<option selected value="">--Choose Semester--</option>';
+		<div class="main row para">	
+            <div class="col-xs-4 text-center"></div>		
+			<div class="col-xs-4 text-center border">
+				<form action="" method='post'>
+	                Leave search bar empty to search all sections<br><br>
+	                <?php
+	                echo '<select name="semester" class="input-sm">';
+				    echo '<option selected value="%">--Choose Semester--</option>';
 				    $result = $mysqli->query("SELECT semester from semester");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
-	       			echo '</select>';
-
-					echo '<div class="clearfix"></div>
-						<div style="height:25px"></div>
-						<select name="school" class="input-sm" required>
-		                    <option selected value="">--Choose School--</option>
-		                    <option value="SITC">SITC</option>
-		                    <option value="SAS">SAS</option>
-		                    <option value="SBE">SBE</option>
-		                    <option value="%">All Schools</option>
-		                </select>
-		                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
-						<div class="clearfix"></div><br><br>
-						<span  class="black-btn"><input type="submit" name="sch_submit" value="SUBMIT"></span>
-				</form>';
-			
+	       			echo '</select><br><br>';
+	                ?>
+	                <select name="school" class="input-sm" required>
+			                    <option selected value="">--Choose School--</option>
+			                    <option value="SITC">SITC</option>
+			                    <option value="SAS">SAS</option>
+			                    <option value="SBE">SBE</option>
+			                    <option value="%">All Schools</option>
+			        </select><br><br>
+					<input type="text" class="round" name="search" placeholder="Ex: AUN 101"><br><br>
+					<input type="submit" name="sch_submit" value="SUBMIT" class="black-btn">
+				</form>	
+			</div>	
+            <div class="col-xs-4 text-center"></div>
+		</div>
+		
+			<?php
 			if (isset($_POST['sch_submit'])) {  
 
-				echo "<table width='100%' class='evaltable para dean_form'>
+				echo "<table width='100%' class='evaltable para dean_form not-center'>
 				<caption><h3>Reports</h3><hr></caption>
 					<tr>
 						<th>Course Code</th>
@@ -178,7 +179,7 @@
 		        	echo '</tr>';
 	        	$j++;
 	        	}
-	        	echo '</table>';
+	        	echo '</table><hr>';
         	}
 			
 			 
