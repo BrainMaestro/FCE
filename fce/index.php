@@ -40,6 +40,8 @@ goBack($mysqli);
             if(X=='evaluate')
             {
                 $("#login").removeClass('select');
+                $("#login").addClass('unselect');
+                $("#evaluate").removeClass('unselect');
                 $("#evaluate").addClass('select');
                 $("#loginbox").slideUp();
                 $("#evalbox").slideDown();
@@ -47,7 +49,9 @@ goBack($mysqli);
             else
             {
                 $("#evaluate").removeClass('select');
+                $("#evaluate").addClass('unselect');
                 $("#login").addClass('select');
+                $("#login").removeClass('unselect');
                 $("#evalbox").slideUp();
                 $("#loginbox").slideDown();
             }
@@ -117,7 +121,7 @@ goBack($mysqli);
                 <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>      
                 <div class="col-xs-4 text-center border loginbox">
                     <div id="tabbox">
-                        <a href="#" id="evaluate" class="tab evaluate">Login</a>
+                        <a href="#" id="evaluate" class="tab unselect evaluate">Login</a>
                         <a href="#" id="login" class="tab select">Evaluate</a>
                         </div>
                         <div id="panel">

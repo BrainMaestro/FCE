@@ -153,6 +153,7 @@ hr {
 #tabbox
 {
 	height:40px;
+	background-color: #dedede;
 }
 #panel
 {
@@ -196,8 +197,11 @@ text-decoration: none;
 }
 .select
 {
-	background-color:#dedede;
+	background-color:#FFF;
 	
+}
+.unselect {
+	background-color:#dedede;
 }
 #loginbox
 {
