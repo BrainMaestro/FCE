@@ -29,7 +29,7 @@ function insertKeys($crn, $eval_type, $mysqli) {
         $keyArray[] = $key; // Adds the key to the array
 
         do {
-            $mysqli->query("INSERT into AccessKeys VALUES ('$key', '0', '0', '$eval_type', '$crn')");
+            $mysqli->query("INSERT into accesskeys VALUES ('$key', '0', '0', '$eval_type', '$crn')");
         } while ($mysqli->connect_errno); // Loop continues if there was a failure in inserting a key
     }
 }
@@ -37,7 +37,7 @@ function insertKeys($crn, $eval_type, $mysqli) {
 // Method that deletes keys after use
 function deleteKeys($crn, $eval_type, $mysqli) {
 
-    $mysqli->query("DELETE FROM AccessKeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
+    $mysqli->query("DELETE FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
 }
 
 // Method that gets the current semester from the server time
@@ -62,7 +62,7 @@ function getCurrentSemester() {
 }
 
 function setKey($key_value, $status, $mysqli) {
-    $mysqli->query("UPDATE AccessKeys SET $status = '1' WHERE key_value = '$key_value'");
+    $mysqli->query("UPDATE accesskeys SET $status = '1' WHERE key_value = '$key_value'");
 }
 
 //Method that checks if time to use a key has expired
