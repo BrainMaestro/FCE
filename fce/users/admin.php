@@ -59,7 +59,7 @@ checkUser("admin");
 		<div class="h_search navbar-right">
 			<?php
 				$t=time();
-				echo(date("g:i A D, M d, Y",$t));
+				// echo(date("g:i A D, M d, Y",$t));
 			?>
 			<form action="../includes/logout.php" method="post">
 				<button class='black-btn margin' name='logout' value='logout'>Logout</button>
@@ -109,26 +109,24 @@ checkUser("admin");
 	                Leave search bar empty to search all sections<br><br>
 	                <?php
 	                echo '<select name="semester" class="input-sm">';
-				    echo '<option selected value="%">--Choose Semester--</option>';
 
-				    $result = $mysqli->query("SELECT semester from semester");
+				    $result = $mysqli->query("SELECT semester from semesters");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
 					echo '</select>';
 
-				echo '<div class="clearfix"></div>
+					echo '<div class="clearfix"></div>
 					<div style="height:25px"></div>
-					<select name="school" class="input-sm" required>
-	                    <option selected value="">--Choose School--</option>
+					<select name="school" class="input-sm">
+	                    <option value="%">All Schools</option>
 	                    <option value="SITC">SITC</option>
 	                    <option value="SAS">SAS</option>
 	                    <option value="SBE">SBE</option>
-	                    <option value="%">All Schools</option>
 	                </select><br /><br />
 	                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
-					<div class="clearfix"></div><br /><br />
+					<br /><br />
 					<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
 				</form></div><br><br><br>';
 			
@@ -154,14 +152,21 @@ checkUser("admin");
 					<th>Final Reports</th>
 				</thead><tbody>";
 
-    		$result = $mysqli->query("SELECT * from section where school like '%$sch' and semester = '$semester' and course_code like '%$search%'");
+    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' AND semester LIKE '$semester' AND course_code LIKE '%$search%'");
 			for($i = 0; $i < $result->num_rows; $i++) {
             	$row = $result->fetch_assoc();
 	          
 	        	echo '<tr>';
 				echo "<td>$row[course_code]</td>";
 				echo "<td>$row[crn]</td>";
-				echo "<td>$row[faculty_email]</td>";
+    			$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+				echo "<td>";
+				for($j = 0; $j < $assignment->num_rows; $j++) {
+					$row2 = $assignment->fetch_assoc();
+					$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+					echo "$faculty[name]<br>";
+				}
+				echo "</td>";
 				echo "<td>$row[enrolled]</td>";
 				echo "<td>$row[school]</td>";
 				if ($row['mid_evaluation'] == 0)
