@@ -172,12 +172,18 @@ function checkUser($page){
         header("Location: ../index.php");
     }
 	
-	if ($page != $_SESSION['user_type']) {
-		session_destroy();
-        session_start();
-		$_SESSION['errl'] = "You do not have access";
-		header("Location: ../index.php");
-	}
+	// if ($page != $_SESSION['user_type']) {
+	// 	session_destroy();
+ //        session_start();
+	// 	$_SESSION['errl'] = "You do not have access";
+	// 	header("Location: ../index.php");
+	// }
+}
+function list_roles() {
+    for($i = 0; $i < count($_SESSION['roles']); $i++) {
+        $a = $_SESSION['roles'][$i];
+        echo "<li><a href=$a.php>$a</a></li>";
+    }
 }
 
 //Method to check if a class has been locked for restriction
