@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
 		header("Location: index.php");
 	}
 	
-    if ($stmt = $mysqli->prepare("INSERT INTO evaluation(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, eval_type)
+    if ($stmt = $mysqli->prepare("INSERT INTO evaluations(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, eval_type)
 		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "mid";
         $crn = $_SESSION['crn'];
@@ -140,17 +140,17 @@ if (isset($_POST['submit'])) {
                         $crn = $_SESSION['crn'];
                         $key_value = $_SESSION['key_value'];
                         $semester = getCurrentSemester();
-                        $result = $mysqli->query("SELECT course_code, faculty_email, course_title, semester FROM section where crn='$crn'");
+                        $result = $mysqli->query("SELECT course_code, course_title, semester FROM sections where crn='$crn'");
                         $row = $result->fetch_assoc();
-                        $result2 = $mysqli->query("SELECT name from user WHERE email='$row[faculty_email]'");
-                        $row2 = $result2 ->fetch_assoc();
+                        // $result2 = $mysqli->query("SELECT name from users WHERE email='$row[faculty_email]'");
+                        // $row2 = $result2 ->fetch_assoc();
                         echo "<li><a>$row[semester]</a></li>";
                         echo "<li><a>$row[course_code]</a></li>";
                         echo "<li><a>$row[course_title]</a></li>";
-                        echo "<li><a>$row2[name]</a></li>";
+                        // echo "<li><a>$row2[name]</a></li>";
                         echo "<li><a>Key: $key_value</a></li>";
-                        echo "<li><a>Time Left: <span id='time' class='error'>00:00</span></a></li>";
-                        echo "<script>startTimer();</script>";
+                        // echo "<li><a>Time Left: <span id='time' class='error'>00:00</span></a></li>";
+                        // echo "<script>startTimer();</script>";
                         ?>
                         </ul>
                     </div><!-- /.navbar-collapse -->
@@ -160,7 +160,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="container">
             <div class="main row para">
-                          <div class="col-md-5 images_1_of_4 bg1">
+                          <div class="col-md-5">
                     <div class="banner-msg">
 
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
@@ -175,7 +175,7 @@ if (isset($_POST['submit'])) {
                     <table class="evaltable">
                         <tr>
                             <td class="w5"></td>
-                            <td class="w70"><strong class="thead">Evaluation</strong></td>
+                            <td class="w70"><strong class="thead">Midterm Evaluation</strong></td>
                             <td class="w5">1</td>
                             <td class="w5">2</td>
                             <td class="w5">3</td>

@@ -152,7 +152,7 @@ checkUser("admin");
 				unset($_SESSION['err']);
 			}
 			else {
-			echo "<table width='100%' class='evaltable para dean_form'>
+			echo "<table width='100%' class='evaltable para dean_form not-center'>
 			<caption><h3>Reports</h3><hr></caption>
 				<thead>
 					<th>CRN</th>
@@ -210,7 +210,7 @@ checkUser("admin");
             <div class="container">
                 <div class="row  footer">
                     <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="thankyou.php#fceteam"> The FCE Team</a></span></p>
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="../thankyou.php"> The FCE Team</a></span></p>
                     </div>
                 </div>
             </div>

@@ -87,7 +87,7 @@ $eval_type = "final";
               <ul class="nav navbar-nav">
                         <li><a>Course Report</a></li>
                         <?php
-                        $result = $mysqli->query("SELECT semester FROM section WHERE crn='$course_no'");
+                        $result = $mysqli->query("SELECT semester FROM sections WHERE crn='$course_no'");
                         $result = $result->fetch_assoc();
                         $school = $_SESSION['school'];
                         $name = $_SESSION['name'];
@@ -123,8 +123,8 @@ $eval_type = "final";
 				<?php
 					$count_crn = $course_no;	
 					$count_eval_type = $eval_type;
-					$count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
-					$count_registered = $mysqli->query("SELECT enrolled FROM section WHERE crn='$count_crn'")->fetch_assoc();
+					$count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
+					$count_registered = $mysqli->query("SELECT enrolled FROM sections WHERE crn='$count_crn'")->fetch_assoc();
 					echo "<span style=\"text-align: right;\">Total Response: $count_response[filled]<br>";
 					echo "Total Registered: $count_registered[enrolled]</span>";	
 				?>

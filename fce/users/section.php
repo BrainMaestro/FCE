@@ -125,21 +125,20 @@ if ($status == true) {
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		      <li><a>Section</a></li>
+				<li class='active'><a href="./index.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
+		      	<li><a>Section</a></li>
                 <?php
                 $crn = $_GET['crn'];
-    			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM section WHERE crn='$crn'")->fetch_assoc();
+    			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM sections WHERE crn='$crn'")->fetch_assoc();
                 $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
                 $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
-                $row = $mysqli->query("SELECT * FROM section WHERE crn='$crn'")->fetch_assoc();
+                $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
                 echo "<li><a>$row[course_code]</a></li>";
                 echo "<li><a>$row[school]</a></li>";
-                $row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
                 echo "<li><a>$row[semester]</a></li>";
                 echo "<li><a>$row[course_title]</a></li>";
-                echo "<li><a>$row2[name]</a></li>";
                 echo "<li><a>$term</a></li>";
-                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluation WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
+                $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
                 ?>
@@ -236,13 +235,6 @@ if ($status == true) {
 			</div>
 		</div>
 		<div class="text-center">
-		<?php
-			$rep_user_type = $_SESSION['user_type'];
-					
-			echo "<a href='$rep_user_type.php'>";
-			echo "<button class='black-btn'>Back</button>";
-			echo "</a>";
-		?>
 		</div>
 	</div>
 </div><!-- end main -->
