@@ -155,72 +155,73 @@ if (isset($_POST['submit'])) {
 							break;
 						}
 					}
-
-					echo "<table width='100%' class='not-center evaltable'>
-					<caption><h3 class='$color'>$caption Sections</h3><hr></caption>
-					<thead>";
-						if ($status != '%')
-							echo "<th></th>";
-						echo "<th>CRN</th>
-						<th>Course Code</th>
-						<th>Course Title</th>
-						<th>Instructor</th>
-						<th>Class Time</th>
-                        <th>Location</th>
-						<th>Enrolled</th>
-						<th>Status</th>
-						<th>Midterm Evaluation</th>
-						<th>Final Evaluation</th>";
-						if ($status == '0')
-							echo "<th>Section Keys</th>";
-					echo "</thead>
-					<tbody>";
-
-					for($i = 0; $i < $result->num_rows; $i++) {
-						$row = $result->fetch_assoc();
-						echo "<tr>";
-						if ($status != '%')
-							echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
-						echo "<td>$row[crn]</td>";
-						echo "<td>$row[course_code]</td>";
-						echo "<td>$row[course_title]</td>";
-						$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
-						echo "<td>";
-						for($j = 0; $j < $assignment->num_rows; $j++) {
-							$row2 = $assignment->fetch_assoc();
-							$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
-							echo "$faculty[name]<br>";
-						}
-						echo "</td>";
-						echo "<td>$row[class_time]</td>";
-                        echo "<td>$row[location]</td>";
-						echo "<td>$row[enrolled]</td>";
-						$locked = ($row['locked'] == 1) ? "Locked" : "Unlocked";
-						$color = ($locked == "Locked") ? "red" : "green";
-						$midterm = ($row['mid_evaluation'] == 1) ? "Done" : "Not Done";
-						$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
-						echo "<td class='$color'>$locked</td>";
-						echo "<td>$midterm</td>";
-						echo "<td>$final</td>";
-						if ($status == '0')
-							echo "<td><a href='section.php?crn=$row[crn]' target='_blank'>$row[course_code] Keys</a></td>";
-						else
-						echo "</tr>";
-					}
-					echo '</tbody></table><hr>';
-
-					if (isset($status) && $status !== '%' && $result->num_rows > 0) {
-						if ($status == 1)
-                			echo "<button class='black-btn margin' name='submit' value='unlock'>Unlock</button>";
-                		elseif ($status == 0)
-                			echo "<button class='black-btn margin' name='submit' value='lock'>Lock</button>";
-					}
-
 					if ($result->num_rows == 0)
 						echo "<h4 class='error'>No section matches your search criteria</h4>";
 					elseif (isset($_SESSION['err'])) {
 						echo "<h4 class='error'>$_SESSION[err]</h4>";
 						unset($_SESSION['err']);
+					}
+					else {
+						echo "<table width='100%' class='not-center evaltable'>
+						<caption><h3 class='$color'>$caption Sections</h3><hr></caption>
+						<thead>";
+							if ($status != '%')
+								echo "<th></th>";
+							echo "<th>CRN</th>
+							<th>Course Code</th>
+							<th>Course Title</th>
+							<th>Instructor</th>
+							<th>Class Time</th>
+	                        <th>Location</th>
+							<th>Enrolled</th>
+							<th>Status</th>
+							<th>Midterm Evaluation</th>
+							<th>Final Evaluation</th>";
+							if ($status == '0')
+								echo "<th>Section Keys</th>";
+						echo "</thead>
+						<tbody>";
+
+						for($i = 0; $i < $result->num_rows; $i++) {
+							$row = $result->fetch_assoc();
+							echo "<tr>";
+							if ($status != '%')
+								echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
+							echo "<td>$row[crn]</td>";
+							echo "<td>$row[course_code]</td>";
+							echo "<td>$row[course_title]</td>";
+							$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+							echo "<td>";
+							for($j = 0; $j < $assignment->num_rows; $j++) {
+								$row2 = $assignment->fetch_assoc();
+								$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+								echo "$faculty[name]<br>";
+							}
+							echo "</td>";
+							echo "<td>$row[class_time]</td>";
+	                        echo "<td>$row[location]</td>";
+							echo "<td>$row[enrolled]</td>";
+							$locked = ($row['locked'] == 1) ? "Locked" : "Unlocked";
+							$color = ($locked == "Locked") ? "red" : "green";
+							$midterm = ($row['mid_evaluation'] == 1) ? "Done" : "Not Done";
+							$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
+							echo "<td class='$color'>$locked</td>";
+							echo "<td>$midterm</td>";
+							echo "<td>$final</td>";
+							if ($status == '0')
+								echo "<td><a href='section.php?crn=$row[crn]' target='_blank'>$row[course_code] Keys</a></td>";
+							else
+							echo "</tr>";
+						}
+						echo '</tbody></table><hr>';
+
+						if (isset($status) && $status !== '%' && $result->num_rows > 0) {
+							if ($status == 1)
+	                			echo "<button class='black-btn margin' name='submit' value='unlock'>Unlock</button>";
+	                		elseif ($status == 0)
+	                			echo "<button class='black-btn margin' name='submit' value='lock'>Lock</button>";
+						}
+
 					}
 					?>
 				</form>

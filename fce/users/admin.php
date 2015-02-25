@@ -115,10 +115,8 @@ checkUser("admin");
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
-					echo '</select>';
-
-					echo '<div class="clearfix"></div>
-					<div style="height:25px"></div>
+					echo '</select><br><br>';
+					?>
 					<select name="school" class="input-sm">
 	                    <option value="%">All Schools</option>
 	                    <option value="SITC">SITC</option>
@@ -128,7 +126,12 @@ checkUser("admin");
 	                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
 					<br /><br />
 					<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
-				</form></div><br><br><br>';
+				</form>
+			</div></div>
+
+            <div class="text-center">
+			
+			<?php
 			
 			$sch = '%';
 		    $search = '%';
@@ -140,11 +143,20 @@ checkUser("admin");
 		    	$search = $_POST['search'];
 		    }
 
+    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' AND semester LIKE '$semester' AND course_code LIKE '%$search%'");
+		    
+		    if ($result->num_rows == 0)
+				echo "<h4 class='error'>No section matches your search criteria</h4>";
+			elseif (isset($_SESSION['err'])) {
+				echo "<h4 class='error'>$_SESSION[err]</h4>";
+				unset($_SESSION['err']);
+			}
+			else {
 			echo "<table width='100%' class='evaltable para dean_form'>
 			<caption><h3>Reports</h3><hr></caption>
 				<thead>
-					<th>Course Code</th>
 					<th>CRN</th>
+					<th>Course Code</th>
 					<th>Instructor</th>
 					<th>Class Time</th>
 					<th>Location</th>
@@ -154,13 +166,12 @@ checkUser("admin");
 					<th>Final Reports</th>
 				</thead><tbody>";
 
-    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' AND semester LIKE '$semester' AND course_code LIKE '%$search%'");
 			for($i = 0; $i < $result->num_rows; $i++) {
             	$row = $result->fetch_assoc();
 	          
 	        	echo '<tr>';
-				echo "<td>$row[course_code]</td>";
 				echo "<td>$row[crn]</td>";
+				echo "<td>$row[course_code]</td>";
     			$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
 				echo "<td>";
 				for($j = 0; $j < $assignment->num_rows; $j++) {
@@ -186,6 +197,7 @@ checkUser("admin");
 	        	echo '</tr>';
 			}
         	echo '</tbody></table><hr>';
+        	}
 			?>
 
 			</div>	
