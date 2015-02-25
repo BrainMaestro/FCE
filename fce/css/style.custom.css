@@ -149,6 +149,13 @@ hr {
 .thankyouMsg a:hover {
 	color:#F00;
 }
+.thankyouMsg span {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-style: oblique;
+	color: purple;
+	font-size: 1.5em;
+}
 
 #tabbox
 {

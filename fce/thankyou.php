@@ -50,7 +50,7 @@
             <div class="container">
                 <div class="row header">
                     <div class="logo navbar-left">
-                        <h1><a href="index.php">Faculty Course Evaluation</a></h1>
+                        <h1><a>Faculty Course Evaluation</a></h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -71,6 +71,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            <li class='active'><a href="./index.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                     <!-- start soc_icons -->
@@ -81,37 +82,47 @@
         <div class="main row para">
             <div class="col-xs-3"></div>
             <div class="col-xs-6 text-center thankyouMsg">
-                <h2>Have a nice day.</h2>
-                <hr>
+                <h3 class='border'>Brought to you by <br><hr>
+                <span>The Office of Institutional Research</span><br><hr>
+                Have a nice day</h3><br><br><br><br><br><br><br>
                 <table class="not-center evaltable" width="100%">
-                    <caption><h3 id="fceteam">Credits to the FCE Team</h3></caption>
+                    <caption><h4 id="fceteam">Credits to the FCE Team</h4><hr></caption>
                     <thead>
-                        <th>Developer</th>
+                        <th>Member</th>
                         <th>Role</th>
                     </thead>
                     <tbody>
                         <tr>
-                            <td id="aisha">Aisha Alimi</td>
-                            <td>User Interface Designer</td>
+                            <td id="fidelis">Dr Fidelis Ndeh Che</td>
+                            <td>Project Sponsor</td>
+                        </tr>
+                        <tr>
+                            <td id="esi">Esi Quao</td>
+                            <td>Stakeholder & Client</td>
                         </tr>
                         <tr>
                             <td id="chizzy">Chizzy Alaedu</td>
-                            <td>Project Manager</td>
+                            <td>Developer - Project Manager</td>
                         </tr>
                         <tr>
                             <td id="ezinwa">Ezinwa Okpoechi</td>
-                            <td>Software Architect</td>
+                            <td>Developer - Team Lead</td>
                         </tr>
                         <tr>
+                            <td id="aisha">Aisha Alimi</td>
+                            <td>Developer - Genius</td>
+                        </tr>
+                        
+                        <tr>
                             <td id="skaex">Abdulmajid Hamza</td>
-                            <td>Program Logic Designer</td>
+                            <td>Developer - Code Expert</td>
                         </tr>
                     </tbody>
                 </table>
                 <hr>
             </div>
         </div>
-        <div class="text-center">
+        <!-- <div class="text-center">
         <?php
         if (isset($_SESSION['email'])) {
             $user_type = $_SESSION['user_type'];
@@ -123,7 +134,9 @@
             echo '<a class="black-btn" id="thank" href="./index.php">Go back</a>';
         ?>
             
-        </div>
+        </div> -->
+
+    </div>
 
     <FOOTER>
         <div class="footer_bg"><!-- start footer -->
