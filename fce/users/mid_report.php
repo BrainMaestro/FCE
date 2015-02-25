@@ -18,6 +18,8 @@ if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary"))
 // }
 $course_no = $_GET['crn'];
 $eval_type = "mid";
+checkEvaluations($course_no, $eval_type, $mysqli);
+protectReports($course_no, $_POST['user'], $mysqli);
 ?>
 <!DOCTYPE HTML>
 <html>

@@ -2,15 +2,17 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary")){
-	session_destroy();
-    session_start();
-	$_SESSION['err'] = "You do not have access";
-	header("Location: ../index.php");
-}
+// if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary")){
+// 	session_destroy();
+//     session_start();
+// 	$_SESSION['err'] = "You do not have access";
+// 	header("Location: ../index.php");
+// }
 
 $course_no = $_GET['crn'];
 $eval_type = "final";
+checkEvaluations($course_no, $eval_type, $mysqli);
+protectReports($course_no, $_SESSION['user'], $mysqli);
 ?>
 <!DOCTYPE HTML>
 <html>

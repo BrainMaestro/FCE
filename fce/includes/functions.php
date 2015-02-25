@@ -219,5 +219,47 @@ function loggedIn() {
     return isset($_SESSION['email']);
 }
 
+function checkEvaluations($crn, $eval_type, $mysqli) {
+    $count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
+    
+    if ($count_response['filled'] == 0) {
+        $_SESSION['err'] = "This report is empty";
+        header("Location: ../index.php");
+    }
+}
+
+function protectReports($crn, $user, $mysqli) {
+    $section = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
+    $result = $mysqli->query("SELECT faculty_email FROM course_assignments WHERE crn='$crn'");
+    $instructors = [];
+    for($i = 0; $i < $result->num_rows; $i++) {
+        $instructors[] = $result->fetch_array()[0];
+    }
+
+    switch ($user) {
+        case 'faculty':
+            if (!in_array($_SESSION['email'], $instructors)) {
+                $_SESSION['err'] = "You do not have access to view another faculty member's report";
+                header("Location: ../index.php");
+            }
+            break;
+
+        case 'dean':
+            if ($_SESSION['school'] != $section['school']) {
+                $_SESSION['err'] = "You do not have access to view a report from another school";
+                header("Location: ../index.php");
+            }
+            break;
+
+        case 'secretary':
+            $_SESSION['err'] = "As a secretary, you do not have access to view reports";
+            header("Location: ../index.php");
+            break;
+        
+        default:
+            break;
+    }
+}
+
 ?>
 

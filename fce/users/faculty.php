@@ -3,6 +3,7 @@ include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
 checkUser("faculty");
+$_SESSION['user'] = 'faculty';
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -133,6 +134,10 @@ checkUser("faculty");
 
                 if ($result->num_rows == 0)
                     echo "<h4 class='error'>No section matches your criteria</h4>";
+                elseif (isset($_SESSION['err'])) {
+                        echo "<h4 class='error'>$_SESSION[err]</h4>";
+                        unset($_SESSION['err']);
+                    }
                 else {
                     echo "<table width='100%' class='evaltable para dean_form not-center'>
                             <caption><h3>Reports</h3><hr></caption>

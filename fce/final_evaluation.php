@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
 		header("Location: index.php");
 	}
 	
-    if ($stmt = $mysqli->prepare("INSERT INTO evaluation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO evaluations VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "final";
         $crn = $_SESSION['crn'];
         $stmt->bind_param('iiiiiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
@@ -140,17 +140,17 @@ if (isset($_POST['submit'])) {
                         $crn = $_SESSION['crn'];
                         $key_value = $_SESSION['key_value'];
                         $semester = getCurrentSemester();
-                        $result = $mysqli->query("SELECT course_code, faculty_email, course_title, semester FROM section where crn='$crn'");
+                        $result = $mysqli->query("SELECT course_code, course_title, semester FROM sections where crn='$crn'");
                         $row = $result->fetch_assoc();
-                        $result2 = $mysqli->query("SELECT name from user WHERE email='$row[faculty_email]'");
-                        $row2 = $result2 ->fetch_assoc();
+                        // $result2 = $mysqli->query("SELECT name from users WHERE email='$row[faculty_email]'");
+                        // $row2 = $result2 ->fetch_assoc();
                         echo "<li><a>$row[semester]</a></li>";
                         echo "<li><a>$row[course_code]</a></li>";
                         echo "<li><a>$row[course_title]</a></li>";
-                        echo "<li><a>$row2[name]</a></li>";
+                        // echo "<li><a>$row2[name]</a></li>";
                         echo "<li><a>Key: $key_value</a></li>";
-                        echo "<li><a>Time Left: <span id='time' class='error'>00:00</span></a></li>";
-                        echo "<script>startTimer();</script>";
+                        // echo "<li><a>Time Left: <span id='time' class='error'>00:00</span></a></li>";
+                        // echo "<script>startTimer();</script>";
                         ?>
                         </ul>
                     </div><!-- /.navbar-collapse -->

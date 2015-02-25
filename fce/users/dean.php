@@ -3,6 +3,7 @@ include '../includes/db_connect.php';
 include '../includes/functions.php';
 
 checkUser("dean");
+$_SESSION['user'] = 'dean';
 ?>
 <!DOCTYPE HTML>
 <html>

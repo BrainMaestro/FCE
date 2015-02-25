@@ -11,6 +11,7 @@ if (isset($_POST['submit'])) {
 	else
 		unlockSection($_POST['crn'], $mysqli);
 }
+$_SESSION['user'] = 'secretary';
 
 ?>
 <!DOCTYPE HTML>
