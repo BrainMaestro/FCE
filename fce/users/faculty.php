@@ -77,7 +77,7 @@ checkUser("faculty");
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
                 <?php
-                list_roles();
+                list_roles('faculty');
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
                 $name = $_SESSION['name'];

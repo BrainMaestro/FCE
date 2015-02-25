@@ -87,7 +87,7 @@ if (isset($_POST['submit'])) {
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
                 <?php
-                list_roles();
+                list_roles('secretary');
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
                 $name = $_SESSION['name'];

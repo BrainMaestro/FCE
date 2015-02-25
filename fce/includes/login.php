@@ -35,7 +35,7 @@ if (isset($_POST['email'], $_POST['password'])) {
         	}
              else {
                 $_SESSION['errl'] = "wrong Email or Password";
-        		header("Location: index.php");
+        		header("Location: ../index.php");
         	}
         } else {
             $_SESSION['errl'] = "No Such User";

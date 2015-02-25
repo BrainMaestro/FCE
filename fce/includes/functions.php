@@ -179,10 +179,14 @@ function checkUser($page){
 	// 	header("Location: ../index.php");
 	// }
 }
-function list_roles() {
+function list_roles($role) {
     for($i = 0; $i < count($_SESSION['roles']); $i++) {
         $a = $_SESSION['roles'][$i];
-        echo "<li><a href=$a.php>$a</a></li>";
+        if ($a == $role)
+            echo "<li class='active'><a href=$a.php>$a</a></li>";
+        else
+            echo "<li><a href=$a.php>$a</a></li>";
+            
     }
 }
 
