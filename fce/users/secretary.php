@@ -192,8 +192,6 @@ if (isset($_POST['submit'])) {
 							echo "$faculty[name]<br>";
 						}
 						echo "</td>";
-						// $row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
-						// echo "<td>$row2[name]</td>";
 						echo "<td>$row[class_time]</td>";
                         echo "<td>$row[location]</td>";
 						echo "<td>$row[enrolled]</td>";

@@ -82,10 +82,10 @@ checkUser("dean");
                 		list_roles('dean');
                 		$semester = getCurrentSemester();
                 		$school = $_SESSION['school'];
-		                $name = $_SESSION['name'];
-		                echo "<li><a>$semester</a></li>";
-		                echo "<li><a>$school</a></li>";
-		                echo "<li><a>$name</a></li>";
+		                // $name = $_SESSION['name'];
+		                // echo "<li><a>$semester</a></li>";
+		                // echo "<li><a>$school</a></li>";
+		                // echo "<li><a>$name</a></li>";
                 	?>
                 </ul>
 		      
@@ -104,8 +104,7 @@ checkUser("dean");
 	                Leave search bar empty to search all sections<br><br>
 	                <?php
 	                echo '<select name="semester" class="input-sm">';
-				    echo '<option selected value="%">--Choose Semester--</option>';
-				    $result = $mysqli->query("SELECT semester from semester");
+				    $result = $mysqli->query("SELECT semester from semesters");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
 						echo "<option value='$row[semester]'>$row[semester]</option>";
@@ -123,12 +122,12 @@ checkUser("dean");
 			
 				<?php
 				// if (isset($_POST['filter'])) {
-		        $result = $mysqli->query("SELECT * from section where semester = '$semester' 
+		        $result = $mysqli->query("SELECT * FROM sections WHERE semester = '$semester' 
 		        	AND school='$_SESSION[school]'");
 
 				if (isset($_POST['filter'])) {
 
-					$sql = "SELECT * FROM section WHERE school='$_SESSION[school]'";
+					$sql = "SELECT * FROM sections WHERE school='$_SESSION[school]'";
 					if (isset($_POST['semester']))
 						$sql .= " AND semester LIKE '%$_POST[semester]%'";
 
@@ -147,8 +146,11 @@ checkUser("dean");
 						<thead>
 							<th>CRN</th>
 							<th>Course Code</th>
-							
+							<th>Course Title</th>
 							<th>Instructor</th>
+							<th>Class Time</th>
+	                        <th>Location</th>
+							<th>Enrolled</th>
 							<th>Midterm</th>
 							<th>Final</th>
 						</thead>";
@@ -158,9 +160,20 @@ checkUser("dean");
 					for($i = 0; $i < $result->num_rows; $i++) {
 			        	$row = $result->fetch_assoc();
 						echo "<tr>";
-						echo "<td>$row[course_code]</td>";
 						echo "<td>$row[crn]</td>";
-						echo "<td>$row[faculty_email]</td>";
+						echo "<td>$row[course_code]</td>";
+						echo "<td>$row[course_title]</td>";
+						$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+						echo "<td>";
+						for($j = 0; $j < $assignment->num_rows; $j++) {
+							$row2 = $assignment->fetch_assoc();
+							$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+							echo "$faculty[name]<br>";
+						}
+						echo "</td>";
+						echo "<td>$row[class_time]</td>";
+						echo "<td>$row[location]</td>";
+						echo "<td>$row[enrolled]</td>";
 
 						if ($row['mid_evaluation'] == 0)
 							echo "<td>No Midterm Report</td>";
