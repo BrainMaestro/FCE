@@ -89,11 +89,11 @@ if (isset($_POST['submit'])) {
                 <?php
                 list_roles('secretary');
                 $semester = getCurrentSemester();
-                $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><a>$semester</a></li>";
-                echo "<li><a>$school</a></li>";
-                echo "<li><a>$name</a></li>";
+                // $school = $_SESSION['school'];
+                // $name = $_SESSION['name'];
+                // echo "<li><a>$semester</a></li>";
+                // echo "<li><a>$school</a></li>";
+                // echo "<li><a>$name</a></li>";
                 ?>
                 </ul>
 		    </div>
@@ -109,8 +109,7 @@ if (isset($_POST['submit'])) {
 				<form action="secretary.php" method='post'>
 	                Leave search bar empty to search all sections<br><br>
 					<select name="status" class="input-sm" required>
-	                    <option selected value="">--Choose Section Status--</option>
-	                    <option value="1">Locked</option>
+	                    <option selected value="1">Locked</option>
 	                    <option value="0">Unlocked</option>
 	                    <option value="%">All</option>
 	                </select><br><br>
@@ -125,14 +124,14 @@ if (isset($_POST['submit'])) {
 			<div class="col-xs-12 text-center">		
 				<form action="secretary.php" method="post">
 					<?php
-					$result = $mysqli->query("SELECT * FROM section WHERE locked = '1' AND semester = '$semester'");
+					$result = $mysqli->query("SELECT * FROM sections WHERE locked = '1' AND semester = '$semester'");
 					$status = '1';
 					$caption = 'Locked ';
 					$color = 'red';
 
 					if (isset($_POST['filter'])) {
 						$status = $_POST['status'];
-						$sql = "SELECT * FROM section WHERE locked LIKE '$status'";
+						$sql = "SELECT * FROM sections WHERE locked LIKE '$status'";
 
 						if (isset($_POST['search']))
 							$sql .= " AND course_code LIKE '%$_POST[search]%'";
@@ -166,6 +165,8 @@ if (isset($_POST['submit'])) {
 						<th>Course Code</th>
 						<th>Course Title</th>
 						<th>Instructor</th>
+						<th>Class Time</th>
+                        <th>Location</th>
 						<th>Enrolled</th>
 						<th>Status</th>
 						<th>Midterm Evaluation</th>
@@ -174,14 +175,6 @@ if (isset($_POST['submit'])) {
 							echo "<th>Section Keys</th>";
 					echo "</thead>
 					<tbody>";
-					
-					if ($result->num_rows == 0)
-						echo "<h4 class='error'>No section matches your criteria</h4>";
-					elseif (isset($_SESSION['err'])) {
-						echo "<h4 class='error'>$_SESSION[err]</h4>";
-						unset($_SESSION['err']);
-					}
-
 
 					for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
@@ -191,8 +184,18 @@ if (isset($_POST['submit'])) {
 						echo "<td>$row[crn]</td>";
 						echo "<td>$row[course_code]</td>";
 						echo "<td>$row[course_title]</td>";
-						$row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
-						echo "<td>$row2[name]</td>";
+						$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+						echo "<td>";
+						for($j = 0; $j < $assignment->num_rows; $j++) {
+							$row2 = $assignment->fetch_assoc();
+							$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+							echo "$faculty[name]<br>";
+						}
+						echo "</td>";
+						// $row2 = $mysqli->query("SELECT name FROM user WHERE email='$row[faculty_email]'")->fetch_assoc();
+						// echo "<td>$row2[name]</td>";
+						echo "<td>$row[class_time]</td>";
+                        echo "<td>$row[location]</td>";
 						echo "<td>$row[enrolled]</td>";
 						$locked = ($row['locked'] == 1) ? "Locked" : "Unlocked";
 						$color = ($locked == "Locked") ? "red" : "green";
@@ -214,8 +217,16 @@ if (isset($_POST['submit'])) {
                 		elseif ($status == 0)
                 			echo "<button class='black-btn margin' name='submit' value='lock'>Lock</button>";
 					}
+
+					if ($result->num_rows == 0)
+						echo "<h4 class='error'>No section matches your search criteria</h4>";
+					elseif (isset($_SESSION['err'])) {
+						echo "<h4 class='error'>$_SESSION[err]</h4>";
+						unset($_SESSION['err']);
+					}
 					?>
 				</form>
+
 			</div>
 		</div>
 	</div>

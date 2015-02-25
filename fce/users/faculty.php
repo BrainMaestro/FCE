@@ -80,10 +80,10 @@ checkUser("faculty");
                 list_roles('faculty');
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><a>$semester</a></li>";
-                echo "<li><a>$school</a></li>";
-                echo "<li><a>$name</a></li>";
+                // $name = $_SESSION['name'];
+                // echo "<li><a>$semester</a></li>";
+                // echo "<li><a>$school</a></li>";
+                // echo "<li><a>$name</a></li>";
                 ?>
                 </ul>
             </div>
@@ -128,8 +128,8 @@ checkUser("faculty");
                         $search = $_POST['search'];
                 }
 
-                $result = $mysqli->query("SELECT * from section where semester LIKE '%$semester%' 
-                    AND faculty_email='$_SESSION[email]' AND course_code LIKE '%$search%'"); 
+                $result = $mysqli->query("SELECT * FROM sections, course_assignments WHERE semester LIKE '%$semester%' 
+                    AND course_code LIKE '%$search%' AND sections.crn = course_assignments.crn AND faculty_email='$_SESSION[email]'"); 
 
                 if ($result->num_rows == 0)
                     echo "<h4 class='error'>No section matches your criteria</h4>";
@@ -140,6 +140,8 @@ checkUser("faculty");
                             <th>CRN</th>
                             <th>Course Code</th>
                             <th>Course Title</th>
+                            <th>Class Time</th>
+                            <th>Location</th>
                             <th>Enrolled</th>
                             <th>Midterm</th>
                             <th>Final</th>
@@ -152,6 +154,8 @@ checkUser("faculty");
                         echo "<td>$row[crn]</td>";
                         echo "<td>$row[course_code]</td>";
                         echo "<td>$row[course_title]</td>";
+                        echo "<td>$row[class_time]</td>";
+                        echo "<td>$row[location]</td>";
                         echo "<td>$row[enrolled]</td>";
 
                         if ($row['mid_evaluation'] == 0)

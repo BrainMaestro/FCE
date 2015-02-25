@@ -84,10 +84,10 @@ checkUser("admin");
                 list_roles('admin');
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><a>$semester</a></li>";
-                echo "<li><a>$school</a></li>";
-                echo "<li><a>$name</a></li>";
+                // $name = $_SESSION['name'];
+                // echo "<li><a>$semester</a></li>";
+                // echo "<li><a>$school</a></li>";
+                // echo "<li><a>$name</a></li>";
                 ?>
                 </ul>
 		    </div>
@@ -146,6 +146,8 @@ checkUser("admin");
 					<th>Course Code</th>
 					<th>CRN</th>
 					<th>Instructor</th>
+					<th>Class Time</th>
+					<th>Location</th>
 					<th>Enrolled</th>
 					<th>School</th>
 					<th>Midterm Reports</th>
@@ -167,6 +169,8 @@ checkUser("admin");
 					echo "$faculty[name]<br>";
 				}
 				echo "</td>";
+				echo "<td>$row[class_time]</td>";
+                echo "<td>$row[location]</td>";
 				echo "<td>$row[enrolled]</td>";
 				echo "<td>$row[school]</td>";
 				if ($row['mid_evaluation'] == 0)
@@ -188,7 +192,6 @@ checkUser("admin");
 			</div>
 		</div>
 	</div>
-	<hr></hr>
 </div><!-- end main -->
 <FOOTER>
         <div class="footer_bg"><!-- start footer -->
