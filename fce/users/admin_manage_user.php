@@ -4,6 +4,21 @@ include_once '../includes/functions.php';
 
 checkUser("admin");
 $_SESSION['user'] = 'admin';
+$_SESSION['success'] = '';
+if (isset($_POST['add_role'])) {
+	$email = $_POST['email'];
+	$role = $_POST['usertype'];
+	$check = $mysqli->query("SELECT * from user_roles where user_email = '$email' and user_role = '$role'");
+	if ($check->num_rows == 0) { 
+	    if ($mysqli->query("INSERT INTO user_roles VALUES ('$email', '$role')")) {
+	        $_SESSION['success'] = "Grant role successful";
+	    } else {
+	        $_SESSION['success'] = "Grant role unsuccessful";
+	    }
+	} else {
+		$_SESSION['success'] = "Role has already been granted to user";
+	}
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -60,7 +75,7 @@ $_SESSION['user'] = 'admin';
 		<div class="h_search navbar-right">
 			<?php
 				$t=time();
-				// echo(date("g:i A D, M d, Y",$t));
+				echo(date("g:i A D, M d, Y",$t));
 			?>
 			<form action="../includes/logout.php" method="post">
 				<button class='black-btn margin' name='logout' value='logout'>Logout</button>
@@ -85,10 +100,6 @@ $_SESSION['user'] = 'admin';
                 list_roles('admin');
                 $semester = getCurrentSemester();
                 $school = $_SESSION['school'];
-                // $name = $_SESSION['name'];
-                // echo "<li><a>$semester</a></li>";
-                // echo "<li><a>$school</a></li>";
-                // echo "<li><a>$name</a></li>";
                 ?>
                 </ul>
 		    </div>
@@ -96,110 +107,80 @@ $_SESSION['user'] = 'admin';
 	</div>
 </div>
 </div>
-<div class="text-center">
-	<br></br>
-	<a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
-	<a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
-	<a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
-</div>
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
-		<div class="main row para">	
-            <div class="col-xs-4 text-center"></div>		
-			<div class="col-xs-4 text-center border">
-				<form action="" method='post'>
-	                Leave search bar empty to search all sections<br><br>
-	                <?php
-	                echo '<select name="semester" class="input-sm">';
+		<div class="main row para">
+		<div class="col-xs-1 text-center">
+            </div>		
+            <div class="col-xs-4 text-center border" style="height:270px">
+            	<form action="" method='post'>
+	            	Assign roles to users<br>
+	            	<br /><input type="text" class="round" name="email" placeholder="Ex: abdulmajid.alaedu@aun.edu.ng" required="required"/> <br /><br />
 
-				    $result = $mysqli->query("SELECT semester from semesters");
-				    for($i = 0; $i < $result->num_rows; $i++) {
-						$row = $result->fetch_assoc();
-						echo "<option value='$row[semester]'>$row[semester]</option>";
-					}
-					echo '</select><br><br>';
-					?>
-					<select name="school" class="input-sm">
-	                    <option value="%">All Schools</option>
-	                    <option value="SITC">SITC</option>
-	                    <option value="SAS">SAS</option>
-	                    <option value="SBE">SBE</option>
-	                </select><br /><br />
-	                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
-					<br /><br />
-					<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
+	                    <select class="input-sm" name="usertype" required="required">
+	                        <option selected value="">--Choose User Type--</option>
+	                        <option value="dean">Executive</option>
+	                        <option value="faculty">Faculty</option>
+	                        <option value="secretary">Secretary</option>
+	                        <option value="admin">Admin</option>
+	                        <option value="dean">Dean</option>
+	                    </select><br /></p>
+	                    <button class="black-btn" type="submit" name="add_role">GRANT ROLE</button>
+	                    <p><?php echo $_SESSION['success']; ?></p>
+	            </form>
+            </div>
+            <div class="col-xs-2 text-center">
+            </div>		
+			<div class="col-xs-4 text-center border" style="height:270px">
+				<form action="" method='post'>
+	                Leave search bar empty to get all roles<br><br><br>
+	         
+	                <input type="text" name="search" class="round" placeholder="Ex: Faculty">
+					<br /><br /><p></p><p></p>
+					<button class="black-btn" type="submit" name="role_filter">GET USERS</button>
 				</form>
 			</div></div>
-
+			<div class="col-xs-1 text-center">
+            </div>	
             <div class="text-center">
 			
 			<?php
 			
-			$sch = '%';
 		    $search = '%';
 
-			if (isset($_POST['sch_submit'])) {  
-
-				$sch = $_POST['school'];
-				$semester = $_POST['semester'];
+			if (isset($_POST['role_filter'])) {  
 		    	$search = $_POST['search'];
-		    }
-
-    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' AND semester LIKE '$semester' AND course_code LIKE '%$search%'");
 		    
-		    if ($result->num_rows == 0)
-				echo "<h4 class='error'>No section matches your search criteria</h4>";
-			elseif (isset($_SESSION['err'])) {
-				echo "<h4 class='error'>$_SESSION[err]</h4>";
-				unset($_SESSION['err']);
-			}
-			else {
-			echo "<table width='100%' class='evaltable para dean_form not-center'>
-			<caption><h3>Reports</h3><hr></caption>
-				<thead>
-					<th>CRN</th>
-					<th>Course Code</th>
-					<th>Instructor</th>
-					<th>Class Time</th>
-					<th>Location</th>
-					<th>Enrolled</th>
-					<th>School</th>
-					<th>Midterm Reports</th>
-					<th>Final Reports</th>
-				</thead><tbody>";
 
-			for($i = 0; $i < $result->num_rows; $i++) {
-            	$row = $result->fetch_assoc();
-	          
-	        	echo '<tr>';
-				echo "<td>$row[crn]</td>";
-				echo "<td>$row[course_code]</td>";
-    			$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
-				echo "<td>";
-				for($j = 0; $j < $assignment->num_rows; $j++) {
-					$row2 = $assignment->fetch_assoc();
-					$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
-					echo "$faculty[name]<br>";
+	    		$result = $mysqli->query("SELECT name, email, user_role FROM users inner join user_roles WHERE user_role LIKE '%$search%'");
+			    
+			    if ($result->num_rows == 0)
+					echo "<h4 class='error'>No user matches your search criteria</h4>";
+				elseif (isset($_SESSION['err'])) {
+					echo "<h4 class='error'>$_SESSION[err]</h4>";
+					unset($_SESSION['err']);
 				}
-				echo "</td>";
-				echo "<td>$row[class_time]</td>";
-                echo "<td>$row[location]</td>";
-				echo "<td>$row[enrolled]</td>";
-				echo "<td>$row[school]</td>";
-				if ($row['mid_evaluation'] == 0)
-					echo "<td>No Midterm Report</td>";
-				else
-					echo "<td><a target='_blank' href='mid_report.php?crn=$row[crn]'>View Midterm Report</a></td>";
-				
-				if ($row['final_evaluation'] == 0) 
-					echo "<td>No Final Report</td>";
-				else 
-					echo "<td><a target='_blank' href='final_report.php?crn=$row[crn]'>View Final Report</a></td>";
-				
-	        	echo '</tr>';
-			}
-        	echo '</tbody></table><hr>';
-        	}
+				else {
+				echo "<table width='100%' class='evaltable para dean_form not-center'>
+				<caption><h3>Reports</h3><hr></caption>
+					<thead>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Role</th>
+					</thead><tbody>";
+
+				for($i = 0; $i < $result->num_rows; $i++) {
+	            	$row = $result->fetch_assoc();
+		          
+		        	echo '<tr>';
+					echo "<td>$row[name]</td>";
+					echo "<td>$row[email]</td>";
+					echo "<td>$row[user_role]</td>";
+		        	echo '</tr>';
+				}
+	        	echo '</tbody></table><hr>';
+	        	}
+	        }
 			?>
 
 			</div>	
