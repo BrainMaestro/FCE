@@ -33,10 +33,10 @@ if (isset($_POST['email'], $_POST['password'])) {
                 header("Location: ../users/$main_role.php"); // Simple statement that works for all user types
 
         	}
-         //     else {
-         //        $_SESSION['errl'] = "wrong Email or Password";
-        	// 	header("Location: index.php");
-        	// }
+             else {
+                $_SESSION['errl'] = "wrong Email or Password";
+        		header("Location: index.php");
+        	}
         } else {
             $_SESSION['errl'] = "No Such User";
             header("Location: ../index.php");
