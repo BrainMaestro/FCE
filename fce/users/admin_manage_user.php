@@ -5,6 +5,7 @@ include_once '../includes/functions.php';
 checkUser("admin");
 $_SESSION['user'] = 'admin';
 $_SESSION['success'] = '';
+$_SESSION['success2'] = '';
 if (isset($_POST['add_role'])) {
 	$email = $_POST['email'];
 	$role = $_POST['usertype'];
@@ -17,6 +18,20 @@ if (isset($_POST['add_role'])) {
 	    }
 	} else {
 		$_SESSION['success'] = "Role has already been granted to user";
+	}
+}
+if (isset($_POST['remove_role'])) {
+	$email = $_POST['email'];
+	$role = $_POST['usertype'];
+	$check = $mysqli->query("SELECT * from user_roles where user_email = '$email' and user_role = '$role'");
+	if ($check->num_rows != 0) { 
+	    if ($mysqli->query("DELETE from user_roles where user_email = '$email' and user_role = '$role'")) {
+	        $_SESSION['success2'] = "Revoke role successful";
+	    } else {
+	        $_SESSION['success2'] = "Revoke role unsuccessful";
+	    }
+	} else {
+		$_SESSION['success2'] = "Role was never granted to user";
 	}
 }
 ?>
@@ -110,16 +125,28 @@ if (isset($_POST['add_role'])) {
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
 		<div class="main row para">
-		<div class="col-xs-1 text-center">
-            </div>		
-            <div class="col-xs-4 text-center border" style="height:270px">
+			<div class="col-xs-3 text-center border" style="height:270px">
+				<form action="" method='post'>
+	                Leave search bar empty to get all roles<br><br><br>
+	         
+	                <input type="text" name="search" class="round" placeholder="Ex: Faculty">
+					<br /><br /><p></p><p></p>
+					<button class="black-btn" type="submit" name="role_filter">GET USERS</button>
+				</form>
+			</div>
+            
+
+            <div class="col-xs-2">
+            </div>
+
+			<div class="col-xs-3 text-center border" style="height:270px">
             	<form action="" method='post'>
 	            	Assign roles to users<br>
 	            	<br /><input type="text" class="round" name="email" placeholder="Ex: abdulmajid.alaedu@aun.edu.ng" required="required"/> <br /><br />
 
 	                    <select class="input-sm" name="usertype" required="required">
 	                        <option selected value="">--Choose User Type--</option>
-	                        <option value="dean">Executive</option>
+	                        <option value="executive">Executive</option>
 	                        <option value="faculty">Faculty</option>
 	                        <option value="secretary">Secretary</option>
 	                        <option value="admin">Admin</option>
@@ -129,19 +156,30 @@ if (isset($_POST['add_role'])) {
 	                    <p><?php echo $_SESSION['success']; ?></p>
 	            </form>
             </div>
-            <div class="col-xs-2 text-center">
-            </div>		
-			<div class="col-xs-4 text-center border" style="height:270px">
-				<form action="" method='post'>
-	                Leave search bar empty to get all roles<br><br><br>
-	         
-	                <input type="text" name="search" class="round" placeholder="Ex: Faculty">
-					<br /><br /><p></p><p></p>
-					<button class="black-btn" type="submit" name="role_filter">GET USERS</button>
-				</form>
-			</div></div>
+
 			<div class="col-xs-1 text-center">
-            </div>	
+            </div>
+
+            <div class="col-xs-3 text-center border" style="height:270px">
+            	<form action="" method='post'>
+	            	Retract roles from users<br>
+	            	<br /><input type="text" class="round" name="email" placeholder="Ex: abdulmajid.alaedu@aun.edu.ng" required="required"/> <br /><br />
+
+	                    <select class="input-sm" name="usertype" required="required">
+	                        <option selected value="">--Choose User Type--</option>
+	                        <option value="executive">Executive</option>
+	                        <option value="faculty">Faculty</option>
+	                        <option value="secretary">Secretary</option>
+	                        <option value="admin">Admin</option>
+	                        <option value="dean">Dean</option>
+	                    </select><br /></p>
+	                    <button class="black-btn" type="submit" name="remove_role">REVOKE ROLE</button>
+	                    <p><?php echo $_SESSION['success2']; ?></p>
+	            </form>
+            </div>
+        </div>
+			
+
             <div class="text-center">
 			
 			<?php
@@ -152,7 +190,7 @@ if (isset($_POST['add_role'])) {
 		    	$search = $_POST['search'];
 		    
 
-	    		$result = $mysqli->query("SELECT name, email, user_role FROM users inner join user_roles WHERE user_role LIKE '%$search%'");
+	    		$result = $mysqli->query("SELECT name, email, user_role FROM users, user_roles  WHERE (users.email = user_roles.user_email) and user_role LIKE '%$search%'");
 			    
 			    if ($result->num_rows == 0)
 					echo "<h4 class='error'>No user matches your search criteria</h4>";
