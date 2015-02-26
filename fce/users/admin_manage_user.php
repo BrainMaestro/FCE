@@ -90,7 +90,7 @@ if (isset($_POST['remove_role'])) {
 		<div class="h_search navbar-right">
 			<?php
 				$t=time();
-				echo(date("g:i A D, M d, Y",$t));
+				// echo(date("g:i A D, M d, Y",$t));
 			?>
 			<form action="../includes/logout.php" method="post">
 				<button class='black-btn margin' name='logout' value='logout'>Logout</button>

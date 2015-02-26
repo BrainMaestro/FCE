@@ -135,32 +135,53 @@ if (isset($_POST['submit'])) {
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                        <li><a>Mid Evaluation Form</a></li>
+                        <!-- <li><a>Mid Evaluation Form</a></li>
                         <?php
-                        $crn = $_SESSION['crn'];
-                        $key_value = $_SESSION['key_value'];
-                        $semester = getCurrentSemester();
-                        $result = $mysqli->query("SELECT course_code, course_title, semester FROM sections where crn='$crn'");
-                        $row = $result->fetch_assoc();
-                        // $result2 = $mysqli->query("SELECT name from users WHERE email='$row[faculty_email]'");
-                        // $row2 = $result2 ->fetch_assoc();
-                        echo "<li><a>$row[semester]</a></li>";
-                        echo "<li><a>$row[course_code]</a></li>";
-                        echo "<li><a>$row[course_title]</a></li>";
-                        // echo "<li><a>$row2[name]</a></li>";
-                        echo "<li><a>Key: $key_value</a></li>";
                         // echo "<li><a>Time Left: <span id='time' class='error'>00:00</span></a></li>";
                         // echo "<script>startTimer();</script>";
-                        ?>
+                        ?> -->
                         </ul>
                     </div><!-- /.navbar-collapse -->
                     <!-- start soc_icons -->
                 </nav>
             </div>
         </div>
+        <div class='row para text-center'>
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <table width="100%" class="not-center evaltable">
+                    <caption><h3>Course Details</h3><hr></caption>
+                    <tbody>
+                        <?php
+                        $crn = $_SESSION['crn'];
+                        $key_value = $_SESSION['key_value'];
+                        $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
+                        $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
+                        $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+
+                        echo "<tr><td>CRN</td>";
+                        echo "<td>$crn</td></tr>";
+                        echo "<tr><td>Course Code</td>";
+                        echo "<td>$row[course_code]</td></tr>";
+                        echo "<tr><td>Course Title</td>";
+                        echo "<td>$row[course_title]</td></tr>";
+                        echo "<tr><td>Instructor(s)</td>";
+                        $assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+                        echo "<td>";
+                        for($j = 0; $j < $assignment->num_rows; $j++) {
+                            $row2 = $assignment->fetch_assoc();
+                            $faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+                            echo "$faculty[name]<br>";
+                        }
+                        echo "</td></tr>";
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="container">
             <div class="main row para">
-                          <div class="col-md-5">
+                <div class="col-md-5">
                     <div class="banner-msg">
 
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
@@ -227,16 +248,6 @@ if (isset($_POST['submit'])) {
                             <td class="w5"><input type="radio" name="q5" value="4" required="required"></td>
                             <td class="w5"><input type="radio" name="q5" value="5" required="required"></td>
                         </tr>
-                        <!--<tr ><td></td></tr>
-                        <tr>
-                            <td class="w5"></td>
-                            <td class="w70"><strong class="thead">Instructor</strong></td>
-                            <td class="w5">1</td>
-                            <td class="w5">2</td>
-                            <td class="w5">3</td>
-                            <td class="w5">4</td>
-                            <td class="w5">5</td>
-                        </tr>-->
                         <tr>
                             <td class="w5">6</td>
                             <td class="w70"><strong>Explanation of Concepts </strong>(My professor explains the material and concepts well) </td>

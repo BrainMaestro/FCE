@@ -149,6 +149,41 @@ if ($status == true) {
 	<div class="clearfix"></div>
 </div>
 </div>
+<div class="clearfix"></div>
+<div class='row para text-center'>
+	<div class="col-xs-4"></div>
+	<div class="col-xs-4">
+		<table width="100%" class="not-center evaltable">
+			<caption><h3>Section Details</h3><hr></caption>
+			<tbody>
+				<?php
+		    	$row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
+				$eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
+				$term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+
+				echo "<tr><td>Course Code</td>";
+				echo "<td>$row[course_code]</td></tr>";
+				echo "<tr><td>Course Title</td>";
+				echo "<td>$row[course_title]</td></tr>";
+				echo "<tr><td>Evaluation</td>";
+				echo "<td>$term Evaluation</td></tr>";
+				echo "<tr><td>Instructor(s)</td>";
+				$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+				echo "<td>";
+				for($j = 0; $j < $assignment->num_rows; $j++) {
+					$row2 = $assignment->fetch_assoc();
+					$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+					echo "$faculty[name]<br>";
+				}
+				echo "</td></tr>";
+				?>
+				<tr>
+				
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 <div class="slider_bg"><!-- start slider -->
 	<div class="container">
 		<div id="da-slider" class="da-slider text-center">

@@ -19,7 +19,7 @@ if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary"))
 $course_no = $_GET['crn'];
 $eval_type = "mid";
 checkEvaluations($course_no, $eval_type, $mysqli);
-protectReports($course_no, $_POST['user'], $mysqli);
+protectReports($course_no, $_SESSION['user'], $mysqli);
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -71,7 +71,7 @@ protectReports($course_no, $_POST['user'], $mysqli);
 <div class="container">
     <div class="row header">
         <div class="logo navbar-left">
-            <h1><a href="../index.php">Faculty Course Evaluation</a></h1>
+            <h1><a>Faculty Course Evaluation</a></h1>
         </div>
         <div class="h_search navbar-right">
 			<form action="../includes/logout.php" method="post">
@@ -93,52 +93,68 @@ protectReports($course_no, $_POST['user'], $mysqli);
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                        <li><a>Course Report</a></li>
-                        <?php
-                        $result = $mysqli->query("SELECT semester FROM sections WHERE crn='$course_no'");
-                        $result = $result->fetch_assoc();
-                        $school = $_SESSION['school'];
-                        $name = $_SESSION['name'];
-                        echo "<li><a>$result[semester]</a></li>";
-                        echo "<li><a>$school</a></li>";
-                        echo "<li><a>$name</a></li>";
-                        if ($eval_type == 'mid') {
-                            echo "<li><a>midterm evaluation</a></li>";
-                        }
-                        else {
-                            echo "<li><a>$eval_type" . " evaluation</a></li>";
-                        }
-                        echo "<li><a>CRN: $course_no</a></li>";
-                        ?>
-                        </ul>
+                <ul class="nav navbar-nav">
+                    <li class='active'><a href="../index.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
+                    <?php
+                    list_roles('');
+                    ?>
+                </ul>
             </div>
         </nav>
     </div>
     <div class="clearfix"></div>
 </div>
 </div>
+<div class='row para text-center'>
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+        <table width="100%" class="not-center evaltable">
+            <caption><h3>Report Details</h3><hr></caption>
+            <tbody>
+                <?php
+                $row = $mysqli->query("SELECT * FROM sections WHERE crn='$course_no'")->fetch_assoc();
+                $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+
+                echo "<tr><td>Course Code</td>";
+                echo "<td>$row[course_code]</td></tr>";
+                echo "<tr><td>Course Title</td>";
+                echo "<td>$row[course_title]</td></tr>";
+                echo "<tr><td>Report</td>";
+                echo "<td>$term Evaluation Report</td></tr>";
+                echo "<tr><td>Instructor(s)</td>";
+                $assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
+                echo "<td>";
+                for($j = 0; $j < $assignment->num_rows; $j++) {
+                    $row2 = $assignment->fetch_assoc();
+                    $faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
+                    echo "$faculty[name]<br>";
+                }
+                echo "</td></tr>";
+                ?>
+                <tr>
+                    <td>Scale</td>
+                    <td>5 = excellent (exceptional, exemplary)<br>
+                    4 = very good (high quality, better than average)<br>
+                    3 = good (reasonable well done, acceptable)<br>
+                    2 = margin (slightly below average, needs improvement)<br>
+                    1 = poor (far below average, not acceptable)</td>
+                </tr>
+                <?php
+                    $count_crn = $course_no;    
+                    $count_eval_type = $eval_type;
+                    $count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
+                    $count_registered = $mysqli->query("SELECT enrolled FROM sections WHERE crn='$count_crn'")->fetch_assoc();
+                    echo "<tr><td>Total Response</td><td>$count_response[filled]</td>";
+                    echo "<tr><td>Total Enrolled</td><td>$count_registered[enrolled]</td>";    
+                ?>
+            </tbody>
+        </table>
+    </div>
+<div class="clearfix"></div>
 <div class="main_bg"><!-- start main -->
     <div class="container">
         <div class="main row para">
-		<div class="banner-msg">
-				Scale:<br>
-				5 = excellent (exceptional, exemplary)<br>
-                4 = very good (high quality, better than average)<br>
-                3 = good (reasonable well done, acceptable)<br>
-                2 = margin (slightly below average, needs improvement)<br>
-                1 = poor (far below average, not acceptable)<br><br>
-				
-				<?php
-					$count_crn = $course_no;
-                    $count_eval_type = $eval_type;
-					$count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
-					$count_registered = $mysqli->query("SELECT enrolled FROM sections WHERE crn='$count_crn'")->fetch_assoc();
-					echo "<span style=\"text-align: right;\">Total Response: $count_response[filled]<br>";
-					echo "Total Registered: $count_registered[enrolled]</span>";	
-				?>
-			</div>
-                <table align="center" class="para" width="100%">
+                <table class="para evaltable not-center" width="100%">
                         <tr>
                             <th class="w5"></th>
                             <th class="w65"><strong>Course</strong></th>
@@ -303,19 +319,8 @@ protectReports($course_no, $_POST['user'], $mysqli);
                             <td class="w5"></td>
                             <td class="w70"><strong>TOTAL AVERAGE</strong></td>
                             <td class="w5"><strong><?php avg_midterm($course_no, $eval_type, $mysqli) ?></strong></td>
-                            <td class="w5"></td>
-                            <td class="w5"></td>
-                            <td class="w5"></td>
-                            <td class="w5"></td>
                         </tr>
                     </table>
-					<?php
-						$rep_user_type = $_SESSION['user_type'];
-					
-						echo "<form action='$rep_user_type.php' method='post'>";
-						echo "<br><input class='black-btn' name='back_report' type='submit' value='Back'>";
-						echo "</form>";
-					?>
         </div>
     </div>
 </div><!-- end main -->
