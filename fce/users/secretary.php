@@ -64,7 +64,7 @@ $_SESSION['user'] = 'secretary';
 <div class="container">
 	<div class="row header">
 		<div class="logo navbar-left">
-			<h1><a href="../index.php">Faculty Course Evaluation</a></h1>
+			<h1><a>Faculty Course Evaluation</a></h1>
 		</div>
 		<div class="h_search navbar-right">
 			<form action="../includes/logout.php" method="post">
@@ -122,7 +122,7 @@ $_SESSION['user'] = 'secretary';
 		</div>
 
 		<div class="row para">
-			<div class="col-xs-12 text-center">		
+			<div class="text-center">		
 				<form action="secretary.php" method="post">
 					<?php
 					$result = $mysqli->query("SELECT * FROM sections WHERE locked = '1' AND semester = '$semester'");

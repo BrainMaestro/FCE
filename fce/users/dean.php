@@ -56,7 +56,7 @@ $_SESSION['user'] = 'dean';
 	<div class="row header">
 
 		<div class="logo navbar-left">
-			<h1><a href="index.html">Faculty Course Evaluation</a></h1>
+			<h1><a>Faculty Course Evaluation</a></h1>
 		</div>
 		<div class="h_search navbar-right">
 			<form action="../includes/logout.php" method="post">

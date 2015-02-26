@@ -101,21 +101,21 @@
                             <td>Stakeholder & Client</td>
                         </tr>
                         <tr>
-                            <td id="chizzy">Chizzy Alaedu</td>
-                            <td>Developer - Project Manager</td>
+                            <td id="ezinwa">Ezinwa Okpoechi</td>
+                            <td>Lead Software Developer</td>
                         </tr>
                         <tr>
-                            <td id="ezinwa">Ezinwa Okpoechi</td>
-                            <td>Developer - Team Lead</td>
+                            <td id="chizzy">Chizzy Alaedu</td>
+                            <td>Software Developer</td>
                         </tr>
                         <tr>
                             <td id="aisha">Aisha Alimi</td>
-                            <td>Developer - Genius</td>
+                            <td>Software Developer</td>
                         </tr>
                         
                         <tr>
                             <td id="skaex">Abdulmajid Hamza</td>
-                            <td>Developer - Code Expert</td>
+                            <td>Software Developer</td>
                         </tr>
                     </tbody>
                 </table>

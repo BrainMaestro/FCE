@@ -41,7 +41,6 @@ if ($status == true) {
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
-<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!--[if lt IE 9]>
@@ -49,6 +48,7 @@ if ($status == true) {
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -101,7 +101,7 @@ if ($status == true) {
 <div class="container">
 	<div class="row header">
 		<div class="logo navbar-left">
-			<h1><a href="../index.php">Faculty Course Evaluation</a></h1>
+			<h1><a>Faculty Course Evaluation</a></h1>
 		</div>
 		<div class="h_search navbar-right">
 			<form action="../includes/logout.php" method="post">
@@ -125,19 +125,19 @@ if ($status == true) {
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-				<li class='active'><a href="./index.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
-		      	<li><a>Section</a></li>
+				<li class='active'><a href="./secretary.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
                 <?php
+                list_roles('');
                 $crn = $_GET['crn'];
     			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM sections WHERE crn='$crn'")->fetch_assoc();
                 $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
                 $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
-                echo "<li><a>$row[course_code]</a></li>";
-                echo "<li><a>$row[school]</a></li>";
-                echo "<li><a>$row[semester]</a></li>";
-                echo "<li><a>$row[course_title]</a></li>";
-                echo "<li><a>$term</a></li>";
+                // echo "<li><a>$row[course_code]</a></li>";
+                // echo "<li><a>$row[school]</a></li>";
+                // echo "<li><a>$row[semester]</a></li>";
+                // echo "<li><a>$row[course_title]</a></li>";
+                // echo "<li><a>$term</a></li>";
                 $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
