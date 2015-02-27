@@ -30,8 +30,18 @@ if (isset($_POST['email'], $_POST['password'])) {
                 $_SESSION['roles'] = $roles_array;
                 $main_role = $_SESSION['roles'][0];
                 $_SESSION['user_type'] = $main_role; //for the goBack function, which btw also has to change
-                header("Location: ../users/$main_role.php"); // Simple statement that works for all user types
-
+                if ($main_role == "admin") {
+                    header("Location: ../users/$main_role.php"); // Simple statement that works for all user types
+                    exit();
+                } else {
+                    if ($db_password == "fce") {
+                        header("Location: ../change_password.php");
+                        exit();
+                    } else {
+                        header("Location: ../users/$main_role.php");
+                        exit();
+                    }
+                }
         	}
              else {
                 $_SESSION['errl'] = "wrong Email or Password";
