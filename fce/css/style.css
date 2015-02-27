@@ -112,10 +112,22 @@ body {
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
+.navbar-default .navbar-nav > li > span {
+	color: #fff;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
 .nav > li {
 	border-right: 1px solid rgb(39, 37, 37);
 }
 .nav > li > a {
+	font-size: 13px;
+	padding: 20px 30px;
+	text-transform: uppercase;
+}
+.nav > li > span {
 	font-size: 13px;
 	padding: 20px 30px;
 	text-transform: uppercase;
@@ -775,6 +787,9 @@ body {
 		margin: 0px 0px;
 	}
 	.nav > li > a {
+		padding: 20px 15px;
+	}
+	.nav > li > span {
 		padding: 20px 15px;
 	}
 	.soc_icons ul li a {
