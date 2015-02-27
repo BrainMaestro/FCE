@@ -176,8 +176,8 @@ $_SESSION['user'] = 'secretary';
 	                        <th>Location</th>
 							<th>Enrolled</th>
 							<th>Status</th>
-							<th>Midterm Evaluation</th>
-							<th>Final Evaluation</th>";
+							<th>Midterm<br> Evaluation</th>
+							<th>Final<br> Evaluation</th>";
 							if ($status == '0')
 								echo "<th>Section Keys</th>";
 						echo "</thead>

@@ -3,7 +3,7 @@ include_once 'db_connect.php';
 include_once 'functions.php';
 
 // session_start();
-goBack($mysqli);
+// goBack($mysqli);
 if (isset($_POST['email'], $_POST['password'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];

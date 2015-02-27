@@ -164,8 +164,8 @@ $_SESSION['user'] = 'admin';
 					<th>Location</th>
 					<th>Enrolled</th>
 					<th>School</th>
-					<th>Midterm Reports</th>
-					<th>Final Reports</th>
+					<th>Midterm</th>
+					<th>Final</th>
 				</thead><tbody>";
 
 			for($i = 0; $i < $result->num_rows; $i++) {

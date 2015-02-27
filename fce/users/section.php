@@ -133,11 +133,6 @@ if ($status == true) {
                 $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
                 $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
-                // echo "<li><a>$row[course_code]</a></li>";
-                // echo "<li><a>$row[school]</a></li>";
-                // echo "<li><a>$row[semester]</a></li>";
-                // echo "<li><a>$row[course_title]</a></li>";
-                // echo "<li><a>$term</a></li>";
                 $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
 
@@ -161,6 +156,8 @@ if ($status == true) {
 				$eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
 				$term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
 
+				echo "<tr><td>CRN</td>";
+				echo "<td>$crn</td></tr>";
 				echo "<tr><td>Course Code</td>";
 				echo "<td>$row[course_code]</td></tr>";
 				echo "<tr><td>Course Title</td>";
