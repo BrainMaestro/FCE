@@ -115,6 +115,8 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$course_no'")->fetch_assoc();
                 $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
 
+                echo "<tr><td>CRN</td>";
+                echo "<td>$course_no</td></tr>";
                 echo "<tr><td>Course Code</td>";
                 echo "<td>$row[course_code]</td></tr>";
                 echo "<tr><td>Course Title</td>";
@@ -329,7 +331,7 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
             <div class="container">
                 <div class="row  footer">
                     <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="thankyou.php#fceteam"> The FCE Team</a></span></p>
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="../thankyou.php"> The FCE Team</a></span></p>
                     </div>
                 </div>
             </div>
