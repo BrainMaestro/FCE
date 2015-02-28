@@ -122,7 +122,7 @@ $_SESSION['user'] = 'admin';
 	                </select><br /><br />
 	                <input type="text" name="search" class="round" placeholder="Ex: AUN 101">
 					<br /><br />
-					<button class="black-btn" type="submit" name="sch_submit">SUBMIT</button>
+					<button class="black-btn" type="submit" name="sch_submit">SEARCH</button>
 				</form>
 			</div></div>
 

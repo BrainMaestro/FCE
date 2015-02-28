@@ -91,18 +91,23 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li><a href="./admin.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
-                <li><a>Admin</a></li>
-                <?php
-                list_roles('admin');
-                $semester = getCurrentSemester();
-                ?>
+                <ul class="nav navbar-nav">
+                    <li class='active'><a href="./admin.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
+                    <?php
+                    list_roles('');
+                    $semester = getCurrentSemester();
+                    ?>
                 </ul>
             </div>
         </nav>
     </div>
 </div>
+</div>
+<div class="text-center">
+    <br></br>
+    <a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
+    <a href="./admin_add_section.php"><button class='link-active black-btn'>Add Section</button></a>
+    <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">

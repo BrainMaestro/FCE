@@ -45,7 +45,6 @@
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
-<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!--[if lt IE 9]>
@@ -53,6 +52,7 @@
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -87,24 +87,23 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li><a href="./admin.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
-                <li><a>Admin</a></li>
-
-                <?php
-                $semester = getCurrentSemester();
-                $semester = getCurrentSemester();
-                $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><span>$semester</span></li>";
-                echo "<li><span>$school</span></li>";
-                echo "<li><span>$name</span></li>";
-                ?>
+                <ul class="nav navbar-nav">
+                    <li class='active'><a href="./admin.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
+                    <?php
+                    list_roles('');
+                    $semester = getCurrentSemester();
+                    ?>
                 </ul>
             </div>
         </nav>
     </div>
 </div>
+</div>
+<div class="text-center">
+    <br></br>
+    <a href="./admin_add_user.php"><button class='link-active black-btn'>Add User</button></a>
+    <a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
+    <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">

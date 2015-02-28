@@ -1802,10 +1802,11 @@ fieldset[disabled] .checkbox-inline {
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
+  width: 160px;
 }
 select.input-sm {
-  height: 30px;
-  line-height: 30px;
+  height: 37px;
+  line-height: 37px;
 }
 textarea.input-sm,
 select[multiple].input-sm {
