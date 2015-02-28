@@ -21,7 +21,7 @@
         <meta name="theme-color" content="#ffffff">
 
         <!-- End of Favicon Kini -->
-        <title>Thankyou</title>
+        <title>Thank You</title>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -122,20 +122,6 @@
                 <hr>
             </div>
         </div>
-        <!-- <div class="text-center">
-        <?php
-        if (isset($_SESSION['email'])) {
-            $user_type = $_SESSION['user_type'];
-            echo "<form action='$rep_user_type.php' method='post'>";
-            echo "<br><input class='black-btn' name='back_report' type='submit' value='Back'>";
-            echo "</form>";
-        }
-        else
-            echo '<a class="black-btn" id="thank" href="./index.php">Go back</a>';
-        ?>
-            
-        </div> -->
-
     </div>
 
     <FOOTER>

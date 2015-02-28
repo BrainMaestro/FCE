@@ -83,12 +83,7 @@ $_SESSION['user'] = 'admin';
 		      <ul class="nav navbar-nav">
                 <?php
                 list_roles('admin');
-       			 $semester = getCurrentSemester();
-                $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><span>$semester</span></li>";
-                echo "<li><span>$school</span></li>";
-                echo "<li><span>$name</span></li>";
+                $semester = getCurrentSemester();
                 ?>
                 </ul>
 		    </div>

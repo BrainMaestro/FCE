@@ -184,6 +184,10 @@ function list_roles($role) {
             echo "<li><a href=$a.php>$a</a></li>";
 
     }
+    $semester = getCurrentSemester();
+    echo "<li><span>Semester: $semester</span></li>";
+    echo "<li><span>School: $_SESSION[school]</span></li>";
+    echo "<li><span>Name: $_SESSION[name]</span></li>";
 }
 
 //Method to check if a class has been locked for restriction

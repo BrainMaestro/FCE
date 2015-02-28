@@ -82,11 +82,6 @@ $_SESSION['user'] = 'dean';
                 	<?php
                 		list_roles('dean');
                 		$semester = getCurrentSemester();
-                $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><span>$semester</span></li>";
-                echo "<li><span>$school</span></li>";
-                echo "<li><span>$name</span></li>";
                 	?>
                 </ul>
 		      

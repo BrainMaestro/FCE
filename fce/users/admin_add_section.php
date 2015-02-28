@@ -95,12 +95,8 @@
                 <li><a href="./admin.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
                 <li><a>Admin</a></li>
                 <?php
+                list_roles('admin');
                 $semester = getCurrentSemester();
-                $school = $_SESSION['school'];
-                $name = $_SESSION['name'];
-                echo "<li><a>$semester</a></li>";
-                echo "<li><a>$school</a></li>";
-                echo "<li><a>$name</a></li>";
                 ?>
                 </ul>
             </div>

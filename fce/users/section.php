@@ -131,7 +131,6 @@ if ($status == true) {
                 $crn = $_GET['crn'];
     			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM sections WHERE crn='$crn'")->fetch_assoc();
                 $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
-                $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
                 $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><a><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</a></li>";
@@ -153,7 +152,6 @@ if ($status == true) {
 			<tbody>
 				<?php
 		    	$row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
-				$eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
 				$term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
 
 				echo "<tr><td>CRN</td>";
