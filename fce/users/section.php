@@ -183,19 +183,23 @@ if ($status == true) {
 	<div class="container">
 		<div id="da-slider" class="da-slider text-center">
 			<div class="da-slide">
-			<p id="sn1" value=""> null </p>
 			<h2 id="key1" value=""> null</h2>
+			<p id="sn1" value=""> null </p>
+			<h4 class="da-link text-center" id="given" value=""> null </h4>
 			<script type="text/javascript">
 			
-			function displayKeys() {
-				document.getElementsByName('key1').innerHTML=comment;
-			}
+			//function displayKeys() {
+				//document.getElementsByName('key1').innerHTML=comment;
+			//}
 			
 			var global_key = 0;
 			
 			function getKeys(key2) {
 				var keyvalues = document.getElementsByName('items[]');
 				var keys_array = [];
+				var givenout = document.getElementsByName('items_stat[]')
+				var given_out = []
+				
 				global_key += parseInt(key2);
 				
 				if (global_key > keyvalues.length - 1) {
@@ -207,10 +211,12 @@ if ($status == true) {
 				
 				for (var i = 0; i < keyvalues.length; i++) {
 					keys_array.push(keyvalues[i].value);
+					given_out.push(givenout[i].value)
 				}
 				
 				document.getElementById('key1').innerHTML = keys_array[global_key];
 				document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
+				document.getElementById('given').innerHTML = "Given out: " + given_out[global_key];
 			}
 			</script>
 			</div>
@@ -250,6 +256,7 @@ if ($status == true) {
 							echo "<td>$given_out</td>";
 							echo "<td>$used</td></tr>";
 							echo "<input type='hidden' name='items[]' value='$row[key_value]'>";
+							echo "<input type='hidden' name='items_stat[]' value='$given_out'>";
 						}
 						?>
 					</tbody>
