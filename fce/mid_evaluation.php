@@ -18,6 +18,9 @@ if (isset($_POST['submit'])) {
 	if ($status == true) {
 		session_destroy();
 		header("Location: index.php");
+		session_start();
+		$_SESSION['erre'] = "the section has been locked";
+		exit();
 	}
 	
     if ($stmt = $mysqli->prepare("INSERT INTO evaluations(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, eval_type)

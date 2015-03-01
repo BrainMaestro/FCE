@@ -193,7 +193,7 @@ function list_roles($role) {
 //Method to check if a class has been locked for restriction
 function checkSectionStatus($sec_crn, $mysqli) {
 	$status = $mysqli->query("SELECT locked FROM sections WHERE crn='$sec_crn'")->fetch_assoc();
-	
+	echo "Dong!";
     if ($status['locked'] == 1) {
 		return true;
 	}
