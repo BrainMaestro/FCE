@@ -109,6 +109,29 @@ $_SESSION['user'] = 'secretary';
 	                    <option value="0">Unlocked</option>
 	                    <option value="%">All</option>
 	                </select><br><br>
+	                <select name="day" class="input-sm">
+	                    <option selected value="">Every day</option>
+	                    <?php
+	                    $result = $mysqli->query("SELECT DISTINCT(SUBSTRING_INDEX(class_time, ' ', 1))
+	                     AS day FROM sections WHERE semester = '$semester' AND class_time !=  '' ORDER by day");
+					    for($i = 0; $i < $result->num_rows; $i++) {
+							$row = $result->fetch_assoc();
+							$day = $row['day'];
+							echo "<option value='$day'>$day</option>";
+						}
+						?>
+	                </select><br><br>
+	                 <select name="time" class="input-sm">
+	                    <option selected value="">All time slots</option>
+	                    <?php
+	                    $result = $mysqli->query("SELECT DISTINCT(SUBSTRING(class_time, -13, 13))
+	                     AS time FROM sections WHERE semester = '$semester' AND class_time !=  '' ORDER by time");
+					    for($i = 0; $i < $result->num_rows; $i++) {
+							$row = $result->fetch_assoc();
+							echo "<option value='$row[time]'>$row[time]</option>";
+						}
+						?>
+	                </select><br><br>
 					<input type="text" class="round" name="search" placeholder="Ex: AUN 101"><br><br>
 					<input class="black-btn" type="submit" name="filter" value="search">
 				</form>	
@@ -120,19 +143,18 @@ $_SESSION['user'] = 'secretary';
 			<div class="text-center">		
 				<form action="secretary.php" method="post">
 					<?php
-					$result = $mysqli->query("SELECT * FROM sections WHERE locked = '1' AND semester = '$semester'");
 					$status = '1';
 					$caption = 'Locked ';
 					$color = 'red';
+					$search = '';
+					$time = '';
+					$day = '';
 
 					if (isset($_POST['filter'])) {
 						$status = $_POST['status'];
-						$sql = "SELECT * FROM sections WHERE locked LIKE '$status'";
-
-						if (isset($_POST['search']))
-							$sql .= " AND course_code LIKE '%$_POST[search]%'";
-						$sql .= " AND semester = '$semester'";
-						$result = $mysqli->query($sql);
+						$search = $_POST['search'];
+						$day = $_POST['day'];
+						$time = $_POST['time'];
 
 						switch ($status) { // Colors the table caption like the status column
 						case '0':
@@ -151,6 +173,10 @@ $_SESSION['user'] = 'secretary';
 							break;
 						}
 					}
+
+					$result = $mysqli->query("SELECT * FROM sections WHERE locked LIKE '$status'
+					 AND semester = '$semester' AND course_code LIKE '%$search%'  AND class_time LIKE '$day%'  AND class_time LIKE '%$time'");
+					
 					if ($result->num_rows == 0)
 						echo "<h4 class='error'>No section matches your search criteria</h4>";
 					elseif (isset($_SESSION['err'])) {
