@@ -28,7 +28,7 @@ goBack($mysqli);
 
         <!-- End of Favicon Kini -->
         <title>Login</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="application/javascript">
             $(document).ready(function()
             {
@@ -71,7 +71,6 @@ goBack($mysqli);
        <![endif]-->
         <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
         <!-- start plugins -->
-        <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <!-- start slider -->
