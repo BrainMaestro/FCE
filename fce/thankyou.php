@@ -82,9 +82,6 @@
         <div class="main row para">
             <div class="col-xs-3"></div>
             <div class="col-xs-6 text-center thankyouMsg">
-                <h3 class='border'>Brought to you by <br><hr>
-                <span>The Office of Institutional Research</span><br><hr>
-                Have a nice day</h3><br><br><br><br><br><br><br>
                 <table class="not-center evaltable" width="100%">
                     <caption><h4 id="fceteam">Credits to the FCE Team</h4><hr></caption>
                     <thead>
@@ -102,7 +99,7 @@
                         </tr>
                         <tr>
                             <td id="ezinwa">Ezinwa Okpoechi</td>
-                            <td>Lead Software Developer</td>
+                            <td>Software Developer</td>
                         </tr>
                         <tr>
                             <td id="aisha">Aisha Alimi</td>
@@ -118,7 +115,11 @@
                             <td>Software Developer</td>
                         </tr>
                     </tbody>
-                </table>
+                </table><br><br><br><br><br><br><br>
+				<h3 class='border'>Brought to you by <br><hr>
+                <span>The Office of Institutional Research</span><br><hr>
+                Have a nice day</h3>
+                
                 <hr>
             </div>
         </div>
