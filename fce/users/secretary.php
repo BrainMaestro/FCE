@@ -111,15 +111,12 @@ $_SESSION['user'] = 'secretary';
 	                </select><br><br>
 	                <select name="day" class="input-sm">
 	                    <option selected value="">Every day</option>
-	                    <?php
-	                    $result = $mysqli->query("SELECT DISTINCT(SUBSTRING_INDEX(class_time, ' ', 1))
-	                     AS day FROM sections WHERE semester = '$semester' AND class_time !=  '' ORDER by day");
-					    for($i = 0; $i < $result->num_rows; $i++) {
-							$row = $result->fetch_assoc();
-							$day = $row['day'];
-							echo "<option value='$day'>$day</option>";
-						}
-						?>
+	                    <option value="M">Monday</option>
+	                    <option value="T">Tuesday</option>
+	                    <option value="W">Wednesday</option>
+	                    <option value="R">Thursday</option>
+	                    <option value="F">Friday</option>
+	                    <option value="S">Saturday</option>
 	                </select><br><br>
 	                 <select name="time" class="input-sm">
 	                    <option selected value="">All time slots</option>
@@ -155,6 +152,7 @@ $_SESSION['user'] = 'secretary';
 						$search = $_POST['search'];
 						$day = $_POST['day'];
 						$time = $_POST['time'];
+						$completed = $_POST['completed'];
 
 						switch ($status) { // Colors the table caption like the status column
 						case '0':
@@ -175,7 +173,8 @@ $_SESSION['user'] = 'secretary';
 					}
 
 					$result = $mysqli->query("SELECT * FROM sections WHERE locked LIKE '$status'
-					 AND semester = '$semester' AND course_code LIKE '%$search%'  AND class_time LIKE '$day%'  AND class_time LIKE '%$time'");
+					 AND semester = '$semester' AND course_code LIKE '%$search%'  AND class_time LIKE '%$day%'
+					 AND class_time LIKE '%$time'");
 					
 					if ($result->num_rows == 0)
 						echo "<h4 class='error'>No section matches your search criteria</h4>";
@@ -206,9 +205,10 @@ $_SESSION['user'] = 'secretary';
 
 						for($i = 0; $i < $result->num_rows; $i++) {
 							$row = $result->fetch_assoc();
+							$disabled = ($row['mid_evaluation'] == '1' && $row['final_evaluation'] == '1') ? "disabled" : "";
 							echo "<tr>";
 							if ($status != '%')
-								echo "<td><input type='radio' name='crn' value='$row[crn]' required></td>";
+								echo "<td><input type='radio' name='crn' $disabled value='$row[crn]' required></td>";
 							echo "<td>$row[crn]</td>";
 							echo "<td>$row[course_code]</td>";
 							echo "<td>$row[course_title]</td>";

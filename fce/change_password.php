@@ -118,9 +118,9 @@
                     
                                         
                     <h3>Change Password</h3><hr></hr><br />
-                    <label>New Password </label><br /><input type="password" class="round" name="password" id="password" required="required"/>
+                    <label>New Password </label><br /><input type="password" class="round" name="password" id="password" required="required"/><br>
                     <input type="checkbox" name="option1" value='-1' onchange="changeType()" /> <br /><br />
-                    <label>Re-type Password </label> <br /><input type="password" class="round" name="repassword" id="repassword" required="required"/> 
+                    <label>Re-type Password </label> <br /><input type="password" class="round" name="repassword" id="repassword" required="required"/><br>
                     <input type="checkbox" name="option2" value='-1' onchange="changeType1()" /><br /><br />
                     
                     

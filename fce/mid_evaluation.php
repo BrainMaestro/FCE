@@ -66,7 +66,7 @@ if (isset($_POST['submit'])) {
 
         <!-- End of Favicon Kini -->
 	
-        <title>Mid Evaluation</title>
+        <title>Midterm Evaluation</title>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -235,7 +235,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">4</td>
-                            <td class="w70"><strong>Professor's Availability in Class </strong>(My professor is available during office hours)</td>
+                            <td class="w70"><strong>Professor's Availability outside the Classroom </strong>(My professor is available during office hours)</td>
                             <td class="w5"><input type="radio" name="q4" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q4" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q4" value="3" required="required"></td>
@@ -262,7 +262,7 @@ if (isset($_POST['submit'])) {
                         </tr>
                         <tr>
                             <td class="w5">7</td>
-                            <td class="w70"><strong>Professor's Teaching Consistency </strong>(My professor is consistent in his teaching )</td>
+                            <td class="w70"><strong>Professor's Teaching Consistency </strong>(My professor is consistent in his/her teaching )</td>
                             <td class="w5"><input type="radio" name="q7" value="1" required="required"></td>
                             <td class="w5"><input type="radio" name="q7" value="2" required="required"></td>
                             <td class="w5"><input type="radio" name="q7" value="3" required="required"></td>

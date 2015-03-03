@@ -6,10 +6,14 @@
  
     if (isset($_POST['submit'])) {
 
-    if ($stmt = $mysqli->prepare("INSERT INTO user VALUES(?, ?, ?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO users VALUES(?, ?, ?, ?)")) {
         $name = $_POST['firstname']." ".$_POST['lastname'];
-        $stmt->bind_param('sssss', $_POST['email'],$name,$_POST['password'],$_POST['usertype'],$_POST['school']); 
+        $pass = "fce";
+        $stmt->bind_param('ssss', $_POST['email'],$name,$pass,$_POST['school']); 
         $stmt->execute(); 
+        $stmt1 = $mysqli->prepare("INSERT INTO user_roles VALUES(?, ?)");
+        $stmt1->bind_param('ss', $_POST['email'], $_POST['usertype']);
+        $stmt1->execute(); 
         header("Location: ./admin.php");
     } else {
         $_SESSION['err'] = "Database error: cannot prepare statement";
@@ -108,7 +112,7 @@
 <div class="main_bg"><!-- start main -->
     <div class="container">
         <div class="main row para"> 
-            <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>      
+            <div class="col-xs-4 text-center"></div>      
                 <div class="col-xs-4 text-center border adminAdd">
                 <form method="POST" action="./admin_add_user.php">
                     <h2>Add User Details</h2><br />
@@ -118,17 +122,8 @@
                     <label>User Type </label><br />
                     <select class="input-sm" name="usertype" required="required">
                         <option selected value="">--Choose User Type--</option>
-                        <option value="faculty">Faculty</option>
-                        <option value="secretary">Secretary</option>
-                        <option value="admin">Admin</option>
-                        <option value="dean">Dean</option>
-                    </select><br /><br />
-
-                    <label>School </label><br />
-                    <select class="input-sm" name="school" required="required">
-                        <option selected value="">--Choose School--</option>
                         <?php
-                        $result = $mysqli->query("SELECT * FROM school");
+                        $result = $mysqli->query("SELECT * FROM roles");
 
                         for ($i = 0; $i < $result->num_rows; $i++) {
                             $row = $result->fetch_array();
@@ -136,7 +131,20 @@
                         }
                         ?>
                     </select><br /><br />
-                    <label>Password</label><br /><input name="password" class="round" type="text" placeholder="New Password" required="required"/><br /><br />
+
+                    <label>School </label><br />
+                    <select class="input-sm" name="school" required="required">
+                        <option selected value="">--Choose School--</option>
+                        <?php
+                        $result = $mysqli->query("SELECT * FROM schools");
+
+                        for ($i = 0; $i < $result->num_rows; $i++) {
+                            $row = $result->fetch_array();
+                            echo "<option value='$row[0]'>$row[0]</option>";
+                        }
+                        ?>
+                    </select><br /><br />
+                    <!-- <label>Password</label><br /><input name="password" class="round" type="text" placeholder="New Password" required="required"/><br /><br /> -->
 
                         <button class="black-btn" name="submit">Add User</button>
                 </form>

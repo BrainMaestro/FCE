@@ -117,7 +117,7 @@ goBack($mysqli);
         <div class="container" style="margin-top: 30px">
         
             <div class="main row">
-                <div class="col-xs-4 images_1_of_4 bg1 text-center"></div>      
+                <div class="col-xs-4 text-center"></div>      
                 <div class="col-xs-4 text-center border loginbox">
                     <div id="tabbox">
                         <a href="#" id="evaluate" class="tab unselect evaluate">Login</a>
