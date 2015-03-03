@@ -83,7 +83,7 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-6 text-center thankyouMsg">
                 <table class="not-center evaltable" width="100%">
-                    <caption><h4 id="fceteam">Credits to the FCE Team</h4><hr></caption>
+                    <caption><h4 id="fceteam">Thank You<br>Credits to the FCE Team</h4><hr></caption>
                     <thead>
                         <th>Member</th>
                         <th>Role</th>
@@ -114,13 +114,13 @@
                             <td id="chizzy">Chizzy Alaedu</td>
                             <td>Software Developer</td>
                         </tr>
+						
                     </tbody>
-                </table><br><br><br><br><br><br><br>
-				<h3 class='border'>Brought to you by <br><hr>
-                <span>The Office of Institutional Research</span><br><hr>
-                Have a nice day</h3>
-                
-                <hr>
+                </table>
+				
+				<p><br>Sponsored by<hr>
+                <span class='error'>The Office of Institutional Research</span><hr><br></p>
+				
             </div>
         </div>
     </div>
