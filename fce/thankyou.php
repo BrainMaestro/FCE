@@ -110,11 +110,11 @@
                             <td>Software Developer</td>
                         </tr>
                         
-                        <tr>
-                            <td id="skaex">Abdulmajid Hamza</td>
+                        <tr id="skaex">
+                            <td><a title="Skampa: Follow me on twitter." target="_blank" href="https://twitter.com/D_Skampa">Äbdulmajid Hamza</a></td>
                             <td>Software Developer</td>
                         </tr>
-                        
+                                                
 						
                     </tbody>
                 </table>
