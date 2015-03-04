@@ -7,9 +7,14 @@ checkUser("secretary");
 $crn = $_GET['crn'];
 $status = checkSectionStatus($crn, $mysqli);
 
-if ($status == true) {
+$rows = $mysqli->query("SELECT * FROM sections WHERE crn='$crn' and locked='0'")->num_rows;
+
+if (($status == true) || ($rows == 0)) {
 	header("Location: secretary.php");
+	
 }
+
+
 
 ?>
 <!DOCTYPE HTML>
@@ -184,8 +189,8 @@ if ($status == true) {
 		<div id="da-slider" class="da-slider text-center">
 			<div class="da-slide">
 			<h2 id="key1" value=""> null</h2>
-			<p id="sn1" value=""> null </p>
-			<h4 class="da-link text-center" id="given" value=""> null </h4>
+			<p id="given" value=""> null </p>
+			<!--<h4 class="da-link text-center" id="given" value=""> null </h4>-->
 			<script type="text/javascript">
 			
 			//function displayKeys() {
@@ -215,7 +220,7 @@ if ($status == true) {
 				}
 				
 				document.getElementById('key1').innerHTML = keys_array[global_key];
-				document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
+				<!--document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;-->
 				document.getElementById('given').innerHTML = "Given out: " + given_out[global_key];
 			}
 			</script>
