@@ -101,6 +101,10 @@
                             <td id="ezinwa">Ezinwa Okpoechi</td>
                             <td>Software Developer</td>
                         </tr>
+						<tr>
+                            <td id="chizzy">Chizzy Alaedu</td>
+                            <td>Software Developer</td>
+                        </tr>
                         <tr>
                             <td id="aisha">Aisha Alimi</td>
                             <td>Software Developer</td>
@@ -110,10 +114,7 @@
                             <td id="skaex">Abdulmajid Hamza</td>
                             <td>Software Developer</td>
                         </tr>
-                        <tr>
-                            <td id="chizzy">Chizzy Alaedu</td>
-                            <td>Software Developer</td>
-                        </tr>
+                        
 						
                     </tbody>
                 </table>
