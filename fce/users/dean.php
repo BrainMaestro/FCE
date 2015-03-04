@@ -99,7 +99,7 @@ $_SESSION['user'] = 'dean';
 				<form action="" method='post'>
 	                Leave search bar empty to search all sections<br><br>
 	                <?php
-	                echo '<select name="semester" class="input-sm">';
+	                echo '<select name="semester" class="input-sm size-input">';
 				    $result = $mysqli->query("SELECT semester from semesters");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
@@ -107,8 +107,8 @@ $_SESSION['user'] = 'dean';
 					}
 	       			echo '</select><br><br>';
 	                ?>
-					<input type="text" class="round" name="search" placeholder="Ex: AUN 101"><br><br>
-					<input class="black-btn" type="submit" name="filter" value="search">
+					<input type="text" class="round size-input" name="search" placeholder="Ex: AUN 101"><br><br>
+					<input class="black-btn size-input" type="submit" name="filter" value="search">
 				</form>	
 			</div>	
             <div class="col-xs-4 text-center"></div>

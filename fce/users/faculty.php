@@ -96,7 +96,7 @@ $_SESSION['user'] = 'faculty';
                     Please select semester<br><br>
                     <?php
 
-                    echo '<select name="semester" class="input-sm">';
+                    echo '<select name="semester" class="input-sm size-input">';
                     echo '<option selected value="">--Choose Semester--</option>';
                     $result = $mysqli->query("SELECT semester from semester");
                     for($i = 0; $i < $result->num_rows; $i++) {
@@ -104,10 +104,10 @@ $_SESSION['user'] = 'faculty';
                         echo "<option value='$row[semester]'>$row[semester]</option>";
                     }
                     echo '</select><br><br>';
-                    echo '<input type="text" name="search" class="round" placeholder="Ex: AUN 101">';
+                    echo '<input type="text" name="search" class="round size-input" placeholder="Ex: AUN 101">';
                     ?>
                     <br><br>
-                    <button class="black-btn" name='filter'>SUBMIT</button>
+                    <button class="black-btn size-input" name='filter'>SUBMIT</button>
                 </form>
             </div>  
             </div>
