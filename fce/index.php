@@ -80,7 +80,7 @@ goBack($mysqli);
         <!-- //Owl Carousel Assets -->
         <!--font-Awesome-->
         <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
-        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <!-- // <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script> -->
         <!--font-Awesome-->
     </head>
     <body>
