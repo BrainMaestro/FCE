@@ -80,7 +80,7 @@ goBack($mysqli);
         <!-- //Owl Carousel Assets -->
         <!--font-Awesome-->
         <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
-        <!-- // <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script> -->
+        <script type="text/javascript" src="js/jquery-ui.js"></script> 
         <!--font-Awesome-->
     </head>
     <body>
@@ -134,15 +134,14 @@ goBack($mysqli);
                                             </form>
                                             <script>
                                             $(document).ready(function() {
-                                                if ($(".error").length) {
+                                                if (!$(".error").is(':empty')) {
                                                     $(".error").slideDown("fast",function() {
-                                                        $("#loginbox").effect("shake");
+                                                        $(".loginbox").effect("shake");
                                                     });
                                                 }
                                             });
                                             </script>
-                                            <div class="error">
-                                                <?php
+                                            <div class="error"><?php
                                                     if (isset($_SESSION['erre'])) {
                                                     $err = $_SESSION['erre'];                            
                                                     echo "<h5>Sorry, $err</h5>";
@@ -153,9 +152,7 @@ goBack($mysqli);
                                                     echo "<h5>Sorry, $err</h5>";
                                                     unset($_SESSION['errl']); // Destroys the err session variable
                                                     }
-                                                ?>
-                                                
-                                            </div>
+                                                ?></div>
                     </div>
                         <div id="evalbox"><form method="post" action="includes/login.php" class="para"><br /><br />
                                                 <input type="text" name="email" placeholder=" Email" class="round down size-input"><BR><BR>

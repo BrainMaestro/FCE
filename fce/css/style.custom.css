@@ -201,6 +201,7 @@ text-decoration: none;
 }
 #login {
 	font-size:14px;
+	border-left: 1px solid #FFF;
 }
 .select
 {
