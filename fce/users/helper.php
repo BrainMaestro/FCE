@@ -2,16 +2,8 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-checkUser("secretary");
-    
-if (isset($_POST['submit'])) {
-
-	if ($_POST['submit'] == 'lock')
-		lockSection($_POST['crn'], $mysqli);
-	else
-		unlockSection($_POST['crn'], $mysqli);
-}
-$_SESSION['user'] = 'secretary';
+checkUser("helper");
+$_SESSION['user'] = 'helper';
 
 ?>
 <!DOCTYPE HTML>
@@ -39,7 +31,7 @@ $_SESSION['user'] = 'secretary';
 
         <!-- End of Favicon Kini -->
 
-<title>Secretary</title>
+<title>Helper</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -88,7 +80,7 @@ $_SESSION['user'] = 'secretary';
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
                 <?php
-                list_roles('secretary');
+                list_roles('helper');
                 $semester = getCurrentSemester();
                 ?>
                 </ul>
@@ -102,22 +94,8 @@ $_SESSION['user'] = 'secretary';
 		<div class="main row para">	
             <div class="col-xs-4 text-center size-before"></div>		
 			<div class="col-xs-4 text-center border size-panel">
-				<form action="secretary.php" method='post'>
-	                Leave search bar empty to search all sections<br><br>
-					<select name="status" class="input-sm size-input" required>
-	                    <option selected value="1">Locked</option>
-	                    <option value="0">Unlocked</option>
-	                    <option value="%">All</option>
-	                </select><br><br>
-	                <select name="day" class="input-sm size-input">
-	                    <option selected value="">Every day</option>
-	                    <option value="M">Monday</option>
-	                    <option value="T">Tuesday</option>
-	                    <option value="W">Wednesday</option>
-	                    <option value="R">Thursday</option>
-	                    <option value="F">Friday</option>
-	                    <option value="S">Saturday</option>
-	                </select><br><br>
+				<form action="" method='post'>
+	                Leave search bar empty to search all unlocked sections<br><br>
 	                 <select name="time" class="input-sm size-input">
 	                    <option selected value="">All time slots</option>
 	                    <?php
@@ -138,41 +116,18 @@ $_SESSION['user'] = 'secretary';
 
 		<div class="row para">
 			<div class="text-center">		
-				<form action="secretary.php" method="post">
+				<form action="" method="post">
 					<?php
-					$status = '1';
-					$caption = 'Locked ';
-					$color = 'red';
 					$search = '';
 					$time = '';
-					$day = '';
 
 					if (isset($_POST['filter'])) {
-						$status = $_POST['status'];
 						$search = $_POST['search'];
-						$day = $_POST['day'];
 						$time = $_POST['time'];
-						
-						switch ($status) { // Colors the table caption like the status column
-						case '0':
-							$caption = 'Unlocked ';
-							$color = 'green';
-							break;
-
-						case '1':
-							$caption = 'Locked ';
-							$color = 'red';
-							break;
-						
-						default:
-							$caption = 'All ';
-							$color = '';
-							break;
-						}
 					}
 
-					$result = $mysqli->query("SELECT * FROM sections WHERE locked LIKE '$status'
-					 AND semester = '$semester' AND course_code LIKE '%$search%'  AND class_time LIKE '%$day%'
+					$result = $mysqli->query("SELECT * FROM sections WHERE locked = '0'
+					 AND semester = '$semester' AND course_code LIKE '%$search%'
 					 AND class_time LIKE '%$time'");
 					
 					if ($result->num_rows == 0)
@@ -183,10 +138,8 @@ $_SESSION['user'] = 'secretary';
 					}
 					else {
 						echo "<table width='100%' class='not-center evaltable'>
-						<caption><h3 class='$color'>$caption Sections</h3><hr></caption>
+						<caption><h3 class='green'>Unlocked Sections</h3><hr></caption>
 						<thead>";
-							if ($status != '%')
-								echo "<th></th>";
 							echo "<th>CRN</th>
 							<th>Course Code</th>
 							<th>Course Title</th>
@@ -194,11 +147,7 @@ $_SESSION['user'] = 'secretary';
 							<th>Class Time</th>
 	                        <th>Location</th>
 							<th>Enrolled</th>
-							<th>Status</th>
-							<th>Midterm<br> Evaluation</th>
-							<th>Final<br> Evaluation</th>";
-							if ($status == '0')
-								echo "<th>Section Keys</th>";
+							<th>Section Keys</th>";
 						echo "</thead>
 						<tbody>";
 
@@ -206,8 +155,6 @@ $_SESSION['user'] = 'secretary';
 							$row = $result->fetch_assoc();
 							$disabled = ($row['mid_evaluation'] == '1' && $row['final_evaluation'] == '1') ? "disabled" : "";
 							echo "<tr>";
-							if ($status != '%')
-								echo "<td><input type='radio' name='crn' $disabled value='$row[crn]' required></td>";
 							echo "<td>$row[crn]</td>";
 							echo "<td>$row[course_code]</td>";
 							echo "<td>$row[course_title]</td>";
@@ -222,26 +169,10 @@ $_SESSION['user'] = 'secretary';
 							echo "<td>$row[class_time]</td>";
 	                        echo "<td>$row[location]</td>";
 							echo "<td>$row[enrolled]</td>";
-							$locked = ($row['locked'] == 1) ? "Locked" : "Unlocked";
-							$color = ($locked == "Locked") ? "red" : "green";
-							$midterm = ($row['mid_evaluation'] == 1) ? "Done" : "Not Done";
-							$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
-							echo "<td class='$color'>$locked</td>";
-							echo "<td>$midterm</td>";
-							echo "<td>$final</td>";
-							if ($status == '0')
-								echo "<td><a href='section.php?crn=$row[crn]' target='_blank'>$row[course_code] Keys</a></td>";
-							else
+							echo "<td><a href='section.php?crn=$row[crn]' target='_blank'>$row[course_code] Keys</a></td>";
 							echo "</tr>";
 						}
 						echo '</tbody></table><hr>';
-
-						if (isset($status) && $status !== '%' && $result->num_rows > 0) {
-							if ($status == 1)
-	                			echo "<button class='black-btn margin' name='submit' value='unlock'>Unlock</button>";
-	                		elseif ($status == 0)
-	                			echo "<button class='black-btn margin' name='submit' value='lock'>Lock</button>";
-						}
 
 					}
 					?>

@@ -2,7 +2,7 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-checkUser("secretary");
+// checkUser("secretary", "helper");
 
 $crn = $_GET['crn'];
 $status = checkSectionStatus($crn, $mysqli);
@@ -10,7 +10,7 @@ $status = checkSectionStatus($crn, $mysqli);
 $rows = $mysqli->query("SELECT * FROM sections WHERE crn='$crn' and locked='0'")->num_rows;
 
 if (($status == true) || ($rows == 0)) {
-	header("Location: secretary.php");
+	header("Location: $_SESSION[user_type].php");
 	
 }
 
@@ -130,7 +130,6 @@ if (($status == true) || ($rows == 0)) {
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-				<li class='active'><a href="./secretary.php"><img src="../images/back.png" alt="Back to Home" style="width:18px;height:18px"></a></li>
                 <?php
                 list_roles('');
                 $crn = $_GET['crn'];
@@ -268,12 +267,13 @@ if (($status == true) || ($rows == 0)) {
 				</table>
 				<script>getKeys("0")</script>
 				<br><br>
-				<form action="secretary.php" method="post"> <!-- Sends back to secretary page and locks class -->
-					<?php
-					echo "<input type='hidden' name='crn' value='$crn'>";
-					?>
-					<input class='black-btn' name='submit' type="submit" value='lock'>
-				</form>
+				<?php
+				if ($_SESSION['user'] == "secretary")
+				echo "<form action='secretary.php' method='post'>
+					 <input type='hidden' name='crn' value='$crn'>
+					<input class='black-btn' name='submit' type='submit' value='lock'>
+				</form>";
+				?>
 			</div>
 		</div>
 		<div class="text-center">
