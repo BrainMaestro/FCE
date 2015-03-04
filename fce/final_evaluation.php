@@ -33,6 +33,7 @@ if (isset($_POST['submit'])) {
         setKey($_SESSION['key_value'], "used", $mysqli);
 		session_destroy();
 		header("Location: ./thankyou.php");
+		exit();
     } else {
 		$_SESSION['err'] = "Database error: cannot prepare statement";
         header("Location: index.php");
