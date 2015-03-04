@@ -271,7 +271,7 @@ if (($status == true) || ($rows == 0)) {
 				if ($_SESSION['user'] == "secretary")
 				echo "<form action='secretary.php' method='post'>
 					 <input type='hidden' name='crn' value='$crn'>
-					<input class='black-btn' name='submit' type='submit' value='lock'>
+					<input class='black-btn size-input' name='submit' type='submit' value='lock'>
 				</form>";
 				?>
 			</div>

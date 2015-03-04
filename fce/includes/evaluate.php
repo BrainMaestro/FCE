@@ -5,7 +5,7 @@
 	goBack($mysqli);
 	if (isset($_POST['key_value'])){ //Checking to see if any key has been submitted
 		$key_value = $_POST['key_value']; //calling functions that handle siffing of input
-		$get_key = $mysqli->prepare("SELECT * FROM accessKeys WHERE key_value = ?"); //Mysql query to determine if the key exists
+		$get_key = $mysqli->prepare("SELECT * FROM accesskeys WHERE BINARY key_value = ?"); //Mysql query to determine if the key exists
 		
 		$get_key->bind_param('s', $key_value);
 		$get_key->execute();
