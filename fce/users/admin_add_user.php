@@ -116,11 +116,11 @@
                 <div class="col-xs-4 text-center border adminAdd">
                 <form method="POST" action="./admin_add_user.php">
                     <h2>Add User Details</h2><br />
-                    <label>First Name </label><br /><input type="text" class="round" name="firstname" placeholder="Ex: Aisha" required="required"/> <br /><br />
-                    <label>Last Name </label> <br /><input type="text" class="round" name="lastname" placeholder="Ex: Alaedu" required="required"/> <br /><br />
-                    <label>Email </label><br /><input type="text" class="round" name="email" placeholder="Ex: ezinwa.hamza@aun.edu.ng" required="required"/> <br /><br />
+                    <label>First Name </label><br /><input type="text" class="round size-input" name="firstname" placeholder="Ex: Aisha" required="required"/> <br /><br />
+                    <label>Last Name </label> <br /><input type="text" class="round size-input" name="lastname" placeholder="Ex: Alaedu" required="required"/> <br /><br />
+                    <label>Email </label><br /><input type="text" class="round size-input" name="email" placeholder="Ex: ezinwa.hamza@aun.edu.ng" required="required"/> <br /><br />
                     <label>User Type </label><br />
-                    <select class="input-sm" name="usertype" required="required">
+                    <select class="input-sm size-input" name="usertype" required="required">
                         <option selected value="">--Choose User Type--</option>
                         <?php
                         $result = $mysqli->query("SELECT * FROM roles");
@@ -133,7 +133,7 @@
                     </select><br /><br />
 
                     <label>School </label><br />
-                    <select class="input-sm" name="school" required="required">
+                    <select class="input-sm size-input" name="school" required="required">
                         <option selected value="">--Choose School--</option>
                         <?php
                         $result = $mysqli->query("SELECT * FROM schools");
@@ -144,9 +144,9 @@
                         }
                         ?>
                     </select><br /><br />
-                    <label>Password</label><br /><input name="text" class="round" type="text" value="fce" required="required" disabled /><br /><br />
+                    <label>Password</label><br /><input name="text" class="round size-input" type="text" value="fce" required="required" disabled /><br /><br />
 
-                        <button class="black-btn" name="submit">Add User</button>
+                        <button class="black-btn size-input" name="submit">Add User</button>
                 </form>
                 
             </div>  
@@ -160,7 +160,7 @@
             <div class="container">
                 <div class="row  footer">
                     <div class="copy text-center">
-                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="thankyou.php#fceteam"> The FCE Team</a></span></p>
+                        <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="../thankyou.php#fceteam"> The FCE Team</a></span></p>
                     </div>
                 </div>
             </div>

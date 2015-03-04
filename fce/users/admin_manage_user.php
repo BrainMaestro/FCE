@@ -138,9 +138,9 @@ if (isset($_POST['remove_role'])) {
 				<form action="" method='post'>
 	                Leave search bar empty to get all users<br><br>
 	         
-	                <input type="text" name="search" class="round" placeholder="Ex: John Grisham"><br><br>
+	                <input type="text" name="search" class="round size-input" placeholder="Ex: John Grisham"><br><br>
 					<?php 
-					echo '<select name="role" class="input-sm">';
+					echo '<select name="role" class="input-sm size-input">';
 					echo "<option value=''>All roles</option>";
 				    $result = $mysqli->query("SELECT role from roles");
 				    for($i = 0; $i < $result->num_rows; $i++) {
@@ -149,7 +149,7 @@ if (isset($_POST['remove_role'])) {
 					}
 	       			echo '</select><br><br>';
 	                ?>
-					<button class="black-btn" type="submit" name="role_filter">SEARCH</button>
+					<button class="black-btn size-input" type="submit" name="role_filter">SEARCH</button>
 				</form>
 			</div>
 			
@@ -204,8 +204,8 @@ if (isset($_POST['remove_role'])) {
 	        	}
 	        
 			?>
-			<button class="black-btn" type="submit" name="grant" id="grant">GRANT ROLE</button>
-			<button class="black-btn" type="submit" name="revoke">REVOKE ROLE</button>
+			<button class="black-btn size-input" type="submit" name="grant" id="grant">GRANT ROLE</button>
+			<button class="black-btn size-input" type="submit" name="revoke">REVOKE ROLE</button>
 
 		</form>
 		
@@ -222,15 +222,15 @@ if (isset($_POST['remove_role'])) {
 							<div class="col-xs-4 text-center border row para"  style="height:270px">
 							<form action="" method="post">
 								Assign role to '.$email.'<br><br>
-								<input type="hidden" class="round" name="email" value='.$email.' readonly/>';
-					echo '<br /><select class="input-sm" name="usertype" required="required">
+								<input type="hidden" class="round size-input" name="email" value='.$email.' readonly/>';
+					echo '<br /><select class="input-sm size-input" name="usertype" required="required">
 								<option selected value="">--Choose Role--</option>';
 								for ($i=0;$i<$check->num_rows;$i++) {
 									$row = $check->fetch_assoc();
 									echo "<option value=$row[role]>$row[role]</option>";
 								}
 		            echo '</select><br><br>';
-		            echo '<button class="black-btn" type="submit" name="add_role">Grant</button></div>
+		            echo '<button class="black-btn size-input" type="submit" name="add_role">Grant</button></div>
 		            		<div class="col-xs-4"></div>
 		            		</form><br><br>';
 		            echo '<div class="clearfix"></div>';
@@ -251,15 +251,15 @@ if (isset($_POST['remove_role'])) {
 							<div class="col-xs-4 text-center border row para"  style="height:270px">
 							<form action="" method="post">
 								Retract role from '.$email.'<br><br>
-								<input type="hidden" class="round" name="email" value='.$email.' readonly/>';
-					echo '<br /><select class="input-sm" name="usertype" required="required">
+								<input type="hidden size-input" class="round" name="email" value='.$email.' readonly/>';
+					echo '<br /><select class="input-sm size-input" name="usertype" required="required">
 								<option selected value="">--Choose Role--</option>';
 								for ($i=0;$i<$check->num_rows;$i++) {
 									$row = $check->fetch_assoc();
 									echo "<option value=$row[role]>$row[role]</option>";
 								}
 		            echo '</select><br><br>';
-		            echo '<button class="black-btn" type="submit" name="remove_role">Revoke</button></div>
+		            echo '<button class="black-btn size-input" type="submit" name="remove_role">Revoke</button></div>
 		            		<div class="col-xs-4"></div>
 		            		</form>';
 	
