@@ -152,8 +152,7 @@ $_SESSION['user'] = 'secretary';
 						$search = $_POST['search'];
 						$day = $_POST['day'];
 						$time = $_POST['time'];
-						$completed = $_POST['completed'];
-
+						
 						switch ($status) { // Colors the table caption like the status column
 						case '0':
 							$caption = 'Unlocked ';
