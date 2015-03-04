@@ -116,9 +116,9 @@ goBack($mysqli);
         </div>
         <div class="container" style="margin-top: 30px">
         
-            <div class="main row">
-                <div class="col-xs-4 text-center"></div>      
-                <div class="col-xs-4 text-center border loginbox">
+            <div class="main row">     
+                <div class="col-xs-4 text-center size-before"></div>      
+                <div class="col-xs-4 text-center border loginbox size-panel">
                     <div id="tabbox">
                         <a href="#" id="evaluate" class="tab unselect evaluate">Login</a>
                         <a href="#" id="login" class="tab select">Evaluate</a>
@@ -127,9 +127,9 @@ goBack($mysqli);
                         <div id="loginbox"><form method="post" name="" class="para" action="includes/evaluate.php">
                                                 <p></p>
                                                 <br /><br />
-                                                <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
+                                                <input type="text" name='key_value' placeholder=" Access Key" class="round size-input" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
                                                 <br><br><p></p>
-                                                <button class="black-btn">EVALUATE</button>
+                                                <button class="black-btn size-input">EVALUATE</button>
                                             </form>
                                             <div class="error">
                                                 <?php
@@ -148,10 +148,10 @@ goBack($mysqli);
                                             </div>
                     </div>
                         <div id="evalbox"><form method="post" action="includes/login.php" class="para"><br /><br />
-                                                <input type="text" name="email" placeholder=" Email" class="round down"><BR><BR>
-                                                <input type="password" name="password" placeholder=" Password" class="round">
+                                                <input type="text" name="email" placeholder=" Email" class="round down size-input"><BR><BR>
+                                                <input type="password" name="password" placeholder=" Password" class="round size-input">
                                                 <p></p>
-                                                <button class="black-btn">LOG IN</button>
+                                                <button class="black-btn size-input">LOG IN</button>
                                             </form>
                                             <!--<div class="error">
                                                 <?php

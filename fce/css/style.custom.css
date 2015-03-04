@@ -230,3 +230,30 @@ text-decoration: none;
 	top: -30px;
 	left:210px;
 }
+.index-input {
+	/*width: 80%;*/
+}
+@media (min-width: 200px) and (max-width: 500px) {
+	.size-before {
+		width: 12.5%
+	}
+    .size-panel {
+    	width: 75%;
+   	}
+   	.size-input {
+   		width: 90%;
+   	}
+
+}
+@media (min-width: 500px) and (max-width: 900px) {
+	.size-before {
+		width: 25%
+	}
+    .size-panel {
+    	width: 50%;
+   	}
+   	.size-input {
+   		width: 70%;
+   	}
+
+}

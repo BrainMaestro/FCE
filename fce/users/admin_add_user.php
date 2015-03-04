@@ -144,7 +144,7 @@
                         }
                         ?>
                     </select><br /><br />
-                    <!-- <label>Password</label><br /><input name="password" class="round" type="text" placeholder="New Password" required="required"/><br /><br /> -->
+                    <label>Password</label><br /><input name="text" class="round" type="text" value="fce" required="required" disabled /><br /><br />
 
                         <button class="black-btn" name="submit">Add User</button>
                 </form>
