@@ -83,7 +83,7 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-6 text-center thankyouMsg">
                 <table class="not-center evaltable" width="100%">
-                    <caption><h4 id="fceteam">Thank You<br>Credits to the FCE Team</h4><hr></caption>
+                    <caption><h4 id="fceteam">Thank You<br><br>Credits to the FCE Team</h4><hr></caption>
                     <thead>
                         <th>Member</th>
                         <th>Role</th>
@@ -95,11 +95,11 @@
                         </tr>
                         <tr>
                             <td id="esi">Esi Quao</td>
-                            <td>Stakeholder & Client</td>
+                            <td>Stakeholder &amp; Client</td>
                         </tr>
                         <tr>
                             <td id="ezinwa">Ezinwa Okpoechi</td>
-                            <td>Software Developer</td>
+                            <td> Lead Software Developer</td>
                         </tr>
 						<tr>
                             <td id="chizzy">Chizzy Alaedu</td>
