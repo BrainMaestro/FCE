@@ -80,6 +80,7 @@ goBack($mysqli);
         <!-- //Owl Carousel Assets -->
         <!--font-Awesome-->
         <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <!--font-Awesome-->
     </head>
     <body>
@@ -131,6 +132,15 @@ goBack($mysqli);
                                                 <br><br><p></p>
                                                 <button class="black-btn size-input">EVALUATE</button>
                                             </form>
+                                            <script>
+                                            $(document).ready(function() {
+                                                if ($(".error").length) {
+                                                    $(".error").slideDown("fast",function() {
+                                                        $("#loginbox").effect("shake");
+                                                    });
+                                                }
+                                            });
+                                            </script>
                                             <div class="error">
                                                 <?php
                                                     if (isset($_SESSION['erre'])) {
