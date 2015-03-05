@@ -137,8 +137,8 @@ if (($status == true) || ($rows == 0)) {
                 $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
                 $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
-                echo "<li><span><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</span></li>";
-
+                echo "<li><span style='background: #3B3B3B;'><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</span></li>";
+                echo "<li><span style='background: #3B3B3B;'><span class='red'>Keys Given Out</span>: <span id='given'></span></span></li>";
                 ?>
 		      </ul>
 		    </div>
@@ -206,6 +206,7 @@ if (($status == true) || ($rows == 0)) {
 				var keys_array = [];
 				var givenout = document.getElementsByName('items_stat[]')
 				var given_out = []
+				var given_count = 0;
 				
 				global_key += parseInt(key2);
 				
@@ -219,6 +220,8 @@ if (($status == true) || ($rows == 0)) {
 				for (var i = 0; i < keyvalues.length; i++) {
 					keys_array.push(keyvalues[i].value);
 					given_out.push(givenout[i].value)
+					if (givenout[i].value == 'Yes')
+						given_count++;
 				}
 				
 				var sn = parseInt(global_key) + 1;
@@ -227,7 +230,7 @@ if (($status == true) || ($rows == 0)) {
 				"<span style='color:grey; font-size:0.45em;'>(" + sn + ")<br></span><span class='size-input' style=' font-size: 2em;'>" + keys_array[global_key] +
 				"</span><span style='color:grey; font-size:0.45em;'>" + isGiven + "<br></span>";
 				//document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
-				//document.getElementById('given').innerHTML = ;
+				document.getElementById('given').innerHTML = given_count;
 			}
 			</script>
 			<div class="text-center" height='10%'>
