@@ -218,9 +218,11 @@ if (($status == true) || ($rows == 0)) {
 					given_out.push(givenout[i].value)
 				}
 				
-				document.getElementById('key1').innerHTML = parseInt(global_key) + 1 + ":" + keys_array[global_key];
+				var sn = parseInt(global_key) + 1;
+				document.getElementById('key1').innerHTML = 
+				"(" + sn + ")<br>" + keys_array[global_key];
 				<!--document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;-->
-				document.getElementById('given').innerHTML = "Given out: " + given_out[global_key];
+				document.getElementById('given').innerHTML = "<br><br>Given out: " + given_out[global_key];
 			}
 			</script>
 			</div>
