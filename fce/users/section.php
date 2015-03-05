@@ -149,8 +149,8 @@ if (($status == true) || ($rows == 0)) {
 </div>
 <div class="clearfix"></div>
 <div class='row para text-center'>
-	<div class="col-xs-4"></div>
-	<div class="col-xs-4">
+	<div class="col-xs-4 size-before"></div>
+	<div class="col-xs-4 size-panel">
 		<table width="100%" class="not-center evaltable">
 			<caption><h3>Section Details</h3><hr></caption>
 			<tbody>
@@ -183,13 +183,16 @@ if (($status == true) || ($rows == 0)) {
 		</table>
 	</div>
 </div>
-<div class="slider_bg"><!-- start slider -->
+
+
+<div class="main_bg"><!-- start main -->
 	<div class="container">
-		<div id="da-slider" class="da-slider text-center">
-			<div class="da-slide">
-			<h2 id="key1" value=""> null</h2>
-			<p id="given" value=""> null </p>
-			<!--<h4 class="da-link text-center" id="given" value=""> null </h4>-->
+	<div class="main row para">
+		<div class="col-xs-3 size-before"></div>
+		<div class="col-xs-6 text-center size-panel">
+		<h1 id="key1" style="font-family: monospace; color:black;" value=""> null</h2>
+			<!--<p id="given" value=""> null </p>
+			<h4 class="da-link text-center" id="given" value=""> null </h4>-->
 			<script type="text/javascript">
 			
 			//function displayKeys() {
@@ -219,28 +222,23 @@ if (($status == true) || ($rows == 0)) {
 				}
 				
 				var sn = parseInt(global_key) + 1;
+				var isGiven = "<br>Given out: " + given_out[global_key];
 				document.getElementById('key1').innerHTML = 
-				"<span style='color:grey; font-size:0.45em;'>(" + sn + ")<br></span>" + keys_array[global_key];
-				<!--document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;-->
-				document.getElementById('given').innerHTML = "<br><br>Given out: " + given_out[global_key];
+				"<span style='color:grey; font-size:0.45em;'>(" + sn + ")<br></span><span class='size-input' style=' font-size: 2em;'>" + keys_array[global_key] +
+				"</span><span style='color:grey; font-size:0.45em;'>" + isGiven + "<br></span>";
+				//document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
+				//document.getElementById('given').innerHTML = ;
 			}
 			</script>
+			<div class="text-center" height='10%'>
+				<input width='8%'  name='previous_key' type='image' src="../images/back.png" onclick='getKeys(-1)'>
+				<input width='8%'  name='next_key' type='image' src="../images/next.png" onclick='getKeys(1)'>
 			</div>
-		</div>
+			</div>
 	</div>
-</div>
-
-
-<div class="text-center">
-	<input class='black-btn' name='previous_key' type='button' value='Previous Key' onclick='getKeys(-1)'>
-	<input class='black-btn' name='next_key' type='button' value='Next Key' onclick='getKeys(1)'>
-</div>
-
-<div class="main_bg"><!-- start main -->
-	<div class="container">
 		<div class="main row para">
-			<div class="col-xs-3"></div>
-			<div class="col-xs-6 text-center border4">
+			<div class="col-xs-3 size-before"></div>
+			<div class="col-xs-6 text-center border4 size-panel">
 				<table width="100%" class="not-center evaltable">
 					<caption><h3>Key Details</h3><hr></caption>
 					<thead>
