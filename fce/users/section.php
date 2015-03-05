@@ -220,7 +220,7 @@ if (($status == true) || ($rows == 0)) {
 				
 				var sn = parseInt(global_key) + 1;
 				document.getElementById('key1').innerHTML = 
-				"(" + sn + ")<br>" + keys_array[global_key];
+				"<span style='color:grey; font-size:0.45em;'>(" + sn + ")<br></span>" + keys_array[global_key];
 				<!--document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;-->
 				document.getElementById('given').innerHTML = "<br><br>Given out: " + given_out[global_key];
 			}
