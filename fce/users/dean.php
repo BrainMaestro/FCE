@@ -109,7 +109,7 @@ $_SESSION['user'] = 'dean';
 	       			echo '<select name="faculty" class="input-sm size-input">';
 	                echo "<option value='%''>All $_SESSION[school] Faculty</option>";
                     $result = $mysqli->query("SELECT name, email FROM users, user_roles WHERE users.email = user_roles.user_email
-                    	AND user_role = 'faculty' AND school='$_SESSION[school]'");
+                    	AND user_role = 'faculty' AND school='$_SESSION[school]' ORDER BY name");
 
                     for ($i = 0; $i < $result->num_rows; $i++) {
                         $row = $result->fetch_array();
