@@ -106,6 +106,16 @@ $_SESSION['user'] = 'dean';
 						echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
 	       			echo '</select><br><br>';
+	       			echo '<select name="faculty" class="input-sm size-input">';
+	                echo "<option value='%''>All $_SESSION[school] Faculty</option>";
+                    $result = $mysqli->query("SELECT name, email FROM users, user_roles WHERE users.email = user_roles.user_email
+                    	AND user_role = 'faculty' AND school='$_SESSION[school]'");
+
+                    for ($i = 0; $i < $result->num_rows; $i++) {
+                        $row = $result->fetch_array();
+                        echo "<option value='$row[email]'>$row[name]</option>";
+                    }
+                    echo '</select><br /><br />';
 	                ?>
 					<input type="text" class="round size-input" name="search" placeholder="Ex: AUN 101"><br><br>
 					<input class="black-btn size-input" type="submit" name="filter" value="search">
@@ -117,23 +127,23 @@ $_SESSION['user'] = 'dean';
 			<div class="text-center">
 			
 				<?php
-				// if (isset($_POST['filter'])) {
-		        $result = $mysqli->query("SELECT * FROM sections WHERE semester = '$semester' 
-		        	AND school='$_SESSION[school]'");
 
-				if (isset($_POST['filter'])) {
+			    $search = '%';
+			    $faculty = '%';
 
-					$sql = "SELECT * FROM sections WHERE school='$_SESSION[school]'";
-					if (isset($_POST['semester']))
-						$sql .= " AND semester LIKE '%$_POST[semester]%'";
+				if (isset($_POST['filter'])) {  
 
-					if (isset($_POST['search'])) {
-						$sql .= " AND course_code LIKE '%$_POST[search]%'";
-					}
+					$semester = $_POST['semester'];
+			    	$search = $_POST['search'];
+			    	$faculty = $_POST['faculty'];
+			    }
 
-					$result = $mysqli->query($sql);
-				}
-
+	    		$result = $mysqli->query("SELECT * FROM sections, course_assignments WHERE course_assignments.faculty_email LIKE '$faculty'
+	    		 AND sections.crn = course_assignments.crn
+	    		 AND semester LIKE '$semester' AND course_code LIKE '%$search%' 
+	    		 AND school='$_SESSION[school]' ORDER BY course_code");
+		    
+		    
 				if ($result->num_rows == 0)
 					echo "<h4 class='error'>No section matches your criteria</h4>";
 				else {

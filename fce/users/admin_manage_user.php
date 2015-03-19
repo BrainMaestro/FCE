@@ -131,10 +131,10 @@ if (isset($_POST['remove_role'])) {
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
 		<div class="main row para">
-		 <div class="col-xs-4">
+		 <div class="col-xs-4 size-before">
             </div>
 
-			<div class="col-xs-4 text-center border users" style="height:270px">
+			<div class="col-xs-4 text-center border users size-panel" >
 				<form action="" method='post'>
 	                Leave search bar empty to get all users<br><br>
 	         
@@ -148,7 +148,16 @@ if (isset($_POST['remove_role'])) {
 						echo "<option value='$row[role]'>$row[role]</option>";
 					}
 	       			echo '</select><br><br>';
-	                ?>
+	                echo '<select name="school" class="input-sm size-input">';
+	                echo '<option value="%">All Schools</option>';
+                    $result = $mysqli->query("SELECT * FROM schools");
+
+                    for ($i = 0; $i < $result->num_rows; $i++) {
+                        $row = $result->fetch_array();
+                        echo "<option value='$row[0]'>$row[0]</option>";
+                    }
+                    echo '</select><br /><br />';
+                    ?>
 					<button class="black-btn size-input" type="submit" name="role_filter">SEARCH</button>
 				</form>
 			</div>
@@ -166,13 +175,15 @@ if (isset($_POST['remove_role'])) {
 			
 		    $search = '%';
 		    $role = '%';
+		    $school = '%';
 
 			if (isset($_POST['role_filter'])) {  
 		    	$search = $_POST['search'];
 		    	$role = $_POST['role'];
+		    	$school = $_POST['school'];
 		    }
 
-	    		$result = $mysqli->query("SELECT name, email, user_role FROM users, user_roles  WHERE (users.email = user_roles.user_email) AND name LIKE '%$search%' AND user_role LIKE '%$role%'");
+	    		$result = $mysqli->query("SELECT name, email, user_role, school FROM users, user_roles  WHERE (users.email = user_roles.user_email) AND name LIKE '%$search%' AND user_role LIKE '%$role%' AND school LIKE '$school'");
 			    
 			    if ($result->num_rows == 0)
 					echo "<h4 class='error'>No user matches your search criteria</h4>";
@@ -187,6 +198,7 @@ if (isset($_POST['remove_role'])) {
 						<th class='w5'></th>
 						<th>Name</th>
 						<th>Email</th>
+						<th>School</th>
 						<th>Role</th>
 					</thead><tbody>";
 
@@ -197,6 +209,7 @@ if (isset($_POST['remove_role'])) {
 		        	echo "<td><input type='radio' value='$row[email],$row[user_role]' name='user_radio' required></td>";
 					echo "<td>$row[name]</td>";
 					echo "<td>$row[email]</td>";
+					echo "<td>$row[school]</td>";
 					echo "<td>$row[user_role]</td>";
 		        	echo '</tr>';
 				}
@@ -204,9 +217,8 @@ if (isset($_POST['remove_role'])) {
 	        	}
 	        
 			?>
-			<button class="black-btn size-input" type="submit" name="grant" id="grant">GRANT ROLE</button>
-			<button class="black-btn size-input" type="submit" name="revoke">REVOKE ROLE</button>
-
+			<button class="black-btn" type="submit" name="grant" id="grant">GRANT ROLE</button>
+			<button class="black-btn" type="submit" name="revoke">REVOKE ROLE</button>
 		</form>
 		
 		<?php

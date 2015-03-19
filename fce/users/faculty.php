@@ -125,7 +125,7 @@ $_SESSION['user'] = 'faculty';
                 }
 
                 $result = $mysqli->query("SELECT * FROM sections, course_assignments WHERE semester LIKE '%$semester%' 
-                    AND course_code LIKE '%$search%' AND sections.crn = course_assignments.crn AND faculty_email='$_SESSION[email]'"); 
+                    AND course_code LIKE '%$search%' AND sections.crn = course_assignments.crn AND faculty_email='$_SESSION[email]' ORDER BY course_code"); 
 
                 if ($result->num_rows == 0)
                     echo "<h4 class='error'>No section matches your criteria</h4>";

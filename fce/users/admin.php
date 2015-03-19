@@ -116,9 +116,14 @@ $_SESSION['user'] = 'admin';
 					?>
 					<select name="school" class="input-sm size-input">
 	                    <option value="%">All Schools</option>
-	                    <option value="SITC">SITC</option>
-	                    <option value="SAS">SAS</option>
-	                    <option value="SBE">SBE</option>
+	                    <?php
+                        $result = $mysqli->query("SELECT * FROM schools");
+
+                        for ($i = 0; $i < $result->num_rows; $i++) {
+                            $row = $result->fetch_array();
+                            echo "<option value='$row[0]'>$row[0]</option>";
+                        }
+                        ?>
 	                </select><br /><br />
 	                <input type="text" name="search" class="round size-input" placeholder="Ex: AUN 101">
 					<br /><br />
@@ -140,7 +145,8 @@ $_SESSION['user'] = 'admin';
 		    	$search = $_POST['search'];
 		    }
 
-    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' AND semester LIKE '$semester' AND course_code LIKE '%$search%'");
+    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' 
+    			AND semester LIKE '$semester' AND course_code LIKE '%$search%' ORDER BY course_code");
 		    
 		    if ($result->num_rows == 0)
 				echo "<h4 class='error'>No section matches your search criteria</h4>";

@@ -173,7 +173,7 @@ $_SESSION['user'] = 'secretary';
 
 					$result = $mysqli->query("SELECT * FROM sections WHERE locked LIKE '$status'
 					 AND semester = '$semester' AND course_code LIKE '%$search%'  AND class_time LIKE '%$day%'
-					 AND class_time LIKE '%$time'");
+					 AND class_time LIKE '%$time' ORDER BY course_code");
 					
 					if ($result->num_rows == 0)
 						echo "<h4 class='error'>No section matches your search criteria</h4>";
