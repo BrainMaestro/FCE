@@ -115,14 +115,43 @@ function lockSection($crn, $mysqli) {
     $sql .= " WHERE crn='$crn'";
     $mysqli->query($sql);
     deleteKeys($crn, $eval_type, $mysqli);
+
+    //
+    $avg_q = array();
+    for ($i=0; $i < 18; $i++) {
+        $j = $i+1;
+        $question = "q$j"; 
+        $avg_q[$i] = avg_question($question, $crn, $eval_type, $mysqli);
+    }
+    $course = avg_course($crn, $eval_type, $mysqli);
+    $instructor = avg_instructor($crn, $eval_type, $mysqli);
+    $student = avg_student($crn, $eval_type, $mysqli);
+    $total_mid = avg_midterm($crn, $eval_type, $mysqli);
+    $total_final = avg_final($crn, $eval_type, $mysqli);
+    
+    $sql2 =  "INSERT INTO averages VALUES ('$crn', '$eval_type', '$avg_q[0]', '$avg_q[1]', '$avg_q[2]', '$avg_q[3]', '$avg_q[4]', '$avg_q[5]', '$avg_q[6]', '$avg_q[7]'
+                    , '$avg_q[8]', '$avg_q[9]', '$avg_q[10]', '$avg_q[11]', '$avg_q[12]', '$avg_q[13]', '$avg_q[14]', '$avg_q[15]', '$avg_q[16]', '$avg_q[17]'";
+
+    if ($eval_type == 'mid') {
+        $sql2 .= ",'','','','$total_mid')";
+        if (!$mysqli->query($sql2)) {
+            die('Error:'.$mysqli->error);
+        }
+    } else {
+        $sql2 .= ",'$course','$instructor','$student','$total_final')";
+        if (!$mysqli->query($sql2)) {
+            die('Error:'.$mysqli->error);
+        }
+    }
 }
 
 function count_scale($scale, $question, $crn, $eval_type, $mysqli) {
     $result = $mysqli->query("SELECT count($question) FROM evaluations WHERE $question='$scale' 
-     AND crn='$crn' AND eval_type = '$eval_type'");
+     AND crn='$crn' AND eval_type = '$eval_type'"); 
 
     while ($row = $result->fetch_array())
-        echo $row[0];
+       // echo $row[0];
+        return $row[0];
 }
 
 function avg_question($question, $crn, $eval_type, $mysqli) {
@@ -130,7 +159,8 @@ function avg_question($question, $crn, $eval_type, $mysqli) {
      and eval_type = '$eval_type'");
     
     while ($row = $result->fetch_array())
-        echo $row[0];
+       // echo $row[0];
+        return $row[0];
 }
 
 function avg_course($crn, $eval_type, $mysqli) {
@@ -138,7 +168,8 @@ function avg_course($crn, $eval_type, $mysqli) {
                                         crn = '$crn' and eval_type = '$eval_type'");
     
     while ($row = $result->fetch_array())
-        echo $row[0];
+       // echo $row[0];
+        return $row[0];
 }
 
 function avg_instructor($crn, $eval_type, $mysqli) {
@@ -146,7 +177,8 @@ function avg_instructor($crn, $eval_type, $mysqli) {
                                         evaluations where crn = '$crn'  and eval_type = '$eval_type'");
     
     while ($row = $result->fetch_array())
-        echo $row[0];
+      //  echo $row[0];
+        return $row[0];
 }
 
 function avg_student($crn, $eval_type, $mysqli) {
@@ -154,7 +186,8 @@ function avg_student($crn, $eval_type, $mysqli) {
                                         where crn = '$crn'  and eval_type = '$eval_type'");
     
     while ($row = $result->fetch_array())
-        echo $row[0];
+       // echo $row[0];
+        return $row[0];
 }
 
 function avg_midterm($crn, $eval_type, $mysqli) {
@@ -162,7 +195,16 @@ function avg_midterm($crn, $eval_type, $mysqli) {
                                 from evaluations where crn = '$crn' and eval_type = '$eval_type'");
     
     while ($row = $result->fetch_array())
-        echo $row[0];
+      //  echo $row[0];
+        return $row[0];
+}
+function avg_final($crn, $eval_type, $mysqli) {
+    $result = $mysqli->query("SELECT round((avg(q1)+avg(q2)+avg(q3)+avg(q4)+avg(q5)+avg(q6) +avg(q7)+avg(q8)+avg(q9)+avg(q10)+avg(q11)+avg(q12)+avg(q13)+avg(q14)+avg(q15)+avg(q16)+avg(q17)+avg(q18))/18, 2)
+                                from evaluations where crn = '$crn' and eval_type = '$eval_type'");
+    
+    while ($row = $result->fetch_array())
+       // echo $row[0];
+        return $row[0];
 }
 
 //Method to check if user has acess to page
