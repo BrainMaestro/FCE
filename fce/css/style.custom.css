@@ -162,6 +162,11 @@ hr {
 	height:40px;
 	background-color: #dedede;
 }
+#tabbox2
+{
+	height:40px;
+	background-color: #3B3B3B;
+}
 #panel
 {
 	background-color:#FFF;
@@ -181,6 +186,13 @@ font-weight: bold;
 -webkit-border-top-left-radius: 0px;
 -webkit-border-top-right-radius: 0px;
 -moz-border-radius: 3px 3px 0px 0px;
+	border-left: 1px solid #FFF;
+}
+.section.tab {
+	width: 120px;
+	color: #FFF;
+	font-weight: inherit;
+	border-left: 1px solid #272525;
 }
 .loginbox {
 	padding: 0px;
@@ -201,15 +213,22 @@ text-decoration: none;
 }
 #login {
 	font-size:14px;
-	border-left: 1px solid #FFF;
 }
 .select
 {
 	background-color:#FFF;
 	
 }
+.select2
+{
+	background-color:#FF5454;
+	
+}
 .unselect {
 	background-color:#dedede;
+}
+.unselect2 {
+	background-color:#3B3B3B;
 }
 #loginbox
 {
@@ -284,10 +303,4 @@ text-decoration: none;
 .custom-file-upload {
     margin-left: auto;
     margin-right: auto;
-}
-.section.tab {
-	width: 120px;
-}
-.section #evalbox {
-	height: 400px;
 }
