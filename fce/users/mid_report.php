@@ -170,157 +170,157 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                         <tr>
                             <td class="w5">1</td>
                             <td class="w65"><strong>Professor's Adherence to time </strong>(Professor arrives in the classroom on time.</td>
-                            <td class="w5"><?php count_scale(1,'q1', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q1', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q1', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q1', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q1', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q1', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q1', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q1', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q1', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q1', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q1', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q1', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">2</td>
                             <td class="w65"><strong>Professor's preparedness to Teach </strong>(My professor arrives in the classroom prepared)</td>
-                            <td class="w5"><?php count_scale(1,'q2', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q2', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q2', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q2', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q2', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q2', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q2', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q2', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q2', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q2', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q2', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q2', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">3</td>
                             <td class="w65"><strong>Professor's Accessibility in Class </strong>(My professor is accessible in class)</td>
-                            <td class="w5"><?php count_scale(1,'q3', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q3', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q3', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q3', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q3', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q3', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q3', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q3', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q3', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q3', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q3', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q3', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">4</td>
                             <td class="w65"><strong>Professor's Availability in Class </strong>(My professor is available during office hours)</td>
-                            <td class="w5"><?php count_scale(1,'q4', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q4', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q4', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q4', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q4', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q4', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q4', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q4', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q4', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q4', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q4', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q4', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">5</td>
                             <td class="w65"><strong>Asking Questions in Class </strong>(I feel comfortable asking questions during class)</td>
-                            <td class="w5"><?php count_scale(1,'q5', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q5', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q5', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q5', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q5', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q5', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q5', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q5', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q5', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q5', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q5', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q5', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">6</td>
                             <td class="w65"><strong>Explanation of Concepts </strong>(My professor explains the material and concepts well) </td>
-                            <td class="w5"><?php count_scale(1,'q6', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q6', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q6', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q6', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q6', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q6', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q6', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q6', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q6', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q6', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q6', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q6', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">7</td>
                             <td class="w65"><strong>Professor's Teaching Consistency </strong>(My professor is consistent in his teaching )</td>
-                            <td class="w5"><?php count_scale(1,'q7', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q7', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q7', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q7', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q7', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q7', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q7', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q7', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q7', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q7', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q7', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q7', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">8</td>
                             <td class="w65"><strong>Use of e-Book </strong>(My professor uses e-books)</td>
-                            <td class="w5"><?php count_scale(1,'q8', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q8', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q8', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q8', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q8', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q8', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q8', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q8', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q8', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q8', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q8', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q8', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">9</td>
                             <td class="w65"><strong>Use of Digital Instructional Technologies </strong>(My professor uses other digital instructional technology such as Electronic Journal Articles, Youtube, TED Talks, computer programs, videos, online resources, or social media)</td>
-                            <td class="w5"><?php count_scale(1,'q9', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q9', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q9', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q9', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q9', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q9', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q9', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q9', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q9', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q9', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q9', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q9', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">10</td>
                             <td class="w65"><strong>Learning compliance with the Syllabus </strong>(I am learning what is in the course description/syllabus)</td>
-                            <td class="w5"><?php count_scale(1,'q10', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q10', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q10', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q10', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q10', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q10', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q10', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q10', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q10', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q10', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q10', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q10', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">11</td>
                             <td class="w65"><strong>Use of Digital Skills </strong>(I am using digital and other on-line skills in this course)</td>
-                            <td class="w5"><?php count_scale(1,'q11', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q11', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q11', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q11', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q11', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q11', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q11', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q11', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q11', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q11', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q11', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q11', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">12</td>
                             <td class="w65"><strong>Relevance of Assignments </strong>(My professor's assignments are relevant to the course)</td>
-                            <td class="w5"><?php count_scale(1,'q12', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q12', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q12', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q12', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q12', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q12', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q12', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q12', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q12', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q12', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q12', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q12', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">13</td>
                             <td class="w65"><strong>Grading Policies </strong>My professors grading policies are fair and consistent with the syllabus</td>
-                            <td class="w5"><?php count_scale(1,'q13', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q13', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q13', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q13', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q13', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q13', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q13', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q13', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q13', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q13', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q13', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q13', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">14</td>
                             <td class="w65"><strong>Relevance of Course content to future career prospects </strong>My professor relates course content and skills to my future career</td>
-                            <td class="w5"><?php count_scale(1,'q14', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q14', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q14', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q14', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q14', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q14', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q14', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q14', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q14', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q14', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q14', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q14', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5">15</td>
                             <td class="w65"><strong>American Style Education </strong>My professor teaches in accordance with the interactive American style of education that is the way AUN claims to be different</td>
-                            <td class="w5"><?php count_scale(1,'q15', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(2,'q15', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(3,'q15', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(4,'q15', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php count_scale(5,'q15', $course_no, $eval_type, $mysqli)?></td>
-                            <td class="w5"><?php avg_question('q15', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(1,'q15', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(2,'q15', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(3,'q15', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(4,'q15', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo count_scale(5,'q15', $course_no, $eval_type, $mysqli)?></td>
+                            <td class="w5"><?php echo avg_question('q15', $course_no, $eval_type, $mysqli)?></td>
                         </tr>
                         <tr>
                             <td class="w5"></td>
                             <td class="w70"><strong>TOTAL AVERAGE</strong></td>
-                            <td class="w5"><strong><?php avg_midterm($course_no, $eval_type, $mysqli) ?></strong></td>
+                            <td class="w5"><strong><?php echo avg_midterm($course_no, $eval_type, $mysqli) ?></strong></td>
                         </tr>
                     </table>
         </div>
