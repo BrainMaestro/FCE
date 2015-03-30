@@ -213,12 +213,12 @@ text-decoration: none;
 }
 #loginbox
 {
-	height:300px;
+	/*height:300px;*/
 	padding:10px;
 }
 #evalbox
 {
-	height:300px;
+	/*height:300px;*/
 	padding:10px;
 	display:none;
 }
@@ -284,4 +284,10 @@ text-decoration: none;
 .custom-file-upload {
     margin-left: auto;
     margin-right: auto;
+}
+.section.tab {
+	width: 120px;
+}
+.section #evalbox {
+	height: 400px;
 }

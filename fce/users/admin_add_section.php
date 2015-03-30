@@ -59,6 +59,37 @@
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="application/javascript">
+    $(document).ready(function()
+    {
+        
+    $(".tab").click(function()
+    {
+        var X=$(this).attr('id');
+     
+    if(X=='evaluate')
+    {
+        $("#login").removeClass('select');
+        $("#login").addClass('unselect');
+        $("#evaluate").removeClass('unselect');
+        $("#evaluate").addClass('select');
+        $("#loginbox").slideUp();
+        $("#evalbox").slideDown();
+    }
+    else
+    {
+        $("#evaluate").removeClass('select');
+        $("#evaluate").addClass('unselect');
+        $("#login").addClass('select');
+        $("#login").removeClass('unselect');
+        $("#evalbox").slideUp();
+        $("#loginbox").slideDown();
+    }
+     
+    });
+
+    });
+</script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <!--font-Awesome-->
@@ -113,18 +144,50 @@
     <div class="container">
         <div class="main row para"> 
             <div class="col-xs-4 text-center size-before"></div>      
-                <div class="col-xs-4 text-center border size-panel">
-                <form method="POST" action="./admin_add_section.php">
-                    <label>Semester</label><br>
-                    <?php
-                    echo "<input type='text' class='size-input round' value='$semester' disabled><br><br>"
-                    ?>
-                    <label>Course Schedule</label><br>
-                    <input type="file" name="excelFile" class="custom-file-upload round size-input" 
-                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"><br>
-                    <button class="black-btn size-input" name="submit">Add Sections</button>
-                </form>                
-            </div>  
+                <div class="col-xs-4 text-center border loginbox size-panel">
+                    <div id="tabbox">
+                        <a href="#" id="evaluate" class="section tab unselect evaluate">Individually</a>
+                        <a href="#" id="login" class="section tab select">Spreadsheet</a>
+                        </div>
+                        <div id="loginbox"><br>
+                            <form method="POST" action="./admin_add_section.php">
+                                <label>Semester</label><br>
+                                <?php
+                                echo "<input type='text' class='size-input round' value='$semester' disabled><br><br>"
+                                ?>
+                                <label>Course Schedule</label><br>
+                                <input type="file" name="excelFile" class="custom-file-upload round size-input" 
+                                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"><br>
+                                <button class="black-btn size-input" name="submit">Add Sections</button>
+                            </form><br>            
+                        </div> 
+                        <div id="evalbox" class="section"><br>
+                            <form method="POST" action="./admin_add_section.php">
+                                <label>Semester</label><br>
+                                <?php
+                                echo "<input type='text' class='size-input round' value='$semester' disabled><br><br>"
+                                ?>
+                                <label>CRN </label><br /><input type="text" class="round size-input" name="crn" placeholder="Ex: 201497" required="required"/> <br /><br />
+                                <label>Course Code </label> <br /><input type="text" class="round size-input" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br /><br />
+                                <label>Faculty Email </label><br /> <input type="text" class="round size-input" name="faculty_email" placeholder="Ex: a.b@aun.edu.ng" required="required"/> <br /><br />
+                                <!-- <label>Semester </label> <br /><input type="text" class="round size-input" name="semester" placeholder="Ex: Spring 2015" required="required"/> <br /> -->
+                                <label>School </label><br /><select class="input-sm size-input" name="school" required="required">
+                                    <option selected value="">--Choose School--</option>
+                                    <?php
+                                    $result = $mysqli->query("SELECT * FROM school");
+
+                                    for ($i = 0; $i < $result->num_rows; $i++) {
+                                        $row = $result->fetch_array();
+                                        echo "<option value='$row[0]'>$row[0]</option>";
+                                    }
+                                    ?>
+                                </select><br /><br />
+                                <label>Course Title </label> <br /><input type="text" class="round size-input" name="course_title" placeholder="Ex: Discrete Structures I" required="required"/> <br /><br />
+                                <label>Enrolled</label><br /><input name="enrolled" class="round size-input" type="text" placeholder="Ex: 5" required="required"/><br /><br />
+
+                                <button class="black-btn size-input" name="submit">Add Section</button>
+                            </form><br>
+                        </div>
 
             <div class="col-xs-4 text-center"></div>
         </div>
