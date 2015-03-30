@@ -304,3 +304,19 @@ text-decoration: none;
     margin-left: auto;
     margin-right: auto;
 }
+
+.input-element {
+    /*border: 0;*/
+    border: 1px solid #ccc;	
+    padding: 2px;
+    background: #909090;
+    font: 11pt sans-serif;
+    /*color: #FF5454;*/
+    color: #fff;
+    text-decoration: line-through;
+}
+
+.tmp-element {
+    visibility: hidden;
+    white-space: pre;
+}

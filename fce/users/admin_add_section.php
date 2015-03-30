@@ -154,19 +154,19 @@ if (isset($_POST['submitI'])) {
                             <form method="POST" action="./process_spreadsheet.php" enctype="multipart/form-data">
                                 <label>Semester</label><br>
                                 <?php
-                                echo "<input type='text' class='size-input round' name='semester' value='$semester' disabled><br><br>"
+                                echo "<input type='text' class='size-input round' name='semester' value='$semester' disabled><br><br>";
                                 ?>
                                 <label>Course Schedule</label><br>
                                 <input type="file" name="excelFile" id="excelFile" class="custom-file-upload round size-input" 
                                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"><br>
-                                <button class="black-btn size-input" name="submitS">Add Sections</button>
+                                <button class="black-btn size-input" name="submitS">Upload File</button>
                             </form><br>            
                         </div> 
                         <div id="evalbox" class="section"><br>
                             <form method="POST" action="./admin_add_section.php">
                                 <label>Semester</label><br>
                                 <?php
-                                echo "<input type='text' class='size-input round' name='semester value='$semester' disabled><br><br>"
+                                echo "<input type='text' class='size-input round' name='semester' value='$semester' disabled><br><br>";
                                 ?>
                                 <label>CRN </label><br /><input type="text" class="round size-input" name="crn" placeholder="Ex: 201497" required="required"/> <br /><br />
                                 <label>Course Code </label> <br /><input type="text" class="round size-input" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br /><br />
