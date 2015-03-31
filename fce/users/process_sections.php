@@ -1,6 +1,10 @@
 <?php
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
+
+if (isset($_POST['submit'])) {
+
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -92,6 +96,10 @@ include_once '../includes/functions.php';
 
 <div class="main_bg"><!-- start main -->
     <div class="container">
+        <div class="text-center">
+            <br></br>
+            <a href="./process_sections.php"><button class='link-active black-btn'>Process Sections</button></a>
+        </div><hr>
         <div class="main text-center para"> 
             <form action="" method="post">
                 <?php

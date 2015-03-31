@@ -307,9 +307,9 @@ text-decoration: none;
 
 .input-element {
     /*border: 0;*/
-    border: 1px solid #ccc;	
+    border: 1px solid #555;	
     padding: 2px;
-    background: #909090;
+    background: #c0c0c0;
     font: 11pt sans-serif;
     /*color: #FF5454;*/
     color: #fff;

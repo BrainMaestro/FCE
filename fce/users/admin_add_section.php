@@ -143,6 +143,14 @@ if (isset($_POST['submitI'])) {
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">
+        <?php
+        $result = $mysqli->query("SELECT count(crn) FROM sections_interface");
+        if ($result->num_rows > 0)
+            echo "<div class='text-center'>
+                <br></br>
+                <a href='./process_sections.php'><button class='black-btn'>Process Sections</button></a>
+            </div><hr>";
+        ?>
         <div class="main row para"> 
             <div class="col-xs-4 text-center size-before"></div>      
                 <div class="col-xs-4 text-center border loginbox size-panel">
