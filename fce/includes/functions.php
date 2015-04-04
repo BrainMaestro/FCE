@@ -306,5 +306,61 @@ function protectReports($crn, $user, $mysqli) {
     }
 }
 
+function findSectionError($crn, $mysqli) {
+    $result = $mysqli->query("SELECT * FROM sections_interface WHERE crn='$crn'")->fetch_assoc();
+    $err = "None";
+    $err_col = "";
+
+    if (strlen($result['crn']) != 7) {
+        $err = "CRN is too long or too short";
+        $err_col = "crn";
+    }
+    elseif (strlen($result['course_code']) < 7) {
+        $err = "Course code is too short";
+        $err_col = "course_code";
+    }
+    elseif ($result['semester'] != getCurrentSemester()) {
+        $err = "Not current semester (". getCurrentSemester() .")";
+        $err_col = "semester";
+    }
+    elseif ($mysqli->query("SELECT * FROM schools WHERE school = '$result[school]'")->num_rows == 0) {
+        $err = "School does not exist";
+        $err_col = "school";
+    }
+    elseif (strlen($result['course_title']) < 5) {
+        $err = "Course title is too short";
+        $err_col = "course_title";
+    }
+    elseif (strlen($result['class_time']) < 1) {
+        $err = "No class time set";
+        $err_col = "class_time";
+    }
+    elseif (strlen($result['location']) < 1) {
+        $err = "No location set";
+        $err_col = "location";
+    }
+    elseif (strlen($result['enrolled']) < 1 || $result['enrolled'] == 0) {
+        $err = "Enrolled students incorrect";
+        $err_col = "enrolled";
+    }
+    elseif (strlen($result['faculty']) < 1 || $result['faculty'] == "(0 records)") {
+        $err = "No instructor set";
+        $err_col = "faculty";
+    }
+    else {
+        $faculty = explode(", ", $result['faculty']);
+        for ($i = 0; $i < count($faculty); $i++) {
+            if ($mysqli->query("SELECT * FROM users WHERE name = '$faculty[$i]'")->num_rows == 0) {
+                $err = "Instructor \'$faculty[$i]\' is not in the system";
+                $err_col = "faculty";
+                break;
+            }
+
+        }
+    }
+    $mysqli->query("UPDATE sections_interface SET error_message='$err', error_column='$err_col' WHERE crn='$crn'");
+
+}
+
 ?>
 

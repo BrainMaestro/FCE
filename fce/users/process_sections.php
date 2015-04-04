@@ -2,6 +2,12 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
+$result = $mysqli->query("SELECT crn FROM sections_interface");
+for($i = 0; $i < $result->num_rows; $i++) {
+    $row = $result->fetch_assoc();
+    findSectionError($row['crn'], $mysqli);
+}
+
 if (isset($_POST['submit'])) {
 
 }
@@ -48,6 +54,9 @@ if (isset($_POST['submit'])) {
 <!--font-Awesome-->
     <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
 <!--font-Awesome-->
+<style type="text/css">
+    table { empty-cells: show; }
+</style>
 </head>
 <body>
 <div class="header_bg1">
@@ -125,13 +134,15 @@ if (isset($_POST['submit'])) {
                     for($i = 0; $i < $result->num_rows; $i++) {
                         $row = $result->fetch_assoc(); 
                         echo "<tr>";
+                        $j = 0;
                         foreach ($row as $value) {
-                            if ($value == $row['error_column'])
+                            if ($j == 10) // To prevent showing the hidden column 'error_column'
                                 continue;
                             if (isset($row["$row[error_column]"]) && $value == $row["$row[error_column]"])
                                 echo "<td class='input-element'>$value</td>";
                             else
                                 echo "<td>$value</td>";
+                            $j++;
                         }
                         if (isset($row["$row[error_column]"]))
                             echo "<td><a class='black-btn' href='./fix_section.php?crn=$row[crn]'>Fix</a></td>";

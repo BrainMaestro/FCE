@@ -108,13 +108,15 @@ if (isset($_POST['submit'])) {
                 <form action="" method="post">
                     <?php
                     $crn = $_GET['crn'];
-                    $result = $mysqli->query("SELECT error_column FROM sections_interface WHERE crn='$crn'")->fetch_assoc();
+                    $result = $mysqli->query("SELECT error_column, error_message FROM sections_interface WHERE crn='$crn'")->fetch_assoc();
                     $result2 = $mysqli->query("SELECT $result[error_column] FROM sections_interface WHERE crn='$crn'")->fetch_array();
                     echo "<h4>Fix Section Details</h4><hr>";
+                    echo "<label><span class='error'>Error Message</span></label><br>
+                    <p>$result[error_message]</p><br>";
                     echo "<label>Previous <span class='error'>$result[error_column]</span></label><br>
                     <input type='text' value='$result2[0]' disabled><br><br>";
                     echo "<label>New <span class='error'>$result[error_column]</span></label><br>
-                    <input type='text' name='new_value' required><br><br>";
+                    <input type='text' name='new_value' value='$result2[0]' required><br><br>";
                     echo "<input type='hidden' name='error_column' value='$result[error_column]'>";
                     ?>
                     <button class="black-btn" name="submit">Fix Section</button>
