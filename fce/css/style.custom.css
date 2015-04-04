@@ -315,8 +315,3 @@ text-decoration: none;
     color: #fff;
     text-decoration: line-through;
 }
-
-.tmp-element {
-    visibility: hidden;
-    white-space: pre;
-}
