@@ -140,6 +140,7 @@ if (isset($_POST['submit'])) {
                         echo "<tr>";
                         $j = 0;
                         $error = false;
+                        $shown = false;
                         if ($row["error_column"] != "")
                             $error = true;
                         foreach ($row as $value) {
@@ -150,8 +151,10 @@ if (isset($_POST['submit'])) {
                             if ($j == 9 && $error)
                                 $class = "error";
 
-                            if ($error && $value == $row["$row[error_column]"])
+                            if ($error && $value == $row["$row[error_column]"] && !$shown) {
                                 echo "<td class='input-element'>$value</td>";
+                                $shown = true;
+                            }
                             else
                                 echo "<td class='$class'>$value</td>";
 

@@ -189,12 +189,13 @@ if (isset($_POST['submitS'])) {
 <div class="main_bg"><!-- start main -->
     <div class="container">
         <?php
-        $result = $mysqli->query("SELECT count(crn) FROM sections_interface");
-        if ($result->num_rows > 0)
+        $result = $mysqli->query("SELECT * FROM sections_interface");
+        if ($result->num_rows > 0) {
             echo "<div class='text-center'>
                 <br></br>
                 <a href='./process_sections.php'><button class='black-btn'>Process Sections</button></a>
             </div><hr>";
+        }
         ?>
         <div class="main row para"> 
             <div class="col-xs-4 text-center size-before"></div>      
@@ -209,7 +210,7 @@ if (isset($_POST['submitS'])) {
                                 <?php
                                 echo "<input type='text' class='size-input round' name='semester' value='$semester' disabled><br><br>";
                                 ?>
-                                <label>Course Schedule</label><br>
+                                <label>Course Schedule File</label><br>
                                 <input type="file" name="excelFile" id="excelFile" class="custom-file-upload round size-input" 
                                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" required><br>
                                 <button class="black-btn size-input" name="submitS">Upload File</button>

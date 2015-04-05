@@ -340,7 +340,7 @@ function findSectionError($crn, $mysqli) {
         $err_col = "location";
     }
     elseif (strlen($result['enrolled']) < 1 || $result['enrolled'] == 0) {
-        $err = "Enrolled students incorrect";
+        $err = "Incorrect number of enrolled students";
         $err_col = "enrolled";
     }
     elseif (strlen($result['faculty']) < 1 || $result['faculty'] == "(0 records)") {
