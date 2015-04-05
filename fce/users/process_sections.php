@@ -9,7 +9,11 @@ for($i = 0; $i < $result->num_rows; $i++) {
 }
 
 if (isset($_POST['submit'])) {
-
+    $result = $mysqli->query("SELECT * FROM sections_interface WHERE error_message = 'None'");
+    for($i = 0; $i < $result->num_rows; $i++) {
+        $row = $result->fetch_assoc();
+        addSection($row, $mysqli);
+    }
 }
 ?>
 <!DOCTYPE HTML>
@@ -135,16 +139,26 @@ if (isset($_POST['submit'])) {
                         $row = $result->fetch_assoc(); 
                         echo "<tr>";
                         $j = 0;
+                        $error = false;
+                        if ($row["error_column"] != "")
+                            $error = true;
                         foreach ($row as $value) {
+                            $class = "normal";
                             if ($j == 10) // To prevent showing the hidden column 'error_column'
                                 continue;
-                            if (isset($row["$row[error_column]"]) && $value == $row["$row[error_column]"])
+
+                            if ($j == 9 && $error)
+                                $class = "error";
+
+                            if ($error && $value == $row["$row[error_column]"])
                                 echo "<td class='input-element'>$value</td>";
                             else
-                                echo "<td>$value</td>";
+                                echo "<td class='$class'>$value</td>";
+
                             $j++;
                         }
-                        if (isset($row["$row[error_column]"]))
+
+                        if ($error)
                             echo "<td><a class='black-btn' href='./fix_section.php?crn=$row[crn]'>Fix</a></td>";
                         echo "</tr>";
                     }

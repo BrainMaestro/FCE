@@ -362,5 +362,33 @@ function findSectionError($crn, $mysqli) {
 
 }
 
+function addSection($row, $mysqli) {
+    if ($stmt = $mysqli->prepare("INSERT INTO sections VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+        $locked = '1';
+        $mid_evaluation = '0';
+        $final_evaluation = '0';
+        $stmt->bind_param('issssssiiii', $row['crn'],$row['course_code'],$row['semester'],$row['school'],
+            $row['course_title'],$row['class_time'],$row['location'], $locked, $row['enrolled'], $mid_evaluation, $final_evaluation); 
+        $stmt->execute(); 
+        $faculty = explode(", ", $row['faculty']);
+        for ($i = 0; $i < count($faculty); $i++) {
+            $result = $mysqli->query("SELECT email FROM users WHERE name = '$faculty[$i]'")->fetch_assoc();
+            $mysqli->query("INSERT INTO course_assignments VALUES('$row[crn]', '$result[email]')");
+        }
+        $mysqli->query("DELETE FROM sections_interface WHERE crn='$row[crn]'");
+    }
+}
+
+function addSectionInterface($row, $mysqli) {
+    if ($stmt = $mysqli->prepare("INSERT INTO sections_interface VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+        $desg = substr($row[0], 0, 3);
+        $result = $mysqli->query("SELECT school FROM course_groups WHERE course_designation = '$desg'")->fetch_assoc();
+        $none = 'None';
+        $empty = '';
+        $stmt->bind_param('issssssisss', $row[3], $row[0], $row[2], $result['school'], $row[1], $row[7], $row[8], $row[9], $row[6], $none, $empty);
+        $stmt->execute(); 
+    }
+}
+
 ?>
 

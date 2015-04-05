@@ -6,21 +6,12 @@ checkUser("admin");
 
 if (isset($_POST['submitI'])) {
 
-    if ($stmt = $mysqli->prepare("INSERT INTO section VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-        $locked = '1';
-        $mid_evaluation = '0';
-        $final_evaluation = '0';
-        $semester = getCurrentSemester();
-        $stmt->bind_param('isssssiiii', $_POST['crn'],$_POST['course_code'],$_POST['faculty_email'],$semester,$_POST['school'],
-            $_POST['course_title'], $locked, $mid_evaluation, $final_evaluation, $_POST['enrolled']); 
-        $stmt->execute(); 
-        header("Location: ./admin.php");
-    } else {
-        $_SESSION['err'] = "Database error: cannot prepare statement";
-        header("Location: ../index.php");
-        exit();
-    }
-
+    $semester = getCurrentSemester();
+    $row = [$_POST['course_code'],$_POST['course_title'],$semester,$_POST['crn'], '', '',
+            $_POST['faculty'],$_POST['class_time'],$_POST['location'],$_POST['enrolled']];
+    addSectionInterface($row, $mysqli);
+    header("Location: ./process_sections.php");
+    exit();
 }
 
 if (isset($_POST['submitS'])) {
@@ -69,14 +60,7 @@ if (isset($_POST['submitS'])) {
             if ($row[0] == 'COURSE CODE')
                 continue;
 
-            if ($stmt = $mysqli->prepare("INSERT INTO sections_interface VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                $desg = substr($row[0], 0, 3);
-                $result = $mysqli->query("SELECT school FROM course_groups WHERE course_designation = '$desg'")->fetch_assoc();
-                $none = 'None';
-                $empty = '';
-                $stmt->bind_param('issssssisss', $row[3], $row[0], $row[2], $result['school'], $row[1], $row[7], $row[8], $row[9], $row[6], $none, $empty);
-                $stmt->execute(); 
-            }
+            addSectionInterface($row, $mysqli);
         }
     }  
     unlink(UPLOAD_DIR . $name); // Deletes file
@@ -227,7 +211,7 @@ if (isset($_POST['submitS'])) {
                                 ?>
                                 <label>Course Schedule</label><br>
                                 <input type="file" name="excelFile" id="excelFile" class="custom-file-upload round size-input" 
-                                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"><br>
+                                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" required><br>
                                 <button class="black-btn size-input" name="submitS">Upload File</button>
                             </form><br>            
                         </div> 
@@ -239,12 +223,10 @@ if (isset($_POST['submitS'])) {
                                 ?>
                                 <label>CRN </label><br /><input type="text" class="round size-input" name="crn" placeholder="Ex: 201497" required="required"/> <br /><br />
                                 <label>Course Code </label> <br /><input type="text" class="round size-input" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br /><br />
-                                <label>Faculty Email </label><br /> <input type="text" class="round size-input" name="faculty_email" placeholder="Ex: a.b@aun.edu.ng" required="required"/> <br /><br />
-                                <!-- <label>Semester </label> <br /><input type="text" class="round size-input" name="semester" placeholder="Ex: Spring 2015" required="required"/> <br /> -->
                                 <label>School </label><br /><select class="input-sm size-input" name="school" required="required">
                                     <option selected value="">--Choose School--</option>
                                     <?php
-                                    $result = $mysqli->query("SELECT * FROM school");
+                                    $result = $mysqli->query("SELECT * FROM schools");
 
                                     for ($i = 0; $i < $result->num_rows; $i++) {
                                         $row = $result->fetch_array();
@@ -252,7 +234,10 @@ if (isset($_POST['submitS'])) {
                                     }
                                     ?>
                                 </select><br /><br />
+                                <label>Faculty Name </label> <br /><input type="text" class="round size-input" name="faculty" placeholder="Ex: David Adams" required="required"/> <br /><br />
                                 <label>Course Title </label> <br /><input type="text" class="round size-input" name="course_title" placeholder="Ex: Discrete Structures I" required="required"/> <br /><br />
+                                <label>Class Time </label> <br /><input type="text" class="round size-input" name="class_time" placeholder="Ex: MW 08:00 - 09:30" required="required"/> <br /><br />
+                                <label>Location </label> <br /><input type="text" class="round size-input" name="location" placeholder="Ex: AS 226" required="required"/> <br /><br />
                                 <label>Enrolled</label><br /><input name="enrolled" class="round size-input" type="text" placeholder="Ex: 5" required="required"/><br /><br />
 
                                 <button class="black-btn size-input" name="submitI">Add Section</button>
