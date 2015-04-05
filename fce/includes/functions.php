@@ -327,7 +327,7 @@ function findSectionError($crn, $mysqli) {
         $err = "School does not exist";
         $err_col = "school";
     }
-    elseif (strlen($result['course_title']) < 5) {
+    elseif (strlen($result['course_title']) < 1) {
         $err = "Course title is too short";
         $err_col = "course_title";
     }
