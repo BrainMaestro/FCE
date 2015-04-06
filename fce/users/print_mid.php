@@ -1,5 +1,5 @@
 <?php
-require('../../fpdf17/fpdf.php');
+require('../fpdf17/fpdf.php');
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php'; 
 if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary")){
