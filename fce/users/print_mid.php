@@ -57,7 +57,7 @@ $pdf->Cell(230,4,$course_no,0,1,'L');
 $pdf->Cell(135,4,'Course Code:',0,0,'R');
 $pdf->Cell(230,4,$row['course_code'],0,1,'L');
 $pdf->Cell(135,4,'Course Title:',0,0,'R');
-$pdf->Cell(230,4,$row[course_title],0,1,'L');
+$pdf->Cell(230,4,$row['course_title'],0,1,'L');
 $pdf->Cell(135,4,'Report:',0,0,'R');
 $pdf->Cell(230,4,"$term Evaluation Report.",0,1,'L');
 $pdf->Cell(135,4,'Instructor(s):',0,0,'R');
@@ -67,7 +67,7 @@ $assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[c
                 for($j = 0; $j < $assignment->num_rows; $j++) {
                     $row2 = $assignment->fetch_assoc();
                     $faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
-                    $teachers.=$faculty[name].", "; 
+                    $teachers.=$faculty['name'].", "; 
                 }
 
 $pdf->Cell(230,4,$teachers,0,1,'L');
@@ -76,9 +76,9 @@ $count_eval_type = $eval_type;
 $count_response = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$count_crn' AND eval_type='$count_eval_type'")->fetch_assoc();
 $count_registered = $mysqli->query("SELECT enrolled FROM sections WHERE crn='$count_crn'")->fetch_assoc();
 $pdf->Cell(135,4,'Total Enrolled:',0,0,'R');
-$pdf->Cell(230,4,$count_registered[enrolled],0,1,'L');
+$pdf->Cell(230,4,$count_registered['enrolled'],0,1,'L');
 $pdf->Cell(135,4,'Total Evaluation(s):',0,0,'R');
-$pdf->Cell(230,4,$count_response[filled],0,1,'L');
+$pdf->Cell(230,4,$count_response['filled'],0,1,'L');
 $pdf->Cell(135,4,'Scale:',0,0,'R');
 $pdf->Cell(230,4,'5 (excellent), 4 (very good), 3 (good), 2 (margin), 1 (poor)',0,1,'L');
 $pdf->Ln(14);
