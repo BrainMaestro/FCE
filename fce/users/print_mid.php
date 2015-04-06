@@ -41,7 +41,7 @@ function Footer()
 }
 }
 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$course_no'")->fetch_assoc();
-$term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+$term = "Midterm";
 // Instanciation of inherited class
 $pdf = new PDF('L','mm','A4');
 $pdf->AliasNbPages();
