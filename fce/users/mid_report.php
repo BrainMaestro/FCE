@@ -9,13 +9,6 @@ if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary"))
 	header("Location: ../index.php");
 }
 
-// if (isset($_POST['sbmt_mid'])) {
-//     $eval_type= $_POST['eval_type'];
-//     $course_no = $_POST['crn'];  
-// } else {
-//     $eval_type = $_SESSION['eval_type'];
-//     $course_no = $_SESSION['crn'];
-// }
 $course_no = $_GET['crn'];
 $eval_type = "mid";
 checkEvaluations($course_no, $eval_type, $mysqli);
@@ -113,7 +106,7 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
             <tbody>
                 <?php
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$course_no'")->fetch_assoc();
-                $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+                $term = ($row['mid_evaluation'] == '1') ? "Midterm" : "Final";
 
                 echo "<tr><td>CRN</td>";
                 echo "<td>$course_no</td></tr>";
