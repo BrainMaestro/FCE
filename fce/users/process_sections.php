@@ -105,6 +105,7 @@ if (isset($_POST['submit'])) {
     <a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
     <a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
     <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
+    <a href="./statistics.php"><button class='black-btn'>Statistics</button></a>
 </div>
 
 <div class="main_bg"><!-- start main -->
