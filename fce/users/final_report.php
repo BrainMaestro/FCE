@@ -144,6 +144,7 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                 ?>
             </tbody>
         </table>
+        <?php echo "<a target='_blank' href='./print_final.php?crn=$course_no'>Print Report Here</a>"; ?>
     </div>
 </div>
 <div class="clearfix"></div>
@@ -384,11 +385,14 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                             <td class="w5"></td>
                             <td class="w65">Total</td>
                             <td class="w5"><?php echo avg_final($course_no, $eval_type, $mysqli);?></td>
+                    
                         </tr>
                     </table>
+
             </div>
+
         </div>
-    </div>
+            </div>
 </div><!-- end main -->
 <FOOTER>
         <div class="footer_bg"><!-- start footer -->

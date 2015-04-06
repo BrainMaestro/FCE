@@ -151,6 +151,7 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                 ?>
             </tbody>
         </table>
+        <?php echo "<a target='_blank' href='./print_mid.php?crn=$course_no'>Print Report Here</a>"; ?>
     </div>
 <div class="clearfix"></div>
 <div class="main_bg"><!-- start main -->
