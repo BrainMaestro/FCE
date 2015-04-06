@@ -162,6 +162,11 @@ hr {
 	height:40px;
 	background-color: #dedede;
 }
+#tabbox2
+{
+	height:40px;
+	background-color: #3B3B3B;
+}
 #panel
 {
 	background-color:#FFF;
@@ -181,6 +186,13 @@ font-weight: bold;
 -webkit-border-top-left-radius: 0px;
 -webkit-border-top-right-radius: 0px;
 -moz-border-radius: 3px 3px 0px 0px;
+	border-left: 1px solid #FFF;
+}
+.section.tab {
+	width: 120px;
+	color: #FFF;
+	font-weight: inherit;
+	border-left: 1px solid #272525;
 }
 .loginbox {
 	padding: 0px;
@@ -201,24 +213,31 @@ text-decoration: none;
 }
 #login {
 	font-size:14px;
-	border-left: 1px solid #FFF;
 }
 .select
 {
 	background-color:#FFF;
 	
 }
+.select2
+{
+	background-color:#FF5454;
+	
+}
 .unselect {
 	background-color:#dedede;
 }
+.unselect2 {
+	background-color:#3B3B3B;
+}
 #loginbox
 {
-	height:300px;
+	/*height:300px;*/
 	padding:10px;
 }
 #evalbox
 {
-	height:300px;
+	/*height:300px;*/
 	padding:10px;
 	display:none;
 }
@@ -279,4 +298,20 @@ text-decoration: none;
 	margin:0;
 	color:#FF4D4D;
 	text-shadow: 0px 0px 2px #4d4d4d, 0px 5px 10px #aeaeae;
+}
+
+.custom-file-upload {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-element {
+    /*border: 0;*/
+    border: 1px solid #555;	
+    padding: 2px;
+    background: #c0c0c0;
+    font: 11pt sans-serif;
+    /*color: #FF5454;*/
+    color: #fff;
+    text-decoration: line-through;
 }

@@ -40,6 +40,17 @@ function deleteKeys($crn, $eval_type, $mysqli) {
     $mysqli->query("DELETE FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
 }
 
+//Method that adds a helper for evaluating a class
+function insertHelper($crn, $mysqli) {
+    $password = generateKeys();
+    $mysqli->query("INSERT INTO helper_user VALUES (NULL, '$password', '$crn')");
+
+}
+
+//Method that deletes a helper for evaluating a class
+function deleteHelper($crn, $mysqli) {
+    $mysqli->query("DELETE FROM helper_user WHERE crn='$crn'");
+}
 // Method that gets the current semester from the server time
 function getCurrentSemester() {
 
@@ -303,6 +314,90 @@ function protectReports($crn, $user, $mysqli) {
         
         default:
             break;
+    }
+}
+
+function findSectionError($crn, $mysqli) {
+    $result = $mysqli->query("SELECT * FROM sections_interface WHERE crn='$crn'")->fetch_assoc();
+    $err = "None";
+    $err_col = "";
+
+    if (strlen($result['crn']) != 7) {
+        $err = "CRN is too long or too short";
+        $err_col = "crn";
+    }
+    elseif (strlen($result['course_code']) < 7) {
+        $err = "Course code is too short";
+        $err_col = "course_code";
+    }
+    elseif ($result['semester'] != getCurrentSemester()) {
+        $err = "Not current semester (". getCurrentSemester() .")";
+        $err_col = "semester";
+    }
+    elseif ($mysqli->query("SELECT * FROM schools WHERE school = '$result[school]'")->num_rows == 0) {
+        $err = "School does not exist";
+        $err_col = "school";
+    }
+    elseif (strlen($result['course_title']) < 1) {
+        $err = "Course title is too short";
+        $err_col = "course_title";
+    }
+    elseif (strlen($result['class_time']) < 1) {
+        $err = "No class time set";
+        $err_col = "class_time";
+    }
+    elseif (strlen($result['location']) < 1) {
+        $err = "No location set";
+        $err_col = "location";
+    }
+    elseif (strlen($result['enrolled']) < 1 || $result['enrolled'] == 0) {
+        $err = "Incorrect number of enrolled students";
+        $err_col = "enrolled";
+    }
+    elseif (strlen($result['faculty']) < 1 || $result['faculty'] == "(0 records)") {
+        $err = "No instructor set";
+        $err_col = "faculty";
+    }
+    else {
+        $faculty = explode(", ", $result['faculty']);
+        for ($i = 0; $i < count($faculty); $i++) {
+            if ($mysqli->query("SELECT * FROM users WHERE name = '$faculty[$i]'")->num_rows == 0) {
+                $err = "Instructor \'$faculty[$i]\' is not in the system";
+                $err_col = "faculty";
+                break;
+            }
+
+        }
+    }
+    $mysqli->query("UPDATE sections_interface SET error_message='$err', error_column='$err_col' WHERE crn='$crn'");
+
+}
+
+function addSection($row, $mysqli) {
+    if ($stmt = $mysqli->prepare("INSERT INTO sections VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+        $locked = '1';
+        $mid_evaluation = '0';
+        $final_evaluation = '0';
+        $stmt->bind_param('issssssiiii', $row['crn'],$row['course_code'],$row['semester'],$row['school'],
+            $row['course_title'],$row['class_time'],$row['location'], $locked, $row['enrolled'], $mid_evaluation, $final_evaluation); 
+        $stmt->execute(); 
+        $faculty = explode(", ", $row['faculty']);
+        for ($i = 0; $i < count($faculty); $i++) {
+            $result = $mysqli->query("SELECT email FROM users WHERE name = '$faculty[$i]'")->fetch_assoc();
+            $mysqli->query("INSERT INTO course_assignments VALUES('$row[crn]', '$result[email]')");
+        }
+        $mysqli->query("DELETE FROM sections_interface WHERE crn='$row[crn]'");
+    }
+}
+
+function addSectionInterface($row, $mysqli) {
+    if ($stmt = $mysqli->prepare("INSERT INTO sections_interface VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+        $desg = substr($row[0], 0, 3);
+        $result = $mysqli->query("SELECT school FROM course_groups WHERE course_designation = '$desg'")->fetch_assoc();
+        $none = 'None';
+        $empty = '';
+        $stmt->bind_param('issssssisss', $row[3], $row[0], $row[2], $result['school'], $row[1], $row[7], $row[8], $row[9], $row[6], $none, $empty);
+        $stmt->execute(); 
     }
 }
 

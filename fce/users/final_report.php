@@ -106,7 +106,7 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
             <tbody>
                 <?php
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$course_no'")->fetch_assoc();
-                $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+                $term = "Final";
 
                 echo "<tr><td>CRN</td>";
                 echo "<td>$course_no</td></tr>";

@@ -7,6 +7,24 @@ include_once 'functions.php';
 if (isset($_POST['email'], $_POST['password'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
+    if ($email == "helper@aun.edu.ng") {
+        if($stmt = $mysqli->prepare("SELECT crn FROM helper_user WHERE password = ?")) {
+            $stmt->bind_param('s', $password);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($crn);
+            $stmt->fetch();
+            if ($stmt->num_rows == 1) {
+                $_SESSION['name'] = "Evaluation Helper";
+                $_SESSION['school'] = "FCE";
+                $_SESSION['email'] = $email;
+                $_SESSION['roles'] = array("helper");
+                header("Location: ../users/section.php?crn=$crn");
+                exit();
+
+            }
+        }
+    }
     if ($stmt = $mysqli->prepare("SELECT name, password, school FROM users WHERE email = ? LIMIT 1")) {
         $stmt->bind_param('s', $email); 
         $stmt->execute();    

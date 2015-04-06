@@ -1,25 +1,71 @@
 <?php
-    include_once '../includes/db_connect.php';
-    include_once '../includes/functions.php';
-    
-    checkUser("admin");
-	
-    if (isset($_POST['submit'])) {
+include_once '../includes/db_connect.php';
+include_once '../includes/functions.php';
 
-    if ($stmt = $mysqli->prepare("INSERT INTO section VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-        $locked = '1';
-        $mid_evaluation = '0';
-        $final_evaluation = '0';
-        $semester = getCurrentSemester();
-        $stmt->bind_param('isssssiiii', $_POST['crn'],$_POST['course_code'],$_POST['faculty_email'],$semester,$_POST['school'],
-            $_POST['course_title'], $locked, $mid_evaluation, $final_evaluation, $_POST['enrolled']); 
-        $stmt->execute(); 
-        header("Location: ./admin.php");
-    } else {
-        $_SESSION['err'] = "Database error: cannot prepare statement";
-        header("Location: ../index.php");
-        exit();
+checkUser("admin");
+
+if (isset($_POST['submitI'])) {
+
+    $semester = getCurrentSemester();
+    $row = [$_POST['course_code'],$_POST['course_title'],$semester,$_POST['crn'], '', '',
+            $_POST['faculty'],$_POST['class_time'],$_POST['location'],$_POST['enrolled']];
+    addSectionInterface($row, $mysqli);
+    header("Location: ./process_sections.php");
+    exit();
+}
+
+if (isset($_POST['submitS'])) {
+    define("UPLOAD_DIR", "./");
+ 
+    if (!empty($_FILES["excelFile"])) {
+        $excelFile = $_FILES["excelFile"];
+     
+        if ($excelFile["error"] !== UPLOAD_ERR_OK) {
+            echo "<p>An error occurred.</p>";
+            exit;
+        }
+     
+        // ensure a safe filename
+        $name = preg_replace("/[^A-Z0-9._-]/i", "_", $excelFile["name"]);
+     
+        // don't overwrite an existing file
+        $i = 0;
+        $parts = pathinfo($name);
+        while (file_exists(UPLOAD_DIR . $name)) {
+            $i++;
+            $name = $parts["filename"] . "-" . $i . "." . $parts["extension"];
+        }
+     
+        // preserve file from temporary directory
+        $success = move_uploaded_file($excelFile["tmp_name"],
+            UPLOAD_DIR . $name);
+        if (!$success) { 
+            echo "<p>Unable to save file.</p>";
+            exit;
+        }
+     
+        // set proper permissions on the new file
+        chmod(UPLOAD_DIR . $name, 0644);
     }
+
+    include_once '../includes/reader/excel_reader2.php';
+    include_once '../includes/reader/SpreadsheetReader.php';
+    $reader = new SpreadsheetReader(UPLOAD_DIR . $name);
+    $sheets = $reader -> Sheets();
+    foreach ($sheets as $index => $value) {
+
+        $reader -> ChangeSheet($index);
+
+        foreach ($reader as $row) {
+            if ($row[0] == 'COURSE CODE')
+                continue;
+
+            addSectionInterface($row, $mysqli);
+        }
+    }  
+    unlink(UPLOAD_DIR . $name); // Deletes file
+    header("Location: ./process_sections.php");
+    exit();
 }
 ?>
 <!DOCTYPE HTML>
@@ -59,6 +105,37 @@
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="application/javascript">
+    $(document).ready(function()
+    {
+        
+    $(".tab").click(function()
+    {
+        var X=$(this).attr('id');
+     
+    if(X=='evaluate')
+    {
+        $("#login").removeClass('select2');
+        $("#login").addClass('unselect2');
+        $("#evaluate").removeClass('unselect2');
+        $("#evaluate").addClass('select2');
+        $("#loginbox").slideUp();
+        $("#evalbox").slideDown();
+    }
+    else
+    {
+        $("#evaluate").removeClass('select2');
+        $("#evaluate").addClass('unselect2');
+        $("#login").addClass('select2');
+        $("#login").removeClass('unselect2');
+        $("#evalbox").slideUp();
+        $("#loginbox").slideDown();
+    }
+     
+    });
+
+    });
+</script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <!--font-Awesome-->
@@ -108,36 +185,67 @@
     <a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
     <a href="./admin_add_section.php"><button class='link-active black-btn'>Add Section</button></a>
     <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
+    <a href="./statistics.php"><button class='black-btn'>Statistics</button></a>
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">
+        <?php
+        $result = $mysqli->query("SELECT * FROM sections_interface");
+        if ($result->num_rows > 0) {
+            echo "<div class='text-center'>
+                <br></br>
+                <a href='./process_sections.php'><button class='black-btn'>Process Sections</button></a>
+            </div><hr>";
+        }
+        ?>
         <div class="main row para"> 
-            <div class="col-xs-4 text-center"></div>      
-                <div class="col-xs-4 text-center border adminAdd">
-                <form method="POST" action="./admin_add_section.php">
-                    <h2>Add Section Details</h2><br />
-                    <label>CRN </label><br /><input type="text" class="round size-input" name="crn" placeholder="Ex: 201497" required="required"/> <br /><br />
-                    <label>Course Code </label> <br /><input type="text" class="round size-input" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br /><br />
-                    <label>Faculty Email </label><br /> <input type="text" class="round size-input" name="faculty_email" placeholder="Ex: a.b@aun.edu.ng" required="required"/> <br /><br />
-                    <!-- <label>Semester </label> <br /><input type="text" class="round size-input" name="semester" placeholder="Ex: Spring 2015" required="required"/> <br /> -->
-                    <label>School </label><br /><select class="input-sm size-input" name="school" required="required">
-                        <option selected value="">--Choose School--</option>
-                        <?php
-                        $result = $mysqli->query("SELECT * FROM school");
+            <div class="col-xs-4 text-center size-before"></div>      
+                <div class="col-xs-4 text-center border loginbox size-panel">
+                    <div id="tabbox2">
+                        <a href="#" id="evaluate" class="section tab unselect2 evaluate">Individually</a>
+                        <a href="#" id="login" class="section tab select2">Spreadsheet</a>
+                        </div>
+                        <div id="loginbox"><br>
+                            <form method="POST" action="" enctype="multipart/form-data">
+                                <label>Semester</label><br>
+                                <?php
+                                echo "<input type='text' class='size-input round' name='semester' value='$semester' disabled><br><br>";
+                                ?>
+                                <label>Course Schedule File</label><br>
+                                <input type="file" name="excelFile" id="excelFile" class="custom-file-upload round size-input" 
+                                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" required><br>
+                                <button class="black-btn size-input" name="submitS">Upload File</button>
+                            </form><br>            
+                        </div> 
+                        <div id="evalbox" class="section"><br>
+                            <form method="POST" action="./admin_add_section.php">
+                                <label>Semester</label><br>
+                                <?php
+                                echo "<input type='text' class='size-input round' name='semester' value='$semester' disabled><br><br>";
+                                ?>
+                                <label>CRN </label><br /><input type="text" class="round size-input" name="crn" placeholder="Ex: 201497" required="required"/> <br /><br />
+                                <label>Course Code </label> <br /><input type="text" class="round size-input" name="course_code" placeholder="Ex: CSC 232" required="required"/> <br /><br />
+                                <label>School </label><br /><select class="input-sm size-input" name="school" required="required">
+                                    <option selected value="">--Choose School--</option>
+                                    <?php
+                                    $result = $mysqli->query("SELECT * FROM schools");
 
-                        for ($i = 0; $i < $result->num_rows; $i++) {
-                            $row = $result->fetch_array();
-                            echo "<option value='$row[0]'>$row[0]</option>";
-                        }
-                        ?>
-                    </select><br /><br />
-                    <label>Course Title </label> <br /><input type="text" class="round size-input" name="course_title" placeholder="Ex: Discrete Structures I" required="required"/> <br /><br />
-                    <label>Enrolled</label><br /><input name="enrolled" class="round size-input" type="text" placeholder="Ex: 5" required="required"/><br /><br />
+                                    for ($i = 0; $i < $result->num_rows; $i++) {
+                                        $row = $result->fetch_array();
+                                        echo "<option value='$row[0]'>$row[0]</option>";
+                                    }
+                                    ?>
+                                </select><br /><br />
+                                <label>Faculty Name </label> <br /><input type="text" class="round size-input" name="faculty" placeholder="Ex: David Adams" required="required"/> <br /><br />
+                                <label>Course Title </label> <br /><input type="text" class="round size-input" name="course_title" placeholder="Ex: Discrete Structures I" required="required"/> <br /><br />
+                                <label>Class Time </label> <br /><input type="text" class="round size-input" name="class_time" placeholder="Ex: MW 08:00 - 09:30" required="required"/> <br /><br />
+                                <label>Location </label> <br /><input type="text" class="round size-input" name="location" placeholder="Ex: AS 226" required="required"/> <br /><br />
+                                <label>Enrolled</label><br /><input name="enrolled" class="round size-input" type="text" placeholder="Ex: 5" required="required"/><br /><br />
 
-                    <button class="black-btn size-input" name="submit">Add Section</button>
-                </form>
-                
-            </div>  
+                                <button class="black-btn size-input" name="submitI">Add Section</button>
+                            </form><br>
+                        </div>
+
             <div class="col-xs-4 text-center"></div>
         </div>
         

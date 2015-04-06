@@ -6,10 +6,13 @@ checkUser("secretary");
     
 if (isset($_POST['submit'])) {
 
-	if ($_POST['submit'] == 'lock')
+	if ($_POST['submit'] == 'lock') {
 		lockSection($_POST['crn'], $mysqli);
-	else
+		deleteHelper($_POST['crn'], $mysqli);
+	} else {
 		unlockSection($_POST['crn'], $mysqli);
+		insertHelper($_POST['crn'], $mysqli);
+	}
 }
 $_SESSION['user'] = 'secretary';
 

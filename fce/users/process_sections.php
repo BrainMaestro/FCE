@@ -1,31 +1,25 @@
 <?php
-    include_once '../includes/db_connect.php';
-    include_once '../includes/functions.php';
-    
-	checkUser("admin");
- 
-    if (isset($_POST['submit'])) {
+include_once '../includes/db_connect.php';
+include_once '../includes/functions.php';
 
-    if ($stmt = $mysqli->prepare("INSERT INTO users VALUES(?, ?, ?, ?)")) {
-        $name = $_POST['firstname']." ".$_POST['lastname'];
-        $pass = "fce";
-        $stmt->bind_param('ssss', $_POST['email'],$name,$pass,$_POST['school']); 
-        $stmt->execute(); 
-        $stmt1 = $mysqli->prepare("INSERT INTO user_roles VALUES(?, ?)");
-        $stmt1->bind_param('ss', $_POST['email'], $_POST['usertype']);
-        $stmt1->execute(); 
-        header("Location: ./admin.php");
-    } else {
-        $_SESSION['err'] = "Database error: cannot prepare statement";
-        header("Location: ../index.php");
-        exit();
+$result = $mysqli->query("SELECT crn FROM sections_interface");
+for($i = 0; $i < $result->num_rows; $i++) {
+    $row = $result->fetch_assoc();
+    findSectionError($row['crn'], $mysqli);
+}
+
+if (isset($_POST['submit'])) {
+    $result = $mysqli->query("SELECT * FROM sections_interface WHERE error_message = 'None'");
+    for($i = 0; $i < $result->num_rows; $i++) {
+        $row = $result->fetch_assoc();
+        addSection($row, $mysqli);
     }
 }
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Admin | Add User</title>
+<title>Process Sections</title>
 <!-- Favicon Kini -->
         <link rel="apple-touch-icon" sizes="57x57" href="../images/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="../images/favicons/apple-touch-icon-60x60.png">
@@ -49,6 +43,7 @@
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
  <!--[if lt IE 9]>
@@ -56,7 +51,6 @@
      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href="../css/style.custom.css" rel='stylesheet' type='text/css' />
 <!-- start plugins -->
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -64,6 +58,9 @@
 <!--font-Awesome-->
     <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
 <!--font-Awesome-->
+<style type="text/css">
+    table { empty-cells: show; }
+</style>
 </head>
 <body>
 <div class="header_bg1">
@@ -105,57 +102,80 @@
 </div>
 <div class="text-center">
     <br></br>
-    <a href="./admin_add_user.php"><button class='link-active black-btn'>Add User</button></a>
+    <a href="./admin_add_user.php"><button class='black-btn'>Add User</button></a>
     <a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
     <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
     <a href="./statistics.php"><button class='black-btn'>Statistics</button></a>
 </div>
+
 <div class="main_bg"><!-- start main -->
     <div class="container">
-        <div class="main row para"> 
-            <div class="col-xs-4 text-center"></div>      
-                <div class="col-xs-4 text-center border adminAdd">
-                <form method="POST" action="./admin_add_user.php">
-                    <h2>Add User Details</h2><br />
-                    <label>First Name </label><br /><input type="text" class="round size-input" name="firstname" placeholder="Ex: Aisha" required="required"/> <br /><br />
-                    <label>Last Name </label> <br /><input type="text" class="round size-input" name="lastname" placeholder="Ex: Alaedu" required="required"/> <br /><br />
-                    <label>Email </label><br /><input type="text" class="round size-input" name="email" placeholder="Ex: ezinwa.hamza@aun.edu.ng" required="required"/> <br /><br />
-                    <label>User Type </label><br />
-                    <select class="input-sm size-input" name="usertype" required="required">
-                        <option selected value="">--Choose User Type--</option>
-                        <?php
-                        $result = $mysqli->query("SELECT * FROM roles");
+        <div class="text-center">
+            <br></br>
+            <a href="./process_sections.php"><button class='link-active black-btn'>Process Sections</button></a>
+        </div><hr>
+        <div class="main text-center para"> 
+            <form action="" method="post">
+                <?php
+                $result = $mysqli->query("SELECT * FROM sections_interface");
+                if ($result->num_rows == 0)
+                    echo "<h4 class='error'>No section matches your search criteria</h4>";
+                else {
+                    echo "<table width='100%' class='not-center evaltable'>
+                    <caption><h3>Sections to Import</h3><h5>Fix the crossed out columns</h5><hr></caption>
+                    <thead>
+                        <th>CRN</th>
+                        <th>Course Code</th>
+                        <th>Semester</th>
+                        <th>School</th>
+                        <th>Course Title</th>
+                        <th>Class Time</th>
+                        <th>Location</th>
+                        <th>Enrolled</th>
+                        <th>Instructor</th>
+                        <th>Error Message</th>
+                    </thead>
+                    <tbody>";  
+                    for($i = 0; $i < $result->num_rows; $i++) {
+                        $row = $result->fetch_assoc(); 
+                        echo "<tr>";
+                        $j = 0;
+                        $error = false;
+                        $shown = false;
+                        if ($row["error_column"] != "")
+                            $error = true;
+                        foreach ($row as $value) {
+                            $class = "normal";
+                            if ($j == 10) // To prevent showing the hidden column 'error_column'
+                                continue;
 
-                        for ($i = 0; $i < $result->num_rows; $i++) {
-                            $row = $result->fetch_array();
-                            echo "<option value='$row[0]'>$row[0]</option>";
+                            if ($j == 9 && $error)
+                                $class = "error";
+
+                            if ($error && $value == $row["$row[error_column]"] && !$shown) {
+                                echo "<td class='input-element'>$value</td>";
+                                $shown = true;
+                            }
+                            else
+                                echo "<td class='$class'>$value</td>";
+
+                            $j++;
                         }
-                        ?>
-                    </select><br /><br />
 
-                    <label>School </label><br />
-                    <select class="input-sm size-input" name="school" required="required">
-                        <option selected value="">--Choose School--</option>
-                        <?php
-                        $result = $mysqli->query("SELECT * FROM schools");
+                        if ($error)
+                            echo "<td><a class='black-btn' href='./fix_section.php?crn=$row[crn]'>Fix</a></td>";
+                        echo "</tr>";
+                    }
+                    echo "</tbody></table><hr>";
+                }
+                ?>
+                <button class="black-btn" name="submit">Add Sections</button>
 
-                        for ($i = 0; $i < $result->num_rows; $i++) {
-                            $row = $result->fetch_array();
-                            echo "<option value='$row[0]'>$row[0]</option>";
-                        }
-                        ?>
-                    </select><br /><br />
-                    <label>Password</label><br /><input name="text" class="round size-input" type="text" value="fce" required="required" disabled /><br /><br />
-
-                        <button class="black-btn size-input" name="submit">Add User</button>
-                </form>
-                
-            </div>  
-            <div class="col-xs-4 text-center"></div>
+            </form>
         </div>
-        
     </div>
-</div><!-- end main -->
+</div>
+
 <FOOTER>
         <div class="footer_bg"><!-- start footer -->
             <div class="container">

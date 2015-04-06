@@ -175,6 +175,10 @@ if (($status == true) || ($rows == 0)) {
 					echo "$faculty[name]<br>";
 				}
 				echo "</td></tr>";
+				if ($_SESSION['user'] == "secretary") {
+				$row_helper = $mysqli->query("SELECT password FROM helper_user WHERE crn='$crn'")->fetch_assoc();
+				echo "<tr><td>Helper Account</td><td>Email: helper@aun.edu.ng<br />Password: <span style='font-family: monospace; color:black;''>$row_helper[password]</span></td></tr>";
+			}
 				?>
 				<tr>
 				
@@ -238,7 +242,9 @@ if (($status == true) || ($rows == 0)) {
 				<input width='8%'  name='next_key' type='image' src="../images/next.png" onclick='getKeys(1)'>
 			</div>
 			</div>
+
 	</div>
+
 		<div class="main row para">
 			<div class="col-xs-3 size-before"></div>
 			<div class="col-xs-6 text-center border4 size-panel">
