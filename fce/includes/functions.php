@@ -40,6 +40,17 @@ function deleteKeys($crn, $eval_type, $mysqli) {
     $mysqli->query("DELETE FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
 }
 
+//Method that adds a helper for evaluating a class
+function insertHelper($crn, $mysqli) {
+    $password = generateKeys();
+    $mysqli->query("INSERT INTO helper_user VALUES (NULL, '$password', '$crn')");
+
+}
+
+//Method that deletes a helper for evaluating a class
+function deleteHelper($crn, $mysqli) {
+    $mysqli->query("DELETE FROM helper_user WHERE crn='$crn'");
+}
 // Method that gets the current semester from the server time
 function getCurrentSemester() {
 
