@@ -231,6 +231,11 @@ function checkUser($page){
 function list_roles($role) {
     for($i = 0; $i < count($_SESSION['roles']); $i++) {
         $a = $_SESSION['roles'][$i];
+        if ($a == "helper") {
+            echo "<li><a>$a</a></li>";
+            // echo "<li><span style='background: #3B3B3B;'>$a</span></li>";
+            break;
+        }
         if ($a == $role)
             echo "<li class='active'><a href=$a.php>$a</a></li>";
         else
@@ -259,6 +264,10 @@ function checkSectionStatus($sec_crn, $mysqli) {
 function goBack($mysqli) {
 
     if (loggedIn()) {
+        if (isset($_SESSION['page'])) {
+            header("Location: $_SESSION[page]");
+            exit();
+        }
         $user_type = $_SESSION['user_type'];
         header("Location: ./users/$user_type.php"); // Take the user to the correct page form based on the user type
     }

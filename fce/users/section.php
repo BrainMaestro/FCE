@@ -14,6 +14,10 @@ if (($status == true) || ($rows == 0)) {
 	
 }
 
+if (!isset($_SESSION['user']) || !(in_array($_SESSION['user'], array("helper", "secretary")))) {
+	header("Location: ../index.php");
+}
+
 
 
 ?>

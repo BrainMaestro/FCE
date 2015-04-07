@@ -19,6 +19,8 @@ if (isset($_POST['email'], $_POST['password'])) {
                 $_SESSION['school'] = "FCE";
                 $_SESSION['email'] = $email;
                 $_SESSION['roles'] = array("helper");
+                $_SESSION['user'] = "helper";
+                $_SESSION['page'] = "./users/section.php?crn=$crn";
                 header("Location: ../users/section.php?crn=$crn");
                 exit();
 
