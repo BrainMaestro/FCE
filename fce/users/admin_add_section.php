@@ -6,6 +6,7 @@ checkUser("admin");
 
 if (isset($_POST['submitI'])) {
 
+    addSemester();
     $semester = getCurrentSemester();
     $row = [$_POST['course_code'],$_POST['course_title'],$semester,$_POST['crn'], '', '',
             $_POST['faculty'],$_POST['class_time'],$_POST['location'],$_POST['enrolled']];
@@ -15,6 +16,8 @@ if (isset($_POST['submitI'])) {
 }
 
 if (isset($_POST['submitS'])) {
+
+    addSemester();
     define("UPLOAD_DIR", "./");
  
     if (!empty($_FILES["excelFile"])) {

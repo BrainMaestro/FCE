@@ -88,43 +88,25 @@ function checkSessionKeys() {
 	}
 }
 
-function unlockSection($crn, $mysqli) {
-    $result = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'");
-    $row = $result->fetch_assoc();
-
-    // Checks if the type of evaluation for which the section is to be unlocked has already occurred
-    $eval_type = 'mid';
-
-    if ($row['mid_evaluation'] == '1' && $row['final_evaluation'] == '1') { 
-        $_SESSION['err'] = "Class cannot be unlocked again";
-        return;
-    }
-    elseif ($row['mid_evaluation'] == '1')
-        $eval_type = 'final';
+function unlockSection($crn, $eval_type, $mysqli) {
 
     $mysqli->query("UPDATE sections SET locked='0' WHERE crn='$crn'");
-    insertKeys($crn, $eval_type, $mysqli);
+    $result = $mysqli->query("SELECT * FROM accesskeys WHERE key_crn='$crn' AND key_eval_type='$eval_type'");
+    
+    if ($result->num_rows == 0)
+        insertKeys($crn, $eval_type, $mysqli);
+
     header("Location: ../users/section.php?crn=$crn");
 }
 
 function lockSection($crn, $mysqli) {
-    $sql = "UPDATE sections SET locked='1', ";
+    $mysqli->query("UPDATE sections SET locked='1' WHERE crn='$crn'");
 
-    $row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM sections WHERE crn='$crn'")->fetch_assoc();
-    $eval_type = "";
+}
 
-    // Sets the type of evaluation that was completed as done
-    if ($row['mid_evaluation'] == '0') {
-        $sql .= "mid_evaluation = '1'";
-        $eval_type = "mid";
-    }
-    else {
-        $sql .= "final_evaluation = '1'";
-        $eval_type = "final";
-    }
-
-    $sql .= " WHERE crn='$crn'";
-    $mysqli->query($sql);
+function finalLockSection($crn, $eval_type, $mysqli) {
+    $evaluation = $eval_type . "_evaluation";
+    $mysqli->query("UPDATE sections SET locked='1', $evaluation='1' WHERE crn='$crn'");
     deleteKeys($crn, $eval_type, $mysqli);
 
     //
@@ -408,6 +390,13 @@ function addSectionInterface($row, $mysqli) {
         $stmt->bind_param('issssssisss', $row[3], $row[0], $row[2], $result['school'], $row[1], $row[7], $row[8], $row[9], $row[6], $none, $empty);
         $stmt->execute(); 
     }
+}
+
+function addSemester($mysqli) {
+    $semester = getCurrentSemester();
+    $result = $mysqli->query("SELECT semester FROM semesters WHERE semester='$semester'");
+    if ($result->num_rows == 0)
+        $mysqli->query("INSERT INTO semesters VALUES('$semester','Locked','Locked')");
 }
 
 ?>

@@ -10,7 +10,7 @@ if (isset($_POST['submit'])) {
 		lockSection($_POST['crn'], $mysqli);
 		deleteHelper($_POST['crn'], $mysqli);
 	} else {
-		unlockSection($_POST['crn'], $mysqli);
+		unlockSection($_POST['crn'], $_POST['submit'], $mysqli);
 		insertHelper($_POST['crn'], $mysqli);
 	}
 }
@@ -204,10 +204,21 @@ $_SESSION['user'] = 'secretary';
 								echo "<th>Section Keys</th>";
 						echo "</thead>
 						<tbody>";
+						$result2 = $mysqli->query("SELECT * FROM semesters WHERE semester='$semester'");
+						$row2 = $result2->fetch_assoc();
+						$eval_type = "";
+
+						if ($row2['mid'] == 'Open')
+							$eval_type = 'mid';
+						elseif ($row2['final'] == 'Open')
+							$eval_type = 'final';
+
+						$disabled = ($eval_type == "" ) ? "disabled" : "";
 
 						for($i = 0; $i < $result->num_rows; $i++) {
 							$row = $result->fetch_assoc();
-							$disabled = ($row['mid_evaluation'] == '1' && $row['final_evaluation'] == '1') ? "disabled" : "";
+
+							// $disabled = ($row['mid_evaluation'] == '1' && $row['final_evaluation'] == '1') ? "disabled" : "";
 							echo "<tr>";
 							if ($status != '%')
 								echo "<td><input type='radio' name='crn' $disabled value='$row[crn]' required></td>";
@@ -241,7 +252,7 @@ $_SESSION['user'] = 'secretary';
 
 						if (isset($status) && $status !== '%' && $result->num_rows > 0) {
 							if ($status == 1)
-	                			echo "<button class='black-btn margin' name='submit' value='unlock'>Unlock</button>";
+	                			echo "<button class='black-btn margin' name='submit' value='$eval_type'>Unlock</button>";
 	                		elseif ($status == 0)
 	                			echo "<button class='black-btn margin' name='submit' value='lock'>Lock</button>";
 						}

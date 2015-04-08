@@ -4,6 +4,22 @@ include_once '../includes/functions.php';
 
 checkUser("admin");
 $_SESSION['user'] = 'admin';
+$semester = getCurrentSemester();
+
+if (isset($_POST['submit'])) {
+	$array = preg_split("/[,]+/", $_POST['eval']);
+	$column = $array[0];
+	$value = $array[1];
+	$update = ($value == "Locked") ? "Open" : "Done";
+	if ($update == "Done") {
+		$result = $mysqli->query("SELECT crn FROM sections WHERE crn in (SELECT DISTINCT(key_crn) FROM accesskeys)");
+		for ($i=0;$i<$result->num_rows;$i++) {
+			$row =  $result->fetch_assoc();
+			finalLockSection($row['crn'],$column,$mysqli);
+		}
+	}
+	$mysqli->query("UPDATE semesters SET $column = '$update' WHERE semester='$semester'");
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -30,7 +46,7 @@ $_SESSION['user'] = 'admin';
 
         <!-- End of Favicon Kini -->
 
-<title>Admin | Home</title>
+<title>Admin | Manage Evaluations</title>
 <!-- Bootstrap -->
 <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -83,7 +99,6 @@ $_SESSION['user'] = 'admin';
 		      <ul class="nav navbar-nav">
                 <?php
                 list_roles('admin');
-                $semester = getCurrentSemester();
                 ?>
                 </ul>
 		    </div>
@@ -97,115 +112,54 @@ $_SESSION['user'] = 'admin';
 	<a href="./admin_add_section.php"><button class='black-btn'>Add Section</button></a>
 	<a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
 	<a href="./statistics.php"><button class='black-btn'>Statistics</button></a>
-	<a href="./manage_evaluations.php"><button class='black-btn'>Evaluations</button></a>
+	<a href="./manage_evaluations.php"><button class='link-active black-btn'>Evaluations</button></a>
 </div>
 <div class="main_bg "><!-- start main -->
 	<div class="container ">
 		<div class="main row para">	
             <div class="col-xs-4 text-center"></div>		
-			<div class="col-xs-4 text-center border">
+			<div class="col-xs-4 text-center">
 				<form action="" method='post'>
-	                Leave search bar empty to search all sections<br><br>
-	                <?php
-	                echo '<select name="semester" class="input-sm size-input">';
-
-				    $result = $mysqli->query("SELECT semester from semesters");
-				    for($i = 0; $i < $result->num_rows; $i++) {
-						$row = $result->fetch_assoc();
-						echo "<option value='$row[semester]'>$row[semester]</option>";
-					}
-					echo '</select><br><br>';
-					?>
-					<select name="school" class="input-sm size-input">
-	                    <option value="%">All Schools</option>
-	                    <?php
-                        $result = $mysqli->query("SELECT * FROM schools");
-
-                        for ($i = 0; $i < $result->num_rows; $i++) {
-                            $row = $result->fetch_array();
-                            echo "<option value='$row[0]'>$row[0]</option>";
-                        }
-                        ?>
-	                </select><br /><br />
-	                <input type="text" name="search" class="round size-input" placeholder="Ex: AUN 101">
-					<br /><br />
-					<button class="black-btn size-input" type="submit" name="sch_submit">SEARCH</button>
+					<table width='100%' class='evaltable para dean_form not-center'>
+						<caption><h3><?php echo $semester; ?></h3><hr></caption>
+						<thead>
+							<th></th>
+						</thead>
+						<tbody>
+		                <?php
+		                $row = $mysqli->query("SELECT * FROM semesters WHERE semester='$semester'")->fetch_assoc();
+		                $mid_disabled = ($row['mid'] == 'Done') ? "disabled" : "";
+		                $final_disabled = ($row['final'] == 'Done') ? "disabled" : "";
+		                $final_disabled = ($row['mid'] == "Open") ? "disabled" : $final_disabled;
+		                $mid_disabled = ($row['final'] == "Open") ? "disabled" : $mid_disabled;
+		                echo "<tr>";
+						echo "<td><input type='radio' name='eval' $mid_disabled value='mid,$row[mid]' required></td>";
+		                echo "<td>Midterm Evaluation</td>";
+		                echo "<td name='status'>$row[mid]</td>";
+		                echo "</tr>";
+		                echo "<tr>";
+						echo "<td><input type='radio' name='eval' $final_disabled value='final,$row[final]' required></td>";
+		                echo "<td>Final Evaluation</td>";
+		                echo "<td name='status'>$row[final]</td>";
+		                echo "</tr>";
+						?>
+						</tbody>
+					</table>
+					<script type="text/javascript">
+					var values = document.getElementsByName('status');
+					for (var i = 0; i < values.length; i++) {
+						var color;
+						switch (values[i].innerHTML) {
+							case "Locked": color = "red"; break;
+							case "Open": color = "green"; break;
+							default: color = "";
+						}
+						values[i].style.color = color;
+					};
+					</script>
+					<br><br>
+					<button class="black-btn size-input" type="submit" name="submit">Lock | Unlock</button>
 				</form>
-			</div></div>
-
-            <div class="text-center">
-			
-			<?php
-			
-			$sch = '%';
-		    $search = '%';
-
-			if (isset($_POST['sch_submit'])) {  
-
-				$sch = $_POST['school'];
-				$semester = $_POST['semester'];
-		    	$search = $_POST['search'];
-		    }
-
-    		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' 
-    			AND semester LIKE '$semester' AND course_code LIKE '%$search%' ORDER BY course_code");
-		    
-		    if ($result->num_rows == 0)
-				echo "<h4 class='error'>No section matches your search criteria</h4>";
-			elseif (isset($_SESSION['err'])) {
-				echo "<h4 class='error'>$_SESSION[err]</h4>";
-				unset($_SESSION['err']);
-			}
-			else {
-			echo "<table width='100%' class='evaltable para dean_form not-center'>
-			<caption><h3>Reports</h3><hr></caption>
-				<thead>
-					<th>CRN</th>
-					<th>Course Code</th>
-					<th>Instructor</th>
-					<th>Class Time</th>
-					<th>Location</th>
-					<th>Enrolled</th>
-					<th>School</th>
-					<th>Midterm</th>
-					<th>Final</th>
-				</thead><tbody>";
-
-			for($i = 0; $i < $result->num_rows; $i++) {
-            	$row = $result->fetch_assoc();
-	          
-	        	echo '<tr>';
-				echo "<td>$row[crn]</td>";
-				echo "<td>$row[course_code]</td>";
-    			$assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[crn]'");
-				echo "<td>";
-				for($j = 0; $j < $assignment->num_rows; $j++) {
-					$row2 = $assignment->fetch_assoc();
-					$faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
-					echo "$faculty[name]<br>";
-				}
-				echo "</td>";
-				echo "<td>$row[class_time]</td>";
-                echo "<td>$row[location]</td>";
-				echo "<td>$row[enrolled]</td>";
-				echo "<td>$row[school]</td>";
-				if ($row['mid_evaluation'] == 0)
-					echo "<td>No Midterm Report</td>";
-				else
-					echo "<td><a target='_blank' href='mid_report.php?crn=$row[crn]'>View Midterm Report</a></td>";
-				
-				if ($row['final_evaluation'] == 0) 
-					echo "<td>No Final Report</td>";
-				else 
-					echo "<td><a target='_blank' href='final_report.php?crn=$row[crn]'>View Final Report</a></td>";
-				
-	        	echo '</tr>';
-			}
-        	echo '</tbody></table><hr>';
-        	}
-			?>
-
-			</div>	
 			</div>
 		</div>
 	</div>
