@@ -50,13 +50,34 @@
 
     //best (individual criteria)
     function mid_best($question, $mysqli) {
-        $row18 = $mysqli->query("SELECT crn,$question FROM averages where $question in (select max($question) from averages where type='mid')");
+        $row18 = $mysqli->query("SELECT a.crn,$question,c.faculty_email,u.name,s.course_code FROM averages a inner join course_assignments c on (a.crn = c.crn) inner join users u on (c.faculty_email = u.email) inner join sections s on (s.crn = a.crn) where $question in (select max($question) from averages where type='mid')");
         for ($i=0; $i < $row18->num_rows; $i++) {
             $criteria = $row18->fetch_array();
-            echo "$criteria[0]<br>";
+            echo "$criteria[3]<br>";
         }
     }
-    //mid_best('q1', $mysqli);
+    function final_best($question, $mysqli) {
+        $row18 = $mysqli->query("SELECT a.crn,$question,c.faculty_email,u.name,s.course_code FROM averages a inner join course_assignments c on (a.crn = c.crn) inner join users u on (c.faculty_email = u.email) inner join sections s on (s.crn = a.crn) where $question in (select max($question) from averages where type='final')");
+        for ($i=0; $i < $row18->num_rows; $i++) {
+            $criteria = $row18->fetch_array();
+            echo "$criteria[3]<br>";
+        }
+    }
+    //worst (individual criteria)
+    function mid_worst($question, $mysqli) {
+        $row18 = $mysqli->query("SELECT a.crn,$question,c.faculty_email,u.name,s.course_code FROM averages a inner join course_assignments c on (a.crn = c.crn) inner join users u on (c.faculty_email = u.email) inner join sections s on (s.crn = a.crn) where $question in (select min($question) from averages where type='mid')");
+        for ($i=0; $i < $row18->num_rows; $i++) {
+            $criteria = $row18->fetch_array();
+            echo "$criteria[3]<br>";
+        }
+    }
+    function final_worst($question, $mysqli) {
+        $row18 = $mysqli->query("SELECT a.crn,$question,c.faculty_email,u.name,s.course_code FROM averages a inner join course_assignments c on (a.crn = c.crn) inner join users u on (c.faculty_email = u.email) inner join sections s on (s.crn = a.crn) where $question in (select min($question) from averages where type='final')");
+        for ($i=0; $i < $row18->num_rows; $i++) {
+            $criteria = $row18->fetch_array();
+            echo "$criteria[3]<br>";
+        }
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -101,7 +122,7 @@
     <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
 <!--font-Awesome-->
 </head>
-<body>
+<body onload="show_group()">
 <div class="header_bg1">
 <div class="container">
     <div class="row header">
@@ -145,11 +166,16 @@
     <a href="./admin_add_section.php"><button class=' black-btn'>Add Section</button></a>
     <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
     <a href="./statistics.php"><button class='link-active black-btn'>Statistics</button></a>
+    <br><br>
+    <a><button class='black-btn' id="group_btn"  onclick="show_group()">GROUP</button></a>
+    <button class=' black-btn'id="mid_criteria_btn" onclick="show_mid_criteria()">CRITERIA (MIDTERM)</button>
+    <button class='black-btn' id="final_criteria_btn" onclick="show_final_criteria()">CRITERIA (FINAL)</button>
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">
         <div class="main row para">
             <div class="col-xs-12 text-center thankyouMsg">
+            <div id="group">
                 <table class="not-center evaltable" width="70%" align="center">
                     <caption><h4 id="fceteam">Statistics</h3></caption>
                     <thead class="text-center">
@@ -164,18 +190,13 @@
                         </tr>
                         <tr>
                             <td>% Responses</td>
-                            <td><?php echo round(($mid_responses/$total_students)*100, '2');?>%</td>
-                            <td><?php echo round(($final_responses/$total_students)*100, '2');?>%</td>
+                            <td><?php echo round(($mid_responses/$total_students)*100, '2')."% (".$mid_responses." out of ".$total_students." students)";?></td>
+                            <td><?php echo round(($final_responses/$total_students)*100, '2')."% (".$final_responses." out of ".$total_students." students)";?></td>
                         </tr>
                         <tr>
                             <td>% Evaluated sections</td>
-                            <td><?php echo round(($mid_eval/$total_sections)*100, '2');?>%</td>
-                            <td><?php echo round(($final_eval/$total_sections)*100, '2');?>%</td>
-                        </tr>
-                        <tr>
-                            <td>% Instructors</td>
-                            <td></td>
-                            <td></td>
+                            <td><?php echo round(($mid_eval/$total_sections)*100, '2')."% (".$mid_eval." out of ".$total_sections." sections)";?></td>
+                            <td><?php echo round(($final_eval/$total_sections)*100, '2')."% (".$final_eval." out of ".$total_sections." sections)";?></td>
                         </tr>
                         <tr>
                             <td>Best Section</td>
@@ -293,103 +314,224 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
 <br><br>
+<div id="mid_criteria">
                 <table class="not-center evaltable" width="100%">
                                 <tr>
-                                    <td colspan="19">Best(Individual criteria)</td>
+                                    <th>Criteria</th>
+                                    <th>Best</th>
+                                    <th>Worst</th>
                                 </tr>
                                 <tr>
-                                    <td>Midterm</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="w65"><strong>Professor's Adherence to time </strong>(Professor arrives in the classroom on time.</td>
+                                    <td><?php mid_best('q1', $mysqli);?></td>
+                                    <td><?php mid_worst('q1', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Professor's preparedness to Teach </strong>(My professor arrives in the classroom prepared)</td>
+                                    <td><?php mid_best('q2', $mysqli);?></td>
+                                    <td><?php mid_worst('q2', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Professor's Accessibility in Class </strong>(My professor is accessible in class)</td>
+                                    <td><?php mid_best('q3', $mysqli);?></td>
+                                    <td><?php mid_worst('q3', $mysqli);?></td>
                                 </tr>
                                 <tr>
-                                    <td>Final</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="w65"><strong>Professor's Availability in Class </strong>(My professor is available during office hours)</td>
+                                    <td><?php mid_best('q4', $mysqli);?></td>
+                                    <td><?php mid_worst('q4', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Asking Questions in Class </strong>(I feel comfortable asking questions during class)</td>
+                                    <td><?php mid_best('q5', $mysqli);?></td>
+                                    <td><?php mid_worst('q5', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Explanation of Concepts </strong>(My professor explains the material and concepts well) </td>
+                                    <td><?php mid_best('q6', $mysqli);?></td>
+                                    <td><?php mid_worst('q6', $mysqli);?></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="19">Worst(Individual criteria)</td>
+                                    <td class="w65"><strong>Professor's Teaching Consistency </strong>(My professor is consistent in his teaching )</td>
+                                    <td><?php mid_best('q7', $mysqli);?></td>
+                                    <td><?php mid_worst('q7', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Use of e-Book </strong>(My professor uses e-books)</td>
+                                    <td><?php mid_best('q8', $mysqli);?></td>
+                                    <td><?php mid_worst('q8', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Use of Digital Instructional Technologies </strong>(My professor uses other digital instructional technology such as Electronic Journal Articles, Youtube, TED Talks, computer programs, videos, online resources, or social media)</td>
+                                    <td><?php mid_best('q9', $mysqli);?></td>
+                                    <td><?php mid_worst('q9', $mysqli);?></td>
+                                </tr>    
+                                <tr>
+                                    <td class="w65"><strong>Learning compliance with the Syllabus </strong>(I am learning what is in the course description/syllabus)</td>
+                                    <td><?php mid_best('q10', $mysqli);?></td>
+                                    <td><?php mid_worst('q10', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Use of Digital Skills </strong>(I am using digital and other on-line skills in this course)</td>
+                                    <td><?php mid_best('q11', $mysqli);?></td>
+                                    <td><?php mid_worst('q11', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Relevance of Assignments </strong>(My professor's assignments are relevant to the course)</td>
+                                    <td><?php mid_best('q12', $mysqli);?></td>
+                                    <td><?php mid_worst('q12', $mysqli);?></td>
                                 </tr>
                                 <tr>
-                                    <td>Midterm</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="w65"><strong>Grading Policies </strong>My professors grading policies are fair and consistent with the syllabus</td>
+                                    <td><?php mid_best('q13', $mysqli);?></td>
+                                    <td><?php mid_worst('q13', $mysqli);?></td>
                                 </tr>
                                 <tr>
-                                    <td>Worst</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                    <td class="w65"><strong>Relevance of Course content to future career prospects </strong>My professor relates course content and skills to my future career</td>
+                                    <td><?php mid_best('q14', $mysqli);?></td>
+                                    <td><?php mid_worst('q14', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>American Style Education </strong>My professor teaches in accordance with the interactive American style of education that is the way AUN claims to be different</td>
+                                    <td><?php mid_best('q15', $mysqli);?></td>
+                                    <td><?php mid_worst('q15', $mysqli);?></td>
+                                </tr> 
                             </table>
+                        </div>
+            <div id="final_criteria">
+                <table class="not-center evaltable" width="100%">
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Midterm</th>
+                                    <th>Final</th>
+                                </tr>
+                                <tr>
+                                    <td class="w65"><strong>Organization</strong> (Course was well organized, material was presented in a logical sequence, instructional time was used effectively and important points emphasized.</td>
+                                    <td><?php final_best('q1', $mysqli);?></td>
+                                    <td><?php final_worst('q1', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Learning Outcomes and Objectives</strong> (Goals and educational objectives were clear, faculty expectations of students were clear, grading policy was clearly explained)</td>
+                                    <td><?php final_best('q2', $mysqli);?></td>
+                                    <td><?php final_worst('q2', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Content </strong>(Course content facilitated student ability to achieve course goals and objectives, and when applicable, was relevant to career preparation)</td>
+                                    <td><?php final_best('q3', $mysqli);?></td>
+                                    <td><?php final_worst('q2', $mysqli);?></td>
+                                </tr>
+                                <tr>
+                                    <td class="w65"><strong>Assessment </strong>(Material on exams was related to material covered either in class or in course assignments, students were treated equitably)</td>
+                                    <td><?php final_best('q4', $mysqli);?></td>
+                                    <td><?php final_worst('q4', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Assessment </strong>(Material on exams was related to material covered either in class or in course assignments, students were treated equitably)</td>
+                                    <td><?php final_best('q5', $mysqli);?></td>
+                                    <td><?php final_worst('q5', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Organization </strong>(Instructor presented material in an organized fashion; emphasized important points) </td>
+                                    <td><?php final_best('q6', $mysqli);?></td>
+                                    <td><?php final_worst('q6', $mysqli);?></td>
+                                </tr>
+                                <tr>
+                                    <td class="w65"><strong>Clarity </strong>(Instructor communicated effectively, explained well, presented content clearly, and gave comprehensible response to  questions)</td>
+                                    <td><?php final_best('q7', $mysqli);?></td>
+                                    <td><?php final_worst('q7', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Enthusiasm </strong>(Instructor was dynamic and energetic, stimulated learner interest, and enjoyed teaching)</td>
+                                    <td><?php final_best('q8', $mysqli);?></td>
+                                    <td><?php final_worst('q8', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Up to Date </strong>(Instructor discussed recent development in the field, directed students to current reference materials, and provided additional materials to cover current topics)</td>
+                                    <td><?php final_best('q9', $mysqli);?></td>
+                                    <td><?php final_worst('q9', $mysqli);?></td>
+                                </tr>    
+                                <tr>
+                                    <td class="w65"><strong>Contribution </strong>(Instructor discussed recent development in the field, directed students to current reference materials, and provided additional materials to cover current topics)</td>
+                                    <td><?php final_best('q10', $mysqli);?></td>
+                                    <td><?php final_worst('q10', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65"><strong>Professionalism </strong>(Instructor demonstrated role model qualities that were of use to students)</td>
+                                    <td><?php final_best('q11', $mysqli);?></td>
+                                    <td><?php final_worst('q11', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65"><strong>Attitude </strong>(Instructor was concerned about students learning the material, encourages class participation, was receptive to different perspectives)</td>
+                                    <td><?php final_best('q12', $mysqli);?></td>
+                                    <td><?php final_worst('q12', $mysqli);?></td>
+                                </tr>
+                                <tr>
+                                    <td class="w65">I attended and participated in class sessions</td>
+                                    <td><?php final_best('q13', $mysqli);?></td>
+                                    <td><?php final_worst('q13', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65">I completed assignments on time</td>
+                                    <td><?php final_best('q14', $mysqli);?></td>
+                                    <td><?php final_worst('q14', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65">I learned the required information for the course</td>
+                                    <td><?php final_best('q15', $mysqli);?></td>
+                                    <td><?php final_worst('q15', $mysqli);?></td>
+                                </tr>
+                                <tr>
+                                    <td class="w65">I used my laptop and technology successfully in this course.</td>
+                                    <td><?php final_best('q16', $mysqli);?></td>
+                                    <td><?php final_worst('q16', $mysqli);?></td>
+                                </tr>
+                                <tr>    
+                                    <td class="w65">I used the library as part of this class</td>
+                                    <td><?php final_best('q16', $mysqli);?></td>
+                                    <td><?php final_worst('q16', $mysqli);?></td>
+                                </tr> 
+                                <tr> 
+                                    <td class="w65">I used at least one learning support program (writing center, math, lab, tutor, etc)</td>
+                                    <td><?php final_best('q16', $mysqli);?></td>
+                                    <td><?php final_worst('q16', $mysqli);?></td>
+                                </tr> 
+                            </table>
+                        </div>
             </div>
         </div>
     </div>
 </div><!-- end main -->
+<script>
+    function show_group() {
+        document.getElementById('group').style.display="";
+        document.getElementById('mid_criteria').style.display="none";
+        document.getElementById('final_criteria').style.display="none";
+
+        document.getElementById("group_btn").setAttribute("class", "link-active black-btn");
+        document.getElementById("mid_criteria_btn").setAttribute("class", "black-btn");
+        document.getElementById("final_criteria_btn").setAttribute("class", "black-btn");
+    }
+    function show_mid_criteria() {
+        document.getElementById('group').style.display="none";
+        document.getElementById('mid_criteria').style.display="";
+        document.getElementById('final_criteria').style.display="none";
+
+        document.getElementById("mid_criteria_btn").setAttribute("class", "link-active black-btn");
+        document.getElementById("group_btn").setAttribute("class", "black-btn");
+        document.getElementById("final_criteria_btn").setAttribute("class", "black-btn");
+    }
+    function show_final_criteria() {
+        document.getElementById('group').style.display="none";
+        document.getElementById('mid_criteria').style.display="none";
+        document.getElementById('final_criteria').style.display="";
+
+        document.getElementById("mid_criteria_btn").setAttribute("class", "black-btn");
+        document.getElementById("group_btn").setAttribute("class", "black-btn");
+        document.getElementById("final_criteria_btn").setAttribute("class", "link-active black-btn");
+    }
+</script>
 <FOOTER>
         <div class="footer_bg"><!-- start footer -->
             <div class="container">
