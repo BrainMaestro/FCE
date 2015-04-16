@@ -108,6 +108,7 @@ function finalLockSection($crn, $eval_type, $mysqli) {
     $evaluation = $eval_type . "_evaluation";
     $mysqli->query("UPDATE sections SET locked='1', $evaluation='1' WHERE crn='$crn'");
     deleteKeys($crn, $eval_type, $mysqli);
+    deleteHelper($crn, $mysqli);
 
     //
     $avg_q = array();
