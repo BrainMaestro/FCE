@@ -187,7 +187,7 @@ if (isset($_POST['submit'])) {
             <div class="main row para">
                 <div class="col-md-5">
                     <div class="banner-msg">
-					<strong class="thead text-center"><b><h3>* DISCLAIMER: All information filled here is anonymous *</h3></b></strong>
+					<strong class="thead text-center"><b><h4 style="text-transform: uppercase;">* DISCLAIMER: All information provided here is anonymous *</h4></b></strong><hr>
 					
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
                     1-5, to each questions 1-18. <br>For each response, please use the following scale.<br>
