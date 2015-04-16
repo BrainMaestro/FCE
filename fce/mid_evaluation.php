@@ -23,12 +23,12 @@ if (isset($_POST['submit'])) {
 		exit();
 	}
 	
-    if ($stmt = $mysqli->prepare("INSERT INTO evaluations(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, eval_type)
-		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+    if ($stmt = $mysqli->prepare("INSERT INTO evaluations(crn, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, comment, eval_type)
+		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
         $eval_type = "mid";
         $crn = $_SESSION['crn'];
-        $stmt->bind_param('iiiiiiiiiiiiiiiis', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
-            $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$eval_type); 
+        $stmt->bind_param('iiiiiiiiiiiiiiiiss', $crn,$_POST['q1'],$_POST['q2'],$_POST['q3'],$_POST['q4'],$_POST['q5'],$_POST['q6'],
+            $_POST['q7'],$_POST['q8'],$_POST['q9'],$_POST['q10'],$_POST['q11'],$_POST['q12'],$_POST['q13'],$_POST['q14'],$_POST['q15'],$_POST['comment'],$eval_type); 
         $stmt->execute(); 
 		setKey($_SESSION['key_value'], "used", $mysqli);
 		session_destroy();
@@ -181,13 +181,17 @@ if (isset($_POST['submit'])) {
                         ?>
                     </tbody>
                 </table>
-            </div>
+				<!--<table width="100%" class="not-center evaltable">
+                    <caption><h1 style="color:red;">Disclaimer</h1><hr></caption>
+					<h5>All information filled here is anonymous</h5>-->
+			</div>		
         </div>
         <div class="container">
             <div class="main row para">
                 <div class="col-md-5">
                     <div class="banner-msg">
-
+					<strong class="thead text-center"><b><h3>* DISCLAIMER: All information filled here is anonymous *</h3></b></strong>
+					
                     Using the criteria below, please evaluate the course taken during this semester. Your responses will be used to assist in more effective and efficient course delivery. Please select appropriate columns numbers
                     1-5, to each questions 1-15. <br>For each response, please use the following scale.<br>
                     5 = excellent (exceptional, exemplary)<br>
@@ -343,11 +347,9 @@ if (isset($_POST['submit'])) {
                             <td class="w5"><input type="radio" name="q15" value="5" required="required"></td>
                         </tr>
                     </table>
-                
-                    <br>
-
-                    <!-- <textarea class="eval" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea> -->
-                    <button class="black-btn" name='submit'>SUBMIT</button>
+					<br>
+					<textarea class="eval size-input" name="comment" rows="3" cols="160" placeholder="Other suggestion(s) to improve the course? Please take time to fill out this section"></textarea>
+                    <br><br><button class="black-btn" name='submit'>SUBMIT</button>
                 </form>
                 </div>
             </div>
