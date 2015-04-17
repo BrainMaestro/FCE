@@ -387,8 +387,63 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                             <td class="w5"><?php echo avg_final($course_no, $eval_type, $mysqli);?></td>
                     
                         </tr>
+						<tr>
+							<th class="w5"></th>
+							<th class="w65"><strong>Student Comment</strong></th>
+							<script type="text/javascript">
+								var global_key = 0;
+			
+								function getComments(com2) {
+									var comvalues = document.getElementsByName('comments[]');
+									var comments_array = [];
+									
+									global_key += parseInt(com2);
+				
+									if (global_key > comvalues.length - 1) {
+										global_key = 0;
+									}
+									if (global_key < 0) {
+										global_key = comvalues.length - 1;
+									}
+				
+									for (var i = 0; i < comvalues.length; i++) {
+										comments_array.push(comvalues[i].value);
+									}
+									
+									if (comments_array.length > 0) {
+										var sn = parseInt(global_key) + 1;
+										//var isGiven = "<br>Given out: " + given_out[global_key];
+										document.getElementById('comment_box').innerHTML = 
+										"<span style='color:grey; font-size:0.45em;'>" + sn + "\/" + comvalues.length + "<br></span>" +
+										"<span class='size-input' style=' font-size: 1em;'>\"" + comments_array[global_key] + "\"</span>";
+										//document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
+										//document.getElementById('given').innerHTML = given_count;
+										document.getElementById('previous_key').type = "image";
+										document.getElementById('next_key').type = "image";
+									}
+								}
+							</script>
+							<?php
+								$comments = $mysqli->query("SELECT comment FROM evaluations WHERE crn='$course_no' AND eval_type='$eval_type'");
+								for ($i = 0; $i < $comments->num_rows; $i++) {
+									$row = $comments->fetch_assoc();
+									if ($row['comment'] != "") {
+										echo "<input type='hidden' name='comments[]' value='$row[comment]'>";
+									}
+								}
+							?>
+						</tr>
                     </table>
-
+					<!--<div class="col-xs-4 text-center"></div>-->
+						<div class="col-xs-5 text-center border">
+							<h3 id="comment_box" value="">"No Comments Available"</h3>
+							
+							<input type="hidden" width='30px'  id='previous_key' type='image' src="../images/back.png" onclick='getComments(-1)'>
+							<input type="hidden" width='30px'  id='next_key' type='image' src="../images/next.png" onclick='getComments(1)'>
+						
+						</div>
+					</div>
+				<script>getComments("0")</script>
             </div>
 
         </div>

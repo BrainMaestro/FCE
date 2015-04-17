@@ -198,7 +198,7 @@ if (!isset($_SESSION['user']) || !(in_array($_SESSION['user'], array("helper", "
 	<div class="main row para">
 		<div class="col-xs-3 size-before"></div>
 		<div class="col-xs-6 text-center size-panel">
-		<h1 id="key1" style="font-family: monospace; color:black;" value=""> null</h2>
+		<h1 id="key1" style="font-family: monospace; color:black;" value=""> null</h1>
 			<!--<p id="given" value=""> null </p>
 			<h4 class="da-link text-center" id="given" value=""> null </h4>-->
 			<script type="text/javascript">
@@ -242,8 +242,8 @@ if (!isset($_SESSION['user']) || !(in_array($_SESSION['user'], array("helper", "
 			}
 			</script>
 			<div class="text-center" height='10%'>
-				<input width='8%'  name='previous_key' type='image' src="../images/back.png" onclick='getKeys(-1)'>
-				<input width='8%'  name='next_key' type='image' src="../images/next.png" onclick='getKeys(1)'>
+				<input width='30px'  name='previous_key' type='image' src="../images/back.png" onclick='getKeys(-1)'>
+				<input width='30px'  name='next_key' type='image' src="../images/next.png" onclick='getKeys(1)'>
 			</div>
 			</div>
 
