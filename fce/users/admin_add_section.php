@@ -189,6 +189,7 @@ if (isset($_POST['submitS'])) {
     <a href="./admin_add_section.php"><button class='link-active black-btn'>Add Section</button></a>
     <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
     <a href="./statistics.php"><button class='black-btn'>Statistics</button></a>
+	<a href="./manage_evaluations.php"><button class='black-btn'>Evaluations</button></a>
 </div>
 <div class="main_bg"><!-- start main -->
     <div class="container">

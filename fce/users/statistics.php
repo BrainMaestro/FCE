@@ -166,7 +166,8 @@
     <a href="./admin_add_section.php"><button class=' black-btn'>Add Section</button></a>
     <a href="./admin_manage_user.php"><button class='black-btn'>Manage User</button></a>
     <a href="./statistics.php"><button class='link-active black-btn'>Statistics</button></a>
-    <br><br>
+    <a href="./manage_evaluations.php"><button class='black-btn'>Evaluations</button></a>
+	<br><br>
     <a><button class='black-btn' id="group_btn"  onclick="show_group()">GROUP</button></a>
     <button class=' black-btn'id="mid_criteria_btn" onclick="show_mid_criteria()">CRITERIA (MIDTERM)</button>
     <button class='black-btn' id="final_criteria_btn" onclick="show_final_criteria()">CRITERIA (FINAL)</button>
