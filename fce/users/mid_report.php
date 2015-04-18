@@ -2,13 +2,6 @@
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
 
-if ((!isset($_SESSION['user_type'])) || ($_SESSION['user_type'] == "secretary")){
-	session_destroy();
-    session_start();
-	$_SESSION['err'] = "You do not have access";
-	header("Location: ../index.php");
-}
-
 $course_no = $_GET['crn'];
 $eval_type = "mid";
 checkEvaluations($course_no, $eval_type, $mysqli);
@@ -99,8 +92,8 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
 </div>
 </div>
 <div class='row para text-center'>
-    <div class="col-xs-4"></div>
-    <div class="col-xs-4">
+    <div class="col-xs-4 size-before"></div>
+    <div class="col-xs-4 size-panel">
         <table width="100%" class="not-center evaltable">
             <caption><h3>Report Details</h3><hr></caption>
             <tbody>
@@ -318,7 +311,7 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
                         </tr>
 						<tr>
 							<th class="w5"></th>
-							<th class="w65"><strong>Student Comment</strong></th>
+							<th class="w65"><strong>Student Comments</strong></th>
 							<script type="text/javascript">
 								var global_key = 0;
 			
@@ -341,12 +334,9 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
 									
 									if (comments_array.length > 0) {
 										var sn = parseInt(global_key) + 1;
-										//var isGiven = "<br>Given out: " + given_out[global_key];
 										document.getElementById('comment_box').innerHTML = 
 										"<span style='color:grey; font-size:0.45em;'>" + sn + "\/" + comvalues.length + "<br></span>" +
 										"<span class='size-input' style=' font-size: 1em;'>\"" + comments_array[global_key] + "\"</span>";
-										//document.getElementById('sn1').innerHTML = parseInt(global_key) + 1;
-										//document.getElementById('given').innerHTML = given_count;
 										document.getElementById('previous_key').type = "image";
 										document.getElementById('next_key').type = "image";
 									}
@@ -363,9 +353,8 @@ protectReports($course_no, $_SESSION['user'], $mysqli);
 							?>
 						</tr>
                     </table>
-					<!--<div class="col-xs-4 text-center"></div>-->
-						<div class="col-xs-5 text-center border">
-							<h3 id="comment_box" value="">"No Comments Available"</h3>
+						<div class="col-xs-5 text-center border4 size-panel">
+							<h4 id="comment_box" value="">"No Comments"</h4>
 							
 							<input type="hidden" width='30px'  id='previous_key' type='image' src="../images/back.png" onclick='getComments(-1)'>
 							<input type="hidden" width='30px'  id='next_key' type='image' src="../images/next.png" onclick='getComments(1)'>
