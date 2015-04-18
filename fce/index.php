@@ -126,88 +126,45 @@ goBack($mysqli);
                         </div>
                         <div id="panel">
                         <div id="loginbox"><form method="post" name="" class="para" action="includes/evaluate.php">
-                                                <p></p>
-                                                <br /><br />
-                                                <input type="text" name='key_value' placeholder=" Access Key" class="round size-input" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
-                                                <br><br><p></p>
-                                                <button class="black-btn size-input">EVALUATE</button>
-                                            </form>
-                                            <script>
-                                            $(document).ready(function() {
-                                                if (!$(".error").is(':empty')) {
-                                                    $(".error").slideDown("fast",function() {
-                                                        $(".loginbox").effect("shake");
-                                                    });
-                                                }
-                                            });
-                                            </script>
-                                            <div class="error"><?php
-                                                    if (isset($_SESSION['erre'])) {
-                                                    $err = $_SESSION['erre'];                            
-                                                    echo "<h5>Sorry, $err</h5>";
-                                                    unset($_SESSION['erre']); // Destroys the err session variable
-                                                    }
-                                                    if (isset($_SESSION['errl'])) {
-                                                    $err = $_SESSION['errl'];                            
-                                                    echo "<h5>Sorry, $err</h5>";
-                                                    unset($_SESSION['errl']); // Destroys the err session variable
-                                                    }
-                                                ?></div>
+                            <p></p>
+                            <br /><br />
+                            <input type="text" name='key_value' placeholder=" Access Key" class="round size-input" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
+                            <br><br><p></p>
+                            <button class="black-btn size-input">EVALUATE</button>
+                        </form>
+                        <script>
+                        $(document).ready(function() {
+                            if (!$(".error").is(':empty')) {
+                                $(".error").slideDown("fast",function() {
+                                    $(".loginbox").effect("shake");
+                                });
+                            }
+                        });
+                        </script>
+                        <div class="error"><?php
+                                if (isset($_SESSION['erre'])) {
+                                $err = $_SESSION['erre'];                            
+                                echo "<h5>Sorry, $err</h5>";
+                                unset($_SESSION['erre']); // Destroys the err session variable
+                                }
+                                if (isset($_SESSION['errl'])) {
+                                $err = $_SESSION['errl'];                            
+                                echo "<h5>Sorry, $err</h5>";
+                                unset($_SESSION['errl']); // Destroys the err session variable
+                                }
+                            ?></div>
                     </div>
                         <div id="evalbox"><form method="post" action="includes/login.php" class="para"><br /><br />
-                                                <input type="text" name="email" placeholder=" Email" class="round down size-input"><BR><BR>
-                                                <input type="password" name="password" placeholder=" Password" class="round size-input">
-                                                <p></p>
-                                                <button class="black-btn size-input">LOG IN</button>
-                                            </form>
-                                            <!--<div class="error">
-                                                <?php
-                                                    if (isset($_SESSION['errl'])) {
-                                                    $err = $_SESSION['errl'];                            
-                                                    echo "<h5>Sorry, $err</h5>";
-                                                    unset($_SESSION['errl']); // Destroys the err session variable
-                                                    }
-                                                ?>
-                                            </div>-->
+                            <input type="email" name="email" placeholder=" Email" class="round down size-input"><BR><BR>
+                            <input type="password" name="password" placeholder=" Password" class="round size-input">
+                            <p></p>
+                            <button class="black-btn size-input">LOG IN</button>
+                        </form>
 
                             
                         </div>
 
                         </div>
-                    <!--<form method="post" name="" class="para" action="includes/evaluate.php">
-                        <p></p>
-                        <input type="text" name='key_value' placeholder=" Access Key" class="round" required pattern=".{5,5}" title="Exactly 5 characters" maxlength='5'><br>
-                        <br><br><p></p>
-                        <button class="fa-btn btn-1 btn-1e">EVALUATE</button>
-                    </form>
-                    <div class="error">
-                        <?php
-                            if (isset($_SESSION['erre'])) {
-                            $err = $_SESSION['erre'];                            
-                            echo "<h5>Sorry, $err</h5>";
-                            unset($_SESSION['erre']); // Destroys the err session variable
-                            }
-                        ?>
-                        
-                    </div>
-                </div>
-                <div class="col-md-6 text-center"></div>	
-                <div class="col-md-3 text-center border">
-                    <form method="post" action="includes/login.php" class="para">
-                        <input type="text" name="email" placeholder=" Email" class="round"><BR><BR>
-                        <input type="password" name="password" placeholder=" Password" class="round">
-                        <p></p>
-                        <button class="fa-btn btn-1 btn-1e">LOG IN</button>
-                    </form>
-                    <div class="error">
-                        <?php
-                            if (isset($_SESSION['errl'])) {
-                            $err = $_SESSION['errl'];                            
-                            echo "<h5>Sorry, $err</h5>";
-                            unset($_SESSION['errl']); // Destroys the err session variable
-                            }
-                        ?>
-                        -->
                     </div>
                 </div>	
                 <div class="col-md-6 text-center"></div>	
