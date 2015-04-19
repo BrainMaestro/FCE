@@ -11,6 +11,8 @@ Just a few major (or noteworthy) features of the system are listed here:
 
 ### Authors and Contributors
 - [BrainMaestro](https://github.com/BrainMaestro)
-- [SkaeX](https://github.com/SkaeX)
-- [aisha-alimi](https://github.com/aisha-alimi)
 - [tenorz007](https://github.com/tenorz007)
+- [aisha-alimi](https://github.com/aisha-alimi)
+- [SkaeX](https://github.com/SkaeX)
+
+
