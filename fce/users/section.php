@@ -136,9 +136,12 @@ if (!isset($_SESSION['user']) || !(in_array($_SESSION['user'], array("helper", "
 		      <ul class="nav navbar-nav">
                 <?php
                 list_roles('');
+                $semester = getCurrentSemester();
                 $crn = $_GET['crn'];
     			$row = $mysqli->query("SELECT mid_evaluation, final_evaluation FROM sections WHERE crn='$crn'")->fetch_assoc();
-                $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
+                // $eval_type = ($row['mid_evaluation'] == '0') ? "mid" : "final";
+                $row = $mysqli->query("SELECT mid, final FROM semesters WHERE semester='$semester");
+                $eval_type = ($row['mid'] == 'Open') ? "mid" : "final" ;
                 $row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
                 $row3 = $mysqli->query("SELECT count(crn) AS filled FROM evaluations WHERE crn='$crn' AND eval_type='$eval_type'")->fetch_assoc();
                 echo "<li><span style='background: #3B3B3B;'><span class='red'>Evaluations</span>: $row3[filled]/$row[enrolled]</span></li>";
@@ -160,7 +163,8 @@ if (!isset($_SESSION['user']) || !(in_array($_SESSION['user'], array("helper", "
 			<tbody>
 				<?php
 		    	$row = $mysqli->query("SELECT * FROM sections WHERE crn='$crn'")->fetch_assoc();
-				$term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+				// $term = ($row['mid_evaluation'] == '0') ? "Midterm" : "Final";
+				$term = ($eval_type == 'mid') ? "Midterm" : "Final";
 
 				echo "<tr><td>CRN</td>";
 				echo "<td>$crn</td></tr>";
