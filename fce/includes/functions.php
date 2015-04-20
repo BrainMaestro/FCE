@@ -3,7 +3,8 @@
 // Method that generates keys for use
 function generateKeys() {
 
-    $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Acceptable character string
+    // $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Acceptable character string
+    $characters = "023456789abcdefghjkmnopqrstuvwxyzABCDEFGHIJKMNOPQRSTUVWXYZ"; // Acceptable character string
 
     for ($i = 0; $i < 10; $i++)
         $characters .= $characters; // Increases the length of the string for more possibilities
