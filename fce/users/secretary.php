@@ -4,14 +4,14 @@ include_once '../includes/functions.php';
 
 checkUser("secretary");
     
-if (isset($_POST['submit'])) {
+if (isset($_GET['submit'])) {
 
-	if ($_POST['submit'] == 'lock') {
-		lockSection($_POST['crn'], $mysqli);
-		deleteHelper($_POST['crn'], $mysqli);
+	if ($_GET['submit'] == 'lock') {
+		lockSection($_GET['crn'], $mysqli);
+		deleteHelper($_GET['crn'], $mysqli);
 	} else {
-		unlockSection($_POST['crn'], $_POST['submit'], $mysqli);
-		insertHelper($_POST['crn'], $mysqli);
+		unlockSection($_GET['crn'], $_GET['submit'], $mysqli);
+		insertHelper($_GET['crn'], $mysqli);
 	}
 }
 $_SESSION['user'] = 'secretary';
@@ -105,30 +105,41 @@ $_SESSION['user'] = 'secretary';
 		<div class="main row para">	
             <div class="col-xs-4 text-center size-before"></div>		
 			<div class="col-xs-4 text-center border size-panel">
-				<form action="secretary.php" method='post'>
+				<form action="secretary.php" method='get'>
 	                Leave search bar empty to search all sections<br><br>
-					<select name="status" class="input-sm size-input" required>
-	                    <option selected value="1">Locked</option>
-	                    <option value="0">Unlocked</option>
-	                    <option value="%">All</option>
-	                </select><br><br>
-	                <select name="day" class="input-sm size-input">
-	                    <option selected value="">Every day</option>
-	                    <option value="M">Monday</option>
-	                    <option value="T">Tuesday</option>
-	                    <option value="W">Wednesday</option>
-	                    <option value="R">Thursday</option>
-	                    <option value="F">Friday</option>
-	                    <option value="S">Saturday</option>
-	                </select><br><br>
-	                 <select name="time" class="input-sm size-input">
-	                    <option selected value="">All time slots</option>
-	                    <?php
+	                <?php
+	                $status = ["1"=>"Locked", "0"=>"Unlocked", "%"=>"All"];
+					echo '<select name="status" class="input-sm size-input" required>';
+					foreach ($status as $key => $value) {
+						if (isset($_GET['status']) && $_GET['status'] == $key)
+							echo "<option selected value='$key'>$value</option>";
+						else
+							echo "<option value='$key'>$value</option>";
+					}
+	                echo '</select><br><br>';
+	                echo '<select name="day" class="input-sm size-input">';
+	                $days = [""=>"Every day", "M"=>"Monday", "T"=>"Tuesday", "w"=>"Wednesday", "R"=>"Thursday", "F"=>"Friday", "S"=>"Saturday"];
+	                foreach ($days as $key => $value) {
+						if (isset($_GET['day']) && $_GET['day'] == $key)
+							echo "<option selected value='$key'>$value</option>";
+						else
+							echo "<option value='$key'>$value</option>";
+					}
+	                echo '</select><br><br>';
+	                echo '<select name="time" class="input-sm size-input">';
 	                    $result = $mysqli->query("SELECT DISTINCT(SUBSTRING(class_time, -13, 13))
 	                     AS time FROM sections WHERE semester = '$semester' AND class_time !=  '' ORDER by time");
-					    for($i = 0; $i < $result->num_rows; $i++) {
-							$row = $result->fetch_assoc();
-							echo "<option value='$row[time]'>$row[time]</option>";
+					    for($i = -1; $i < $result->num_rows; $i++) {
+					    	if ($i == -1)
+					    		$row = ["time"=>"", "time2"=>"All time slots"];
+					    	else {
+								$row = $result->fetch_assoc();
+								$row['time2'] = $row['time'];
+					    	}
+							if (isset($_GET['time']) && $_GET['time'] == $row['time'])
+								echo "<option selected value='$row[time]'>$row[time2]</option>";
+							else
+								echo "<option value='$row[time]'>$row[time2]</option>";
 						}
 						?>
 	                </select><br><br>
@@ -150,11 +161,11 @@ $_SESSION['user'] = 'secretary';
 					$time = '';
 					$day = '';
 
-					if (isset($_POST['filter'])) {
-						$status = $_POST['status'];
-						$search = $_POST['search'];
-						$day = $_POST['day'];
-						$time = $_POST['time'];
+					if (isset($_GET['filter'])) {
+						$status = $_GET['status'];
+						$search = $_GET['search'];
+						$day = $_GET['day'];
+						$time = $_GET['time'];
 						
 						switch ($status) { // Colors the table caption like the status column
 						case '0':
