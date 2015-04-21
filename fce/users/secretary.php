@@ -4,14 +4,14 @@ include_once '../includes/functions.php';
 
 checkUser("secretary");
     
-if (isset($_GET['submit'])) {
+if (isset($_POST['submit'])) {
 
-	if ($_GET['submit'] == 'lock') {
-		lockSection($_GET['crn'], $mysqli);
-		deleteHelper($_GET['crn'], $mysqli);
+	if ($_POST['submit'] == 'lock') {
+		lockSection($_POST['crn'], $mysqli);
+		deleteHelper($_POST['crn'], $mysqli);
 	} else {
-		unlockSection($_GET['crn'], $_GET['submit'], $mysqli);
-		insertHelper($_GET['crn'], $mysqli);
+		unlockSection($_POST['crn'], $_POST['submit'], $mysqli);
+		insertHelper($_POST['crn'], $mysqli);
 	}
 }
 $_SESSION['user'] = 'secretary';
