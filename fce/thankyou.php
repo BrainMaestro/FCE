@@ -111,7 +111,7 @@
                         </tr>
                         
                         <tr id="skaex">
-                            <td><a title="Skampa: Follow me on twitter." target="_blank" href="https://twitter.com/D_Skampa">Äbdulmajid Hamza</a></td>
+                            <td><a title="Skampa: Follow me on twitter." target="_blank" href="https://twitter.com/D_Skampa">Abdulmajid Hamza</a></td>
                             <td>Software Developer</td>
                         </tr>
                                                 

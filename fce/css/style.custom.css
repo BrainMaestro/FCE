@@ -283,22 +283,6 @@ text-decoration: none;
 		width: 55%;
 	}
 }
-#skaex a:hover {
-	color:white;
-	font-size:103%;
-	text-shadow: 0px 0px 2px #4d4d4d, 0px 5px 10px #aeaeae;
-	background-color:#FF4D4D;
-	border-radius:3px;  
-
-}
-
-
-#skaex a{
-	font-weight:10%;
-	margin:0;
-	color:#FF4D4D;
-	text-shadow: 0px 0px 2px #4d4d4d, 0px 5px 10px #aeaeae;
-}
 
 .custom-file-upload {
     margin-left: auto;
