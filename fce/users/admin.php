@@ -104,7 +104,7 @@ $_SESSION['user'] = 'admin';
 		<div class="main row para">	
             <div class="col-xs-4 text-center"></div>		
 			<div class="col-xs-4 text-center border">
-				<form action="" method='post'>
+				<form action="" method='get'>
 	                Leave search bar empty to search all sections<br><br>
 	                <?php
 	                echo '<select name="semester" class="input-sm size-input">';
@@ -112,18 +112,28 @@ $_SESSION['user'] = 'admin';
 				    $result = $mysqli->query("SELECT semester from semesters");
 				    for($i = 0; $i < $result->num_rows; $i++) {
 						$row = $result->fetch_assoc();
-						echo "<option value='$row[semester]'>$row[semester]</option>";
+						if (isset($_GET['semester']) && $_GET['status'] == $row['semester'])
+							echo "<option selected value='$row[semester]'>$row[semester]</option>";
+						else
+							echo "<option value='$row[semester]'>$row[semester]</option>";
 					}
 					echo '</select><br><br>';
 					?>
 					<select name="school" class="input-sm size-input">
-	                    <option value="%">All Schools</option>
 	                    <?php
                         $result = $mysqli->query("SELECT * FROM schools");
 
-                        for ($i = 0; $i < $result->num_rows; $i++) {
-                            $row = $result->fetch_array();
-                            echo "<option value='$row[0]'>$row[0]</option>";
+                        for ($i = -1; $i < $result->num_rows; $i++) {
+					    	if ($i == -1)
+					    		$row = ["%", "All Schools"];
+					    	else {
+                           		$row = $result->fetch_array();
+                           		$row[1] = $row[0];
+					    	}
+							if (isset($_GET['school']) && $_GET['school'] == $row[0])
+	                            echo "<option selected value='$row[0]'>$row[1]</option>";
+	                        else
+	                            echo "<option value='$row[0]'>$row[1]</option>";
                         }
                         ?>
 	                </select><br /><br />
@@ -140,11 +150,11 @@ $_SESSION['user'] = 'admin';
 			$sch = '%';
 		    $search = '%';
 
-			if (isset($_POST['sch_submit'])) {  
+			if (isset($_GET['sch_submit'])) {  
 
-				$sch = $_POST['school'];
-				$semester = $_POST['semester'];
-		    	$search = $_POST['search'];
+				$sch = $_GET['school'];
+				$semester = $_GET['semester'];
+		    	$search = $_GET['search'];
 		    }
 
     		$result = $mysqli->query("SELECT * FROM sections WHERE school LIKE '%$sch' 
