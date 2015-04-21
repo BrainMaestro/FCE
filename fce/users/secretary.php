@@ -238,11 +238,35 @@ $_SESSION['user'] = 'secretary';
 							echo "<td>$row[enrolled]</td>";
 							$locked = ($row['locked'] == 1) ? "Locked" : "Unlocked";
 							$color = ($locked == "Locked") ? "red" : "green";
-							$midterm = ($row['mid_evaluation'] == 1) ? "Done" : "Not Done";
-							$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
+							$midterm = "";
+							$final = "";
+			                $row2 = $mysqli->query("SELECT mid, final FROM semesters WHERE semester='$semester'")->fetch_assoc();
+			                $row3 = $mysqli->query("SELECT count(*) FROM accesskeys WHERE key_crn='$row[crn]' AND given_out='1'")->fetch_array();
+							if ($row2['mid'] == "Open") {
+
+								if ($row3[0] != 0) 
+									$midterm = "Started";
+								else 
+									$midterm = "Not Done";
+								
+								$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
+							}
+							elseif ($row2['final'] == "Open") {
+								
+								if ($row3[0] != 0) 
+									$final = "Started";
+								else 
+									$final = "Not Done";
+
+								$midterm = ($row['mid_evaluation'] == 1) ? "Done" : "Not Done";
+							}
+							else {
+								$midterm = ($row['mid_evaluation'] == 1) ? "Done" : "Not Done";
+								$final = ($row['final_evaluation'] == 1) ? "Done" : "Not Done";
+							}
 							echo "<td class='$color'>$locked</td>";
-							echo "<td>$midterm</td>";
-							echo "<td>$final</td>";
+							echo "<td name='status'>$midterm</td>";
+							echo "<td name='status'>$final</td>";
 							if ($status == '0')
 								echo "<td><a href='section.php?crn=$row[crn]' target='_blank'>$row[course_code] Keys</a></td>";
 							else
@@ -260,6 +284,18 @@ $_SESSION['user'] = 'secretary';
 					}
 					?>
 				</form>
+				<script type="text/javascript">
+					var values = document.getElementsByName('status');
+					for (var i = 0; i < values.length; i++) {
+						var color;
+						switch (values[i].innerHTML) {
+							case "Started": color = "blue"; break;
+							case "Done": color = "black"; break;
+							default: color = "";
+						}
+						values[i].style.color = color;
+					};
+					</script>
 
 			</div>
 		</div>
