@@ -153,7 +153,7 @@ if (isset($_POST['submit'])) {
         <div class='row para text-center'>
             <div class="col-xs-4"></div>
             <div class="col-xs-4">
-                <table width="100%" class="not-center evaltable">
+                <table width="100%" class="not-center evaltable size-panel">
                     <caption><h3>Course Details</h3><hr></caption>
                     <tbody>
                         <?php
