@@ -264,7 +264,7 @@ $comments = $mysqli->query("SELECT comment FROM evaluations WHERE crn='$course_n
 if ($comments->num_rows > 0) {
     $pdf->SetFont('Courier','B',11);
     $pdf->Ln(5);
-    $pdf->Cell(0,10,'Student Comments.',0,0,'C');
+    $pdf->Cell(0,10,'Student Comments.',0,0,'L');
     $pdf->SetFont('Courier','',10);
     $pdf->Ln();
     for ($i = 0; $i < $comments->num_rows; $i++) {
@@ -276,10 +276,10 @@ if ($comments->num_rows > 0) {
             }
 }
 else {
-    $pdf->Cell(0,10,'No Comments',0,0,'C');
+    $pdf->Cell(0,10,'No Comments',0,0,'L');
 }
 if ($cnt < 2) {
-    $pdf->Cell(0,10,'No Comments',0,0,'C');
+    $pdf->Cell(0,10,'No Comments',0,0,'L');
 }
 
 

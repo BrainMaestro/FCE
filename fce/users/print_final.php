@@ -352,14 +352,14 @@ $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(20,4,'',0);
 $pdf->Ln(10);
-$pdf->AddPage();
+//$pdf->AddPage();
 
 $cnt = 1;
 $comments = $mysqli->query("SELECT comment FROM evaluations WHERE crn='$course_no' AND eval_type='$eval_type'");
 if ($comments->num_rows > 0) {
     $pdf->SetFont('Courier','B',11);
     $pdf->Ln(5);
-    $pdf->Cell(0,10,'Student Comments.',0,0,'C');
+    $pdf->Cell(0,10,'Student Comments.',0,0,'L');
     $pdf->SetFont('Courier','',10);
     $pdf->Ln();
     
@@ -373,10 +373,10 @@ if ($comments->num_rows > 0) {
             }
 }
 else {
-    $pdf->Cell(0,10,'No Comments',0,0,'C');
+    $pdf->Cell(0,10,'No Comments',0,0,'L');
 }
 if ($cnt < 2) {
-    $pdf->Cell(0,10,'No Comments',0,0,'C');
+    $pdf->Cell(0,10,'No Comments',0,0,'L');
 }
 
 $pdf->Output();
