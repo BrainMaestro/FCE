@@ -59,7 +59,7 @@ $pdf->Cell(230,4,$row['course_code'],0,1,'L');
 $pdf->Cell(135,4,'Course Title:',0,0,'R');
 $pdf->Cell(230,4,$row['course_title'],0,1,'L');
 $pdf->Cell(135,4,'Report:',0,0,'R');
-$pdf->Cell(230,4,"$term Evaluation Report",0,1,'L');
+$pdf->Cell(230,4,"$term Evaluation Report.",0,1,'L');
 $pdf->Cell(135,4,'Instructor(s):',0,0,'R');
 
 $teachers = '';
@@ -69,7 +69,7 @@ $assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[c
                     $faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
                     $teachers.=$faculty['name'].", "; 
                 }
-$teachers = rtrim($teachers, ', ');
+
 $pdf->Cell(230,4,$teachers,0,1,'L');
 $count_crn = $course_no;    
 $count_eval_type = $eval_type;
@@ -82,7 +82,6 @@ $pdf->Cell(230,4,$count_response['filled'],0,1,'L');
 $pdf->Cell(135,4,'Scale:',0,0,'R');
 $pdf->Cell(230,4,'5 (excellent), 4 (very good), 3 (good), 2 (margin), 1 (poor)',0,1,'L');
 $pdf->Ln(14);
-$pdf->SetFont('Courier','B',10);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(200,4,"Criteria",0);
 $pdf->Cell(8,4,'1',0);
@@ -92,7 +91,6 @@ $pdf->Cell(8,4,'4',0);
 $pdf->Cell(8,4,'5',0);
 $pdf->Cell(20,4,'Average',0);
 $pdf->Ln(6);
-$pdf->SetFont('Courier','',10);
 
 $pdf->Cell(8,4,'1',0);
 $pdf->Cell(200,4,"Professor's Adherence to time (Professor arrives in the classroom on time).",0);
@@ -246,10 +244,8 @@ $pdf->Cell(20,4,avg_question('q15', $course_no, $eval_type, $mysqli),0);
 $pdf->Ln(6);
 
 $pdf->Cell(8,4,'',0);
-$pdf->SetFont('Courier','B',10);
 $pdf->Cell(200,4,"Total Average",0);
 $pdf->Cell(8,4,avg_midterm($course_no, $eval_type, $mysqli),0);
-$pdf->SetFont('Courier','',10);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
