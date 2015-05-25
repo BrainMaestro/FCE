@@ -60,7 +60,7 @@ $pdf->Cell(230,4,$row['course_code'],0,1,'L');
 $pdf->Cell(135,4,'Course Title:',0,0,'R');
 $pdf->Cell(230,4,$row['course_title'],0,1,'L');
 $pdf->Cell(135,4,'Report:',0,0,'R');
-$pdf->Cell(230,4,"$term Evaluation Report.",0,1,'L');
+$pdf->Cell(230,4,"$term Evaluation Report",0,1,'L');
 $pdf->Cell(135,4,'Instructor(s):',0,0,'R');
 
 $teachers = '';
@@ -70,7 +70,7 @@ $assignment = $mysqli->query("SELECT * FROM course_assignments WHERE crn='$row[c
                     $faculty = $mysqli->query("SELECT name FROM users WHERE email='$row2[faculty_email]'")->fetch_assoc();
                     $teachers.=$faculty['name'].", "; 
                 }
-
+$teachers = rtrim($teachers, ', ');
 $pdf->Cell(230,4,$teachers,0,1,'L');
 $count_crn = $course_no;    
 $count_eval_type = $eval_type;
@@ -84,6 +84,7 @@ $pdf->Cell(135,4,'Scale:',0,0,'R');
 $pdf->Cell(230,4,'5 (excellent), 4 (very good), 3 (good), 2 (margin), 1 (poor)',0,1,'L');
 $pdf->Ln(14);
 $pdf->Cell(8,4,'',0);
+$pdf->SetFont('Courier','B',10);
 $pdf->Cell(200,4,"Course",0);
 $pdf->Cell(8,4,'1',0);
 $pdf->Cell(8,4,'2',0);
@@ -92,6 +93,7 @@ $pdf->Cell(8,4,'4',0);
 $pdf->Cell(8,4,'5',0);
 $pdf->Cell(20,4,'Average',0);
 $pdf->Ln(6);
+$pdf->SetFont('Courier','',10);
 
 $pdf->Cell(8,4,'1',0);
 $pdf->Cell(200,4,"Organization.",0);
@@ -144,6 +146,8 @@ $pdf->Cell(20,4,avg_question('q5', $course_no, $eval_type, $mysqli),0);
 $pdf->Ln(6);
 
 $pdf->Cell(8,4,'',0);
+$pdf->SetFont('Courier','B',10);
+
 $pdf->Cell(200,4,"Instructor",0);
 $pdf->Cell(8,4,'1',0);
 $pdf->Cell(8,4,'2',0);
@@ -151,6 +155,7 @@ $pdf->Cell(8,4,'3',0);
 $pdf->Cell(8,4,'4',0);
 $pdf->Cell(8,4,'5',0);
 $pdf->Cell(20,4,'Average',0);
+$pdf->SetFont('Courier','',10);
 $pdf->Ln(6);
 
 $pdf->Cell(8,4,'6',0);
@@ -224,6 +229,8 @@ $pdf->Cell(20,4,avg_question('q12', $course_no, $eval_type, $mysqli),0);
 $pdf->Ln(6);
 
 $pdf->Cell(8,4,'',0);
+$pdf->SetFont('Courier','B',10);
+
 $pdf->Cell(200,4,"Student",0);
 $pdf->Cell(8,4,'1',0);
 $pdf->Cell(8,4,'2',0);
@@ -231,6 +238,7 @@ $pdf->Cell(8,4,'3',0);
 $pdf->Cell(8,4,'4',0);
 $pdf->Cell(8,4,'5',0);
 $pdf->Cell(20,4,'Average',0);
+$pdf->SetFont('Courier','',10);
 $pdf->Ln(6);
 
 $pdf->Cell(8,4,'13',0);
@@ -294,6 +302,8 @@ $pdf->Cell(20,4,avg_question('q18', $course_no, $eval_type, $mysqli),0);
 $pdf->Ln(25);
 
 $pdf->Cell(8,4,'',0);
+$pdf->SetFont('Courier','B',10);
+
 $pdf->Cell(200,4,"Rating Averages",0);
 $pdf->Cell(8,4,'Average',0);
 $pdf->Cell(8,4,'',0);
@@ -301,6 +311,7 @@ $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(20,4,'',0);
+$pdf->SetFont('Courier','',10);
 $pdf->Ln(6);
 
 $pdf->Cell(8,4,'',0);
@@ -331,14 +342,41 @@ $pdf->Cell(8,4,'',0);
 $pdf->Cell(20,4,'',0);
 $pdf->Ln();
 $pdf->Cell(8,4,'',0);
+$pdf->SetFont('Courier','B',10);
 $pdf->Cell(200,4,"Total Average",0);
 $pdf->Cell(8,4,avg_final($course_no, $eval_type, $mysqli),0);
+$pdf->SetFont('Courier','',10);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(8,4,'',0);
 $pdf->Cell(20,4,'',0);
-$pdf->Ln();
+$pdf->Ln(10);
+$pdf->AddPage();
 
+$cnt = 1;
+$comments = $mysqli->query("SELECT comment FROM evaluations WHERE crn='$course_no' AND eval_type='$eval_type'");
+if ($comments->num_rows > 0) {
+    $pdf->SetFont('Courier','B',11);
+    $pdf->Ln(5);
+    $pdf->Cell(0,10,'Student Comments.',0,0,'C');
+    $pdf->SetFont('Courier','',10);
+    $pdf->Ln();
+    
+    for ($i = 0; $i < $comments->num_rows; $i++) {
+            $row = $comments->fetch_assoc();
+                    if ($row['comment'] != "") {
+                        $pdf->Write(6,"$cnt.  \"$row[comment]\"");
+                        $cnt++;
+                        $pdf->Ln();
+                    }
+            }
+}
+else {
+    $pdf->Cell(0,10,'No Comments',0,0,'C');
+}
+if ($cnt < 2) {
+    $pdf->Cell(0,10,'No Comments',0,0,'C');
+}
 
 $pdf->Output();
