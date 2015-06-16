@@ -34,6 +34,19 @@ if (isset($_POST['remove_role'])) {
 		$_SESSION['success2'] = "Role was never granted to user";
 	}
 }
+if (isset($_POST['reset_pass'])) {
+	$email = $_POST['email'];
+	$check = $mysqli->query("SELECT * from users where email = '$email'");
+	if ($check->num_rows != 0) { 
+	    if ($mysqli->query("UPDATE users SET password='fce' WHERE email = '$email'")) {
+	        $_SESSION['success2'] = "Password Reset successful";
+	    } else {
+	        $_SESSION['success2'] = "Password unsuccessful";
+	    }
+	} else {
+		$_SESSION['success2'] = "Password was never assigned to user";
+	}
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -221,6 +234,7 @@ if (isset($_POST['remove_role'])) {
 			?>
 			<button class="black-btn" type="submit" name="grant" id="grant">GRANT ROLE</button>
 			<button class="black-btn" type="submit" name="revoke">REVOKE ROLE</button>
+			<button class="black-btn" type="submit" name="reset">RESET PASSWORD</button>
 		</form>
 		
 		<?php
@@ -282,6 +296,31 @@ if (isset($_POST['remove_role'])) {
 	            	echo '<h3 class="error">No User Selected</h3>';
 	            }		
 	        }
+	        if (isset($_POST['reset'])) {
+				echo "<style> .users{ display: none; } </style>";
+				if (isset($_POST['user_radio'])) {
+					$email_role = $_POST['user_radio'];
+					$array = preg_split("/[,]+/", $email_role);
+					$email = $array[0];
+					$role = $array[1];
+					$check = $mysqli->query("SELECT role from roles where role in (SELECT user_role from user_roles where user_email = '$email')");
+					echo '<br> <div class="col-xs-4"></div>
+							<div class="col-xs-4 text-center border row para"  style="height:270px">
+							<form action="" method="post">
+								Reset '.$email.'\'s <br> Password to "fce" <br>
+								<input type="hidden" class="size-input" class="round" name="email" value='.$email.' readonly/>';
+					
+		            echo '</select><br><br>';
+		            echo '<button class="black-btn size-input" type="submit" name="reset_pass">Reset Password</button><br><br><button href="./admin_manage_user.php" class="black-btn size-input">No</button></div>
+		            		<div class="col-xs-4"></div>
+		            		</form>';
+	
+		            echo '<div class="clearfix"></div>';
+	            } else {
+	            	echo '<h3 class="error">No User Selected</h3>';
+	            }		
+	        }
+
 		?> 
 	
 			</div>	
