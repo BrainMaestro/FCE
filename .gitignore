@@ -1,3 +1,14 @@
-~$ftware Design Document.docx
-~$quirements.docx
-~$E Design Template.docx
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
+
+build
+.idea
+
+._*
+.AppleDouble
+.DS_Store
+composer.lock
+log/*.log
