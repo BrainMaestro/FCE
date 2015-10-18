@@ -27,8 +27,8 @@ class QuestionTransformer extends TransformerAbstract
     public function transform(Question $question)
     {
         return [
-            'id' => $question->id,
-            'type' => $question->type,
+            'id' => (int) $question->id,
+            'type' => (string) $question->type,
             'created_at' => $question->created_at,
             'updated_at' => $question->updated_at,
             'deleted_at' => $question->deleted_at
