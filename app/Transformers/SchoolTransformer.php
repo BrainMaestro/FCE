@@ -14,6 +14,13 @@ use League\Fractal\TransformerAbstract;
 class SchoolTransformer extends TransformerAbstract
 {
     /**
+     * @var array
+     */
+    protected $availableIncludes = [
+        'section'
+    ];
+
+    /**
      * @param School $school
      * @return array
      */
@@ -27,5 +34,15 @@ class SchoolTransformer extends TransformerAbstract
             'updated_at' => $school->updated_at,
             'deleted_at' => $school->deleted_at
         ];
+    }
+
+    /**
+     * @param School $school
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeSection(School $school)
+    {
+        $sections = $school->sections;
+        return $this->collection($sections, new SectionTransformer);
     }
 }

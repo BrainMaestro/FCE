@@ -15,4 +15,15 @@ class School extends Model
      * @var array
      */
     protected $fillable = ['school', 'description'];
+
+    /**
+     * The School relationship to Section
+     * A school hasMany section
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sections()
+    {
+        return $this->hasMany('App\Models\Section');
+    }
 }
