@@ -15,6 +15,13 @@ class QuestionMetadata extends Model
     protected $fillable = ['question_id', 'number', 'category', 'title', 'description'];
 
     /**
+     * The parent 'updated_at' is used
+     *
+     * @var array
+     */
+    protected $touches = ['question'];
+
+    /**
      * The QuestionMetadata relationship to Question
      * A questionMetadata belongsTo question
      *
