@@ -14,7 +14,7 @@ class Question extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'type'];
+    protected $fillable = ['type'];
 
     /**
      * The Question relationship to QuestionMetadata
