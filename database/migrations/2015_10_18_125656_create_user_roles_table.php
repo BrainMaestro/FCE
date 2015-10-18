@@ -19,9 +19,9 @@ class CreateUserRolesTable extends Migration
 
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('role_id')->unsigned()->index();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->timestamps();
             $table->softDeletes();
         });
