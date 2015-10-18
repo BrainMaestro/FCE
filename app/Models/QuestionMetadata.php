@@ -31,4 +31,15 @@ class QuestionMetadata extends Model
     {
         return $this->belongsTo('App\Models\Question');
     }
+
+    /**
+     * The QuestionMetadata relationship to evaluation
+     * A questionMetadata hasMany evaluation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany('App\Models\Evaluation', 'question_metadata_id');
+    }
 }

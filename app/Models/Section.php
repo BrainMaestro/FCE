@@ -43,4 +43,15 @@ class Section extends Model
     {
         return $this->belongsTo('App\Models\School');
     }
+
+    /**
+     * The Section relationship to evaluation
+     * A section hasMany evaluation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany('App\Models\Evaluation');
+    }
 }

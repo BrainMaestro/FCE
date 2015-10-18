@@ -26,4 +26,15 @@ class Question extends Model
     {
         return $this->hasMany('App\Models\QuestionMetadata');
     }
+
+    /**
+     * The Question relationship to evaluation
+     * A question hasMany evaluation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany('App\Models\Evaluation');
+    }
 }
