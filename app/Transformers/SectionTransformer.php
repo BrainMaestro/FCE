@@ -18,7 +18,8 @@ class SectionTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'school'
+        'school',
+        'evaluation'
     ];
 
     /**
@@ -54,5 +55,15 @@ class SectionTransformer extends TransformerAbstract
     {
         $school = $section->school;
         return $this->item($school, new SchoolTransformer);
+    }
+
+    /**
+     * @param Section $section
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeEvaluation(Section $section)
+    {
+        $evaluations = $section->evaluations;
+        return $this->collection($evaluations, new EvaluationTransformer);
     }
 }
