@@ -17,7 +17,6 @@ class CreateSchoolsTable extends Migration
             $table->string('school');
             $table->string('description');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

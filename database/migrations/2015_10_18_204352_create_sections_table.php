@@ -17,18 +17,16 @@ class CreateSectionsTable extends Migration
             $table->integer('crn')->index();
             $table->string('course_code');
             $table->unsignedInteger('semester_id');
-            $table->unsignedInteger('school')->index();
+            $table->unsignedInteger('school_id')->index();
             $table->string('course_title');
             $table->string('class_time');
             $table->string('location');
-            $table->boolean('locked');
+            $table->enum('status', ['Locked', 'Open', 'Done']);
             $table->integer('enrolled');
-            $table->boolean('midterm_evaluation');
-            $table->boolean('final_evaluation');
             $table->timestamps();
 
             $table->foreign('semester_id')->references('id')->on('semesters');
-            $table->foreign('school')->references('id')->on('schools');
+            $table->foreign('school_id')->references('id')->on('schools');
         });
     }
 
