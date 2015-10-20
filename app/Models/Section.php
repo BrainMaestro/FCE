@@ -12,15 +12,13 @@ class Section extends Model
     protected $fillable = [
         'crn',
         'course_code',
-        'semester',
-        'school',
+        'semester_id',
+        'school_id',
         'course_title',
         'class_time',
         'location',
-        'locked',
-        'enrolled',
-        'midterm_evaluation',
-        'final_evaluation'
+        'status',
+        'enrolled'
     ];
 
     /**
@@ -31,7 +29,7 @@ class Section extends Model
      */
     public function school()
     {
-        return $this->belongsTo('App\Models\School');
+        return $this->belongsTo(School::class);
     }
 
     /**
@@ -42,7 +40,7 @@ class Section extends Model
      */
     public function evaluations()
     {
-        return $this->hasMany('App\Models\Evaluation');
+        return $this->hasMany(Evaluation::class);
     }
 
     /**
@@ -53,6 +51,6 @@ class Section extends Model
      */
     public function semester()
     {
-        return $this->belongsTo('App\Models\Semester');
+        return $this->belongsTo(Semester::class);
     }
 }

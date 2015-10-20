@@ -20,15 +20,17 @@ class QuestionSet extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany('App\Models\Question');
+        return $this->belongsToMany(Question::class);
     }
 
     /**
+     * The QuestionSet relationship to Semester
+     * A questionSet belongsToMany semesters
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function semesters()
     {
-        return $this->belongsToMany('App\Models\Semester');
+        return $this->belongsToMany(Semester::class);
     }
 }

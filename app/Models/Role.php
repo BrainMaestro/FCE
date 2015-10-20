@@ -14,18 +14,11 @@ class Role extends Model
     protected $fillable = ['role', 'display_name'];
 
     /**
-     * The parent 'updated_at' is used
-     *
-     * @var array
-     */
-    protected $touches = ['user'];
-
-    /**
      * The Role relationship to User
      * A role can belong to many users
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany(User::class);
     }
 }

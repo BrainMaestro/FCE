@@ -28,28 +28,8 @@ class Evaluation extends Model
      */
     public function section()
     {
-        return $this->belongsTo('App\Models\Section');
+        return $this->belongsTo(Section::class);
     }
 
-    /**
-     * The Evaluation relationship to Question
-     * A evaluation belongsTo question
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function question()
-    {
-        return $this->belongsTo('App\Models\Question');
-    }
-
-    /**
-     * The Evaluation relationship to QuestionMetadata
-     * A evaluation belongsTo questionMetadata
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function questionMetadata()
-    {
-        return $this->belongsTo('App\Models\QuestionMetadata');
-    }
+    // @TODO Relate evaluation with both Question and QuestionSet
 }

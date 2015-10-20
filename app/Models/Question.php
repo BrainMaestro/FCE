@@ -20,6 +20,6 @@ class Question extends Model
      */
     public function questionSets()
     {
-        return $this->belongsToMany('App\Models\QuestionSet');
+        return $this->belongsToMany(QuestionSet::class);
     }
 }
