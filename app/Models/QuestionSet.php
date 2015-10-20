@@ -13,13 +13,22 @@ class QuestionSet extends Model
     protected $fillable = ['type'];
 
     /**
-     * The QuestionMetadata relationship to Question
-     * A questionMetadata belongsTo question
+     * The QuestionSet relationship to Question
+     * A questionSet belongsToMany questions
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function questions()
     {
         return $this->belongsToMany('App\Models\Question');
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function semesters()
+    {
+        return $this->belongsToMany('App\Models\Semester');
     }
 }
