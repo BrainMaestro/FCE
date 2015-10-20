@@ -13,10 +13,6 @@ class CreateQuestionsTable extends Migration
     public function up()
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->charset = 'utf8';
-            $table->collate = 'utf8_unicode_ci';
-
             $table->increments('id');
             $table->string('category')->nullable();
             $table->string('title')->nullable()->index();

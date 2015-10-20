@@ -13,10 +13,6 @@ class CreateQuestionSetsTable extends Migration
     public function up()
     {
         Schema::create('question_sets', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->charset = 'utf8';
-            $table->collate = 'utf8_unicode_ci';
-
             $table->increments('id');
             $table->enum('type', ['mid', 'final']);
             $table->timestamps();
