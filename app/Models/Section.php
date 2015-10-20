@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Section extends Model
 {
-    use SoftDeletes;
-
     /**
      * @var array
      */
@@ -22,16 +19,9 @@ class Section extends Model
         'location',
         'locked',
         'enrolled',
-        'mid_evaluation',
+        'midterm_evaluation',
         'final_evaluation'
     ];
-
-    /**
-     * The parent 'updated_at' is used
-     *
-     * @var array
-     */
-    protected $touches = ['school'];
 
     /**
      * The Section relationship to School
@@ -53,5 +43,16 @@ class Section extends Model
     public function evaluations()
     {
         return $this->hasMany('App\Models\Evaluation');
+    }
+
+    /**
+     * The Section relationship to Semester
+     * A section belongsTo semester
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function semester()
+    {
+        return $this->belongsTo('App\Models\Semester');
     }
 }

@@ -3,19 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Evaluation extends Model
 {
-    use SoftDeletes;
-
     /**
      * @var array
      */
     protected $fillable = [
         'section_id',
         'question_id',
-        'question_metadata_id',
         'one',
         'two',
         'three',
@@ -32,7 +28,7 @@ class Evaluation extends Model
      */
     public function section()
     {
-        return $this->belongsTo('\App\Models\Section');
+        return $this->belongsTo('App\Models\Section');
     }
 
     /**
