@@ -3,38 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
-    use SoftDeletes;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['type'];
+    protected $fillable = ['category', 'title', 'description'];
 
     /**
-     * The Question relationship to QuestionMetadata
-     * A question hasMany questionMetadata
+     * The Question relationship to QuestionSet
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function questionMetadata()
+    public function questionSets()
     {
-        return $this->hasMany('App\Models\QuestionMetadata');
-    }
-
-    /**
-     * The Question relationship to evaluation
-     * A question hasMany evaluation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function evaluations()
-    {
-        return $this->hasMany('App\Models\Evaluation');
+        return $this->belongsToMany('App\Models\QuestionSet');
     }
 }
