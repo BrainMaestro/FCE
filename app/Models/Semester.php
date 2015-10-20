@@ -11,28 +11,16 @@ class Semester extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id',
-        'midterm_evaluations',
-        'final_evaluations',
-        'midterm_question_set',
-        'final_question_set'
-    ];
+    protected $fillable = ['semester'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * The Semester relationship to QuestionSet
+     * A semester belongsToMany questionSets
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function midtermQuestionSet()
+    public function questionSets()
     {
-        return $this->hasOne('App\Models\QuestionSet', 'midterm_question_set');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function finalQuestionSet()
-    {
-        return $this->hasOne('App\Models\QuestionSet', 'final_question_set');
+        return $this->belongsToMany(QuestionSet::class);
     }
 
     /**
@@ -40,6 +28,6 @@ class Semester extends Model
      */
     public function sections()
     {
-        return $this->hasMany('App\Models\Section');
+        return $this->hasMany(Section::class);
     }
 }
