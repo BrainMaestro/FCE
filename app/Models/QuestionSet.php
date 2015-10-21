@@ -10,7 +10,7 @@ class QuestionSet extends Model
     /**
      * @var array
      */
-    protected $fillable = ['type'];
+    protected $fillable = ['name'];
 
     /**
      * The QuestionSet relationship to Question
