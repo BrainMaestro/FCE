@@ -34,10 +34,6 @@ class RoleTableSeeder extends Seeder
                     'role' => 'secretary',
                     'display_name' => 'Secretary'
                 ],
-                [
-                    'role' => 'helper',
-                    'display_name' => 'Helper'
-                ]
             ]);
     }
 }
