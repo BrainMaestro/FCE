@@ -6,7 +6,7 @@
  * Time: 7:15 PM
  */
 
-namespace app\Transformers;
+namespace App\Transformers;
 
 use App\Models\Role;
 use League\Fractal\TransformerAbstract;
@@ -28,11 +28,8 @@ class RoleTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $role->id,
-            'role' => (string) $role->role,
-            'display_name' => (string) $role->display_name,
-            'created_at' => $role->created_at,
-            'updated_at' => $role->updated_at,
-            'deleted_at' => $role->deleted_at
+            'role' => $role->role,
+            'display_name' => $role->display_name,
         ];
     }
 
@@ -42,7 +39,6 @@ class RoleTransformer extends TransformerAbstract
      */
     public function includeUser(Role $role)
     {
-        $users = $role->users;
-        return $this->collection($users, new UserTransformer());
+        return $this->collection($role->users, new UserTransformer());
     }
 }

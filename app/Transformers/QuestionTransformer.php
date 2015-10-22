@@ -3,45 +3,23 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 8:30 PM
+ * Time: 8:53 PM
  */
 
-namespace app\Transformers;
+namespace App\Transformers;
 
 use App\Models\Question;
 use League\Fractal\TransformerAbstract;
 
 class QuestionTransformer extends TransformerAbstract
 {
-    /**
-     * @var array
-     */
-    protected $defaultIncludes = [
-        'questionMetadata'
-    ];
-
-    /**
-     * @param Question $question
-     * @return array
-     */
     public function transform(Question $question)
     {
         return [
             'id' => (int) $question->id,
-            'type' => (string) $question->type,
-            'created_at' => $question->created_at,
-            'updated_at' => $question->updated_at,
-            'deleted_at' => $question->deleted_at
+            'category' => $question->cateory,
+            'title' => $question->title,
+            'description' => $question->description,
         ];
-    }
-
-    /**
-     * @param Question $question
-     * @return \League\Fractal\Resource\Collection
-     */
-    public function includeQuestionMetadata(Question $question)
-    {
-        $questionMetadata = $question->questionMetadata;
-        return $this->collection($questionMetadata, new QuestionMetadataTransformer);
     }
 }

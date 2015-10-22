@@ -6,7 +6,7 @@
  * Time: 7:21 PM
  */
 
-namespace app\Transformers;
+namespace App\Transformers;
 
 use App\Models\School;
 use League\Fractal\TransformerAbstract;
@@ -28,11 +28,8 @@ class SchoolTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $school->id,
-            'school' => (string) $school->school,
-            'description' => (string) $school->description,
-            'created_at' => $school->created_at,
-            'updated_at' => $school->updated_at,
-            'deleted_at' => $school->deleted_at
+            'school' => $school->school,
+            'description' => $school->description,
         ];
     }
 
@@ -42,7 +39,6 @@ class SchoolTransformer extends TransformerAbstract
      */
     public function includeSection(School $school)
     {
-        $sections = $school->sections;
-        return $this->collection($sections, new SectionTransformer);
+        return $this->collection($school->sections, new SectionTransformer);
     }
 }
