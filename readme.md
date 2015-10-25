@@ -1,4 +1,8 @@
-## FCE.
+## FCE
+
+[![Build Status](https://travis-ci.org/BrainMaestro/FCE.svg)](https://travis-ci.org/BrainMaestro/FCE)
+[![Coverage Status](https://coveralls.io/repos/BrainMaestro/FCE/badge.svg?branch=master&service=github)](https://coveralls.io/github/BrainMaestro/FCE?branch=master)
+
 This system was designed to replace the existing paper-driven evaluations used by the university to save on costs and be more environmentally friendly.
 
 ### Features
