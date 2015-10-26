@@ -50,4 +50,14 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsToMany(Role::class);
     }
+
+    /**
+     * The User relationship to School
+     * A user can have one school
+     * @return mixed
+     */
+    public function schools()
+    {
+        return $this->belongsTo(School::class);
+    }
 }
