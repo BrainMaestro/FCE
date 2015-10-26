@@ -6,9 +6,9 @@
  * Time: 8:49 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\Semester;
+use Fce\Models\Semester;
 use League\Fractal\TransformerAbstract;
 
 class SemesterTransformer extends TransformerAbstract
