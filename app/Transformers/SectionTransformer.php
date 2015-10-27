@@ -6,9 +6,9 @@
  * Time: 10:03 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\Section;
+use Fce\Models\Section;
 use League\Fractal\TransformerAbstract;
 
 class SectionTransformer extends TransformerAbstract

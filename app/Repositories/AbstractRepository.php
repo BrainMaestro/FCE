@@ -6,12 +6,11 @@
  * Date: 10/17/2015
  * Time: 2:36 PM
  */
-namespace App\Repositories;
+namespace Fce\Repositories;
 
-use App\Providers\Fractal as Fractal;
+use Fce\Providers\Fractal as Fractal;
 use League\Fractal\Manager;
 use Illuminate\Support\Facades\Input;
-use App;
 
 abstract class AbstractRepository
 {

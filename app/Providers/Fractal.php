@@ -6,7 +6,7 @@
  * Time: 2:38 PM
  */
 
-namespace App\Providers;
+namespace Fce\Providers;
 
 
 use League\Fractal\Manager;
@@ -20,8 +20,6 @@ class Fractal
     public function __construct(Manager $fractal)
     {
         $this->fractal = $fractal;
-        // @todo: Check this out and see if we can make it safer, used to embed relations
-        // $this->fractal->setRecursionLimit(explode(',', Input::get('embed')));
     }
 
     public function respondWithItem($item, $callback)

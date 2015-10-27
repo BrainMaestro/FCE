@@ -6,9 +6,9 @@
  * Time: 7:21 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\School;
+use Fce\Models\School;
 use League\Fractal\TransformerAbstract;
 
 class SchoolTransformer extends TransformerAbstract

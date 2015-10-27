@@ -6,9 +6,9 @@
  * Time: 7:15 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\Role;
+use Fce\Models\Role;
 use League\Fractal\TransformerAbstract;
 
 class RoleTransformer extends TransformerAbstract

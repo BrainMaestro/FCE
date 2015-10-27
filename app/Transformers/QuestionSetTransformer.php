@@ -6,9 +6,9 @@
  * Time: 8:30 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\QuestionSet;
+use Fce\Models\QuestionSet;
 use League\Fractal\TransformerAbstract;
 
 class QuestionSetTransformer extends TransformerAbstract
