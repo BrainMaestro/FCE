@@ -79,3 +79,10 @@ $factory->define(Fce\Models\Evaluation::class, function () {
     ];
 });
 
+$factory->define(Fce\Models\Key::class, function () {
+    return [
+        'value' => strtoupper(str_random(6)),
+        'section_id' => 1,
+    ];
+});
+

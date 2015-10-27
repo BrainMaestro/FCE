@@ -53,4 +53,15 @@ class Section extends Model
     {
         return $this->belongsTo(Semester::class);
     }
+
+    /**
+     * The Section relationship to key
+     * A section hasMany keys
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function keys()
+    {
+        return $this->hasMany(Key::class);
+    }
 }
