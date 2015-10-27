@@ -17,7 +17,7 @@ class CreateKeysTable extends Migration
             $table->string('value')->unique();
             $table->boolean('given_out')->default(false);
             $table->boolean('used')->default(false);
-            $table->integer('section_id');
+            $table->unsignedInteger('section_id');
 
             $table->foreign('section_id')->references('id')->on('sections');
         });
