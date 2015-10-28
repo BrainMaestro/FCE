@@ -8,8 +8,10 @@
 
 namespace Fce\Transformers;
 
+use Fce\Models\Key;
+use League\Fractal\TransformerAbstract;
 
-class KeyTransformer
+class KeyTransformer extends TransformerAbstract
 {
     public function transform(Key $key)
     {
@@ -18,7 +20,7 @@ class KeyTransformer
             'value' => $key->value,
             'given_out' => (boolean) $key->given_out,
             'used' => (boolean) $key->used,
-            'section' => (int) $key->section_id,
+            'section_id' => (int) $key->section->id,
         ];
     }
 }
