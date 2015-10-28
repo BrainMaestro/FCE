@@ -31,5 +31,25 @@ class Evaluation extends Model
         return $this->belongsTo(Section::class);
     }
 
-    // @TODO Relate evaluation with both Question and QuestionSet
+    /**
+     * The Evaluation relationship to Question
+     * A evaluation belongsTo a question
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
+
+    /**
+     * The Evaluation relationship to QuestionSet
+     * A evaluation belongsTo a questionset
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function questionSet()
+    {
+        return $this->belongsTo(QuestionSet::class);
+    }
 }

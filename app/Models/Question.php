@@ -22,4 +22,14 @@ class Question extends Model
     {
         return $this->belongsToMany(QuestionSet::class);
     }
+
+    /**
+     * The Question relationship to Evaluation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
 }
