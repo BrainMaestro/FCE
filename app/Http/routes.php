@@ -52,4 +52,6 @@ Route::put('/schools/{id}', 'SectionController@update');
 
 //Semester Routes
 Route::get('/semesters', 'SectionController@index');
+Route::get('/semesters/current', 'SectionController@showCurrentSemeser'); //@todo We may not need this route
 Route::post('/semesters', 'SectionController@create');
+Route::put('/semesters{id}', 'SectionController@update');
