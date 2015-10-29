@@ -17,5 +17,4 @@ interface ISchoolsRepository
     public function createSchool($data);
 
     public function updateSchoolById($school_id);
-
 }

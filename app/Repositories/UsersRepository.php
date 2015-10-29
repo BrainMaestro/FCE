@@ -77,5 +77,4 @@ class UsersRepository extends AbstractRepository implements IUsersRepository
             throw new \Exception($e->getMessage());
         }
     }
-
 }

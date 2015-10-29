@@ -17,5 +17,4 @@ interface ISemestersRepository
     public function setCurrentSemester($semester_id);
 
     public function createSemester($data);
-
 }

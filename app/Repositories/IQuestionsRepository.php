@@ -17,5 +17,4 @@ interface IQuestionsRepository
     public function createNewQuestionSetQuestions($data);
 
     public function createNewQuestionSetQuestionsBySetId($data, $question_set_id);
-
 }

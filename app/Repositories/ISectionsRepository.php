@@ -21,5 +21,4 @@ interface ISectionsRepository
     public function getSectionEvaluationBySectionId($section_id);
 
     public function getSectionEvaluationByQuestionSet($question_set_id);
-
 }
