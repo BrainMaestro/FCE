@@ -6,13 +6,12 @@
  * Time: 8:04 PM
  */
 
-namespace app\Repositories;
+namespace Fce\Repositories;
 
 use Fce\Models\Evaluation;
 use Fce\Models\Question;
 use Fce\Models\QuestionSet;
 use Fce\Models\Section;
-use Fce\Repositories\AbstractRepository;
 
 class SectionsRepository extends AbstractRepository implements ISectionsRepository
 {

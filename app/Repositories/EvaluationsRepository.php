@@ -6,12 +6,11 @@
  * Time: 7:26 PM
  */
 
-namespace app\Repositories;
+namespace Fce\Repositories;
 
 use Fce\Models\Evaluation;
 use Fce\Models\Key;
 use Fce\Models\Section;
-use Fce\Repositories\AbstractRepository;
 use Illuminate\Pagination\Paginator;
 
 class EvaluationsRepository extends AbstractRepository implements IEvaluationsRepository

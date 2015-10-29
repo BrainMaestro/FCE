@@ -6,7 +6,7 @@
  * Time: 8:00 PM
  */
 
-namespace app\Repositories;
+namespace Fce\Repositories;
 
 interface ISectionsRepository
 {

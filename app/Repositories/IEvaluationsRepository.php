@@ -6,7 +6,7 @@
  * Time: 7:21 PM
  */
 
-namespace app\Repositories;
+namespace Fce\Repositories;
 
 interface IEvaluationsRepository
 {

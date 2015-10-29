@@ -6,10 +6,9 @@
  * Time: 7:51 PM
  */
 
-namespace app\Repositories;
+namespace Fce\Repositories;
 
 use Fce\Models\User;
-use Fce\Repositories\AbstractRepository;
 use Illuminate\Pagination\Paginator;
 
 class UsersRepository extends AbstractRepository implements IUsersRepository

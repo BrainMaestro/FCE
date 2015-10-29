@@ -6,7 +6,7 @@
  * Time: 7:47 PM
  */
 
-namespace app\Repositories;
+namespace Fce\Repositories;
 
 interface IUsersRepository
 {
