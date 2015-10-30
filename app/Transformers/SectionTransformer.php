@@ -18,8 +18,9 @@ class SectionTransformer extends TransformerAbstract
      */
     protected $availableIncludes = [
         'school',
+        'evaluation',
         'semester',
-        // @TODO implement includes for evaluations
+        'keys'
     ];
 
     /**
@@ -48,6 +49,33 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeSchool(Section $section)
     {
-        return $this->item($section->school, new SchoolTransformer);
+        return $this->item($section->school, new SchoolTransformer());
+    }
+
+    /**
+     * @param Section $section
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeEvaluation(Section $section)
+    {
+        return $this->collection($section->evaluations, new EvaluationTransformer());
+    }
+
+    /**
+     * @param Section $section
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeSemester(Section $section)
+    {
+        return $this->item($section->semester, new SemesterTransformer());
+    }
+
+    /**
+     * @param Section $section
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeKey(Section $section)
+    {
+        return $this->collection($section->keys(), new KeyTransformer());
     }
 }
