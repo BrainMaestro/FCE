@@ -30,7 +30,7 @@ class SemesterController extends Controller
         }
     }
 
-    public function showCurrentSemeser()
+    public function showCurrentSemester()
     {
         try {
 
