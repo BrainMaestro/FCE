@@ -2,17 +2,16 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\UsersRepository;
+use Fce\Repositories\SectionsRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 
-class UserController extends Controller
+class SectionController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, UsersRepository $usersRepository)
+    public function __construct(Request $request, SectionsRepository $sectionsRepository)
     {
-        $this->repository = $usersRepository;
+        $this->repository = $sectionsRepository;
         parent::__construct($request);
     }
 
@@ -58,7 +57,16 @@ class UserController extends Controller
         }
     }
 
-    public function delete()
+    public function showReports($id)
+    {
+        try {
+
+        } catch (\Exception $e) {
+            return $this->errorInternalError($e->getMessage());
+        }
+    }
+
+    public function showSingleReport($id, $type)
     {
         try {
 
