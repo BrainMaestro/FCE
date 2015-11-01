@@ -2,14 +2,15 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\QuestionsRepository;
+use Fce\Repositories\IQuestionsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class QuestionController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, QuestionsRepository $questionsRepository)
+    public function __construct(Request $request, IQuestionsRepository $questionsRepository)
     {
         $this->repository = $questionsRepository;
         parent::__construct($request);

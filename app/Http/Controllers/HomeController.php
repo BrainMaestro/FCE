@@ -2,8 +2,8 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\EvaluationsRepository;
-use Fce\Repositories\UsersRepository;
+use Fce\Repositories\IEvaluationsRepository;
+use Fce\Repositories\IUsersRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,8 +13,8 @@ class HomeController extends Controller
 
     public function __construct(
         Request $request,
-        UsersRepository $usersRepository,
-        EvaluationsRepository $evaluationsRepository
+        IUsersRepository $usersRepository,
+        IEvaluationsRepository $evaluationsRepository
     ) {
         $this->users_repository = $usersRepository;
         $this->evaluations_repository = $evaluationsRepository;

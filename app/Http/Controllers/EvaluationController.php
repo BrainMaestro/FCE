@@ -2,7 +2,7 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\EvaluationsRepository;
+use Fce\Repositories\IEvaluationsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -10,7 +10,7 @@ class EvaluationController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, EvaluationsRepository $evaluationsRepository)
+    public function __construct(Request $request, IEvaluationsRepository $evaluationsRepository)
     {
         $this->repository = $evaluationsRepository;
         parent::__construct($request);

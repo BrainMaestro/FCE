@@ -2,7 +2,7 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\UsersRepository;
+use Fce\Repositories\IUsersRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, UsersRepository $usersRepository)
+    public function __construct(Request $request, IUsersRepository $usersRepository)
     {
         $this->repository = $usersRepository;
         parent::__construct($request);

@@ -2,14 +2,15 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\SemestersRepository;
+use Fce\Repositories\ISemestersRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class SemesterController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, SemestersRepository $semestersRepository)
+    public function __construct(Request $request, ISemestersRepository $semestersRepository)
     {
         $this->repository = $semestersRepository;
         parent::__construct($request);

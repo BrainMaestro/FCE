@@ -2,14 +2,15 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\SectionsRepository;
+use Fce\Repositories\ISectionsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class SectionController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, SectionsRepository $sectionsRepository)
+    public function __construct(Request $request, ISectionsRepository $sectionsRepository)
     {
         $this->repository = $sectionsRepository;
         parent::__construct($request);
