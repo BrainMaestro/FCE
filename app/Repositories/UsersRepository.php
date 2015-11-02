@@ -9,6 +9,7 @@
 namespace Fce\Repositories;
 
 use Fce\Models\User;
+use Fce\Transformers\UserTransformer;
 use Illuminate\Pagination\Paginator;
 
 class UsersRepository extends AbstractRepository implements IUsersRepository
@@ -28,6 +29,22 @@ class UsersRepository extends AbstractRepository implements IUsersRepository
                     return $data['offset'];
                 }
             );
+
+            if (is_null($data['query'])) {
+                $users = $this->user_model->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            } else {
+                $users = $this->user_model->where('crn', 'like', '%'.$data['query'].'%')
+                    ->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            }
+
+            if ($users->isEmpty()) {
+                return null;
+            } else {
+                $users = self::setPaginationLinks($users, $data);
+                return self::transform($users, new UserTransformer());
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
