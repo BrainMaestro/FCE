@@ -11,6 +11,7 @@ namespace Fce\Repositories;
 use Fce\Models\Evaluation;
 use Fce\Models\Key;
 use Fce\Models\Section;
+use Fce\Transformers\SectionTransformer;
 use Illuminate\Pagination\Paginator;
 
 class EvaluationsRepository extends AbstractRepository implements IEvaluationsRepository
@@ -34,6 +35,22 @@ class EvaluationsRepository extends AbstractRepository implements IEvaluationsRe
                     return $data['offset'];
                 }
             );
+
+            if (is_null($data['query'])) {
+                $evaluation_section = $this->section_model->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            } else {
+                $evaluation_section = $this->section_model->where('crn', 'like', '%'.$data['query'].'%')
+                    ->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            }
+
+            if ($evaluation_section->isEmpty()) {
+                return null;
+            } else {
+                $evaluation_section = self::setPaginationLinks($evaluation_section, $data);
+                return self::transform($evaluation_section, new SectionTransformer());
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
