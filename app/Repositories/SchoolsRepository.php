@@ -9,6 +9,8 @@
 namespace Fce\Repositories;
 
 use Fce\Models\School;
+use Fce\Transformers\SchoolTransformer;
+use Illuminate\Pagination\Paginator;
 
 class SchoolsRepository extends AbstractRepository implements ISchoolsRepository
 {
@@ -27,6 +29,23 @@ class SchoolsRepository extends AbstractRepository implements ISchoolsRepository
                     return $data['offset'];
                 }
             );
+
+            if (is_null($data['query'])) {
+                $schools = $this->school_model->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            } else {
+                $schools = $this->school_model->where('crn', 'like', '%'.$data['query'].'%')
+                    ->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            }
+
+            if ($schools->isEmpty()) {
+                return null;
+            } else {
+                $evaluation_section = self::setPaginationLinks($schools, $data);
+                return self::transform($evaluation_section, new SchoolTransformer());
+            }
+
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
