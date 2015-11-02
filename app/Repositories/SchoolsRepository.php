@@ -42,8 +42,8 @@ class SchoolsRepository extends AbstractRepository implements ISchoolsRepository
             if ($schools->isEmpty()) {
                 return null;
             } else {
-                $evaluation_section = self::setPaginationLinks($schools, $data);
-                return self::transform($evaluation_section, new SchoolTransformer());
+                $schools = self::setPaginationLinks($schools, $data);
+                return self::transform($schools, new SchoolTransformer());
             }
 
         } catch (\Exception $e) {
