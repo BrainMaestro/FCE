@@ -45,8 +45,8 @@ class QuestionsRepository extends AbstractRepository implements IQuestionsReposi
             if ($question_set->isEmpty()) {
                 return null;
             } else {
-                $evaluation_section = self::setPaginationLinks($question_set, $data);
-                return self::transform($evaluation_section, new QuestionSetTransformer());
+                $question_set = self::setPaginationLinks($question_set, $data);
+                return self::transform($question_set, new QuestionSetTransformer());
             }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
