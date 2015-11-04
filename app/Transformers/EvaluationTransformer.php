@@ -24,7 +24,7 @@ class EvaluationTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $evaluation->id,
-            'section_id' => (int) $evaluation->section->section_id,
+            'section_id' => (int) $evaluation->section->id,
             'question_id' => (int) $evaluation->question->id,
             'question_set_id' => (int) $evaluation->questionSet->id,
             'one' => (int) $evaluation->one,

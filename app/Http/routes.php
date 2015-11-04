@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 //Home Route
 //Route::get('/', 'HomeController@index');
+Route::post('/login', 'HomeController@login');
+Route::post('/logout', 'HomeController@logout');
 
 //Evaluation Routes
 Route::get('/evaluations', 'EvaluationController@index');
@@ -52,6 +54,6 @@ Route::put('/schools/{id}', 'SectionController@update');
 
 //Semester Routes
 Route::get('/semesters', 'SectionController@index');
-Route::get('/semesters/current', 'SectionController@showCurrentSemeser'); //@todo We may not need this route
+Route::get('/semesters/current', 'SectionController@showCurrentSemester'); //@todo We may not need this route
 Route::post('/semesters', 'SectionController@create');
 Route::put('/semesters{id}', 'SectionController@update');
