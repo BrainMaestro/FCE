@@ -12,6 +12,8 @@ use Fce\Models\Evaluation;
 use Fce\Models\Question;
 use Fce\Models\QuestionSet;
 use Fce\Models\Section;
+use Fce\Transformers\SectionTransformer;
+use Illuminate\Pagination\Paginator;
 
 class SectionsRepository extends AbstractRepository implements ISectionsRepository
 {
@@ -36,6 +38,22 @@ class SectionsRepository extends AbstractRepository implements ISectionsReposito
                     return $data['offset'];
                 }
             );
+
+            if (is_null($data['query'])) {
+                $sections = $this->section_model->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            } else {
+                $sections = $this->section_model->where('crn', 'like', '%'.$data['query'].'%')
+                    ->orderBy($data['sort'].$data['order'])
+                    ->paginate($data['limit']);
+            }
+
+            if ($sections->isEmpty()) {
+                return null;
+            } else {
+                $sections = self::setPaginationLinks($sections, $data);
+                return self::transform($sections, new SectionTransformer());
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
