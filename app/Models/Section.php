@@ -64,4 +64,15 @@ class Section extends Model
     {
         return $this->hasMany(Key::class);
     }
+
+    /**
+     * The Section relationship to User
+     * A section can have many users
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class);
+    }
 }

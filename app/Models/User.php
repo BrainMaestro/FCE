@@ -15,9 +15,10 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
  * Class User
  * @package App
  */
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends Model implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
 
@@ -59,5 +60,14 @@ class User extends Model implements AuthenticatableContract,
     public function schools()
     {
         return $this->belongsTo(School::class);
+    }
+
+    /**
+     * The User relationship to Section
+     * A user can have many sections
+     */
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class);
     }
 }
