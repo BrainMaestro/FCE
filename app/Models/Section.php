@@ -71,8 +71,8 @@ class Section extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function sections()
+    public function users()
     {
-        return $this->belongsToMany(Section::class);
+        return $this->belongsToMany(User::class);
     }
 }
