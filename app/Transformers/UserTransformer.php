@@ -6,9 +6,9 @@
  * Time: 7:01 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\User;
+use Fce\Models\User;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
@@ -39,6 +39,6 @@ class UserTransformer extends TransformerAbstract
      */
     public function includeRole(User $user)
     {
-        return $this->collection($user->roles, new RoleTransformer);
+        return $this->collection($user->roles, new RoleTransformer());
     }
 }

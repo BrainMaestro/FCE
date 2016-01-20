@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Fce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -52,5 +52,27 @@ class Section extends Model
     public function semester()
     {
         return $this->belongsTo(Semester::class);
+    }
+
+    /**
+     * The Section relationship to key
+     * A section hasMany keys
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function keys()
+    {
+        return $this->hasMany(Key::class);
+    }
+
+    /**
+     * The Section relationship to User
+     * A section can have many users
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

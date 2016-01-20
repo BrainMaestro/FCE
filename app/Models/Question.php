@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Fce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,5 +21,15 @@ class Question extends Model
     public function questionSets()
     {
         return $this->belongsToMany(QuestionSet::class);
+    }
+
+    /**
+     * The Question relationship to Evaluation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
     }
 }

@@ -6,9 +6,9 @@
  * Time: 8:30 PM
  */
 
-namespace App\Transformers;
+namespace Fce\Transformers;
 
-use App\Models\QuestionSet;
+use Fce\Models\QuestionSet;
 use League\Fractal\TransformerAbstract;
 
 class QuestionSetTransformer extends TransformerAbstract
@@ -38,6 +38,6 @@ class QuestionSetTransformer extends TransformerAbstract
      */
     public function includeQuestions(QuestionSet $questionSet)
     {
-        return $this->collection($questionSet->questions, new QuestionTransformer);
+        return $this->collection($questionSet->questions, new QuestionTransformer());
     }
 }

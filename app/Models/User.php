@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Fce\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -15,9 +15,10 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
  * Class User
  * @package App
  */
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends Model implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
 
@@ -49,5 +50,24 @@ class User extends Model implements AuthenticatableContract,
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * The User relationship to School
+     * A user can have one school
+     * @return mixed
+     */
+    public function schools()
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    /**
+     * The User relationship to Section
+     * A user can have many sections
+     */
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class);
     }
 }
