@@ -76,6 +76,6 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeKey(Section $section)
     {
-        return $this->collection($section->keys(), new KeyTransformer);
+        return $this->collection($section->keys, new KeyTransformer);
     }
 }
