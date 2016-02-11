@@ -30,6 +30,7 @@ class UserTransformer extends TransformerAbstract
             'id' => (int) $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'school_id' => $user->school_id
         ];
     }
 
@@ -39,6 +40,6 @@ class UserTransformer extends TransformerAbstract
      */
     public function includeRole(User $user)
     {
-        return $this->collection($user->roles, new RoleTransformer());
+        return $this->collection($user->roles, new RoleTransformer);
     }
 }

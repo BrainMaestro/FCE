@@ -75,6 +75,7 @@ $factory->define(Fce\Models\Evaluation::class, function (Faker\Generator $faker)
     return [
         'section_id' => (new Fce\Models\Section)->first()->id,
         'question_id' => (new Fce\Models\Question)->first()->id,
+        'question_set_id' => (new Fce\Models\QuestionSet())->first()->id,
         'one' => getRandomEvaluationScore($faker),
         'two' => getRandomEvaluationScore($faker),
         'three' => getRandomEvaluationScore($faker),
@@ -90,13 +91,21 @@ $factory->define(Fce\Models\Key::class, function () {
     ];
 });
 
+$factory->define(Fce\Models\Comment::class, function (Faker\Generator $faker) {
+    return [
+        'section_id' => (new Fce\Models\Section)->first()->id,
+        'question_set_id' => (new Fce\Models\QuestionSet())->first()->id,
+        'comment' => $faker->sentence,
+    ];
+});
+
 /**
  * Ensures that the score is always between 1 and 5
  *
  * @param \Faker\Generator $faker
  * @return int
  */
-function getRandomEvaluationScore(Faker\Generator $faker) {
+function getRandomEvaluationScore(Faker\Generator $faker)
+{
     return $faker->randomNumber(1) % 5 + 1;
 }
-

@@ -33,4 +33,26 @@ class QuestionSet extends Model
     {
         return $this->belongsToMany(Semester::class);
     }
+
+    /**
+     * The QuestionSet relationship to evaluation
+     * A questionSet hasMany evaluation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
+
+    /**
+     * The QuestionSet relationship to comment
+     * A questionSet hasMany commet
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

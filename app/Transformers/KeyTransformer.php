@@ -20,7 +20,7 @@ class KeyTransformer extends TransformerAbstract
             'value' => $key->value,
             'given_out' => (boolean) $key->given_out,
             'used' => (boolean) $key->used,
-            'section_id' => (int) $key->section->id,
+            'section_id' => (int) $key->section_id
         ];
     }
 }

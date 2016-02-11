@@ -29,7 +29,7 @@ class SchoolTransformer extends TransformerAbstract
         return [
             'id' => (int) $school->id,
             'school' => $school->school,
-            'description' => $school->description,
+            'description' => $school->description
         ];
     }
 
@@ -39,6 +39,6 @@ class SchoolTransformer extends TransformerAbstract
      */
     public function includeSection(School $school)
     {
-        return $this->collection($school->sections, new SectionTransformer());
+        return $this->collection($school->sections, new SectionTransformer);
     }
 }
