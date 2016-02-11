@@ -1,0 +1,17 @@
+<?php
+/**
+ * Created by BrainMaestro
+ * Date: 10/2/2016
+ * Time: 10:34 PM
+ */
+
+namespace Fce\Repositories;
+
+interface QuestionRepository
+{
+    public function getQuestions();
+
+    public function getQuestionById($id);
+
+    public function createQuestion(array $attributes);
+}
