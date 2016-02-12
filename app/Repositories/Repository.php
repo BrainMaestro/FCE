@@ -28,6 +28,9 @@ abstract class Repository
      */
     protected $transformer;
 
+    /**
+     * Create a new repository instance
+     */
     public function __construct()
     {
         $this->model = $this->getModel();
@@ -71,11 +74,22 @@ abstract class Repository
         return $this->model->findOrFail($id, $columns);
     }
 
-    protected function findBy($field, $value, array $columns = ['*'], array $with = [], $limit = 15)
+    /**
+     * Finds and paginates models by the specified field and value
+     *
+     * @param $field
+     * @param $value
+     * @param int $limit
+     * @param int $page
+     * @param array $columns
+     * @param array $with
+     * @return mixed
+     */
+    protected function findBy($field, $value, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
     {
         return $this->model->where($field, 'like', '%' . $value . '%')
                             ->with($with)
-                            ->paginate($limit, $columns);
+                            ->paginate($limit, $columns, 'page', $page);
     }
 
     /**
@@ -91,9 +105,11 @@ abstract class Repository
     }
 
     /**
+     * Parses the includes specified in the input
+     *
      * @return Fractal
      */
-    protected function setFractal() // TODO Add method description in doc
+    final protected static function setFractal()
     {
         $fractalManager = new FractalManager();
         $includes = Input::get('include');
@@ -112,11 +128,11 @@ abstract class Repository
      * @return mixed
      * @throws \Exception
      */
-    protected function transform($dataModel)
+    final protected static function transform($dataModel)
     {
-        $method = $this->getTransformMethod($dataModel);
+        $method = self::getTransformMethod($dataModel);
 
-        return $this->setFractal()->$method($dataModel, $this->transformer)->toArray();
+        return self::setFractal()->$method($dataModel, (new static)->transformer)->toArray();
     }
 
     /**
@@ -126,7 +142,7 @@ abstract class Repository
      * @return string
      * @throws \Exception
      */
-    private function getTransformMethod($dataModel)
+    final protected static function getTransformMethod($dataModel)
     {
         switch (get_class($dataModel)) {
             case \Illuminate\Database\Eloquent\Collection::class:
