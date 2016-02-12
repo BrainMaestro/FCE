@@ -12,6 +12,7 @@ class Evaluation extends Model
     protected $fillable = [
         'section_id',
         'question_id',
+        'question_set_id',
         'one',
         'two',
         'three',

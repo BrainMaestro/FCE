@@ -75,7 +75,7 @@ abstract class Repository
     }
 
     /**
-     * Finds and paginates models by the specified field and value
+     * Finds and paginates models by the specified field and value or returns all values if specified
      *
      * @param $field
      * @param $value
@@ -87,9 +87,13 @@ abstract class Repository
      */
     protected function findBy($field, $value, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
     {
-        return $this->model->where($field, 'like', '%' . $value . '%')
-                            ->with($with)
-                            ->paginate($limit, $columns, 'page', $page);
+        $items =  $this->model->where($field, 'like', '%' . $value . '%')->with($with);
+
+        if ($limit == 'all') {
+            return $items->get($columns);
+        }
+
+        return $items->paginate($limit, $columns, 'page', $page);
     }
 
     /**
