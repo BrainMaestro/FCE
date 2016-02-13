@@ -75,6 +75,7 @@ $factory->define(Fce\Models\Evaluation::class, function (Faker\Generator $faker)
     return [
         'section_id' => (new Fce\Models\Section)->first()->id,
         'question_id' => (new Fce\Models\Question)->first()->id,
+        'question_set_id' => (new Fce\Models\QuestionSet)->first()->id,
         'one' => $faker->randomNumber(1),
         'two' => $faker->randomNumber(1),
         'three' => $faker->randomNumber(1),
