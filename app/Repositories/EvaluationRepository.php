@@ -9,9 +9,11 @@ namespace Fce\Repositories;
 
 interface EvaluationRepository
 {
-    public function getEvaluationsBySectionId($sectionId);
+    public function getEvaluationsBySectionAndQuestionSet($sectionId, $questionSetId);
 
-    public function createEvalution(array $attributes);
+    public function getEvaluationBySectionQuestionSetAndQuestion($sectionId, $questionSetId, $questionId);
 
-    public function updateEvaluation($id, array $attributes);
+    public function createEvaluation(array $attributes);
+
+    public function incrementEvaluation($id, $column);
 }

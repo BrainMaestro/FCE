@@ -11,15 +11,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected $baseUrl = 'http://localhost';
 
     /**
-     * The basic models that are needed for all tests
-     */
-    protected $questionSet;
-    protected $questions;
-    protected $semester;
-    protected $school;
-    protected $section;
-
-    /**
      * Creates the application.
      *
      * @return \Illuminate\Foundation\Application
@@ -40,11 +31,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         parent::setUp();
         DB::beginTransaction();
-        $this->questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $this->questions = factory(Fce\Models\Question::class, 10)->create();
-        $this->semester = factory(Fce\Models\Semester::class)->create();
-        $this->school = factory(Fce\Models\School::class)->create();
-        $this->section = factory(Fce\Models\Section::class)->create();
     }
 
     /**
