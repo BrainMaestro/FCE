@@ -1,0 +1,113 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Cheezzy Tenorz
+ * Date: 10/29/2015
+ * Time: 8:04 PM
+ */
+
+namespace Fce\Repositories\Database;
+
+use Fce\Models\Section;
+use Fce\Repositories\Repository;
+use Fce\Repositories\SectionRepository;
+use Fce\Transformers\SectionTransformer;
+
+class SQLSectionRepository extends Repository implements SectionRepository
+{
+    /**
+     * Get an instance of the registered model
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function getModel()
+    {
+        return new Section;
+    }
+
+    /**
+     * Get an instance of the registered transformer
+     *
+     * @return \League\Fractal\TransformerAbstract
+     */
+    protected function getTransformer()
+    {
+        return new SectionTransformer;
+    }
+
+    /**
+     * Gets all sections by the semester they belong to
+     *
+     * @param $semesterId
+     * @return array
+     */
+    public function getSectionsBySemester($semesterId)
+    {
+        return $this->findBy('semester_id', $semesterId);
+    }
+
+    /**
+     * Gets all sections by the semester and school they belong to
+     *
+     * @param $semesterId
+     * @param $schoolId
+     * @return array
+     */
+    public function getSectionsBySemesterAndSchool($semesterId, $schoolId)
+    {
+        return $this->findBy(
+            ['semester_id', 'school_id'],
+            [$semesterId, $schoolId]
+        );
+    }
+
+    /**
+     * Get a single section by its id
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getSectionById($id)
+    {
+        return $this->find($id);
+    }
+
+    /**
+     * Creates a new section from the specified attributes
+     *
+     * @param array $attributes
+     * @return static
+     */
+    public function createSection(array $attributes)
+    {
+        return $this->create($attributes);
+    }
+
+    /**
+     * Updates a sections attributes
+     *
+     * @param $id
+     * @param array $attributes
+     * @return array
+     */
+    public function updateSection($id, array $attributes)
+    {
+        return $this->update($id, $attributes);
+    }
+
+    /**
+     * Changes a sections's status
+     *
+     * @param $id
+     * @param $status
+     * @return mixed
+     */
+    public function setSectionStatus($id, $status)
+    {
+        if (! in_array($status, Section::STATUSES)) {
+            throw new \InvalidArgumentException($status . ' is not an available section status');
+        }
+
+        return $this->update($id, ['status' => $status]);
+    }
+}

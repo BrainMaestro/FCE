@@ -9,11 +9,15 @@ namespace Fce\Repositories;
 
 interface SectionRepository
 {
-    public function getSections();
+    public function getSectionsBySemester($semesterId);
+
+    public function getSectionsBySemesterAndSchool($semesterId, $schoolId);
 
     public function getSectionById($id);
 
-    public function updateSection(array $attributes);
-
     public function createSection(array $attributes);
+
+    public function updateSection($id, array $attributes);
+
+    public function setSectionStatus($id, $status);
 }
