@@ -16,6 +16,13 @@ use Fce\Transformers\EvaluationTransformer;
 class SQLEvaluationRepository extends Repository implements EvaluationRepository
 {
     /**
+     * The transformer registered on the repository.
+     *
+     * @var \League\Fractal\TransformerAbstract
+     */
+    protected static $transformer = EvaluationTransformer::class;
+
+    /**
      * Get an instance of the registered model
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -23,16 +30,6 @@ class SQLEvaluationRepository extends Repository implements EvaluationRepository
     protected function getModel()
     {
         return new Evaluation;
-    }
-
-    /**
-     * Get an instance of the registered transformer
-     *
-     * @return \League\Fractal\TransformerAbstract
-     */
-    protected function getTransformer()
-    {
-        return new EvaluationTransformer;
     }
 
     /**
@@ -85,7 +82,7 @@ class SQLEvaluationRepository extends Repository implements EvaluationRepository
     public function incrementEvaluation($id, $column)
     {
         // This is found so that the current column value can be retrieved
-        $evaluationModel = (new Evaluation)->findOrFail($id);
+        $evaluationModel = $this->model->findOrFail($id);
 
         return $this->update($evaluationModel, [$column => $evaluationModel->$column + 1]);
     }

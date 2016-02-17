@@ -8,16 +8,14 @@
 
 namespace Fce\Repositories;
 
-use Fce\Providers\Fractal;
-use Illuminate\Database\Eloquent\Collection;
+use Fce\Transformers\Transformable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Input;
-use League\Fractal\Manager as FractalManager;
 
 abstract class Repository
 {
+    use Transformable;
+
     /**
      * The model registered on the repository.
      *
@@ -26,19 +24,11 @@ abstract class Repository
     protected $model;
 
     /**
-     * The transformer registered on the repository.
-     *
-     * @var \League\Fractal\TransformerAbstract
-     */
-    protected $transformer;
-
-    /**
      * Create a new repository instance
      */
     public function __construct()
     {
         $this->model = $this->getModel();
-        $this->transformer = $this->getTransformer();
     }
 
     /**
@@ -47,13 +37,6 @@ abstract class Repository
      * @return Model
      */
     abstract protected function getModel();
-
-    /**
-     * Get an instance of the registered transformer
-     *
-     * @return \League\Fractal\TransformerAbstract
-     */
-    abstract protected function getTransformer();
 
     /**
      * Create and persist a new model
@@ -115,7 +98,7 @@ abstract class Repository
             $value = [$value];
         }
 
-        if (count($field) != count($value)) {
+        if (count($field) != count($value)) { // This seems unnecessary
             throw new \InvalidArgumentException('Number of specified fields and values do not match');
         }
 
@@ -163,56 +146,5 @@ abstract class Repository
         }
 
         return $this->model->findOrFail($id)->update($attributes);
-    }
-
-    /**
-     * Parses the includes specified in the input
-     *
-     * @return Fractal
-     */
-    final protected static function setFractal()
-    {
-        $fractalManager = new FractalManager();
-        $includes = Input::get('include');
-
-        if ($includes) {
-            $fractalManager = $fractalManager->parseIncludes($includes);
-        }
-
-        return new Fractal($fractalManager);
-    }
-
-    /**
-     * Transforms the model
-     *
-     * @param $dataModel
-     * @return mixed
-     * @throws \Exception
-     */
-    final public static function transform($dataModel)
-    {
-        $method = self::getTransformMethod($dataModel);
-
-        return self::setFractal()->$method($dataModel, (new static)->transformer)->toArray();
-    }
-
-    /**
-     * Gets the transform method based on the type of model being passed
-     *
-     * @param $dataModel
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    final protected static function getTransformMethod($dataModel)
-    {
-        if ($dataModel instanceof Collection) {
-            return 'respondWithCollection';
-        } elseif ($dataModel instanceof LengthAwarePaginator) {
-            return 'respondWithPaginatedCollection';
-        } elseif ($dataModel instanceof Model) {
-            return 'respondWithItem';
-        } else {
-            throw new \InvalidArgumentException('Could not transform provided model');
-        }
     }
 }

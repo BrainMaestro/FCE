@@ -16,6 +16,13 @@ use Fce\Transformers\SectionTransformer;
 class SQLSectionRepository extends Repository implements SectionRepository
 {
     /**
+     * The transformer registered on the repository.
+     *
+     * @var \League\Fractal\TransformerAbstract
+     */
+    protected static $transformer = SectionTransformer::class;
+
+    /**
      * Get an instance of the registered model
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -23,16 +30,6 @@ class SQLSectionRepository extends Repository implements SectionRepository
     protected function getModel()
     {
         return new Section;
-    }
-
-    /**
-     * Get an instance of the registered transformer
-     *
-     * @return \League\Fractal\TransformerAbstract
-     */
-    protected function getTransformer()
-    {
-        return new SectionTransformer;
     }
 
     /**
@@ -104,7 +101,7 @@ class SQLSectionRepository extends Repository implements SectionRepository
      */
     public function setSectionStatus($id, $status)
     {
-        if (! in_array($status, Section::STATUSES)) {
+        if (!in_array($status, Section::STATUSES)) {
             throw new \InvalidArgumentException($status . ' is not an available section status');
         }
 
