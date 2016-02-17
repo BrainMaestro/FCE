@@ -66,9 +66,21 @@ abstract class Repository
     {
         try {
             return $this->model->create($attributes);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Wrong or incomplete set of attributes provided');
         }
+    }
+
+    /**
+     * Return a paginated list of all the available models
+     *
+     * @param int $limit
+     * @param array $columns
+     * @return mixed
+     */
+    public function all($limit = 15, array $columns = ['*'])
+    {
+        return self::transform($this->model->limit($limit)->get($columns));
     }
 
     /**
@@ -84,7 +96,7 @@ abstract class Repository
     }
 
     /**
-     * Finds and returns one, all or a paginated list of the models with the specified field and value
+     * Finds and returns one, all or a paginated list of the models with the specified field(s) and value(s)
      *
      * @param $field
      * @param $value
@@ -98,19 +110,19 @@ abstract class Repository
      */
     protected function findBy($field, $value, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
     {
-        // Allows the calling method to pass multiple fields and values
-        if (is_array($field) && is_array($value)) {
-            if (count($field) != count($value)) {
-                throw new \InvalidArgumentException('Number of specified fields and values do not match');
-            }
+        if (!is_array($field) && !is_array($value)) {
+            $field = [$field];
+            $value = [$value];
+        }
 
-            $items = $this->model;
+        if (count($field) != count($value)) {
+            throw new \InvalidArgumentException('Number of specified fields and values do not match');
+        }
 
-            for ($i = 0; $i < count($field); $i++) {
-                $items = $items->where($field[$i], 'like', '%' . $value[$i] . '%')->with($with);
-            }
-        } else {
-            $items = $this->model->where($field, 'like', '%' . $value . '%')->with($with);
+        $items = $this->model;
+
+        for ($i = 0; $i < count($field); $i++) {
+            $items = $items->where($field[$i], 'like', '%' . $value[$i] . '%')->with($with);
         }
 
         // Returns one, all or a paginated list of items
