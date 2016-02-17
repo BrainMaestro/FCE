@@ -5,7 +5,7 @@
  * Time: 10:34 PM
  */
 
-namespace Fce\Repositories;
+namespace Fce\Repositories\Contracts;
 
 interface QuestionRepository
 {

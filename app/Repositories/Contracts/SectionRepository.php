@@ -5,7 +5,7 @@
  * Time: 10:24 PM
  */
 
-namespace Fce\Repositories;
+namespace Fce\Repositories\Contracts;
 
 interface SectionRepository
 {

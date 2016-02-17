@@ -9,7 +9,7 @@
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Evaluation;
-use Fce\Repositories\EvaluationRepository;
+use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\EvaluationTransformer;
 

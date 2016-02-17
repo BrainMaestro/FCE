@@ -5,13 +5,15 @@
  * Time: 10:38 PM
  */
 
-namespace Fce\Repositories;
+namespace Fce\Repositories\Contracts;
+
+use Fce\Models\Section;
 
 interface KeyRepository
 {
-    public function getKeysBySectionId($sectionId);
+    public function getKeysBySection($sectionId);
 
     public function updateKey($id, array $attributes);
 
-    public function createSectionKeys($sectionId, $enrolled);
+    public function createKeys(Section $section);
 }

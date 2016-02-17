@@ -10,7 +10,7 @@ namespace Fce\Repositories\Database;
 
 use Fce\Models\Section;
 use Fce\Repositories\Repository;
-use Fce\Repositories\SectionRepository;
+use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Transformers\SectionTransformer;
 
 class SQLSectionRepository extends Repository implements SectionRepository

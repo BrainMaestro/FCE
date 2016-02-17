@@ -5,7 +5,7 @@
  * Time: 10:30 PM
  */
 
-namespace Fce\Repositories;
+namespace Fce\Repositories\Contracts;
 
 interface SchoolRepository
 {

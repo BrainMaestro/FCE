@@ -5,7 +5,7 @@
  * Time: 11:09 PM
  */
 
-namespace Fce\Repositories;
+namespace Fce\Repositories\Contracts;
 
 interface EvaluationRepository
 {

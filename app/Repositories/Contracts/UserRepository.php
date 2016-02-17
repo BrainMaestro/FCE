@@ -6,15 +6,17 @@
  * Time: 11:37 PM
  */
 
-namespace Fce\Repositories;
+namespace Fce\Repositories\Contracts;
 
 interface UserRepository
 {
     public function getUsers();
 
-    public function getUserById($id);
+    public function getUsersBySchool($schoolId);
 
-    public function getUsersBySectionId($sectionId);
+    public function getUsersBySection($sectionId);
+
+    public function getUserById($id);
 
     public function createUser(array $attributes);
 
