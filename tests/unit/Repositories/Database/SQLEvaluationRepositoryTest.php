@@ -43,21 +43,22 @@ class SQLEvaluationRepositoryTest extends TestCase
         $createdEvaluations = factory(Fce\Models\Evaluation::class, 5)->create([
             'question_set_id' => $questionSet->id
         ]);
+        $createdEvaluations = SQLEvaluationRepository::transform($createdEvaluations)['data'];
 
         $evaluations = self::$evaluationRepository->getEvaluationsBySectionAndQuestionSet(
             $this->section->id,
             $questionSet->id
         );
 
-        $this->assertCount($createdEvaluations->count(), $evaluations['data']);
-        $this->assertEquals(SQLEvaluationRepository::transform($createdEvaluations)['data'], $evaluations['data']);
+        $this->assertCount(count($createdEvaluations), $evaluations['data']);
+        $this->assertEquals($createdEvaluations, $evaluations['data']);
     }
 
     public function testGetEvaluationBySectionAndQuestionSetWithInvalidIds()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$evaluationRepository->getEvaluationsBySectionAndQuestionSet(-1, -1);
+        self::$evaluationRepository->getEvaluationsBySectionAndQuestionSet(parent::INVALID_ID, parent::INVALID_ID);
     }
 
     public function testGetEvaluationsBySectionQuestionSetAndQuestion()
@@ -92,7 +93,7 @@ class SQLEvaluationRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(-1, -1, -1);
+        self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(parent::INVALID_ID, parent::INVALID_ID, parent::INVALID_ID);
     }
 
     public function testCreateEvaluation()

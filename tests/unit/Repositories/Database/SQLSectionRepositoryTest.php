@@ -47,10 +47,11 @@ class SQLSectionRepositoryTest extends TestCase
         $sections = factory(Fce\Models\Section::class, 5)->create([
             'semester_id' => $semester->id
         ]);
+        $sections = SQLSectionRepository::transform($sections)['data'];
         $otherSections = self::$sectionRepository->getSectionsBySemester($semester->id);
 
-        $this->assertCount(5, $otherSections['data']);
-        $this->assertEquals(SQLSectionRepository::transform($sections)['data'], $otherSections['data']);
+        $this->assertCount(count($sections), $otherSections['data']);
+        $this->assertEquals($sections, $otherSections['data']);
         $this->assertNotEquals($section, $otherSections);
     }
 
@@ -58,7 +59,7 @@ class SQLSectionRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$sectionRepository->getSectionsBySemester(-1);
+        self::$sectionRepository->getSectionsBySemester(parent::INVALID_ID);
     }
 
     public function testGetSectionsBySemesterAndSchool()
@@ -67,25 +68,27 @@ class SQLSectionRepositoryTest extends TestCase
         $sections = factory(Fce\Models\Section::class, 5)->create([
             'semester_id' => $semester->id
         ]);
+        $sections = SQLSectionRepository::transform($sections)['data'];
         $otherSections = self::$sectionRepository->getSectionsBySemesterAndSchool(
             $semester->id,
             $this->school->id
         );
 
-        $this->assertCount(5, $otherSections['data']);
-        $this->assertEquals(SQLSectionRepository::transform($sections)['data'], $otherSections['data']);
+        $this->assertCount(count($sections), $otherSections['data']);
+        $this->assertEquals($sections, $otherSections['data']);
 
         $school = factory(Fce\Models\School::class)->create();
-        $sections = factory(Fce\Models\Section::class, 5)->create([
+        $sections = factory(Fce\Models\Section::class, 4)->create([
             'school_id' => $school->id
         ]);
+        $sections = SQLSectionRepository::transform($sections)['data'];
         $otherSections2 = self::$sectionRepository->getSectionsBySemesterAndSchool(
             $this->semester->id,
             $school->id
         );
 
-        $this->assertCount(5, $otherSections2['data']);
-        $this->assertEquals(SQLSectionRepository::transform($sections)['data'], $otherSections2['data']);
+        $this->assertCount(count($sections), $otherSections2['data']);
+        $this->assertEquals($sections, $otherSections2['data']);
         $this->assertNotEquals($otherSections, $otherSections2);
     }
 
@@ -93,7 +96,7 @@ class SQLSectionRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$sectionRepository->getSectionsBySemesterAndSchool(-1, -1);
+        self::$sectionRepository->getSectionsBySemesterAndSchool(parent::INVALID_ID, parent::INVALID_ID);
     }
 
     public function testGetSectionById()
@@ -107,7 +110,7 @@ class SQLSectionRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$sectionRepository->getSectionById(-1);
+        self::$sectionRepository->getSectionById(parent::INVALID_ID);
     }
 
     public function testCreateSection()
@@ -142,7 +145,7 @@ class SQLSectionRepositoryTest extends TestCase
         $this->assertEquals(Section::STATUS_OPEN, $this->section['data']['status']);
     }
 
-    public function testGetSectionStatusWIthIncorrectStatus()
+    public function testSetSectionStatusWIthIncorrectStatus()
     {
         $this->setExpectedException(\InvalidArgumentException::class);
 
