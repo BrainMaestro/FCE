@@ -34,7 +34,12 @@ class User extends Model implements
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'school_id',
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -57,7 +62,7 @@ class User extends Model implements
      * A user can have one school
      * @return mixed
      */
-    public function schools()
+    public function school()
     {
         return $this->belongsTo(School::class);
     }

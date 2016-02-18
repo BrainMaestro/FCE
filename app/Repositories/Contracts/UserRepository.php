@@ -14,8 +14,6 @@ interface UserRepository
 
     public function getUsersBySchool($schoolId);
 
-    public function getUsersBySection($sectionId);
-
     public function getUserById($id);
 
     public function createUser(array $attributes);

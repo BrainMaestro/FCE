@@ -30,7 +30,7 @@ class UserTransformer extends TransformerAbstract
             'id' => (int) $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'school_id' => $user->school_id
+            'school_id' => (int) $user->school_id,
         ];
     }
 
