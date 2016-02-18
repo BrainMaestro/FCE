@@ -13,7 +13,7 @@ interface SchoolRepository
 
     public function getSchoolById($id);
 
-    public function updateSchool($id, array $attributes);
-
     public function createSchool(array $attributes);
+
+    public function updateSchool($id, array $attributes);
 }
