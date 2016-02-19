@@ -72,6 +72,7 @@ abstract class Repository
      * @param $id
      * @param array $columns
      * @return mixed
+     * @throws ModelNotFoundException
      */
     protected function find($id, array $columns = ['*'])
     {
@@ -79,33 +80,23 @@ abstract class Repository
     }
 
     /**
-     * Finds and returns one, all or a paginated list of the models with the specified field(s) and value(s)
+     * Finds and returns one, all or a paginated list of the models with the specified parameters (field and value)
      *
-     * @param $field
-     * @param $value
+     * @param array $params
      * @param int $limit
      * @param int $page
      * @param array $columns
      * @param array $with
      * @return mixed
-     * @throws \InvalidArgumentException
      * @throws ModelNotFoundException
      */
-    protected function findBy($field, $value, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
+    protected function findBy(array $params, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
     {
-        if (!is_array($field) && !is_array($value)) {
-            $field = [$field];
-            $value = [$value];
-        }
-
-        if (count($field) != count($value)) { // This seems unnecessary
-            throw new \InvalidArgumentException('Number of specified fields and values do not match');
-        }
-
+        // Model to use for the method chaining
         $items = $this->model;
 
-        for ($i = 0; $i < count($field); $i++) {
-            $items = $items->where($field[$i], 'like', '%' . $value[$i] . '%')->with($with);
+        foreach($params as $field => $value) {
+            $items = $items->where($field, 'like', '%' . $value . '%')->with($with);
         }
 
         // Returns one, all or a paginated list of items
@@ -135,6 +126,7 @@ abstract class Repository
      * @param $id
      * @param array $attributes
      * @return mixed
+     * @throws ModelNotFoundException
      */
     protected function update($id, array $attributes)
     {

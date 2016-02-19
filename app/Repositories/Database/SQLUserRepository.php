@@ -50,7 +50,7 @@ class SQLUserRepository extends Repository implements UserRepository
      */
     public function getUsersBySchool($schoolId)
     {
-        return $this->findBy('school_id', $schoolId);
+        return $this->findBy(['school_id' => $schoolId]);
     }
 
     /**

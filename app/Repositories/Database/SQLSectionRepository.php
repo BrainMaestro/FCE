@@ -40,7 +40,7 @@ class SQLSectionRepository extends Repository implements SectionRepository
      */
     public function getSectionsBySemester($semesterId)
     {
-        return $this->findBy('semester_id', $semesterId);
+        return $this->findBy(['semester_id' => $semesterId]);
     }
 
     /**
@@ -52,10 +52,10 @@ class SQLSectionRepository extends Repository implements SectionRepository
      */
     public function getSectionsBySemesterAndSchool($semesterId, $schoolId)
     {
-        return $this->findBy(
-            ['semester_id', 'school_id'],
-            [$semesterId, $schoolId]
-        );
+        return $this->findBy([
+            'semester_id' => $semesterId,
+            'school_id' => $schoolId
+        ]);
     }
 
     /**

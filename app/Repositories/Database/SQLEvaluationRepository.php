@@ -41,7 +41,10 @@ class SQLEvaluationRepository extends Repository implements EvaluationRepository
      */
     public function getEvaluationsBySectionAndQuestionSet($sectionId, $questionSetId)
     {
-        return $this->findBy(['section_id', 'question_set_id'], [$sectionId, $questionSetId], 'all');
+        return $this->findBy([
+            'section_id' => $sectionId,
+            'question_set_id' => $questionSetId
+        ], 'all');
     }
 
     /**
@@ -54,11 +57,11 @@ class SQLEvaluationRepository extends Repository implements EvaluationRepository
      */
     public function getEvaluationBySectionQuestionSetAndQuestion($sectionId, $questionSetId, $questionId)
     {
-        return $this->findBy(
-            ['section_id', 'question_set_id', 'question_id'],
-            [$sectionId, $questionSetId, $questionId],
-            'one'
-        );
+        return $this->findBy([
+            'section_id' => $sectionId,
+            'question_set_id' => $questionSetId,
+            'question_id' => $questionId
+        ], 'one');
     }
 
     /**
