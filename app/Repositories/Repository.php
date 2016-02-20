@@ -91,7 +91,7 @@ abstract class Repository
         // Model to use for the method chaining
         $items = $this->model;
 
-        foreach($params as $field => $value) {
+        foreach ($params as $field => $value) {
             $items = $items->where($field, 'like', '%' . $value . '%')->with($with);
         }
 
@@ -121,7 +121,7 @@ abstract class Repository
      *
      * @param $id
      * @param array $attributes
-     * @return mixed
+     * @return bool
      * @throws ModelNotFoundException
      */
     protected function update($id, array $attributes)

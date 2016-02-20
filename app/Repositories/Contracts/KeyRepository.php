@@ -7,13 +7,15 @@
 
 namespace Fce\Repositories\Contracts;
 
-use Fce\Models\Section;
-
 interface KeyRepository
 {
     public function getKeysBySection($sectionId);
 
-    public function updateKey($id, array $attributes);
+    public function createKeys(array $section);
 
-    public function createKeys(Section $section);
+    public function setGivenOut($id);
+
+    public function setUsed($id);
+
+    public function deleteKeys($sectionId);
 }
