@@ -82,7 +82,7 @@ class SQLUserRepositoryTest extends TestCase
 
         $user = self::$userRepository->createUser($attributes);
 
-        $this->assertArraySubset($attributes, $user->toArray());
+        $this->assertArraySubset($attributes, $user['data']);
     }
 
     public function testUpdateUser()

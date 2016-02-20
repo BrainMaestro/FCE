@@ -103,7 +103,7 @@ class SQLEvaluationRepositoryTest extends TestCase
 
         $evaluation = self::$evaluationRepository->createEvaluation($attributes);
 
-        $this->assertArraySubset($attributes, $evaluation->toArray());
+        $this->assertArraySubset($attributes, $evaluation['data']);
     }
 
     public function testCreateEvaluationWithIncorrectAttributes()

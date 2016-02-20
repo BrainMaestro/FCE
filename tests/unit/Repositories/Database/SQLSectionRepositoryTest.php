@@ -119,7 +119,7 @@ class SQLSectionRepositoryTest extends TestCase
 
         $section = self::$sectionRepository->createSection($attributes);
 
-        $this->assertArraySubset($attributes, $section->toArray());
+        $this->assertArraySubset($attributes, $section['data']);
     }
 
     public function testUpdateSection()

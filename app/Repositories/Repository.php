@@ -48,7 +48,7 @@ abstract class Repository
     protected function create(array $attributes)
     {
         try {
-            return $this->model->create($attributes);
+            return self::transform($this->model->create($attributes));
         } catch (\Exception $e) {
             throw new \InvalidArgumentException('Wrong or incomplete set of attributes provided');
         }
