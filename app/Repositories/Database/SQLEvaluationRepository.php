@@ -80,13 +80,10 @@ class SQLEvaluationRepository extends Repository implements EvaluationRepository
      *
      * @param $id
      * @param $column
-     * @return mixed
+     * @return int
      */
     public function incrementEvaluation($id, $column)
     {
-        // This is found so that the current column value can be retrieved
-        $evaluationModel = $this->model->findOrFail($id);
-
-        return $this->update($evaluationModel, [$column => $evaluationModel->$column + 1]);
+        return $this->model->findOrFail($id)->increment($column);
     }
 }

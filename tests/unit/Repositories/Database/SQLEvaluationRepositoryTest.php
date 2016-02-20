@@ -115,7 +115,7 @@ class SQLEvaluationRepositoryTest extends TestCase
 
     public function testIncrementEvaluation()
     {
-        self::$evaluationRepository->incrementEvaluation($this->evaluation->id, 'one');
+        $this->assertEquals(1, self::$evaluationRepository->incrementEvaluation($this->evaluation->id, 'one'));
 
         $incrementedEvaluation = self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(
             $this->evaluation->section->id,

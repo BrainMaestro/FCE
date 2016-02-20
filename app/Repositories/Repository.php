@@ -131,13 +131,6 @@ abstract class Repository
      */
     protected function update($id, array $attributes)
     {
-        // Allows the calling method to pass the model directly if it has already been found
-        // to prevent another database lookup. This might be removed eventually
-        if ($id instanceof Model) {
-            $model = $id;
-            return $model->update($attributes);
-        }
-
         return $this->model->findOrFail($id)->update($attributes);
     }
 }
