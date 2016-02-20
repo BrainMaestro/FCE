@@ -58,12 +58,13 @@ abstract class Repository
      * Return a paginated list of all the available models
      *
      * @param int $limit
+     * @param int $page
      * @param array $columns
      * @return mixed
      */
-    public function all($limit = 15, array $columns = ['*'])
+    public function all($limit = 15, $page = 1, array $columns = ['*'])
     {
-        return self::transform($this->model->limit($limit)->get($columns));
+        return self::transform($this->model->paginate($limit, $columns, 'page', $page));
     }
 
     /**
