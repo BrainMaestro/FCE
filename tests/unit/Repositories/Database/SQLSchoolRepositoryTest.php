@@ -72,6 +72,6 @@ class SQLSchoolRepositoryTest extends TestCase
 
         $school = self::$schoolRepository->createSchool($attributes);
 
-        $this->assertArraySubset($attributes, $school->toArray());
+        $this->assertArraySubset($attributes, $school['data']);
     }
 }
