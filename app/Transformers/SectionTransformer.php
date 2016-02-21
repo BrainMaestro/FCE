@@ -39,7 +39,7 @@ class SectionTransformer extends TransformerAbstract
             'class_time' => $section->class_time,
             'location' => $section->location,
             'status' => $section->status,
-            'enrolled' => (int) $section->enrolled,
+            'enrolled' => (int) $section->enrolled
         ];
     }
 
@@ -49,7 +49,7 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeSchool(Section $section)
     {
-        return $this->item($section->school, new SchoolTransformer());
+        return $this->item($section->school, new SchoolTransformer);
     }
 
     /**
@@ -58,7 +58,7 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeEvaluation(Section $section)
     {
-        return $this->collection($section->evaluations, new EvaluationTransformer());
+        return $this->collection($section->evaluations, new EvaluationTransformer);
     }
 
     /**
@@ -67,7 +67,7 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeSemester(Section $section)
     {
-        return $this->item($section->semester, new SemesterTransformer());
+        return $this->item($section->semester, new SemesterTransformer);
     }
 
     /**
@@ -76,6 +76,6 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeKey(Section $section)
     {
-        return $this->collection($section->keys(), new KeyTransformer());
+        return $this->collection($section->keys(), new KeyTransformer);
     }
 }

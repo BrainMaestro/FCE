@@ -75,4 +75,15 @@ class Section extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    /**
+     * The Section relationship to comment
+     * A section hasMany comment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

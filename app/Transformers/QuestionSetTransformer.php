@@ -28,7 +28,7 @@ class QuestionSetTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $questionSet->id,
-            'name' => $questionSet->name,
+            'name' => $questionSet->name
         ];
     }
 
@@ -38,6 +38,6 @@ class QuestionSetTransformer extends TransformerAbstract
      */
     public function includeQuestions(QuestionSet $questionSet)
     {
-        return $this->collection($questionSet->questions, new QuestionTransformer());
+        return $this->collection($questionSet->questions, new QuestionTransformer);
     }
 }

@@ -29,7 +29,7 @@ class RoleTransformer extends TransformerAbstract
         return [
             'id' => (int) $role->id,
             'role' => $role->role,
-            'display_name' => $role->display_name,
+            'display_name' => $role->display_name
         ];
     }
 
@@ -39,6 +39,6 @@ class RoleTransformer extends TransformerAbstract
      */
     public function includeUser(Role $role)
     {
-        return $this->collection($role->users, new UserTransformer());
+        return $this->collection($role->users, new UserTransformer);
     }
 }

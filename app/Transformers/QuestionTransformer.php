@@ -19,7 +19,7 @@ class QuestionTransformer extends TransformerAbstract
             'id' => (int) $question->id,
             'category' => $question->cateory,
             'title' => $question->title,
-            'description' => $question->description,
+            'description' => $question->description
         ];
     }
 }

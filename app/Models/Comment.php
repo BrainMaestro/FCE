@@ -4,7 +4,7 @@ namespace Fce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Evaluation extends Model
+class Comment extends Model
 {
     /**
      * @var array
@@ -12,16 +12,12 @@ class Evaluation extends Model
     protected $fillable = [
         'section_id',
         'question_id',
-        'one',
-        'two',
-        'three',
-        'four',
-        'five'
+        'comment'
     ];
 
     /**
-     * The Evaluation relationship to Section
-     * A evaluation belongsTo section
+     * The Comment relationship to Section
+     * A comment belongsTo section
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -31,19 +27,8 @@ class Evaluation extends Model
     }
 
     /**
-     * The Evaluation relationship to Question
-     * A evaluation belongsTo a question
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function question()
-    {
-        return $this->belongsTo(Question::class);
-    }
-
-    /**
-     * The Evaluation relationship to QuestionSet
-     * A evaluation belongsTo a questionset
+     * The Comment relationship to QuestionSet
+     * A comment belongsTo a questionset
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
