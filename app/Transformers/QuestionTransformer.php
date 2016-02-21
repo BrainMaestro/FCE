@@ -17,7 +17,7 @@ class QuestionTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $question->id,
-            'category' => $question->cateory,
+            'category' => $question->category,
             'title' => $question->title,
             'description' => $question->description
         ];
