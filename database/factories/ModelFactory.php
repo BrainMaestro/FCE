@@ -37,7 +37,8 @@ $factory->define(Fce\Models\QuestionSet::class, function (Faker\Generator $faker
 
 $factory->define(Fce\Models\Semester::class, function (Faker\Generator $faker) {
     return [
-        'semester' => $faker->word,
+        'season' => $faker->word,
+        'year' => $faker->year,
         'current_semester' => false,
     ];
 });

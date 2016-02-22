@@ -55,7 +55,7 @@ class SQLSchoolRepository extends Repository implements SchoolRepository
 
     /**
      * Creates a new school from the specified attributes
-     * 
+     *
      * @param array $attributes
      * @return static
      */
