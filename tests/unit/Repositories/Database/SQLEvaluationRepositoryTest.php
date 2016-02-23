@@ -108,7 +108,7 @@ class SQLEvaluationRepositoryTest extends TestCase
 
     public function testCreateEvaluationWithIncorrectAttributes()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->setExpectedException(\Illuminate\Database\QueryException::class);
 
         self::$evaluationRepository->createEvaluation(['not_an_attribute' => true]);
     }

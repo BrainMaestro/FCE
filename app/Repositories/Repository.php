@@ -9,7 +9,6 @@
 namespace Fce\Repositories;
 
 use Fce\Transformers\Transformable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class Repository
@@ -34,7 +33,7 @@ abstract class Repository
     /**
      * Get an instance of the registered model
      *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     abstract protected function getModel();
 
@@ -43,15 +42,11 @@ abstract class Repository
      *
      * @param array $attributes
      * @return static
-     * @throws \InvalidArgumentException
+     * @throws \Illuminate\Database\QueryException
      */
     protected function create(array $attributes)
     {
-        try {
-            return self::transform($this->model->create($attributes));
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Wrong or incomplete set of attributes provided');
-        }
+        return self::transform($this->model->create($attributes));
     }
 
     /**
