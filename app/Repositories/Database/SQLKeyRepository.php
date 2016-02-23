@@ -11,10 +11,16 @@ use Fce\Models\Key;
 use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\KeyTransformer;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class SQLKeyRepository extends Repository implements KeyRepository
 {
+    /**
+     * Maximum number of tries allowed for failing key creation
+     */
+    const MAX_TRIES = 3;
+
     /**
      * The transformer registered on the repository.
      *
@@ -48,19 +54,33 @@ class SQLKeyRepository extends Repository implements KeyRepository
      *
      * @param array $section
      * @return array
+     * @throws QueryException
      */
     public function createKeys(array $section)
     {
         $keys = [];
 
-        for ($i = 0; $i < $section['enrolled']; $i++) {
-            $key = $this->create([
-                'value' => strtoupper(str_random(6)),
-                'section_id' => $section['id']
-            ]);
+        DB::beginTransaction();
+        for ($i = $tries = 0; $i < $section['enrolled']; $i++) {
+            try {
+                $key = $this->create([
+                    'value' => strtoupper(str_random(6)),
+                    'section_id' => $section['id']
+                ]);
 
-            $keys[] = $key['data'];
+                $keys[] = $key['data'];
+            } catch (QueryException $e) {
+                // Throws a QueryException after too many tries
+                if ($tries >= self::MAX_TRIES) {
+                    DB::rollBack();
+                    throw new QueryException($e->getSql(), $e->getBindings(), $e->getPrevious());
+                }
+
+                ++$tries; // Keep track of number of tries
+                --$i; // So that the current iteration of the loop runs again
+            }
         }
+        DB::commit();
 
         return $keys;
     }
