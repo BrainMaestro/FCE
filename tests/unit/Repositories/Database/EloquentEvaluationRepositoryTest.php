@@ -9,7 +9,7 @@ use Fce\Repositories\Database\EloquentEvaluationRepository;
  */
 class EloquentEvaluationRepositoryTest extends TestCase
 {
-    protected static $evaluationRepository;
+    protected $repository;
 
     /**
      * The basic models that are needed for all tests
@@ -21,19 +21,13 @@ class EloquentEvaluationRepositoryTest extends TestCase
     protected $section;
     protected $evaluation;
 
-    public static function setUpBeforeClass()
-    {
-        self::$evaluationRepository = new EloquentEvaluationRepository;
-    }
-
     public function setUp()
     {
         parent::setUp();
-        $this->questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $this->question = factory(Fce\Models\Question::class)->create();
-        $this->semester = factory(Fce\Models\Semester::class)->create();
-        $this->school = factory(Fce\Models\School::class)->create();
-        $this->section = factory(Fce\Models\Section::class)->create();
+        $this->repository = new EloquentEvaluationRepository(
+            new \Fce\Models\Evaluation,
+            new \Fce\Transformers\EvaluationTransformer
+        );
         $this->evaluation = factory(Fce\Models\Evaluation::class)->create();
     }
 
@@ -41,12 +35,14 @@ class EloquentEvaluationRepositoryTest extends TestCase
     {
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
         $createdEvaluations = factory(Fce\Models\Evaluation::class, 5)->create([
-            'question_set_id' => $questionSet->id
+            'question_set_id' => $questionSet->id,
+            'section_id' => $this->evaluation->section->id,
         ]);
-        $createdEvaluations = EloquentEvaluationRepository::transform($createdEvaluations)['data'];
 
-        $evaluations = self::$evaluationRepository->getEvaluationsBySectionAndQuestionSet(
-            $this->section->id,
+        $createdEvaluations = $this->repository->transform($createdEvaluations)['data'];
+
+        $evaluations = $this->repository->getEvaluationsBySectionAndQuestionSet(
+            $this->evaluation->section->id,
             $questionSet->id
         );
 
@@ -58,42 +54,43 @@ class EloquentEvaluationRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$evaluationRepository->getEvaluationsBySectionAndQuestionSet(parent::INVALID_ID, parent::INVALID_ID);
+        $this->repository->getEvaluationsBySectionAndQuestionSet(parent::INVALID_ID, parent::INVALID_ID);
     }
 
     public function testGetEvaluationsBySectionQuestionSetAndQuestion()
     {
-        $evaluation = self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(
-            $this->section->id,
-            $this->questionSet->id,
-            $this->question->id
+        $evaluation = $this->repository->getEvaluationBySectionQuestionSetAndQuestion(
+            $this->evaluation->section->id,
+            $this->evaluation->questionSet->id,
+            $this->evaluation->question->id
         );
 
         $this->assertCount(1, $evaluation);
-        $this->assertEquals(EloquentEvaluationRepository::transform($this->evaluation), $evaluation);
+
+        $this->assertEquals($this->repository->transform($this->evaluation), $evaluation);
 
         $question = factory(Fce\Models\Question::class)->create();
         $this->evaluation = factory(Fce\Models\Evaluation::class)->create([
             'question_id' => $question->id
         ]);
 
-        $otherEvaluation = self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(
-            $this->section->id,
-            $this->questionSet->id,
+        $otherEvaluation = $this->repository->getEvaluationBySectionQuestionSetAndQuestion(
+            $this->evaluation->section->id,
+            $this->evaluation->questionSet->id,
             $question->id
         );
 
         $this->assertCount(1, $otherEvaluation);
-        $this->assertEquals(EloquentEvaluationRepository::transform($this->evaluation), $otherEvaluation);
-        $this->assertNotEquals($evaluation, $otherEvaluation);
 
+        $this->assertEquals($this->repository->transform($this->evaluation), $otherEvaluation);
+        $this->assertNotEquals($evaluation, $otherEvaluation);
     }
 
     public function testGetEvaluationBySectionQuestionSetAndQuestionWithInvalidIds()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(parent::INVALID_ID, parent::INVALID_ID, parent::INVALID_ID);
+        $this->repository->getEvaluationBySectionQuestionSetAndQuestion(parent::INVALID_ID, parent::INVALID_ID, parent::INVALID_ID);
     }
 
     public function testCreateEvaluation()
@@ -101,7 +98,7 @@ class EloquentEvaluationRepositoryTest extends TestCase
         // Get random attributes without persisting
         $attributes = factory(Fce\Models\Evaluation::class)->make()->toArray();
 
-        $evaluation = self::$evaluationRepository->createEvaluation($attributes);
+        $evaluation = $this->repository->createEvaluation($attributes);
 
         $this->assertArraySubset($attributes, $evaluation['data']);
     }
@@ -110,14 +107,14 @@ class EloquentEvaluationRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\QueryException::class);
 
-        self::$evaluationRepository->createEvaluation(['not_an_attribute' => true]);
+        $this->repository->createEvaluation(['not_an_attribute' => true]);
     }
 
     public function testIncrementEvaluation()
     {
-        $this->assertEquals(1, self::$evaluationRepository->incrementEvaluation($this->evaluation->id, 'one'));
+        $this->assertEquals(1, $this->repository->incrementEvaluation($this->evaluation->id, 'one'));
 
-        $incrementedEvaluation = self::$evaluationRepository->getEvaluationBySectionQuestionSetAndQuestion(
+        $incrementedEvaluation = $this->repository->getEvaluationBySectionQuestionSetAndQuestion(
             $this->evaluation->section->id,
             $this->evaluation->questionSet->id,
             $this->evaluation->question->id

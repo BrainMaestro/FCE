@@ -8,21 +8,17 @@ use Fce\Repositories\Database\EloquentSchoolRepository;
  */
 class EloquentSchoolRepositoryTest extends TestCase
 {
-    protected static $schoolRepository;
+    protected $repository;
 
-    /**
-     * The basic models that are needed for all tests.
-     */
     protected $school;
-
-    public static function setUpBeforeClass()
-    {
-        self::$schoolRepository = new EloquentSchoolRepository;
-    }
 
     public function setUp()
     {
         parent::setUp();
+        $this->repository = new SQLSchoolRepository(
+            new \Fce\Models\School,
+            new \Fce\Transformers\SchoolTransformer
+        );
         $this->school = factory(Fce\Models\School::class)->create();
     }
 
@@ -30,11 +26,11 @@ class EloquentSchoolRepositoryTest extends TestCase
     {
         $createdSchools = factory(Fce\Models\School::class, 2)->create();
         $createdSchools = array_merge(
-            [EloquentSchoolRepository::transform($this->school)['data']],
-            EloquentSchoolRepository::transform($createdSchools)['data']
+            [$this->repository->transform($this->school)['data']],
+            $this->repository->transform($createdSchools)['data']
         );
 
-        $schools = self::$schoolRepository->getSchools();
+        $schools = $this->repository->getSchools();
 
         $this->assertCount(count($createdSchools), $schools['data']);
         $this->assertEquals($createdSchools, $schools['data']);
@@ -42,25 +38,25 @@ class EloquentSchoolRepositoryTest extends TestCase
 
     public function testGetSchoolById()
     {
-        $school = self::$schoolRepository->getSchoolById($this->school->id);
+        $school = $this->repository->getSchoolById($this->school->id);
 
-        $this->assertEquals(EloquentSchoolRepository::transform($this->school), $school);
+        $this->assertEquals($this->repository->transform($this->school), $school);
     }
 
     public function testGetSchoolByIdWithInvalidId()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$schoolRepository->getSchoolById(parent::INVALID_ID);
+        $this->repository->getSchoolById(parent::INVALID_ID);
     }
 
     public function testUpdateSchool()
     {
         $attributes = factory(Fce\Models\School::class)->make()->toArray();
-        $school = EloquentSchoolRepository::transform($this->school);
+        $school = $this->repository->transform($this->school);
 
-        self::$schoolRepository->updateSchool($this->school->id, $attributes);
-        $this->school = self::$schoolRepository->getSchoolById($this->school->id);
+        $this->repository->updateSchool($this->school->id, $attributes);
+        $this->school = $this->repository->getSchoolById($this->school->id);
 
         $this->assertArraySubset($attributes, $this->school['data']);
         $this->assertNotEquals($school, $this->school);
@@ -70,7 +66,7 @@ class EloquentSchoolRepositoryTest extends TestCase
     {
         $attributes = factory(Fce\Models\School::class)->make()->toArray();
 
-        $school = self::$schoolRepository->createSchool($attributes);
+        $school = $this->repository->createSchool($attributes);
 
         $this->assertArraySubset($attributes, $school['data']);
     }

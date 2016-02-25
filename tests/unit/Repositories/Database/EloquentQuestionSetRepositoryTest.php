@@ -8,18 +8,17 @@ use Fce\Repositories\Database\EloquentQuestionSetRepository;
  */
 class EloquentQuestionSetRepositoryTest extends TestCase
 {
-    protected static $questionSetRepository;
+    protected $repository;
 
     protected $questionSet;
-
-    public static function setUpBeforeClass()
-    {
-        self::$questionSetRepository = new EloquentQuestionSetRepository;
-    }
 
     public function setUp()
     {
         parent::setUp();
+        $this->repository = new EloquentQuestionSetRepository(
+            new \Fce\Models\QuestionSet,
+            new \Fce\Transformers\QuestionSetTransformer
+        );
         $this->questionSet = factory(Fce\Models\QuestionSet::class)->create();
     }
 
@@ -27,11 +26,11 @@ class EloquentQuestionSetRepositoryTest extends TestCase
     {
         $questionSets = factory(Fce\Models\QuestionSet::class, 3)->create();
         $questionSets = array_merge(
-            [EloquentQuestionSetRepository::transform($this->questionSet)['data']],
-            EloquentQuestionSetRepository::transform($questionSets)['data']
+            [$this->repository->transform($this->questionSet)['data']],
+            $this->repository->transform($questionSets)['data']
         );
 
-        $allQuestionSets = self::$questionSetRepository->getQuestionSets();
+        $allQuestionSets = $this->repository->getQuestionSets();
 
         $this->assertCount(count($questionSets), $allQuestionSets['data']);
         $this->assertEquals($questionSets, $allQuestionSets['data']);
@@ -39,16 +38,16 @@ class EloquentQuestionSetRepositoryTest extends TestCase
 
     public function testGetQuestionSetById()
     {
-        $questionSet = self::$questionSetRepository->getQuestionSetById($this->questionSet->id);
+        $questionSet = $this->repository->getQuestionSetById($this->questionSet->id);
 
-        $this->assertEquals(EloquentQuestionSetRepository::transform($this->questionSet), $questionSet);
+        $this->assertEquals($this->repository->transform($this->questionSet), $questionSet);
     }
 
     public function testCreateQuestionSet()
     {
         $attributes = factory(Fce\Models\QuestionSet::class)->make()->toArray();
 
-        $questionSet = self::$questionSetRepository->createQuestionSet($attributes);
+        $questionSet = $this->repository->createQuestionSet($attributes);
 
         $this->assertArraySubset($attributes, $questionSet['data']);
     }
@@ -56,20 +55,25 @@ class EloquentQuestionSetRepositoryTest extends TestCase
     public function testAddQuestion()
     {
         $questions = factory(Fce\Models\Question::class, 2)->create();
-        $questions = \Fce\Repositories\Database\EloquentQuestionRepository::transform($questions)['data'];
+        $questionRepository = new \Fce\Repositories\Database\EloquentQuestionRepository(
+            new \Fce\Models\Question,
+            new \Fce\Transformers\QuestionTransformer
+        );
+        $questions = $questionRepository->transform($questions)['data'];
+
         // Build an array of question ids
         $questionIds = array_map(function($question) {
             return $question['id'];
         }, $questions);
 
-        $questionSet = EloquentQuestionSetRepository::transform($this->questionSet);
+        $questionSet = $this->repository->transform($this->questionSet);
 
         // Check that there are no questions in the question set
         $this->assertEmpty($questionSet['data']['questions']['data']);
 
-        self::$questionSetRepository->addQuestions($this->questionSet->id, $questionIds);
+        $this->repository->addQuestions($this->questionSet->id, $questionIds);
 
-        $questionSet = EloquentQuestionSetRepository::transform($this->questionSet->fresh());
+        $questionSet = $this->repository->transform($this->questionSet->fresh());
 
         // Check that the added questions are in the question set
         $this->assertNotEmpty($questionSet['data']['questions']['data']);

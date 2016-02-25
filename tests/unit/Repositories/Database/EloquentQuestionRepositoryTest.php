@@ -8,18 +8,17 @@ use Fce\Repositories\Database\EloquentQuestionRepository;
  */
 class EloquentQuestionRepositoryTest extends TestCase
 {
-    protected static $questionRepository;
+    protected $repository;
 
     protected $question;
-
-    public static function setUpBeforeClass()
-    {
-        self::$questionRepository = new EloquentQuestionRepository;
-    }
 
     public function setUp()
     {
         parent::setUp();
+        $this->repository = new EloquentQuestionRepository(
+            new \Fce\Models\Question,
+            new \Fce\Transformers\QuestionTransformer
+        );
         $this->question = factory(Fce\Models\Question::class)->create();
     }
 
@@ -27,11 +26,11 @@ class EloquentQuestionRepositoryTest extends TestCase
     {
         $questions = factory(Fce\Models\Question::class, 5)->create();
         $questions = array_merge(
-            [EloquentQuestionRepository::transform($this->question)['data']],
-            EloquentQuestionRepository::transform($questions)['data']
+            [$this->repository->transform($this->question)['data']],
+            $this->repository->transform($questions)['data']
         );
 
-        $allQuestions = self::$questionRepository->getQuestions();
+        $allQuestions = $this->repository->getQuestions();
 
         $this->assertCount(count($questions), $allQuestions['data']);
         $this->assertEquals($questions, $allQuestions['data']);
@@ -39,16 +38,16 @@ class EloquentQuestionRepositoryTest extends TestCase
 
     public function testGetQuestionById()
     {
-        $question = self::$questionRepository->getQuestionById($this->question->id);
+        $question = $this->repository->getQuestionById($this->question->id);
 
-        $this->assertEquals(EloquentQuestionRepository::transform($this->question), $question);
+        $this->assertEquals($this->repository->transform($this->question), $question);
     }
 
     public function testCreateQuestion()
     {
         $attributes = factory(Fce\Models\Question::class)->make()->toArray();
 
-        $question = self::$questionRepository->createQuestion($attributes);
+        $question = $this->repository->createQuestion($attributes);
 
         $this->assertArraySubset($attributes, $question['data']);
     }

@@ -10,45 +10,32 @@ use Fce\Repositories\Database\EloquentSectionRepository;
  */
 class EloquentSectionRepositoryTest extends TestCase
 {
-    protected static $sectionRepository;
-
-    /**
-     * The basic models that are needed for all tests
-     */
-    protected $questionSet;
-    protected $question;
-    protected $semester;
-    protected $school;
+    protected $repository;
     protected $section;
     protected $evaluation;
-
-    public static function setUpBeforeClass()
-    {
-        self::$sectionRepository = new EloquentSectionRepository;
-    }
 
     public function setUp()
     {
         parent::setUp();
-        $this->questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $this->question = factory(Fce\Models\Question::class)->create();
-        $this->semester = factory(Fce\Models\Semester::class)->create();
-        $this->school = factory(Fce\Models\School::class)->create();
+        $this->repository = new EloquentSectionRepository(
+            new Section,
+            new \Fce\Transformers\SectionTransformer
+        );
         $this->section = factory(Fce\Models\Section::class)->create();
     }
 
     public function testGetSectionsBySemester()
     {
-        $section = self::$sectionRepository->getSectionsBySemester($this->semester->id);
+        $section = $this->repository->getSectionsBySemester($this->section->semester->id);
 
-        $this->assertEquals(EloquentSectionRepository::transform($this->section)['data'], $section['data'][0]);
+        $this->assertEquals([$this->repository->transform($this->section)['data']], $section['data']);
 
         $semester = factory(Fce\Models\Semester::class)->create();
         $sections = factory(Fce\Models\Section::class, 5)->create([
             'semester_id' => $semester->id
         ]);
-        $sections = EloquentSectionRepository::transform($sections)['data'];
-        $otherSections = self::$sectionRepository->getSectionsBySemester($semester->id);
+        $sections = $this->repository->transform($sections)['data'];
+        $otherSections = $this->repository->getSectionsBySemester($semester->id);
 
         $this->assertCount(count($sections), $otherSections['data']);
         $this->assertEquals($sections, $otherSections['data']);
@@ -59,19 +46,21 @@ class EloquentSectionRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$sectionRepository->getSectionsBySemester(parent::INVALID_ID);
+        $this->repository->getSectionsBySemester(parent::INVALID_ID);
     }
 
     public function testGetSectionsBySemesterAndSchool()
     {
         $semester = factory(Fce\Models\Semester::class)->create();
         $sections = factory(Fce\Models\Section::class, 5)->create([
-            'semester_id' => $semester->id
+            'semester_id' => $semester->id,
+            'school_id' => $this->section->school->id
         ]);
-        $sections = EloquentSectionRepository::transform($sections)['data'];
-        $otherSections = self::$sectionRepository->getSectionsBySemesterAndSchool(
+
+        $sections = $this->repository->transform($sections)['data'];
+        $otherSections = $this->repository->getSectionsBySemesterAndSchool(
             $semester->id,
-            $this->school->id
+            $this->section->school->id
         );
 
         $this->assertCount(count($sections), $otherSections['data']);
@@ -79,11 +68,12 @@ class EloquentSectionRepositoryTest extends TestCase
 
         $school = factory(Fce\Models\School::class)->create();
         $sections = factory(Fce\Models\Section::class, 4)->create([
+            'semester_id' => $this->section->semester->id,
             'school_id' => $school->id
         ]);
-        $sections = EloquentSectionRepository::transform($sections)['data'];
-        $otherSections2 = self::$sectionRepository->getSectionsBySemesterAndSchool(
-            $this->semester->id,
+        $sections = $this->repository->transform($sections)['data'];
+        $otherSections2 = $this->repository->getSectionsBySemesterAndSchool(
+            $this->section->semester->id,
             $school->id
         );
 
@@ -96,51 +86,51 @@ class EloquentSectionRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$sectionRepository->getSectionsBySemesterAndSchool(parent::INVALID_ID, parent::INVALID_ID);
+        $this->repository->getSectionsBySemesterAndSchool(parent::INVALID_ID, parent::INVALID_ID);
     }
 
     public function testGetSectionById()
     {
-        $section = self::$sectionRepository->getSectionById($this->section->id);
+        $section = $this->repository->getSectionById($this->section->id);
 
-        $this->assertEquals(EloquentSectionRepository::transform($this->section), $section);
+        $this->assertEquals($this->repository->transform($this->section), $section);
     }
 
     public function testGetSectionByInvalidId()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$sectionRepository->getSectionById(parent::INVALID_ID);
+        $this->repository->getSectionById(parent::INVALID_ID);
     }
 
     public function testCreateSection()
     {
         $attributes = factory(Fce\Models\Section::class)->make()->toArray();
 
-        $section = self::$sectionRepository->createSection($attributes);
+        $section = $this->repository->createSection($attributes);
 
         $this->assertArraySubset($attributes, $section['data']);
     }
 
     public function testUpdateSection()
     {
-        $attributes = EloquentSectionRepository::transform($this->section);
+        $attributes = $this->repository->transform($this->section);
 
-        self::$sectionRepository->updateSection(
+        $this->repository->updateSection(
             $this->section->id,
             // Random test data to updated the section with
             factory(Fce\Models\Section::class)->make()->toArray()
         );
-        $section = self::$sectionRepository->getSectionById($this->section->id);
+        $section = $this->repository->getSectionById($this->section->id);
 
         $this->assertNotEquals($attributes, $section);
     }
 
     public function testSetSectionStatus()
     {
-        self::$sectionRepository->setSectionStatus($this->section->id, Section::STATUS_OPEN);
+        $this->repository->setSectionStatus($this->section->id, Section::STATUS_OPEN);
 
-        $this->section = self::$sectionRepository->getSectionById($this->section->id);
+        $this->section = $this->repository->getSectionById($this->section->id);
 
         $this->assertEquals(Section::STATUS_OPEN, $this->section['data']['status']);
     }
@@ -149,6 +139,6 @@ class EloquentSectionRepositoryTest extends TestCase
     {
         $this->setExpectedException(\InvalidArgumentException::class);
 
-        self::$sectionRepository->setSectionStatus($this->section->id, 'not_a_status');
+        $this->repository->setSectionStatus($this->section->id, 'not_a_status');
     }
 }

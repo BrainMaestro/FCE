@@ -9,37 +9,34 @@ use Fce\Repositories\Database\EloquentKeyRepository;
  */
 class EloquentKeyRepositoryTest extends TestCase
 {
-    protected static $keyRepository;
+    protected $repository;
 
     protected $section;
     protected $key;
 
-    public static function setUpBeforeClass()
-    {
-        self::$keyRepository = new EloquentKeyRepository;
-    }
-
     public function setUp()
     {
         parent::setUp();
-        factory(Fce\Models\Semester::class)->create();
-        factory(Fce\Models\School::class)->create();
-        $this->section = factory(Fce\Models\Section::class)->create();
+        $this->repository = new EloquentKeyRepository(
+            new \Fce\Models\Key,
+            new \Fce\Transformers\KeyTransformer
+        );
         $this->key = factory(Fce\Models\Key::class)->create();
     }
 
     public function testGetKeysBySection()
     {
-        $key = self::$keyRepository->getKeysBySection($this->section->id);
+        $key = $this->repository->getKeysBySection($this->key->section->id);
 
         $this->assertCount(1, $key['data']);
-        $this->assertEquals([EloquentKeyRepository::transform($this->key)['data']], $key['data']);
+
+        $this->assertEquals([$this->repository->transform($this->key)['data']], $key['data']);
 
         $section = factory(Fce\Models\Section::class)->create();
         $keys = factory(Fce\Models\Key::class, 5)->create(['section_id' => $section->id]);
-        $keys = EloquentKeyRepository::transform($keys)['data'];
+        $keys = $this->repository->transform($keys)['data'];
 
-        $allKeys = self::$keyRepository->getKeysBySection($section->id);
+        $allKeys = $this->repository->getKeysBySection($section->id);
 
         $this->assertCount(count($keys), $allKeys['data']);
         $this->assertEquals($keys, $allKeys['data']);
@@ -47,35 +44,35 @@ class EloquentKeyRepositoryTest extends TestCase
 
     public function testCreateKeys()
     {
-        $keys = self::$keyRepository->createKeys($this->section->toArray());
+        $keys = $this->repository->createKeys($this->key->section->toArray());
 
-        $this->assertCount($this->section->enrolled, $keys);
+        $this->assertCount($this->key->section->enrolled, $keys);
     }
 
     public function testSetGivenOut()
     {
-        $this->assertTrue(self::$keyRepository->setGivenOut($this->key->id));
+        $this->assertTrue($this->repository->setGivenOut($this->key->id));
 
-        $key = EloquentKeyRepository::transform($this->key->fresh());
+        $key = $this->repository->transform($this->key->fresh());
 
         $this->assertTrue($key['data']['given_out']);
     }
 
     public function testSetUsed()
     {
-        $this->assertTrue(self::$keyRepository->setUsed($this->key->id));
+        $this->assertTrue($this->repository->setUsed($this->key->id));
 
-        $key = EloquentKeyRepository::transform($this->key->fresh());
+        $key = $this->repository->transform($this->key->fresh());
 
         $this->assertTrue($key['data']['used']);
     }
 
-    public function testDeletekeys()
+    public function testDeleteKeys()
     {
-        $this->assertTrue(self::$keyRepository->deleteKeys($this->section->id));
+        $this->assertTrue($this->repository->deleteKeys($this->key->section->id));
 
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$keyRepository->getKeysBySection($this->section->toArray()['id']);
+        $this->repository->getKeysBySection($this->key->section->toArray()['id']);
     }
 }

@@ -9,20 +9,17 @@ use Fce\Repositories\Database\EloquentUserRepository;
  */
 class EloquentUserRepositoryTest extends TestCase
 {
-    protected static $userRepository;
-
-    protected $school;
+    protected $repository;
     protected $user;
 
-    public static function setUpBeforeClass()
-    {
-        self::$userRepository = new EloquentUserRepository;
-    }
 
     public function setUp()
     {
         parent::setUp();
-        $this->school = factory(Fce\Models\School::class)->create();
+        $this->repository = new EloquentUserRepository(
+            new \Fce\Models\User,
+            new \Fce\Transformers\UserTransformer
+        );
         $this->user = factory(Fce\Models\User::class)->create();
     }
 
@@ -30,11 +27,11 @@ class EloquentUserRepositoryTest extends TestCase
     {
         $users = factory(Fce\Models\User::class, 4)->create();
         $users = array_merge(
-            [EloquentUserRepository::transform($this->user)['data']],
-            EloquentUserRepository::transform($users)['data']
+            [$this->repository->transform($this->user)['data']],
+            $this->repository->transform($users)['data']
         );
 
-        $allUsers = self::$userRepository->getUsers();
+        $allUsers = $this->repository->getUsers();
 
         $this->assertCount(count($users), $allUsers['data']);
         $this->assertEquals($users, $allUsers['data']);
@@ -46,41 +43,41 @@ class EloquentUserRepositoryTest extends TestCase
         $users = factory(Fce\Models\User::class, 2)->create([
             'school_id' => $school->id,
         ]);
-        $users = EloquentUserRepository::transform($users)['data'];
+        $users = $this->repository->transform($users)['data'];
 
-        $otherUsers = self::$userRepository->getUsersBySchool($school->id);
+        $otherUsers = $this->repository->getUsersBySchool($school->id);
 
         $this->assertCount(count($users), $otherUsers);
         $this->assertEquals($users, $otherUsers['data']);
-        $this->assertNotEquals($users, EloquentUserRepository::transform($this->user)['data']);
+        $this->assertNotEquals($users, $this->repository->transform($this->user)['data']);
     }
 
     public function testGetUsersBySchoolWithInvalidId()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$userRepository->getUsersBySchool(parent::INVALID_ID);
+        $this->repository->getUsersBySchool(parent::INVALID_ID);
     }
 
     public function testGetUsersById()
     {
-        $user = self::$userRepository->getUserById($this->user->id);
+        $user = $this->repository->getUserById($this->user->id);
 
-        $this->assertEquals(EloquentUserRepository::transform($this->user), $user);
+        $this->assertEquals($this->repository->transform($this->user), $user);
     }
 
     public function testGetUserByIdWithInvalidId()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$userRepository->getUserById(parent::INVALID_ID);
+        $this->repository->getUserById(parent::INVALID_ID);
     }
 
     public function testCreateUser()
     {
         $attributes = factory(Fce\Models\User::class)->make()->toArray();
 
-        $user = self::$userRepository->createUser($attributes);
+        $user = $this->repository->createUser($attributes);
 
         $this->assertArraySubset($attributes, $user['data']);
     }
@@ -88,10 +85,10 @@ class EloquentUserRepositoryTest extends TestCase
     public function testUpdateUser()
     {
         $attributes = factory(Fce\Models\User::class)->make()->toArray();
-        $user = EloquentUserRepository::transform($this->user);
+        $user = $this->repository->transform($this->user);
 
-        self::$userRepository->updateUser($this->user->id, $attributes);
-        $this->user = self::$userRepository->getUserById($this->user->id);
+        $this->repository->updateUser($this->user->id, $attributes);
+        $this->user = $this->repository->getUserById($this->user->id);
 
         $this->assertNotEquals($user, $this->user['data']);
         $this->assertArraySubset($attributes, $this->user['data']);
@@ -99,27 +96,27 @@ class EloquentUserRepositoryTest extends TestCase
 
     public function testDeleteUser()
     {
-        $this->assertTrue(self::$userRepository->deleteUser($this->user->id));
+        $this->assertTrue($this->repository->deleteUser($this->user->id));
 
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$userRepository->getUserById($this->user->id);
+        $this->repository->getUserById($this->user->id);
     }
 
     public function testDisableUser()
     {
-        $this->assertTrue(self::$userRepository->disableUser($this->user->id));
+        $this->assertTrue($this->repository->disableUser($this->user->id));
 
-        $user = EloquentUserRepository::transform($this->user->fresh());
+        $user = $this->repository->transform($this->user->fresh());
 
         $this->assertFalse($user['data']['active']);
     }
 
     public function testEnableUser()
     {
-        $this->assertTrue(self::$userRepository->enableUser($this->user->id));
+        $this->assertTrue($this->repository->enableUser($this->user->id));
 
-        $user = EloquentUserRepository::transform($this->user->fresh());
+        $user = $this->repository->transform($this->user->fresh());
 
         $this->assertTrue($user['data']['active']);
     }

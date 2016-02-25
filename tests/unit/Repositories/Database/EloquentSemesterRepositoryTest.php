@@ -1,4 +1,5 @@
 <?php
+use Fce\Repositories\Database\EloquentQuestionSetRepository;
 use Fce\Repositories\Database\EloquentSemesterRepository;
 
 /**
@@ -9,21 +10,23 @@ use Fce\Repositories\Database\EloquentSemesterRepository;
  */
 class EloquentSemesterRepositoryTest extends TestCase
 {
-    protected static $semesterRepository;
-
-    /**
-     * The basic models that are needed for all tests.
-     */
+    protected $repository;
     protected $semester;
-
-    public static function setUpBeforeClass()
-    {
-        self::$semesterRepository = new EloquentSemesterRepository;
-    }
+    protected $questionSetRepository;
 
     public function setUp()
     {
         parent::setUp();
+        $this->repository = new EloquentSemesterRepository(
+            new \Fce\Models\Semester,
+            new \Fce\Transformers\SemesterTransformer
+        );
+
+        $this->questionSetRepository = new EloquentQuestionSetRepository(
+            new \Fce\Models\QuestionSet(),
+            new \Fce\Transformers\QuestionSetTransformer()
+        );
+
         $this->semester = factory(Fce\Models\Semester::class)->create();
     }
 
@@ -31,11 +34,11 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $createdSemesters = factory(Fce\Models\Semester::class, 2)->create();
         $createdSemesters = array_merge(
-            [EloquentSemesterRepository::transform($this->semester)['data']],
-            EloquentSemesterRepository::transform($createdSemesters)['data']
+            [$this->repository->transform($this->semester)['data']],
+            $this->repository->transform($createdSemesters)['data']
         );
 
-        $semesters = self::$semesterRepository->getSemesters();
+        $semesters = $this->repository->getSemesters();
 
         $this->assertCount(count($createdSemesters), $semesters['data']);
         $this->assertEquals($createdSemesters, $semesters['data']);
@@ -44,9 +47,9 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testSetCurrentSemester()
     {
         factory(Fce\Models\Semester::class, 2)->create();
-        $semester = self::$semesterRepository->setCurrentSemester($this->semester->id);
+        $semester = $this->repository->setCurrentSemester($this->semester->id);
 
-        $currentSemester = self::$semesterRepository->getCurrentSemester();
+        $currentSemester = $this->repository->getCurrentSemester();
 
         $this->assertTrue($semester);
         $this->assertEquals($this->semester->id, $currentSemester['data']['id']);
@@ -58,9 +61,9 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testGetCurrentSemester()
     {
         factory(Fce\Models\Semester::class, 2)->create();
-        self::$semesterRepository->setCurrentSemester($this->semester->id);
+        $this->repository->setCurrentSemester($this->semester->id);
 
-        $this->semester = self::$semesterRepository->getCurrentSemester();
+        $this->semester = $this->repository->getCurrentSemester();
 
         $this->assertTrue($this->semester['data']['current_semester']);
     }
@@ -72,14 +75,14 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        self::$semesterRepository->getCurrentSemester();
+        $this->repository->getCurrentSemester();
     }
 
     public function testCreateSemester()
     {
         $attributes = factory(Fce\Models\Semester::class)->make()->toArray();
 
-        $semester = self::$semesterRepository->createSemester($attributes);
+        $semester = $this->repository->createSemester($attributes);
 
         $this->assertArraySubset($attributes, $semester['data']);
     }
@@ -88,20 +91,20 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $types = ['midterm', 'final', 'other'];
         $questionSets = factory(Fce\Models\QuestionSet::class, 3)->create();
-        $questionSets = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform($questionSets)['data'];
+        $questionSets = $this->questionSetRepository->transform($questionSets)['data'];
 
         // Check that there are no questionSets in the semester
         $this->assertEmpty($this->semester->questionSets->toArray());
 
         foreach ($questionSets as $questionSet) {
-            self::$semesterRepository->addQuestionSet(
+            $this->repository->addQuestionSet(
                 $this->semester->id,
                 $questionSet['id'],
                 ['evaluation_type' => array_shift($types)]
             );
         }
 
-        $semesterQuestionSets = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform(
+        $semesterQuestionSets = $this->questionSetRepository->transform(
             $this->semester->fresh()->questionSets
         )['data'];
 
@@ -117,15 +120,15 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testGetQuestionSets()
     {
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $questionSet = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform($questionSet)['data'];
+        $questionSet = $this->questionSetRepository->transform($questionSet)['data'];
 
-        self::$semesterRepository->addQuestionSet(
+        $this->repository->addQuestionSet(
             $this->semester->id,
             $questionSet['id'],
             ['evaluation_type' => 'midterm']
         );
 
-        $semesterQuestionSet = self::$semesterRepository->getQuestionSets($this->semester->id)[0];
+        $semesterQuestionSet = $this->repository->getQuestionSets($this->semester->id)[0];
         $this->assertEquals($questionSet['id'], $semesterQuestionSet['id']);
         $this->assertEquals(['evaluation_type' => 'midterm', 'status' => 'Locked'], $semesterQuestionSet['details']);
     }
@@ -138,20 +141,20 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $status = 'Open';
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $questionSet = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform($questionSet)['data'];
+        $questionSet = $this->questionSetRepository->transform($questionSet)['data'];
 
-        self::$semesterRepository->addQuestionSet(
+        $this->repository->addQuestionSet(
             $this->semester->id,
             $questionSet['id'],
             ['evaluation_type' => 'midterm']
         );
-        self::$semesterRepository->setQuestionSetStatus(
+        $this->repository->setQuestionSetStatus(
             $this->semester->id,
             $questionSet['id'],
             $status
         );
 
-        $semesterQuestionSet = self::$semesterRepository->getQuestionSets($this->semester->id)[0];
+        $semesterQuestionSet = $this->repository->getQuestionSets($this->semester->id)[0];
         $this->assertEquals($status, $semesterQuestionSet['details']['status']);
     }
 }
