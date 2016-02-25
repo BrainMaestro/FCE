@@ -45,11 +45,12 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     /**
      * Get current semester.
      *
+     * @param bool $status
      * @return mixed
      */
-    public function getCurrentSemester()
+    public function getCurrentSemester($status = true)
     {
-        return $this->findBy(['current_semester' => true], 'one');
+        return $this->findBy(['current_semester' => $status], 'one');
     }
 
     /**
@@ -72,5 +73,17 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     public function createSemester(array $attributes)
     {
         return $this->create($attributes);
+    }
+
+    /**
+     * Add question set to the semester.
+     *
+     * @param $id
+     * @param array $questionSetIds
+     * @return array
+     */
+    public function addQuestionSet($id, array $questionSetIds)
+    {
+        return $this->model->findOrFail($id)->questionSets()->attach($questionSetIds);
     }
 }

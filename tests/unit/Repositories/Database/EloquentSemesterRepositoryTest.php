@@ -83,4 +83,26 @@ class EloquentSemesterRepositoryTest extends TestCase
 
         $this->assertArraySubset($attributes, $semester['data']);
     }
+
+    public function testAddQuestionSet()
+    {
+        $questionSets = factory(Fce\Models\QuestionSet::class, 2)->create();
+        $questionSets = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSets)['data'];
+        // Build an array of questionSet ids
+        $questionSetIds = array_map(function($questionSet) {
+            return $questionSet['id'];
+        }, $questionSets);
+
+        // Check that there are no questionSets in the semester
+        $this->assertEmpty($this->semester->questionSets->toArray());
+
+        self::$semesterRepository->addQuestionSet($this->semester->id, $questionSetIds);
+
+        $this->semester = $this->semester->fresh();
+
+        // Check that the added questionSets are in the semester
+        $this->assertNotEmpty($this->semester->questionSets->toArray());
+        $this->assertCount(count($questionSets), $this->semester->questionSets->toArray());
+        $this->assertEquals($questionSets[0]['id'], $this->semester->questionSets->toArray()[0]['id']);
+    }
 }
