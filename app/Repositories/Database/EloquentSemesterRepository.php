@@ -16,26 +16,21 @@ use Fce\Transformers\SemesterTransformer;
 class EloquentSemesterRepository extends Repository implements SemesterRepository
 {
     /**
-     * The transformer registered on the repository.
+     * Create a new repository instance.
      *
-     * @var \League\Fractal\TransformerAbstract
+     * @param Semester $model
+     * @param SemesterTransformer $transformer
      */
-    protected static $transformer = SemesterTransformer::class;
-
-    /**
-     * Get an instance of the registered model.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getModel()
+    public function __construct(Semester $model, SemesterTransformer $transformer)
     {
-        return new Semester();
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**
      * Get all semesters.
      *
-     * @return array
+     * @return mixed
      */
     public function getSemesters()
     {
@@ -44,7 +39,8 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
 
     /**
      * Get current semester.
-     * @return array
+     *
+     * @return mixed
      */
     public function getCurrentSemester()
     {
@@ -67,7 +63,7 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
      * Creates a new semester from the specified attributes.
      *
      * @param array $attributes
-     * @return static
+     * @return array
      */
     public function createSemester(array $attributes)
     {

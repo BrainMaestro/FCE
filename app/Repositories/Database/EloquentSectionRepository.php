@@ -16,24 +16,19 @@ use Fce\Transformers\SectionTransformer;
 class EloquentSectionRepository extends Repository implements SectionRepository
 {
     /**
-     * The transformer registered on the repository.
+     * Create a new repository instance.
      *
-     * @var \League\Fractal\TransformerAbstract
+     * @param Section $model
+     * @param SectionTransformer $transformer
      */
-    protected static $transformer = SectionTransformer::class;
-
-    /**
-     * Get an instance of the registered model
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getModel()
+    public function __construct(Section $model, SectionTransformer $transformer)
     {
-        return new Section;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**
-     * Gets all sections by the semester they belong to
+     * Gets all sections by the semester they belong to.
      *
      * @param $semesterId
      * @return array
@@ -44,7 +39,7 @@ class EloquentSectionRepository extends Repository implements SectionRepository
     }
 
     /**
-     * Gets all sections by the semester and school they belong to
+     * Gets all sections by the semester and school they belong to.
      *
      * @param $semesterId
      * @param $schoolId
@@ -59,10 +54,10 @@ class EloquentSectionRepository extends Repository implements SectionRepository
     }
 
     /**
-     * Get a single section by its id
+     * Get a single section by its id.
      *
      * @param $id
-     * @return mixed
+     * @return array
      */
     public function getSectionById($id)
     {
@@ -70,10 +65,10 @@ class EloquentSectionRepository extends Repository implements SectionRepository
     }
 
     /**
-     * Creates a new section from the specified attributes
+     * Creates a new section from the specified attributes.
      *
      * @param array $attributes
-     * @return static
+     * @return array
      */
     public function createSection(array $attributes)
     {
@@ -81,7 +76,7 @@ class EloquentSectionRepository extends Repository implements SectionRepository
     }
 
     /**
-     * Updates a sections attributes
+     * Updates a section's attributes.
      *
      * @param $id
      * @param array $attributes
@@ -93,7 +88,7 @@ class EloquentSectionRepository extends Repository implements SectionRepository
     }
 
     /**
-     * Changes a sections's status
+     * Changes a sections's status.
      *
      * @param $id
      * @param $status

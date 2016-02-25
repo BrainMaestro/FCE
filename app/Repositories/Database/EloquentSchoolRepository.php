@@ -16,24 +16,19 @@ use Fce\Transformers\SchoolTransformer;
 class EloquentSchoolRepository extends Repository implements SchoolRepository
 {
     /**
-     * The transformer registered on the repository.
+     * Create a new repository instance.
      *
-     * @var \League\Fractal\TransformerAbstract
+     * @param School $model
+     * @param SchoolTransformer $transformer
      */
-    protected static $transformer = SchoolTransformer::class;
-
-    /**
-     * Get an instance of the registered model.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getModel()
+    public function __construct(School $model, SchoolTransformer $transformer)
     {
-        return new School;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**
-     * Get all schools
+     * Get all schools.
      *
      * @return mixed
      */
@@ -43,10 +38,10 @@ class EloquentSchoolRepository extends Repository implements SchoolRepository
     }
 
     /**
-     * Get a single school by its id
+     * Get a single school by its id.
      *
      * @param $id
-     * @return mixed
+     * @return array
      */
     public function getSchoolById($id)
     {
@@ -54,10 +49,10 @@ class EloquentSchoolRepository extends Repository implements SchoolRepository
     }
 
     /**
-     * Creates a new school from the specified attributes
+     * Creates a new school from the specified attributes.
      *
      * @param array $attributes
-     * @return static
+     * @return array
      */
     public function createSchool(array $attributes)
     {
@@ -65,9 +60,11 @@ class EloquentSchoolRepository extends Repository implements SchoolRepository
     }
 
     /**
+     * Update a school's attributes.
+     *
      * @param $id
      * @param array $attributes
-     * @return mixed
+     * @return boolean
      */
     public function updateSchool($id, array $attributes)
     {

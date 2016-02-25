@@ -15,20 +15,15 @@ use Fce\Transformers\QuestionSetTransformer;
 class EloquentQuestionSetRepository extends Repository implements QuestionSetRepository
 {
     /**
-     * The transformer registered on the repository.
+     * Create a new repository instance.
      *
-     * @var \League\Fractal\TransformerAbstract
+     * @param QuestionSet $model
+     * @param QuestionSetTransformer $transformer
      */
-    protected static $transformer = QuestionSetTransformer::class;
-
-    /**
-     * Get an instance of the registered model.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getModel()
+    public function __construct(QuestionSet $model, QuestionSetTransformer $transformer)
     {
-        return new QuestionSet;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**

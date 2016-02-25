@@ -22,30 +22,14 @@ trait Transformable
      *
      * @var \League\Fractal\TransformerAbstract
      */
-    protected static $transformer;
+    protected $transformer;
 
     /**
-     * Get an instance of the registered transformer
-     *
-     * @return \League\Fractal\TransformerAbstract
-     * @throws \Exception
-     */
-    final protected static function getTransformer()
-    {
-        if (!isset(static::$transformer)) {
-            throw new \Exception('The transformer class for the repository must be set in a static variable');
-        }
-
-        // Returns a new instance of the transformer
-        return App::make(static::$transformer);
-    }
-
-    /**
-     * Parses the includes specified in the input
+     * Parses the includes specified in the input.
      *
      * @return Fractal
      */
-    final protected static function setFractal()
+    private static function setFractal()
     {
         $fractalManager = new FractalManager();
         $includes = Input::get('include');
@@ -58,27 +42,27 @@ trait Transformable
     }
 
     /**
-     * Transforms the model
+     * Transforms the provided model.
      *
      * @param $model
      * @return mixed
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
-    final public static function transform($model)
+    public function transform($model)
     {
         $method = self::getTransformMethod($model);
 
-        return self::setFractal()->$method($model, static::getTransformer())->toArray();
+        return self::setFractal()->$method($model, $this->transformer)->toArray();
     }
 
     /**
-     * Gets the transform method based on the type of model being passed
+     * Gets the transform method based on the type of model being passed.
      *
      * @param $model
      * @return string
      * @throws \InvalidArgumentException
      */
-    final protected static function getTransformMethod($model)
+    private static function getTransformMethod($model)
     {
         if ($model instanceof Collection) {
             return 'respondWithCollection';

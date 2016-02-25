@@ -16,20 +16,15 @@ use Fce\Transformers\UserTransformer;
 class EloquentUserRepository extends Repository implements UserRepository
 {
     /**
-     * The transformer registered on the repository.
+     * Create a new repository instance.
      *
-     * @var \League\Fractal\TransformerAbstract
+     * @param User $model
+     * @param UserTransformer $transformer
      */
-    protected static $transformer = UserTransformer::class;
-
-    /**
-     * Get an instance of the registered model.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getModel()
+    public function __construct(User $model, UserTransformer $transformer)
     {
-        return new User;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -70,8 +65,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Create a new user from the specified attributes.
      *
      * @param array $attributes
-     *
-     * @return static
+     * @return array
      */
     public function createUser(array $attributes)
     {
@@ -83,8 +77,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      *
      * @param $id
      * @param array $attributes
-     *
-     * @return static
+     * @return boolean
      */
     public function updateUser($id, array $attributes)
     {
@@ -92,15 +85,14 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Delete a user from the system.
+     * Delete a user to prevent access to the system.
      *
      * @param $id
-     *
-     * @return static
+     * @return boolean
      */
     public function deleteUser($id)
     {
-        return $this->model->findOrFail($id)->delete();
+        return $this->model->findOrFail($id)->delete() == 1;
     }
 
     /**

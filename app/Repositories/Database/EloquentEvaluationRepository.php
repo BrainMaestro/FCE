@@ -15,21 +15,17 @@ use Fce\Transformers\EvaluationTransformer;
 
 class EloquentEvaluationRepository extends Repository implements EvaluationRepository
 {
-    /**
-     * The transformer registered on the repository.
-     *
-     * @var \League\Fractal\TransformerAbstract
-     */
-    protected static $transformer = EvaluationTransformer::class;
 
     /**
-     * Get an instance of the registered model
+     * Create a new repository instance.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @param Evaluation $model
+     * @param EvaluationTransformer $transformer
      */
-    protected function getModel()
+    public function __construct(Evaluation $model, EvaluationTransformer $transformer)
     {
-        return new Evaluation;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**

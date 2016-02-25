@@ -22,24 +22,19 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     const MAX_TRIES = 3;
 
     /**
-     * The transformer registered on the repository.
+     * Create a new repository instance.
      *
-     * @var \League\Fractal\TransformerAbstract
+     * @param Key $model
+     * @param KeyTransformer $transformer
      */
-    protected static $transformer = KeyTransformer::class;
-
-    /**
-     * Get an instance of the registered model
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getModel()
+    public function __construct(Key $model, KeyTransformer $transformer)
     {
-        return new Key;
+        $this->model = $model;
+        $this->transformer = $transformer;
     }
 
     /**
-     * Gets all keys by the section they belong to
+     * Gets all keys by the section they belong to.
      *
      * @param $sectionId
      * @return mixed
@@ -50,7 +45,7 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     }
 
     /**
-     * Create keys for a section
+     * Create keys for a section.
      *
      * @param array $section
      * @return array
@@ -86,10 +81,10 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     }
 
     /**
-     * Set a particular key as given out
+     * Set a particular key as given out.
      *
      * @param $id
-     * @return bool
+     * @return boolean
      */
     public function setGivenOut($id)
     {
@@ -97,10 +92,10 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     }
 
     /**
-     * Set a particular key as used
+     * Set a particular key as used.
      *
      * @param $id
-     * @return bool
+     * @return boolean
      */
     public function setUsed($id)
     {
@@ -108,15 +103,13 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     }
 
     /**
-     * Delete the keys that belong to a section
+     * Delete the keys that belong to a section.
      *
      * @param $sectionId
-     * @return bool
+     * @return boolean
      */
     public function deleteKeys($sectionId)
     {
-        $this->model->where('section_id', $sectionId)->delete();
-
-        return true;
+        return $this->model->where('section_id', $sectionId)->delete() > 0;
     }
 }

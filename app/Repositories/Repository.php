@@ -18,72 +18,58 @@ abstract class Repository
     /**
      * The model registered on the repository.
      *
-     * @var Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 
     /**
-     * Create a new repository instance
-     */
-    public function __construct()
-    {
-        $this->model = $this->getModel();
-    }
-
-    /**
-     * Get an instance of the registered model
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    abstract protected function getModel();
-
-    /**
-     * Create and persist a new model
+     * Create and persist a new model.
      *
      * @param array $attributes
-     * @return static
+     * @return array
      * @throws \Illuminate\Database\QueryException
      */
     protected function create(array $attributes)
     {
-        return self::transform($this->model->create($attributes));
+        return $this->transform($this->model->create($attributes));
     }
 
     /**
-     * Return a paginated list of all the available models
+     * Return a paginated list of all the available models.
      *
      * @param int $limit
      * @param int $page
      * @param array $columns
-     * @return mixed
+     * @return array
      */
     public function all($limit = 15, $page = 1, array $columns = ['*'])
     {
-        return self::transform($this->model->paginate($limit, $columns, 'page', $page));
+        return $this->transform($this->model->paginate($limit, $columns, 'page', $page));
     }
 
     /**
-     * Find a model by its id
+     * Find a model by its id.
      *
      * @param $id
      * @param array $columns
-     * @return mixed
+     * @return array
      * @throws ModelNotFoundException
      */
     protected function find($id, array $columns = ['*'])
     {
-        return self::transform($this->model->findOrFail($id, $columns));
+        return $this->transform($this->model->findOrFail($id, $columns));
     }
 
     /**
-     * Finds and returns one, all or a paginated list of the models with the specified parameters (field and value)
+     * Finds and returns one, all or a paginated list of the models
+     * with the specified parameters (field and value).
      *
      * @param array $params
      * @param int $limit
      * @param int $page
      * @param array $columns
      * @param array $with
-     * @return mixed
+     * @return array
      * @throws ModelNotFoundException
      */
     protected function findBy(array $params, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
@@ -92,7 +78,11 @@ abstract class Repository
         $items = $this->model;
 
         foreach ($params as $field => $value) {
-            $items = $items->where($field, 'like', '%' . $value . '%')->with($with);
+            $items = $items->where($field, 'like', '%' . $value . '%');
+        }
+
+        if (count($with) > 0) {
+            $items = $items->with($with);
         }
 
         // Returns one, all or a paginated list of items
@@ -113,15 +103,15 @@ abstract class Repository
             throw new ModelNotFoundException('Could not find the specified model');
         }
 
-        return self::transform($items);
+        return $this->transform($items);
     }
 
     /**
-     * Update the model in the database
+     * Update the model in the database.
      *
      * @param $id
      * @param array $attributes
-     * @return bool
+     * @return boolean
      * @throws ModelNotFoundException
      */
     protected function update($id, array $attributes)
