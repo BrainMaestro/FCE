@@ -13,7 +13,7 @@ interface SemesterRepository
 
     public function getCurrentSemester();
 
-    public function setCurrentSemester($id);
+    public function setCurrentSemester($id, $status = true);
 
     public function createSemester(array $attributes);
 

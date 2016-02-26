@@ -35,7 +35,7 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     /**
      * Get all semesters.
      *
-     * @return mixed
+     * @return array
      */
     public function getSemesters()
     {
@@ -44,24 +44,23 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
 
     /**
      * Get current semester.
-     *
-     * @param bool $status
-     * @return mixed
+     * @return array
      */
-    public function getCurrentSemester($status = true)
+    public function getCurrentSemester()
     {
-        return $this->findBy(['current_semester' => $status], 'one');
+        return $this->findBy(['current_semester' => true], 'one');
     }
 
     /**
      * Set current semester by its id.
      *
      * @param $id
-     * @return boolean
+     * @param bool $status
+     * @return bool
      */
-    public function setCurrentSemester($id)
+    public function setCurrentSemester($id, $status = true)
     {
-        return $this->update($id, ['current_semester' => true]);
+        return $this->update($id, ['current_semester' => $status]);
     }
 
     /**

@@ -31,7 +31,7 @@ class QuestionSet extends Model
      */
     public function semesters()
     {
-        return $this->belongsToMany(Semester::class)->withPivot(['evaluation_type', 'status']);
+        return $this->belongsToMany(Semester::class)->withPivot(['evaluation_type', 'status'])->withTimestamps();
     }
 
     /**
