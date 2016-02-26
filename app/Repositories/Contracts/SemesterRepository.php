@@ -17,5 +17,5 @@ interface SemesterRepository
 
     public function createSemester(array $attributes);
 
-    public function addQuestionSet($id, array $questionSetIds);
+    public function addQuestionSet($id, array $attributes);
 }

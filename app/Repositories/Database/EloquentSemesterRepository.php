@@ -78,11 +78,11 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
      * Add question set to the semester.
      *
      * @param $id
-     * @param array $questionSetIds
+     * @param array $attributes
      * @return array
      */
-    public function addQuestionSet($id, array $questionSetIds)
+    public function addQuestionSet($id, array $attributes)
     {
-        return $this->model->findOrFail($id)->questionSets()->attach($questionSetIds);
+        return $this->model->findOrFail($id)->questionSets()->attach($attributes);
     }
 }
