@@ -88,7 +88,7 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     }
 
     /**
-     * Get all question sets that belong to a semester and the associated details
+     * Get all question sets that belong to a semester and the associated details.
      *
      * @param $id
      * @return array
@@ -105,5 +105,20 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
 
             return array_except($questionSet, ['pivot', 'created_at', 'updated_at']);
         }, $this->model->findOrFail($id)->questionSets->toArray());
+    }
+
+    /**
+     * Set the status of the semester's question set.
+     *
+     * @param $id
+     * @param $questionSetId
+     * @param $status
+     * @return bool
+     */
+    public function setQuestionSetStatus($id, $questionSetId, $status)
+    {
+        return $this->model->findOrFail($id)->questionSets()->updateExistingPivot(
+            $questionSetId, ['status' => $status]
+        ) != 0;
     }
 }

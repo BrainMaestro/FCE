@@ -129,4 +129,29 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->assertEquals($questionSet['id'], $semesterQuestionSet['id']);
         $this->assertEquals(['evaluation_type' => 'midterm', 'status' => 'Locked'], $semesterQuestionSet['details']);
     }
+
+    /**
+     * @depends testAddQuestionSet
+     * @depends testGetQuestionSets
+     */
+    public function testSetQuestionSetStatus()
+    {
+        $status = 'Open';
+        $questionSet = factory(Fce\Models\QuestionSet::class)->create();
+        $questionSet = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSet)['data'];
+
+        self::$semesterRepository->addQuestionSet(
+            $this->semester->id,
+            $questionSet['id'],
+            ['evaluation_type' => 'midterm']
+        );
+        self::$semesterRepository->setQuestionSetStatus(
+            $this->semester->id,
+            $questionSet['id'],
+            $status
+        );
+
+        $semesterQuestionSet = self::$semesterRepository->getQuestionSets($this->semester->id)[0];
+        $this->assertEquals($status, $semesterQuestionSet['details']['status']);
+    }
 }

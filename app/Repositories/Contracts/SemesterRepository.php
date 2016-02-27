@@ -20,4 +20,6 @@ interface SemesterRepository
     public function addQuestionSet($id, $questionSetId, array $attributes);
 
     public function getQuestionSets($id);
+
+    public function setQuestionSetStatus($id, $questionSetId, $status);
 }
