@@ -86,4 +86,24 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     {
         return $this->model->findOrFail($id)->questionSets()->attach($questionSetId, $attributes);
     }
+
+    /**
+     * Get all question sets that belong to a semester and the associated details
+     *
+     * @param $id
+     * @return array
+     */
+    public function getQuestionSets($id)
+    {
+        return array_map(function ($questionSet) {
+            $questionSet['details'] = array_except($questionSet['pivot'], [
+                'semester_id',
+                'question_set_id',
+                'created_at',
+                'updated_at'
+            ]);
+
+            return array_except($questionSet, ['pivot', 'created_at', 'updated_at']);
+        }, $this->model->findOrFail($id)->questionSets->toArray());
+    }
 }

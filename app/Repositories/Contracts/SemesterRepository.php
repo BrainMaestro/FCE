@@ -18,4 +18,6 @@ interface SemesterRepository
     public function createSemester(array $attributes);
 
     public function addQuestionSet($id, $questionSetId, array $attributes);
+
+    public function getQuestionSets($id);
 }

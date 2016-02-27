@@ -110,4 +110,23 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->assertCount(count($questionSets), $semesterQuestionSets);
         $this->assertEquals($questionSets, $semesterQuestionSets);
     }
+
+    /**
+     * @depends testAddQuestionSet
+     */
+    public function testGetQuestionSets()
+    {
+        $questionSet = factory(Fce\Models\QuestionSet::class)->create();
+        $questionSet = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSet)['data'];
+
+        self::$semesterRepository->addQuestionSet(
+            $this->semester->id,
+            $questionSet['id'],
+            ['evaluation_type' => 'midterm']
+        );
+
+        $semesterQuestionSet = self::$semesterRepository->getQuestionSets($this->semester->id)[0];
+        $this->assertEquals($questionSet['id'], $semesterQuestionSet['id']);
+        $this->assertEquals(['evaluation_type' => 'midterm', 'status' => 'Locked'], $semesterQuestionSet['details']);
+    }
 }
