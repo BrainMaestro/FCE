@@ -13,7 +13,7 @@ use Fce\Repositories\Contracts\QuestionRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\QuestionTransformer;
 
-class SQLQuestionRepository extends Repository implements QuestionRepository
+class EloquentQuestionRepository extends Repository implements QuestionRepository
 {
     /**
      * The transformer registered on the repository.

@@ -12,7 +12,7 @@ use Fce\Repositories\Contracts\QuestionSetRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\QuestionSetTransformer;
 
-class SQLQuestionSetRepository extends Repository implements QuestionSetRepository
+class EloquentQuestionSetRepository extends Repository implements QuestionSetRepository
 {
     /**
      * The transformer registered on the repository.

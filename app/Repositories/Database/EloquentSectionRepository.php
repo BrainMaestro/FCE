@@ -13,7 +13,7 @@ use Fce\Repositories\Repository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Transformers\SectionTransformer;
 
-class SQLSectionRepository extends Repository implements SectionRepository
+class EloquentSectionRepository extends Repository implements SectionRepository
 {
     /**
      * The transformer registered on the repository.

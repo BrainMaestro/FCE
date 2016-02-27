@@ -1,12 +1,12 @@
 <?php
-use Fce\Repositories\Database\SQLQuestionRepository;
+use Fce\Repositories\Database\EloquentQuestionRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 21/2/2016
  * Time: 8:13 PM
  */
-class SQLQuestionRepositoryTest extends TestCase
+class EloquentQuestionRepositoryTest extends TestCase
 {
     protected static $questionRepository;
 
@@ -14,7 +14,7 @@ class SQLQuestionRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$questionRepository = new SQLQuestionRepository;
+        self::$questionRepository = new EloquentQuestionRepository;
     }
 
     public function setUp()
@@ -27,8 +27,8 @@ class SQLQuestionRepositoryTest extends TestCase
     {
         $questions = factory(Fce\Models\Question::class, 5)->create();
         $questions = array_merge(
-            [SQLQuestionRepository::transform($this->question)['data']],
-            SQLQuestionRepository::transform($questions)['data']
+            [EloquentQuestionRepository::transform($this->question)['data']],
+            EloquentQuestionRepository::transform($questions)['data']
         );
 
         $allQuestions = self::$questionRepository->getQuestions();
@@ -41,7 +41,7 @@ class SQLQuestionRepositoryTest extends TestCase
     {
         $question = self::$questionRepository->getQuestionById($this->question->id);
 
-        $this->assertEquals(SQLQuestionRepository::transform($this->question), $question);
+        $this->assertEquals(EloquentQuestionRepository::transform($this->question), $question);
     }
 
     public function testCreateQuestion()

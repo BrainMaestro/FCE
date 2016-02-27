@@ -1,13 +1,13 @@
 <?php
 
-use Fce\Repositories\Database\SQLEvaluationRepository;
+use Fce\Repositories\Database\EloquentEvaluationRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 12/2/2016
  * Time: 11:16 PM
  */
-class SQLEvaluationRepositoryTest extends TestCase
+class EloquentEvaluationRepositoryTest extends TestCase
 {
     protected static $evaluationRepository;
 
@@ -23,7 +23,7 @@ class SQLEvaluationRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$evaluationRepository = new SQLEvaluationRepository;
+        self::$evaluationRepository = new EloquentEvaluationRepository;
     }
 
     public function setUp()
@@ -43,7 +43,7 @@ class SQLEvaluationRepositoryTest extends TestCase
         $createdEvaluations = factory(Fce\Models\Evaluation::class, 5)->create([
             'question_set_id' => $questionSet->id
         ]);
-        $createdEvaluations = SQLEvaluationRepository::transform($createdEvaluations)['data'];
+        $createdEvaluations = EloquentEvaluationRepository::transform($createdEvaluations)['data'];
 
         $evaluations = self::$evaluationRepository->getEvaluationsBySectionAndQuestionSet(
             $this->section->id,
@@ -70,7 +70,7 @@ class SQLEvaluationRepositoryTest extends TestCase
         );
 
         $this->assertCount(1, $evaluation);
-        $this->assertEquals(SQLEvaluationRepository::transform($this->evaluation), $evaluation);
+        $this->assertEquals(EloquentEvaluationRepository::transform($this->evaluation), $evaluation);
 
         $question = factory(Fce\Models\Question::class)->create();
         $this->evaluation = factory(Fce\Models\Evaluation::class)->create([
@@ -84,7 +84,7 @@ class SQLEvaluationRepositoryTest extends TestCase
         );
 
         $this->assertCount(1, $otherEvaluation);
-        $this->assertEquals(SQLEvaluationRepository::transform($this->evaluation), $otherEvaluation);
+        $this->assertEquals(EloquentEvaluationRepository::transform($this->evaluation), $otherEvaluation);
         $this->assertNotEquals($evaluation, $otherEvaluation);
 
     }

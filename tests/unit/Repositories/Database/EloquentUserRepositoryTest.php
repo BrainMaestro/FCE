@@ -1,13 +1,13 @@
 <?php
 
-use Fce\Repositories\Database\SQLUserRepository;
+use Fce\Repositories\Database\EloquentUserRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 16/2/2016
  * Time: 10:08 PM
  */
-class SQLUserRepositoryTest extends TestCase
+class EloquentUserRepositoryTest extends TestCase
 {
     protected static $userRepository;
 
@@ -16,7 +16,7 @@ class SQLUserRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$userRepository = new SQLUserRepository;
+        self::$userRepository = new EloquentUserRepository;
     }
 
     public function setUp()
@@ -30,8 +30,8 @@ class SQLUserRepositoryTest extends TestCase
     {
         $users = factory(Fce\Models\User::class, 4)->create();
         $users = array_merge(
-            [SQLUserRepository::transform($this->user)['data']],
-            SQLUserRepository::transform($users)['data']
+            [EloquentUserRepository::transform($this->user)['data']],
+            EloquentUserRepository::transform($users)['data']
         );
 
         $allUsers = self::$userRepository->getUsers();
@@ -46,13 +46,13 @@ class SQLUserRepositoryTest extends TestCase
         $users = factory(Fce\Models\User::class, 2)->create([
             'school_id' => $school->id
         ]);
-        $users = SQLUserRepository::transform($users)['data'];
+        $users = EloquentUserRepository::transform($users)['data'];
 
         $otherUsers = self::$userRepository->getUsersBySchool($school->id);
 
         $this->assertCount(count($users), $otherUsers);
         $this->assertEquals($users, $otherUsers['data']);
-        $this->assertNotEquals($users, SQLUserRepository::transform($this->user)['data']);
+        $this->assertNotEquals($users, EloquentUserRepository::transform($this->user)['data']);
     }
 
     public function testGetUsersBySchoolWithInvalidId()
@@ -66,7 +66,7 @@ class SQLUserRepositoryTest extends TestCase
     {
         $user = self::$userRepository->getUserById($this->user->id);
 
-        $this->assertEquals(SQLUserRepository::transform($this->user), $user);
+        $this->assertEquals(EloquentUserRepository::transform($this->user), $user);
     }
 
     public function testGetUserByIdWithInvalidId()
@@ -88,7 +88,7 @@ class SQLUserRepositoryTest extends TestCase
     public function testUpdateUser()
     {
         $attributes = factory(Fce\Models\User::class)->make()->toArray();
-        $user = SQLUserRepository::transform($this->user);
+        $user = EloquentUserRepository::transform($this->user);
 
         self::$userRepository->updateUser($this->user->id, $attributes);
         $this->user = self::$userRepository->getUserById($this->user->id);

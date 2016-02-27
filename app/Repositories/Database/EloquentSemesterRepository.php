@@ -13,7 +13,7 @@ use Fce\Repositories\Contracts\SemesterRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\SemesterTransformer;
 
-class SQLSemesterRepository extends Repository implements SemesterRepository
+class EloquentSemesterRepository extends Repository implements SemesterRepository
 {
     /**
      * The transformer registered on the repository.

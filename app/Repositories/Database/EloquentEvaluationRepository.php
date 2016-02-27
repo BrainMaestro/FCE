@@ -13,7 +13,7 @@ use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\EvaluationTransformer;
 
-class SQLEvaluationRepository extends Repository implements EvaluationRepository
+class EloquentEvaluationRepository extends Repository implements EvaluationRepository
 {
     /**
      * The transformer registered on the repository.

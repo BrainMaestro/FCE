@@ -14,7 +14,7 @@ use Fce\Transformers\KeyTransformer;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
-class SQLKeyRepository extends Repository implements KeyRepository
+class EloquentKeyRepository extends Repository implements KeyRepository
 {
     /**
      * Maximum number of tries allowed for failing key creation

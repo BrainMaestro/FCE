@@ -13,7 +13,7 @@ use Fce\Repositories\Contracts\SchoolRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\SchoolTransformer;
 
-class SQLSchoolRepository extends Repository implements SchoolRepository
+class EloquentSchoolRepository extends Repository implements SchoolRepository
 {
     /**
      * The transformer registered on the repository.

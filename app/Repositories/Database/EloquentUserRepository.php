@@ -13,7 +13,7 @@ use Fce\Repositories\Repository;
 use Fce\Repositories\Contracts\UserRepository;
 use Fce\Transformers\UserTransformer;
 
-class SQLUserRepository extends Repository implements UserRepository
+class EloquentUserRepository extends Repository implements UserRepository
 {
     /**
      * The transformer registered on the repository.

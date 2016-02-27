@@ -1,13 +1,13 @@
 <?php
 
-use Fce\Repositories\Database\SQLKeyRepository;
+use Fce\Repositories\Database\EloquentKeyRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 19/2/2016
  * Time: 8:14 PM
  */
-class SQLKeyRepositoryTest extends TestCase
+class EloquentKeyRepositoryTest extends TestCase
 {
     protected static $keyRepository;
 
@@ -16,7 +16,7 @@ class SQLKeyRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$keyRepository = new SQLKeyRepository;
+        self::$keyRepository = new EloquentKeyRepository;
     }
 
     public function setUp()
@@ -33,11 +33,11 @@ class SQLKeyRepositoryTest extends TestCase
         $key = self::$keyRepository->getKeysBySection($this->section->id);
 
         $this->assertCount(1, $key['data']);
-        $this->assertEquals([SQLKeyRepository::transform($this->key)['data']], $key['data']);
+        $this->assertEquals([EloquentKeyRepository::transform($this->key)['data']], $key['data']);
 
         $section = factory(Fce\Models\Section::class)->create();
         $keys = factory(Fce\Models\Key::class, 5)->create(['section_id' => $section->id]);
-        $keys = SQLKeyRepository::transform($keys)['data'];
+        $keys = EloquentKeyRepository::transform($keys)['data'];
 
         $allKeys = self::$keyRepository->getKeysBySection($section->id);
 
@@ -56,7 +56,7 @@ class SQLKeyRepositoryTest extends TestCase
     {
         $this->assertTrue(self::$keyRepository->setGivenOut($this->key->id));
 
-        $key = SQLKeyRepository::transform($this->key->fresh());
+        $key = EloquentKeyRepository::transform($this->key->fresh());
 
         $this->assertTrue($key['data']['given_out']);
     }
@@ -65,7 +65,7 @@ class SQLKeyRepositoryTest extends TestCase
     {
         $this->assertTrue(self::$keyRepository->setUsed($this->key->id));
 
-        $key = SQLKeyRepository::transform($this->key->fresh());
+        $key = EloquentKeyRepository::transform($this->key->fresh());
 
         $this->assertTrue($key['data']['used']);
     }

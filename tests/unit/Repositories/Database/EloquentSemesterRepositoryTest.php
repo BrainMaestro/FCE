@@ -1,5 +1,5 @@
 <?php
-use Fce\Repositories\Database\SQLSemesterRepository;
+use Fce\Repositories\Database\EloquentSemesterRepository;
 
 /**
  * Created by PhpStorm.
@@ -7,7 +7,7 @@ use Fce\Repositories\Database\SQLSemesterRepository;
  * Date: 2/22/2016
  * Time: 8:12 PM
  */
-class SQLSemesterRepositoryTest extends TestCase
+class EloquentSemesterRepositoryTest extends TestCase
 {
     protected static $semesterRepository;
 
@@ -18,7 +18,7 @@ class SQLSemesterRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$semesterRepository = new SQLSemesterRepository;
+        self::$semesterRepository = new EloquentSemesterRepository;
     }
 
     public function setUp()
@@ -31,8 +31,8 @@ class SQLSemesterRepositoryTest extends TestCase
     {
         $createdSemesters = factory(Fce\Models\Semester::class, 2)->create();
         $createdSemesters = array_merge(
-            [SQLSemesterRepository::transform($this->semester)['data']],
-            SQLSemesterRepository::transform($createdSemesters)['data']
+            [EloquentSemesterRepository::transform($this->semester)['data']],
+            EloquentSemesterRepository::transform($createdSemesters)['data']
         );
 
         $semesters = self::$semesterRepository->getSemesters();

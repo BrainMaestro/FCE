@@ -1,14 +1,14 @@
 <?php
 
 use Fce\Models\Section;
-use Fce\Repositories\Database\SQLSectionRepository;
+use Fce\Repositories\Database\EloquentSectionRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 14/2/2016
  * Time: 7:27 PM
  */
-class SQLSectionRepositoryTest extends TestCase
+class EloquentSectionRepositoryTest extends TestCase
 {
     protected static $sectionRepository;
 
@@ -24,7 +24,7 @@ class SQLSectionRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$sectionRepository = new SQLSectionRepository;
+        self::$sectionRepository = new EloquentSectionRepository;
     }
 
     public function setUp()
@@ -41,13 +41,13 @@ class SQLSectionRepositoryTest extends TestCase
     {
         $section = self::$sectionRepository->getSectionsBySemester($this->semester->id);
 
-        $this->assertEquals(SQLSectionRepository::transform($this->section)['data'], $section['data'][0]);
+        $this->assertEquals(EloquentSectionRepository::transform($this->section)['data'], $section['data'][0]);
 
         $semester = factory(Fce\Models\Semester::class)->create();
         $sections = factory(Fce\Models\Section::class, 5)->create([
             'semester_id' => $semester->id
         ]);
-        $sections = SQLSectionRepository::transform($sections)['data'];
+        $sections = EloquentSectionRepository::transform($sections)['data'];
         $otherSections = self::$sectionRepository->getSectionsBySemester($semester->id);
 
         $this->assertCount(count($sections), $otherSections['data']);
@@ -68,7 +68,7 @@ class SQLSectionRepositoryTest extends TestCase
         $sections = factory(Fce\Models\Section::class, 5)->create([
             'semester_id' => $semester->id
         ]);
-        $sections = SQLSectionRepository::transform($sections)['data'];
+        $sections = EloquentSectionRepository::transform($sections)['data'];
         $otherSections = self::$sectionRepository->getSectionsBySemesterAndSchool(
             $semester->id,
             $this->school->id
@@ -81,7 +81,7 @@ class SQLSectionRepositoryTest extends TestCase
         $sections = factory(Fce\Models\Section::class, 4)->create([
             'school_id' => $school->id
         ]);
-        $sections = SQLSectionRepository::transform($sections)['data'];
+        $sections = EloquentSectionRepository::transform($sections)['data'];
         $otherSections2 = self::$sectionRepository->getSectionsBySemesterAndSchool(
             $this->semester->id,
             $school->id
@@ -103,7 +103,7 @@ class SQLSectionRepositoryTest extends TestCase
     {
         $section = self::$sectionRepository->getSectionById($this->section->id);
 
-        $this->assertEquals(SQLSectionRepository::transform($this->section), $section);
+        $this->assertEquals(EloquentSectionRepository::transform($this->section), $section);
     }
 
     public function testGetSectionByInvalidId()
@@ -124,7 +124,7 @@ class SQLSectionRepositoryTest extends TestCase
 
     public function testUpdateSection()
     {
-        $attributes = SQLSectionRepository::transform($this->section);
+        $attributes = EloquentSectionRepository::transform($this->section);
 
         self::$sectionRepository->updateSection(
             $this->section->id,

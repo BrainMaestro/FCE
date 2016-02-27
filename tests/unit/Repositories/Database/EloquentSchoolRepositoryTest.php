@@ -1,12 +1,12 @@
 <?php
-use Fce\Repositories\Database\SQLSchoolRepository;
+use Fce\Repositories\Database\EloquentSchoolRepository;
 
 /**
  * Created by BrainMaestro.
  * Date: 2/18/16
  * Time: 3:59 PM
  */
-class SQLSchoolRepositoryTest extends TestCase
+class EloquentSchoolRepositoryTest extends TestCase
 {
     protected static $schoolRepository;
 
@@ -17,7 +17,7 @@ class SQLSchoolRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$schoolRepository = new SQLSchoolRepository;
+        self::$schoolRepository = new EloquentSchoolRepository;
     }
 
     public function setUp()
@@ -30,8 +30,8 @@ class SQLSchoolRepositoryTest extends TestCase
     {
         $createdSchools = factory(Fce\Models\School::class, 2)->create();
         $createdSchools = array_merge(
-            [SQLSchoolRepository::transform($this->school)['data']],
-            SQLSchoolRepository::transform($createdSchools)['data']
+            [EloquentSchoolRepository::transform($this->school)['data']],
+            EloquentSchoolRepository::transform($createdSchools)['data']
         );
 
         $schools = self::$schoolRepository->getSchools();
@@ -44,7 +44,7 @@ class SQLSchoolRepositoryTest extends TestCase
     {
         $school = self::$schoolRepository->getSchoolById($this->school->id);
 
-        $this->assertEquals(SQLSchoolRepository::transform($this->school), $school);
+        $this->assertEquals(EloquentSchoolRepository::transform($this->school), $school);
     }
 
     public function testGetSchoolByIdWithInvalidId()
@@ -57,7 +57,7 @@ class SQLSchoolRepositoryTest extends TestCase
     public function testUpdateSchool()
     {
         $attributes = factory(Fce\Models\School::class)->make()->toArray();
-        $school = SQLSchoolRepository::transform($this->school);
+        $school = EloquentSchoolRepository::transform($this->school);
 
         self::$schoolRepository->updateSchool($this->school->id, $attributes);
         $this->school = self::$schoolRepository->getSchoolById($this->school->id);
