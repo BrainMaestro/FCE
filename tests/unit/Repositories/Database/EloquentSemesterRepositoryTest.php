@@ -86,26 +86,28 @@ class EloquentSemesterRepositoryTest extends TestCase
 
     public function testAddQuestionSet()
     {
-        $questionSets = factory(Fce\Models\QuestionSet::class, 2)->create();
+        $types = ['midterm', 'final', 'other'];
+        $questionSets = factory(Fce\Models\QuestionSet::class, 3)->create();
         $questionSets = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSets)['data'];
-
-        // Build an array of questionSet ids
-        $attributes = [];
-        $type = ['midterm', 'final'];
-        $status = ['Locked', 'Open', 'Done'];
-        for ($i = 0; $i < count($questionSets); $i++)
-        {
-            $attributes[$questionSets[$i]['id']] = ['evaluation_type' => array_pop($type), 'status' => array_pop($status)];
-        }
 
         // Check that there are no questionSets in the semester
         $this->assertEmpty($this->semester->questionSets->toArray());
 
-        self::$semesterRepository->addQuestionSet($this->semester->id, $attributes);
+        foreach ($questionSets as $questionSet) {
+            self::$semesterRepository->addQuestionSet(
+                $this->semester->id,
+                $questionSet['id'],
+                ['evaluation_type' => array_shift($types)]
+            );
+        }
 
-        $this->semester = $this->semester->fresh();
+        $semesterQuestionSets = \Fce\Repositories\Database\SQLQuestionSetRepository::transform(
+            $this->semester->fresh()->questionSets
+        )['data'];
+
         // Check that the added questionSets are in the semester
-        $this->assertNotEmpty($this->semester->questionSets->toArray());
-        $this->assertCount(count($questionSets), $this->semester->questionSets->toArray());
+        $this->assertNotEmpty($semesterQuestionSets);
+        $this->assertCount(count($questionSets), $semesterQuestionSets);
+        $this->assertEquals($questionSets, $semesterQuestionSets);
     }
 }
