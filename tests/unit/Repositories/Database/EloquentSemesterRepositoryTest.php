@@ -88,7 +88,7 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $types = ['midterm', 'final', 'other'];
         $questionSets = factory(Fce\Models\QuestionSet::class, 3)->create();
-        $questionSets = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSets)['data'];
+        $questionSets = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform($questionSets)['data'];
 
         // Check that there are no questionSets in the semester
         $this->assertEmpty($this->semester->questionSets->toArray());
@@ -101,7 +101,7 @@ class EloquentSemesterRepositoryTest extends TestCase
             );
         }
 
-        $semesterQuestionSets = \Fce\Repositories\Database\SQLQuestionSetRepository::transform(
+        $semesterQuestionSets = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform(
             $this->semester->fresh()->questionSets
         )['data'];
 
@@ -117,7 +117,7 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testGetQuestionSets()
     {
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $questionSet = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSet)['data'];
+        $questionSet = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform($questionSet)['data'];
 
         self::$semesterRepository->addQuestionSet(
             $this->semester->id,
@@ -138,7 +138,7 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $status = 'Open';
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $questionSet = \Fce\Repositories\Database\SQLQuestionSetRepository::transform($questionSet)['data'];
+        $questionSet = \Fce\Repositories\Database\EloquentQuestionSetRepository::transform($questionSet)['data'];
 
         self::$semesterRepository->addQuestionSet(
             $this->semester->id,
