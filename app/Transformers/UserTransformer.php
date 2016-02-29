@@ -32,7 +32,7 @@ class UserTransformer extends TransformerAbstract
             'name' => $user->name,
             'email' => $user->email,
             'school_id' => (int) $user->school->id,
-            'disabled' => (boolean) $user->disabled,
+            'active' => (boolean) $user->active,
         ];
     }
 

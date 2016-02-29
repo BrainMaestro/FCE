@@ -38,7 +38,7 @@ class User extends Model implements
         'email',
         'password',
         'school_id',
-        'disabled',
+        'active',
     ];
 
     /**

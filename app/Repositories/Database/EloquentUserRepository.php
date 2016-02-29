@@ -112,7 +112,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      */
     public function disableUser($id)
     {
-        return $this->update($id, ['disabled' => true]);
+        return $this->update($id, ['active' => false]);
     }
     /**
      * Enables user access to the system.
@@ -123,6 +123,6 @@ class EloquentUserRepository extends Repository implements UserRepository
      */
     public function enableUser($id)
     {
-        return $this->update($id, ['disabled' => false]);
+        return $this->update($id, ['active' => true]);
     }
 }

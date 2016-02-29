@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->unsignedInteger('school_id');
-            $table->boolean('disabled')->default(false);
+            $table->boolean('active')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

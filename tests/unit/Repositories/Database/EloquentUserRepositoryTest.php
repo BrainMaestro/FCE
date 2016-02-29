@@ -112,7 +112,7 @@ class EloquentUserRepositoryTest extends TestCase
 
         $user = EloquentUserRepository::transform($this->user->fresh());
 
-        $this->assertTrue($user['data']['disabled']);
+        $this->assertFalse($user['data']['active']);
     }
 
     public function testEnableUser()
@@ -121,6 +121,6 @@ class EloquentUserRepositoryTest extends TestCase
 
         $user = EloquentUserRepository::transform($this->user->fresh());
 
-        $this->assertFalse($user['data']['disabled']);
+        $this->assertTrue($user['data']['active']);
     }
 }
