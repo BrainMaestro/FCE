@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
 /**
- * Class User
- * @package App
+ * Class User.
  */
 class User extends Model implements
     AuthenticatableContract,
@@ -39,6 +38,7 @@ class User extends Model implements
         'email',
         'password',
         'school_id',
+        'disabled',
     ];
 
     /**
@@ -50,7 +50,7 @@ class User extends Model implements
 
     /**
      * The User relationship to Role
-     * A user can have many roles
+     * A user can have many roles.
      */
     public function roles()
     {
@@ -59,7 +59,8 @@ class User extends Model implements
 
     /**
      * The User relationship to School
-     * A user can have one school
+     * A user can have one school.
+     *
      * @return mixed
      */
     public function school()
@@ -69,7 +70,7 @@ class User extends Model implements
 
     /**
      * The User relationship to Section
-     * A user can have many sections
+     * A user can have many sections.
      */
     public function sections()
     {

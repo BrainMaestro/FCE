@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Maestro
  * Date: 9/2/2016
- * Time: 11:37 PM
+ * Time: 11:37 PM.
  */
-
 namespace Fce\Repositories\Contracts;
 
 interface UserRepository
@@ -21,4 +21,8 @@ interface UserRepository
     public function updateUser($id, array $attributes);
 
     public function deleteUser($id);
+
+    public function disableUser($id);
+
+    public function enableUser($id);
 }

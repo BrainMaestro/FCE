@@ -5,7 +5,7 @@ use Fce\Repositories\Database\EloquentUserRepository;
 /**
  * Created by BrainMaestro
  * Date: 16/2/2016
- * Time: 10:08 PM
+ * Time: 10:08 PM.
  */
 class EloquentUserRepositoryTest extends TestCase
 {
@@ -16,7 +16,7 @@ class EloquentUserRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$userRepository = new EloquentUserRepository;
+        self::$userRepository = new EloquentUserRepository();
     }
 
     public function setUp()
@@ -44,7 +44,7 @@ class EloquentUserRepositoryTest extends TestCase
     {
         $school = factory(Fce\Models\School::class)->create();
         $users = factory(Fce\Models\User::class, 2)->create([
-            'school_id' => $school->id
+            'school_id' => $school->id,
         ]);
         $users = EloquentUserRepository::transform($users)['data'];
 
@@ -104,5 +104,23 @@ class EloquentUserRepositoryTest extends TestCase
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
         self::$userRepository->getUserById($this->user->id);
+    }
+
+    public function testDisableUser()
+    {
+        $this->assertTrue(self::$userRepository->disableUser($this->user->id));
+
+        $user = EloquentUserRepository::transform($this->user->fresh());
+
+        $this->assertTrue($user['data']['disabled']);
+    }
+
+    public function testenableUser()
+    {
+        $this->assertTrue(self::$userRepository->enableUser($this->user->id));
+
+        $user = EloquentUserRepository::transform($this->user->fresh());
+
+        $this->assertFalse($user['data']['disabled']);
     }
 }

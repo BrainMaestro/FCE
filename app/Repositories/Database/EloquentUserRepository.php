@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/29/2015
- * Time: 7:51 PM
+ * Time: 7:51 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\User;
@@ -23,17 +23,17 @@ class EloquentUserRepository extends Repository implements UserRepository
     protected static $transformer = UserTransformer::class;
 
     /**
-     * Get an instance of the registered model
+     * Get an instance of the registered model.
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
     protected function getModel()
     {
-        return new User;
+        return new User();
     }
 
     /**
-     * Get a paginated list of all users
+     * Get a paginated list of all users.
      *
      * @return array
      */
@@ -43,9 +43,10 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Get all users that belong to a particular school
+     * Get all users that belong to a particular school.
      *
      * @param $schoolId
+     *
      * @return array
      */
     public function getUsersBySchool($schoolId)
@@ -54,9 +55,10 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Get a single section by its id
+     * Get a single section by its id.
      *
      * @param $id
+     *
      * @return array
      */
     public function getUserById($id)
@@ -65,9 +67,10 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Create a new user from the specified attributes
+     * Create a new user from the specified attributes.
      *
      * @param array $attributes
+     *
      * @return static
      */
     public function createUser(array $attributes)
@@ -76,10 +79,11 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Update a user's attributes
+     * Update a user's attributes.
      *
      * @param $id
      * @param array $attributes
+     *
      * @return static
      */
     public function updateUser($id, array $attributes)
@@ -88,13 +92,37 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Delete a user to prevent access to the system
+     * Delete a user to prevent access to the system.
      *
      * @param $id
+     *
      * @return static
      */
     public function deleteUser($id)
     {
         return $this->model->findOrFail($id)->delete();
+    }
+
+    /**
+     * Disables user to prevent access to the system.
+     * 
+     * @param $id [id of the the user to be disabled]
+     * 
+     * @return bool
+     */
+    public function disableUser($id)
+    {
+        return $this->update($id, ['disabled' => true]);
+    }
+    /**
+     * Enables user access to the system.
+     * 
+     * @param $id [id of the the user to be disabled]
+     * 
+     * @return bool
+     */
+    public function enableUser($id)
+    {
+        return $this->update($id, ['disabled' => false]);
     }
 }
