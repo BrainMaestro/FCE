@@ -15,7 +15,7 @@ class EloquentSchoolRepositoryTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repository = new SQLSchoolRepository(
+        $this->repository = new EloquentSchoolRepository(
             new \Fce\Models\School,
             new \Fce\Transformers\SchoolTransformer
         );
