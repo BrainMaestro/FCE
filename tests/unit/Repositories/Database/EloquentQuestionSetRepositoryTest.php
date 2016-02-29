@@ -61,10 +61,10 @@ class EloquentQuestionSetRepositoryTest extends TestCase
         );
         $questions = $questionRepository->transform($questions)['data'];
 
-        // Build an array of question ids
-        $questionIds = array_map(function($question) {
-            return $question['id'];
-        }, $questions);
+        // Build an array of question ids and their position
+        for ($i = 0, $questionIds = []; $i < count($questions);) {
+            $questionIds[$questions[$i]['id']] = ['position' => ++$i];
+        }
 
         $questionSet = $this->repository->transform($this->questionSet);
 

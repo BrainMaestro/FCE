@@ -15,5 +15,5 @@ interface QuestionSetRepository
 
     public function createQuestionSet($attributes);
 
-    public function addQuestions($id, array $questionIds);
+    public function addQuestions($id, array $questions);
 }

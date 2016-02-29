@@ -62,11 +62,11 @@ class EloquentQuestionSetRepository extends Repository implements QuestionSetRep
      * Add questions to the question set.
      *
      * @param $id
-     * @param array $questionIds
+     * @param array $questions
      * @return void
      */
-    public function addQuestions($id, array $questionIds)
+    public function addQuestions($id, array $questions)
     {
-        $this->model->findOrFail($id)->questions()->attach($questionIds);
+        $this->model->findOrFail($id)->questions()->attach($questions);
     }
 }
