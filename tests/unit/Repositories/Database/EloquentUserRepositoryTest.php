@@ -115,7 +115,7 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertTrue($user['data']['disabled']);
     }
 
-    public function testenableUser()
+    public function testEnableUser()
     {
         $this->assertTrue(self::$userRepository->enableUser($this->user->id));
 
