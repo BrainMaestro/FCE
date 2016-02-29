@@ -16,7 +16,7 @@ class EloquentUserRepositoryTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$userRepository = new EloquentUserRepository();
+        self::$userRepository = new EloquentUserRepository;
     }
 
     public function setUp()

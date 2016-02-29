@@ -29,7 +29,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      */
     protected function getModel()
     {
-        return new User();
+        return new User;
     }
 
     /**
@@ -92,7 +92,7 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
-     * Delete a user to prevent access to the system.
+     * Delete a user from the system.
      *
      * @param $id
      *
