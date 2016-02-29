@@ -46,7 +46,7 @@ class EloquentKeyRepositoryTest extends TestCase
     {
         $keys = $this->repository->createKeys($this->key->section->toArray());
 
-        $this->assertCount($this->key->section->enrolled, $keys);
+        $this->assertCount((int) $this->key->section->enrolled, $keys);
     }
 
     public function testSetGivenOut()
