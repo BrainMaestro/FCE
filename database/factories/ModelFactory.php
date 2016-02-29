@@ -16,7 +16,7 @@ $factory->define(Fce\Models\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->email,
         'password' => bcrypt('password'),
-        'school_id' => factory(Fce\Models\School::class)->create()->first()->id,
+        'school_id' => factory(Fce\Models\School::class)->create()->id,
         'remember_token' => str_random(10),
     ];
 });
@@ -64,7 +64,7 @@ $factory->define(Fce\Models\Section::class, function (Faker\Generator $faker) {
         'crn' => $faker->randomNumber(7),
         'course_code' => $faker->word,
         'semester_id' => factory(Fce\Models\Semester::class)->create()->id,
-        'school_id' => factory(Fce\Models\School::class)->create()->first()->id,
+        'school_id' => factory(Fce\Models\School::class)->create()->id,
         'course_title' => $faker->sentence,
         'class_time' => $faker->time(),
         'location' => $faker->sentence,

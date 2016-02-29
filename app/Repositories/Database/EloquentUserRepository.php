@@ -41,7 +41,6 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Get all users that belong to a particular school.
      *
      * @param $schoolId
-     *
      * @return array
      */
     public function getUsersBySchool($schoolId)
@@ -53,7 +52,6 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Get a single section by its id.
      *
      * @param $id
-     *
      * @return array
      */
     public function getUserById($id)
@@ -99,7 +97,6 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Disables user to prevent access to the system.
      * 
      * @param $id [id of the the user to be disabled]
-     * 
      * @return bool
      */
     public function disableUser($id)
@@ -110,7 +107,6 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Enables user access to the system.
      * 
      * @param $id [id of the the user to be disabled]
-     * 
      * @return bool
      */
     public function enableUser($id)
