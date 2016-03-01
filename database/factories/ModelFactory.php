@@ -95,8 +95,8 @@ $factory->define(Fce\Models\Key::class, function () {
 
 $factory->define(Fce\Models\Comment::class, function (Faker\Generator $faker) {
     return [
-        'section_id' => (new Fce\Models\Section)->first()->id,
-        'question_set_id' => (new Fce\Models\QuestionSet())->first()->id,
+        'section_id' => factory(Fce\Models\Section::class)->id,
+        'question_set_id' => factory(Fce\Models\QuestionSet::class)->id,
         'comment' => $faker->sentence,
     ];
 });
