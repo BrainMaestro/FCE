@@ -16,13 +16,14 @@ $factory->define(Fce\Models\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->email,
         'password' => bcrypt('password'),
-        'school_id' => (new Fce\Models\School)->first()->id,
+        'school_id' => factory(Fce\Models\School::class)->create()->id,
         'remember_token' => str_random(10),
     ];
 });
 
 $factory->define(Fce\Models\Role::class, function (Faker\Generator $faker) {
     $role = $faker->randomElement(['admin', 'dean', 'executive', 'faculty', 'secretary']);
+
     return [
         'role' => $role,
         'display_name' => ucfirst($role),
@@ -37,7 +38,8 @@ $factory->define(Fce\Models\QuestionSet::class, function (Faker\Generator $faker
 
 $factory->define(Fce\Models\Semester::class, function (Faker\Generator $faker) {
     return [
-        'semester' => $faker->word,
+        'season' => $faker->word,
+        'year' => $faker->year,
         'current_semester' => false,
     ];
 });
@@ -61,51 +63,40 @@ $factory->define(Fce\Models\Section::class, function (Faker\Generator $faker) {
     return [
         'crn' => $faker->randomNumber(7),
         'course_code' => $faker->word,
-        'semester_id' => (new Fce\Models\Semester)->first()->id,
-        'school_id' => (new Fce\Models\School)->first()->id,
+        'semester_id' => factory(Fce\Models\Semester::class)->create()->id,
+        'school_id' => factory(Fce\Models\School::class)->create()->id,
         'course_title' => $faker->sentence,
         'class_time' => $faker->time(),
         'location' => $faker->sentence,
         'status' => 'Locked',
-        'enrolled' => $faker->randomNumber(2),
+        'enrolled' => $faker->randomNumber(1) + 1, // So that it'll never be zero
     ];
 });
 
 $factory->define(Fce\Models\Evaluation::class, function (Faker\Generator $faker) {
     return [
-        'section_id' => (new Fce\Models\Section)->first()->id,
-        'question_id' => (new Fce\Models\Question)->first()->id,
-        'question_set_id' => (new Fce\Models\QuestionSet())->first()->id,
-        'one' => getRandomEvaluationScore($faker),
-        'two' => getRandomEvaluationScore($faker),
-        'three' => getRandomEvaluationScore($faker),
-        'four' => getRandomEvaluationScore($faker),
-        'five' => getRandomEvaluationScore($faker),
+        'section_id' => factory(Fce\Models\Section::class)->create()->id,
+        'question_id' => factory(Fce\Models\Question::class)->create()->id,
+        'question_set_id' => factory(Fce\Models\QuestionSet::class)->create()->id,
+        'one' => $faker->randomNumber(1),
+        'two' => $faker->randomNumber(1),
+        'three' => $faker->randomNumber(1),
+        'four' => $faker->randomNumber(1),
+        'five' => $faker->randomNumber(1),
     ];
 });
 
 $factory->define(Fce\Models\Key::class, function () {
     return [
         'value' => strtoupper(str_random(6)),
-        'section_id' => (new Fce\Models\Section)->first()->id,
+        'section_id' => factory(Fce\Models\Section::class)->create()->id,
     ];
 });
 
 $factory->define(Fce\Models\Comment::class, function (Faker\Generator $faker) {
     return [
-        'section_id' => (new Fce\Models\Section)->first()->id,
-        'question_set_id' => (new Fce\Models\QuestionSet())->first()->id,
+        'section_id' => factory(Fce\Models\Section::class)->id,
+        'question_set_id' => factory(Fce\Models\QuestionSet::class)->id,
         'comment' => $faker->sentence,
     ];
 });
-
-/**
- * Ensures that the score is always between 1 and 5
- *
- * @param \Faker\Generator $faker
- * @return int
- */
-function getRandomEvaluationScore(Faker\Generator $faker)
-{
-    return $faker->randomNumber(1) % 5 + 1;
-}

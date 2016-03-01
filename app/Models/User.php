@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
 /**
- * Class User
- * @package App
+ * Class User.
  */
 class User extends Model implements
     AuthenticatableContract,
@@ -34,7 +33,13 @@ class User extends Model implements
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'school_id',
+        'active',
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -45,7 +50,7 @@ class User extends Model implements
 
     /**
      * The User relationship to Role
-     * A user can have many roles
+     * A user can have many roles.
      */
     public function roles()
     {
@@ -54,17 +59,18 @@ class User extends Model implements
 
     /**
      * The User relationship to School
-     * A user can have one school
+     * A user can have one school.
+     *
      * @return mixed
      */
-    public function schools()
+    public function school()
     {
         return $this->belongsTo(School::class);
     }
 
     /**
      * The User relationship to Section
-     * A user can have many sections
+     * A user can have many sections.
      */
     public function sections()
     {

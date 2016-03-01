@@ -21,8 +21,9 @@ class SemesterTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $semester->id,
-            'semester' => $semester->semester,
-            'current_semester' => (boolean) $semester->current_semester
+            'season' => $semester->season,
+            'year' => (int) $semester->year,
+            'current_semester' => (boolean) $semester->current_semester,
         ];
     }
 }

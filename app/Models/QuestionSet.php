@@ -20,7 +20,7 @@ class QuestionSet extends Model
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class);
+        return $this->belongsToMany(Question::class)->withPivot('position')->withTimestamps();
     }
 
     /**
@@ -31,7 +31,7 @@ class QuestionSet extends Model
      */
     public function semesters()
     {
-        return $this->belongsToMany(Semester::class);
+        return $this->belongsToMany(Semester::class)->withPivot(['evaluation_type', 'status'])->withTimestamps();
     }
 
     /**

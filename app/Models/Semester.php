@@ -11,23 +11,31 @@ class Semester extends Model
      *
      * @var array
      */
-    protected $fillable = ['semester'];
+    protected $fillable = [
+        'season',
+        'year',
+        'current_semester'
+    ];
 
     /**
-     * The Semester relationship to QuestionSet
-     * A semester belongsToMany questionSets
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function questionSets()
-    {
-        return $this->belongsToMany(QuestionSet::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * The Semester relationship to Section
+     * A semester hasMany section
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sections()
     {
         return $this->hasMany(Section::class);
+    }
+
+    /**
+     * The Semester relationship to QuestionSet
+     * A semester belongsToMany questionSet
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function questionSets()
+    {
+        return $this->belongsToMany(QuestionSet::class)->withPivot(['evaluation_type', 'status'])->withTimestamps();
     }
 }

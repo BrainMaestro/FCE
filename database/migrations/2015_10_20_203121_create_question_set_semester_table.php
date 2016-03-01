@@ -16,9 +16,8 @@ class CreateQuestionSetSemesterTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('question_set_id');
             $table->unsignedInteger('semester_id');
-            // Evaluation type can be expanded to include more types of evaluations
-            $table->enum('evaluation_type', ['midterm', 'final']);
-            $table->enum('status', ['Locked', 'Open', 'Done']);
+            $table->string('evaluation_type');
+            $table->enum('status', ['Locked', 'Open', 'Done'])->default('Locked');
             $table->timestamps();
 
             $table->foreign('question_set_id')->references('id')->on('question_sets');

@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     /**
+     * Constants for depicting the status of the section
+     */
+    const STATUS_OPEN = 'Open';
+    const STATUS_LOCKED = 'Locked';
+    const STATUS_IN_PROGRESS = 'In progress';
+    const STATUS_DONE = 'Done';
+
+    const STATUSES = [
+        self::STATUS_OPEN,
+        self::STATUS_LOCKED,
+        self::STATUS_IN_PROGRESS,
+        self::STATUS_DONE
+    ];
+
+    /**
      * @var array
      */
     protected $fillable = [

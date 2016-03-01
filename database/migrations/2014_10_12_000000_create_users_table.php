@@ -7,8 +7,6 @@ class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,6 +16,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->unsignedInteger('school_id');
+            $table->boolean('active')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -28,8 +27,6 @@ class CreateUsersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

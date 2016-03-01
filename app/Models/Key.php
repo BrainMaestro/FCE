@@ -9,7 +9,12 @@ class Key extends Model
     /**
      * @var array
      */
-    protected $fillable = ['value', 'section_id'];
+    protected $fillable = [
+        'value',
+        'given_out',
+        'used',
+        'section_id'
+    ];
 
     /**
      * The Key relationship to Section

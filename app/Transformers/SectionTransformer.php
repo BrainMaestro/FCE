@@ -16,6 +16,13 @@ class SectionTransformer extends TransformerAbstract
     /**
      * @var array
      */
+    protected $defaultIncludes = [
+        'users'
+    ];
+
+    /**
+     * @var array
+     */
     protected $availableIncludes = [
         'school',
         'evaluation',
@@ -41,6 +48,15 @@ class SectionTransformer extends TransformerAbstract
             'status' => $section->status,
             'enrolled' => (int) $section->enrolled
         ];
+    }
+
+    /**
+     * @param section $section
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeUsers(Section $section)
+    {
+        return $this->collection($section->users, new UserTransformer);
     }
 
     /**
@@ -76,6 +92,6 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeKey(Section $section)
     {
-        return $this->collection($section->keys(), new KeyTransformer);
+        return $this->collection($section->keys, new KeyTransformer);
     }
 }

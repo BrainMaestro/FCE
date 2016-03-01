@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 7:01 PM
+ * Time: 7:01 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\User;
@@ -17,11 +17,12 @@ class UserTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'role'
+        'role',
     ];
 
     /**
      * @param User $user
+     *
      * @return array
      */
     public function transform(User $user)
@@ -30,12 +31,14 @@ class UserTransformer extends TransformerAbstract
             'id' => (int) $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'school_id' => $user->school_id
+            'school_id' => (int) $user->school->id,
+            'active' => (boolean) $user->active,
         ];
     }
 
     /**
      * @param User $user
+     *
      * @return \League\Fractal\Resource\Collection
      */
     public function includeRole(User $user)

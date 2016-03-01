@@ -2,6 +2,7 @@
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
+    const INVALID_ID = -1;
     /**
      * The base URL to use while testing the application.
      *
@@ -21,5 +22,23 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    /**
+     * Prepare for test
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        DB::beginTransaction();
+    }
+
+    /**
+     * Revert DB changes after test
+     */
+    public function tearDown()
+    {
+        DB::rollBack();
+        parent::tearDown();
     }
 }
