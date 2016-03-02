@@ -44,7 +44,7 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
      */
     public function getCurrentSemester()
     {
-        return $this->findBy(['current_semester' => true], 'one');
+        return $this->findBy(['current_semester' => true], self::ONE);
     }
 
     /**
