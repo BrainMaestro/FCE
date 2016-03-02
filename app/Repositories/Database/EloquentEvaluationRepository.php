@@ -40,7 +40,7 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
         return $this->findBy([
             'section_id' => $sectionId,
             'question_set_id' => $questionSetId
-        ], 'all');
+        ], self::ALL);
     }
 
     /**
@@ -57,7 +57,7 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
             'section_id' => $sectionId,
             'question_set_id' => $questionSetId,
             'question_id' => $questionId
-        ], 'one');
+        ], self::ONE);
     }
 
     /**

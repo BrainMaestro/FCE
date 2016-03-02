@@ -16,6 +16,12 @@ abstract class Repository
     use Transformable;
 
     /**
+     * Constants for pagination
+     */
+    const ALL = 'all';
+    const ONE = 'one';
+
+    /**
      * The model registered on the repository.
      *
      * @var \Illuminate\Database\Eloquent\Model
@@ -87,11 +93,11 @@ abstract class Repository
 
         // Returns one, all or a paginated list of items
         switch ($limit) {
-            case 'one':
+            case self::ONE:
                 $items = $items->first($columns);
                 break;
 
-            case 'all':
+            case self::ALL:
                 $items = $items->get($columns);
                 break;
 
