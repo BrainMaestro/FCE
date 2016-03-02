@@ -16,7 +16,6 @@ $factory->define(Fce\Models\User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'email' => $faker->email,
         'password' => bcrypt('password'),
-        'school_id' => factory(Fce\Models\School::class)->create()->id,
         'remember_token' => str_random(10),
     ];
 });

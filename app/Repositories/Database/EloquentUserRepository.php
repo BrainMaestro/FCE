@@ -9,6 +9,7 @@
 namespace Fce\Repositories\Database;
 
 use Fce\Models\User;
+use Fce\Models\School;
 use Fce\Repositories\Repository;
 use Fce\Repositories\Contracts\UserRepository;
 use Fce\Transformers\UserTransformer;
@@ -45,7 +46,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      */
     public function getUsersBySchool($schoolId)
     {
-        return $this->findBy(['school_id' => $schoolId]);
+        return $this->transform(School::findOrFail($schoolId)->users()->paginate(15, ['*'], 'page', 1));
     }
 
     /**

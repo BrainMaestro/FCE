@@ -37,7 +37,6 @@ class User extends Model implements
         'name',
         'email',
         'password',
-        'school_id',
         'active',
     ];
 
@@ -63,9 +62,9 @@ class User extends Model implements
      *
      * @return mixed
      */
-    public function school()
+    public function schools()
     {
-        return $this->belongsTo(School::class);
+        return $this->belongsToMany(School::class)->withTimestamps();
     }
 
     /**
