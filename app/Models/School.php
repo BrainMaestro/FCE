@@ -23,4 +23,14 @@ class School extends Model
     {
         return $this->hasMany(Section::class);
     }
+
+    /**
+     * The School relationship to User
+     * A school hasMany users
+     * @return mixed
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 }

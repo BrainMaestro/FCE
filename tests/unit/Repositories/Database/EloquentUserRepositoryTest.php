@@ -40,14 +40,15 @@ class EloquentUserRepositoryTest extends TestCase
     public function testGetUsersBySchool()
     {
         $school = factory(Fce\Models\School::class)->create();
-        $users = factory(Fce\Models\User::class, 2)->create([
-            'school_id' => $school->id,
-        ]);
+        $users = factory(Fce\Models\User::class, 2)->create()->each(function ($user) use ($school) {
+             $user->schools()->save($school);
+        });
+        
         $users = $this->repository->transform($users)['data'];
 
         $otherUsers = $this->repository->getUsersBySchool($school->id);
 
-        $this->assertCount(count($users), $otherUsers);
+        $this->assertCount(count($users), $otherUsers['data']);
         $this->assertEquals($users, $otherUsers['data']);
         $this->assertNotEquals($users, $this->repository->transform($this->user)['data']);
     }
