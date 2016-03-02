@@ -77,8 +77,8 @@ class EloquentUserRepositoryTest extends TestCase
     public function testCreateUser()
     {
         $attributes = factory(Fce\Models\User::class)->make()->toArray();
-
-        $user = $this->repository->createUser(array_merge($attributes, ['password' => bcrypt('password')]));
+        $attributes = array_except($attributes, 'active');
+        $user = $this->repository->createUser($attributes['name'], $attributes['email'], 'password');
 
         $this->assertArraySubset($attributes, $user['data']);
     }

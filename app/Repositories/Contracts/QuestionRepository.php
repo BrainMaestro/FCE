@@ -13,5 +13,5 @@ interface QuestionRepository
 
     public function getQuestionById($id);
 
-    public function createQuestion(array $attributes);
+    public function createQuestion($description, $category = null, $title = null);
 }

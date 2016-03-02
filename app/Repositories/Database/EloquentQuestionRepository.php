@@ -51,11 +51,17 @@ class EloquentQuestionRepository extends Repository implements QuestionRepositor
     /**
      * Create a new question from the specified attributes.
      *
-     * @param array $attributes
+     * @param $description
+     * @param $category
+     * @param $title
      * @return array
      */
-    public function createQuestion(array $attributes)
+    public function createQuestion($description, $category = null, $title = null)
     {
-        return $this->create($attributes);
+        return $this->create([
+            'description' => $description,
+            'category' => $category,
+            'title' => $title,
+        ]);
     }
 }

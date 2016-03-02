@@ -62,12 +62,18 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     /**
      * Creates a new semester from the specified attributes.
      *
-     * @param array $attributes
+     * @param $season
+     * @param $year
+     * @param bool $currentSemester
      * @return array
      */
-    public function createSemester(array $attributes)
+    public function createSemester($season, $year, $currentSemester = false)
     {
-        return $this->create($attributes);
+        return $this->create([
+            'season' => $season,
+            'year' => $year,
+            'current_semester' => $currentSemester,
+        ]);
     }
 
     /**

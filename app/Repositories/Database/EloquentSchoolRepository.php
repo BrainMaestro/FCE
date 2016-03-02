@@ -51,12 +51,16 @@ class EloquentSchoolRepository extends Repository implements SchoolRepository
     /**
      * Creates a new school from the specified attributes.
      *
-     * @param array $attributes
+     * @param $school
+     * @param $description
      * @return array
      */
-    public function createSchool(array $attributes)
+    public function createSchool($school, $description)
     {
-        return $this->create($attributes);
+        return $this->create([
+            'school' => $school,
+            'description' => $description,
+        ]);
     }
 
     /**

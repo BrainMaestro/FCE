@@ -13,7 +13,7 @@ interface QuestionSetRepository
 
     public function getQuestionSetById($id);
 
-    public function createQuestionSet($attributes);
+    public function createQuestionSet($name);
 
     public function addQuestions($id, array $questions);
 }
