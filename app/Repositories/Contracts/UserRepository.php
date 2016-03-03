@@ -16,7 +16,7 @@ interface UserRepository
 
     public function getUserById($id);
 
-    public function createUser(array $attributes);
+    public function createUser($name, $email, $password);
 
     public function updateUser($id, array $attributes);
 

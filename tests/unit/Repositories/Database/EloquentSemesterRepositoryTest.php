@@ -82,7 +82,7 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $attributes = factory(Fce\Models\Semester::class)->make()->toArray();
 
-        $semester = $this->repository->createSemester($attributes);
+        $semester = $this->repository->createSemester($attributes['season'], $attributes['year']);
 
         $this->assertArraySubset($attributes, $semester['data']);
     }

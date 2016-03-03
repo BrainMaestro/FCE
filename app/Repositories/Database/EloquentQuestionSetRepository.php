@@ -50,12 +50,14 @@ class EloquentQuestionSetRepository extends Repository implements QuestionSetRep
     /**
      * Create a new question set from the specified attributes.
      *
-     * @param $attributes
+     * @param $name
      * @return array
      */
-    public function createQuestionSet($attributes)
+    public function createQuestionSet($name)
     {
-        return $this->create($attributes);
+        return $this->create([
+            'name' => $name,
+        ]);
     }
 
     /**

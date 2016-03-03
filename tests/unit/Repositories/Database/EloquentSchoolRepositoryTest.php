@@ -66,7 +66,7 @@ class EloquentSchoolRepositoryTest extends TestCase
     {
         $attributes = factory(Fce\Models\School::class)->make()->toArray();
 
-        $school = $this->repository->createSchool($attributes);
+        $school = $this->repository->createSchool($attributes['school'], $attributes['description']);
 
         $this->assertArraySubset($attributes, $school['data']);
     }

@@ -15,7 +15,7 @@ interface SemesterRepository
 
     public function setCurrentSemester($id, $status = true);
 
-    public function createSemester(array $attributes);
+    public function createSemester($season, $year, $currentSemester = false);
 
     public function addQuestionSet($id, $questionSetId, array $attributes);
 

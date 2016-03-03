@@ -47,7 +47,7 @@ class EloquentQuestionSetRepositoryTest extends TestCase
     {
         $attributes = factory(Fce\Models\QuestionSet::class)->make()->toArray();
 
-        $questionSet = $this->repository->createQuestionSet($attributes);
+        $questionSet = $this->repository->createQuestionSet($attributes['name']);
 
         $this->assertArraySubset($attributes, $questionSet['data']);
     }

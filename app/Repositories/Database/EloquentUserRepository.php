@@ -63,12 +63,19 @@ class EloquentUserRepository extends Repository implements UserRepository
     /**
      * Create a new user from the specified attributes.
      *
-     * @param array $attributes
+     * @param $name
+     * @param $email
+     * @param $password
      * @return array
      */
-    public function createUser(array $attributes)
+    public function createUser($name, $email, $password)
     {
-        return $this->create($attributes);
+        return $this->create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password),
+            'remember_token' => str_random(50),
+        ]);
     }
 
     /**
