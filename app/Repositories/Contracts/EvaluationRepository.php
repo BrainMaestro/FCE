@@ -13,7 +13,7 @@ interface EvaluationRepository
 
     public function getEvaluationBySectionQuestionSetAndQuestion($sectionId, $questionSetId, $questionId);
 
-    public function createEvaluation(array $attributes);
+    public function createEvaluations($sectionId, array $questionSet);
 
     public function incrementEvaluation($id, $column);
 }
