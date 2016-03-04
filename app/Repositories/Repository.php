@@ -8,7 +8,7 @@
 
 namespace Fce\Repositories;
 
-use Fce\Transformers\Transformable;
+use Fce\Traits\Transformable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
