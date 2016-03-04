@@ -10,6 +10,7 @@ namespace Fce\Repositories;
 
 use Fce\Transformers\Transformable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Input;
 
 abstract class Repository
 {
@@ -44,13 +45,12 @@ abstract class Repository
      * Return a paginated list of all the available models.
      *
      * @param int $limit
-     * @param int $page
      * @param array $columns
      * @return array
      */
-    public function all($limit = 15, $page = 1, array $columns = ['*'])
+    public function all($limit = 15, array $columns = ['*'])
     {
-        return $this->transform($this->model->paginate($limit, $columns, 'page', $page));
+        return $this->transform($this->model->paginate($limit, $columns, 'page', $this->getPage()));
     }
 
     /**
@@ -72,13 +72,12 @@ abstract class Repository
      *
      * @param array $params
      * @param int $limit
-     * @param int $page
      * @param array $columns
      * @param array $with
      * @return array
      * @throws ModelNotFoundException
      */
-    protected function findBy(array $params, $limit = 15, $page = 1, array $columns = ['*'], array $with = [])
+    protected function findBy(array $params, $limit = 15, array $columns = ['*'], array $with = [])
     {
         // Model to use for the method chaining
         $items = $this->model;
@@ -102,7 +101,7 @@ abstract class Repository
                 break;
 
             default:
-                $items = $items->paginate($limit, $columns, 'page', $page);
+                $items = $items->paginate($limit, $columns, 'page', $this->getPage());
         }
 
         if (is_null($items) || !count($items)) {
@@ -123,5 +122,15 @@ abstract class Repository
     protected function update($id, array $attributes)
     {
         return $this->model->findOrFail($id)->update($attributes);
+    }
+
+    /**
+     * Get the page specified in the url string.
+     *
+     * @return int
+     */
+    private function getPage()
+    {
+        return Input::get('page', 1);
     }
 }
