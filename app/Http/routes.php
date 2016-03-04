@@ -11,49 +11,55 @@
 |
 */
 
+Route::pattern('id', '[0-9]+');
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-//Home Route
-//Route::get('/', 'HomeController@index');
-Route::post('/login', 'HomeController@login');
-Route::post('/logout', 'HomeController@logout');
+Route::group(['prefix' => 'api'], function() {
 
-//Evaluation Routes
-Route::get('/evaluations', 'EvaluationController@index');
-Route::post('/evaluations', 'EvaluationController@create');
-Route::get('/evaluations/keys', 'EvaluationController@showKeys');
-Route::get('/evaluations/json-keys', 'EvaluationController@showKeysJson');
-Route::get('/evaluations/{id}', 'EvaluationController@show');
+    // Authentication Routes
+    Route::post('/login', 'AuthController@login');
+    Route::post('/logout', 'AuthController@logout');
 
-//User Routes
-Route::get('/users', 'UserController@index');
-Route::get('/users/{id}', 'UserController@show');
-Route::post('/users', 'UserController@create');
-Route::delete('/users', 'UserController@destroy');
-Route::put('/users', 'UserController@update');
+    // Evaluation Routes
+    Route::get('/evaluations', 'EvaluationController@index');
+    Route::put('/evaluations', 'EvaluationController@incrementEvaluation');
 
-//Section Routes
-Route::get('/sections', 'SectionController@index');
-Route::get('/sections/{id}', 'SectionController@show');
-Route::post('/sections', 'SectionController@create');
-Route::put('/sections/{id}', 'SectionController@update');
-Route::get('/sections/{id}/reports', 'SectionController@showReports');
-Route::get('/sections/{id}/reports/{question_set_id}', 'SectionController@showSingleReport');
+    // User Routes
+    Route::get('/users', 'UserController@index');
+    Route::get('/users/{id}', 'UserController@show');
+    Route::post('/users', 'UserController@create');
+    Route::delete('/users', 'UserController@destroy');
+    Route::put('/users', 'UserController@update');
 
-//QuestionSet Routes
-Route::get('/questions', 'SectionController@index');
-Route::post('/questions', 'SectionController@create');
-Route::put('/questions/{question_set_id}', 'SectionController@update');
+    // Section Routes
+    Route::get('/sections', 'SectionController@index');
+    Route::get('/sections/{id}', 'SectionController@show');
+    Route::post('/sections', 'SectionController@create');
+    Route::put('/sections/{id}', 'SectionController@update');
+    Route::get('/sections/{id}/keys', 'SectionController@showKeys');
+    Route::get('/sections/{id}/reports', 'SectionController@showReport');
+    Route::get('/sections/{id}/evaluations', 'SectionController@showEvaluations');
 
-//School Routes
-Route::get('/schools', 'SectionController@index');
-Route::post('/schools', 'SectionController@create');
-Route::put('/schools/{id}', 'SectionController@update');
+    // Question Routes
+    Route::get('/questions', 'QuestionController@index');
+    Route::post('/questions', 'QuestionController@create');
+    Route::put('/questions', 'QuestionController@update');
 
-//Semester Routes
-Route::get('/semesters', 'SectionController@index');
-Route::get('/semesters/current', 'SectionController@showCurrentSemester'); //@todo We may not need this route
-Route::post('/semesters', 'SectionController@create');
-Route::put('/semesters{id}', 'SectionController@update');
+    // QuestionSet Routes
+    Route::get('/question-sets', 'QuestionSetController@index');
+    Route::post('/question-sets/{id}', 'QuestionSetController@create');
+    Route::put('/question-sets/{id}', 'QuestionSetController@update');
+
+    // School Routes
+    Route::get('/schools', 'SchoolController@index');
+    Route::post('/schools', 'SchoolController@create');
+    Route::put('/schools/{id}', 'SchoolController@update');
+
+    // Semester Routes
+    Route::get('/semesters', 'SemesterController@index');
+    Route::post('/semesters', 'SemesterController@create');
+    Route::put('/semesters/{id}', 'SemesterController@update');
+});
