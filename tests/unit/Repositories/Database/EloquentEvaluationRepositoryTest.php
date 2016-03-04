@@ -93,21 +93,38 @@ class EloquentEvaluationRepositoryTest extends TestCase
         $this->repository->getEvaluationBySectionQuestionSetAndQuestion(parent::INVALID_ID, parent::INVALID_ID, parent::INVALID_ID);
     }
 
-    public function testCreateEvaluation()
+    public function testCreateEvaluations()
     {
-        // Get random attributes without persisting
-        $attributes = factory(Fce\Models\Evaluation::class)->make()->toArray();
+        $questions = factory(Fce\Models\Question::class, 5)->create();
+        $questionSet = factory(Fce\Models\QuestionSet::class)->create();
+        $questionSet->questions()->attach($questions);
+        $questionSet = App::make(\Fce\Repositories\Database\EloquentQuestionSetRepository::class)
+            ->transform($questionSet)['data'];
 
-        $evaluation = $this->repository->createEvaluation($attributes);
+        $section = factory(Fce\Models\Section::class)->create();
 
-        $this->assertArraySubset($attributes, $evaluation['data']);
+        $this->assertTrue($this->repository->createEvaluations($section->id, $questionSet));
+
+        $evaluations = $this->repository->getEvaluationsBySectionAndQuestionSet(
+            $section->id,
+            $questionSet['id']
+        )['data'];
+
+        $this->assertCount($questions->count(), $evaluations);
     }
 
-    public function testCreateEvaluationWithIncorrectAttributes()
+    public function testCreateEvaluationsWithInvalidIds()
     {
         $this->setExpectedException(\Illuminate\Database\QueryException::class);
 
-        $this->repository->createEvaluation(['not_an_attribute' => true]);
+        $inserted = $this->repository->createEvaluations(parent::INVALID_ID, [
+            'id' => parent::INVALID_ID,
+            'questions' => ['data' => [
+                ['id' => parent::INVALID_ID]
+            ]]
+        ]);
+
+        $this->assertFalse($inserted);
     }
 
     public function testIncrementEvaluation()
