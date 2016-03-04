@@ -103,7 +103,7 @@ trait ApiClient
      * @param array $headers
      * @return mixed
      */
-    private function respond($data, $headers = [])
+    protected function respond($data, $headers = [])
     {
         return response()->json($data, $this->getStatusCode(), $headers);
     }
@@ -112,7 +112,7 @@ trait ApiClient
      * @param $message
      * @return mixed
      */
-    private function respondWithError($message)
+    protected function respondWithError($message)
     {
         return $this->respond([
             'error' => [
