@@ -41,6 +41,6 @@ class EvaluationTransformer extends TransformerAbstract
      */
     public function includeQuestion(Evaluation $evaluation)
     {
-        return $this->item($evaluation->questionSet, new QuestionSetTransformer);
+        return $this->item($evaluation->question, new QuestionTransformer);
     }
 }
