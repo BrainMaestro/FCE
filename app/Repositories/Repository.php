@@ -21,6 +21,7 @@ abstract class Repository
      */
     const ALL = 'all';
     const ONE = 'one';
+    const PAGINATE = 'paginate';
 
     /**
      * The model registered on the repository.
@@ -44,13 +45,12 @@ abstract class Repository
     /**
      * Return a paginated list of all the available models.
      *
-     * @param int $limit
      * @param array $columns
      * @return array
      */
-    public function all($limit = 15, array $columns = ['*'])
+    public function all(array $columns = ['*'])
     {
-        return $this->transform($this->model->paginate($limit, $columns, 'page', $this->getPage()));
+        return $this->transform($this->model->paginate($this->getLimit(), $columns, 'page', $this->getPage()));
     }
 
     /**
@@ -71,13 +71,13 @@ abstract class Repository
      * with the specified parameters (field and value).
      *
      * @param array $params
-     * @param int $limit
+     * @param $count
      * @param array $columns
      * @param array $with
      * @return array
      * @throws ModelNotFoundException
      */
-    protected function findBy(array $params, $limit = 15, array $columns = ['*'], array $with = [])
+    protected function findBy(array $params, $count = self::PAGINATE, array $columns = ['*'], array $with = [])
     {
         // Model to use for the method chaining
         $items = $this->model;
@@ -91,7 +91,7 @@ abstract class Repository
         }
 
         // Returns one, all or a paginated list of items
-        switch ($limit) {
+        switch ($count) {
             case self::ONE:
                 $items = $items->first($columns);
                 break;
@@ -100,8 +100,8 @@ abstract class Repository
                 $items = $items->get($columns);
                 break;
 
-            default:
-                $items = $items->paginate($limit, $columns, 'page', $this->getPage());
+            case self::PAGINATE:
+                $items = $items->paginate($this->getLimit(), $columns, 'page', $this->getPage());
         }
 
         if (is_null($items) || !count($items)) {
@@ -132,5 +132,15 @@ abstract class Repository
     private function getPage()
     {
         return Input::get('page', 1);
+    }
+
+    /**
+     * Get the limit specified in the url string.
+     *
+     * @return int
+     */
+    private function getLimit()
+    {
+        return Input::get('limit', 10);
     }
 }
