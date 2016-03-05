@@ -124,6 +124,10 @@ abstract class Repository
      */
     protected function update($id, array $attributes)
     {
+        if (count($attributes) == 0) {
+            return false;
+        }
+
         return $this->model->findOrFail($id)->update($attributes);
     }
 

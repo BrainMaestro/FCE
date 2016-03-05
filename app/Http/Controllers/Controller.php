@@ -13,10 +13,4 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ApiClient;
 
-    protected $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
 }

@@ -31,8 +31,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('/users', 'UserController@index');
     Route::get('/users/{id}', 'UserController@show');
     Route::post('/users', 'UserController@create');
-    Route::delete('/users', 'UserController@destroy');
-    Route::put('/users', 'UserController@update');
+    Route::delete('/users/{id}', 'UserController@destroy');
+    Route::put('/users/{id}', 'UserController@update');
 
     // Section Routes
     Route::get('/sections', 'SectionController@index');
