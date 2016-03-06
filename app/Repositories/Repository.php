@@ -31,15 +31,74 @@ abstract class Repository
     protected $model;
 
     /**
-     * Create and persist a new model.
+     * Get the page specified in the url string.
      *
-     * @param array $attributes
-     * @return array
-     * @throws \Illuminate\Database\QueryException
+     * @return int
      */
-    protected function create(array $attributes)
+    private function getPage()
     {
-        return $this->transform($this->model->create($attributes));
+        return Input::get('page', 1);
+    }
+
+    /**
+     * Get the limit specified in the url string.
+     *
+     * @return int
+     */
+    private function getLimit()
+    {
+        return Input::get('limit', 10);
+    }
+
+    /**
+     * Get the query specified in the url string.
+     *
+     * @return int
+     */
+    private function getQuery()
+    {
+        return Input::get('query', null);
+    }
+
+    /**
+     * Returns the accessible model columns
+     *
+     * @return array
+     */
+    private function getFillable()
+    {
+        return $this->model->getFillable();
+    }
+
+    /**
+     * Return collection of result based on query parameters
+     *
+     * @return mixed
+     */
+    private function query()
+    {
+        $query = $this->getQuery();
+        $fillable = $this->getFillable();
+
+        if (is_null($query)) {
+            return $this->model;
+        }
+
+        $parameters = explode("|", $query);
+        $data = [];
+        foreach ($parameters as $parameter) {
+            $attributes = explode(":=", $parameter);
+            $data[$attributes[0]] = $attributes[1];
+        }
+
+        $result = $this->model->where(function ($query) use ($data, $fillable) {
+            foreach ($data as $column => $value) {
+                if (in_array($column, $fillable)) {
+                    $query->where($column, 'LIKE', '%'. $value .'%');
+                }
+            }
+        });
+        return $result;
     }
 
     /**
@@ -50,7 +109,7 @@ abstract class Repository
      */
     public function all(array $columns = ['*'])
     {
-        return $this->transform($this->model->paginate($this->getLimit(), $columns, 'page', $this->getPage()));
+        return $this->transform($this->query()->paginate($this->getLimit(), $columns, 'page', $this->getPage()));
     }
 
     /**
@@ -112,6 +171,18 @@ abstract class Repository
     }
 
     /**
+     * Create and persist a new model.
+     *
+     * @param array $attributes
+     * @return array
+     * @throws \Illuminate\Database\QueryException
+     */
+    protected function create(array $attributes)
+    {
+        return $this->transform($this->model->create($attributes));
+    }
+
+    /**
      * Update the model in the database.
      *
      * @param $id
@@ -122,25 +193,5 @@ abstract class Repository
     protected function update($id, array $attributes)
     {
         return $this->model->findOrFail($id)->update($attributes);
-    }
-
-    /**
-     * Get the page specified in the url string.
-     *
-     * @return int
-     */
-    private function getPage()
-    {
-        return Input::get('page', 1);
-    }
-
-    /**
-     * Get the limit specified in the url string.
-     *
-     * @return int
-     */
-    private function getLimit()
-    {
-        return Input::get('limit', 10);
     }
 }

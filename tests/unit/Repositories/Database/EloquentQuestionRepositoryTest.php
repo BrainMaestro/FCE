@@ -36,6 +36,7 @@ class EloquentQuestionRepositoryTest extends TestCase
         $this->assertEquals($questions, $allQuestions['data']);
     }
 
+
     public function testGetQuestionById()
     {
         $question = $this->repository->getQuestionById($this->question->id);
