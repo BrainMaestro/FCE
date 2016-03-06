@@ -22,6 +22,30 @@ class EloquentQuestionRepositoryTest extends TestCase
         $this->question = factory(Fce\Models\Question::class)->create();
     }
 
+    public function testInputParameters()
+    {
+        $questions = factory(Fce\Models\Question::class, 5)->create();
+        $questions = array_merge(
+            [$this->repository->transform($this->question)['data']],
+            $this->repository->transform($questions)['data']
+        );
+
+        $inputParameters = [
+            'query' => "category:=" . $questions[4]['category'] . "|description:=" . $questions[4]['description'],
+            'limit' => 1,
+            'page' => 1
+        ];
+
+        Input::merge($inputParameters);
+        $allQuestions = $this->repository->getQuestions();
+
+        $this->assertCount(1, $allQuestions['data']);
+        $this->assertEquals($questions[4], $allQuestions['data'][0]);
+        $this->assertEquals($inputParameters['limit'], $allQuestions['meta']['pagination']['per_page']);
+        $this->assertEquals($inputParameters['page'], $allQuestions['meta']['pagination']['current_page']);
+        $this->assertEquals(1, $allQuestions['meta']['pagination']['total']);
+    }
+
     public function testGetQuestions()
     {
         $questions = factory(Fce\Models\Question::class, 5)->create();
@@ -35,7 +59,6 @@ class EloquentQuestionRepositoryTest extends TestCase
         $this->assertCount(count($questions), $allQuestions['data']);
         $this->assertEquals($questions, $allQuestions['data']);
     }
-
 
     public function testGetQuestionById()
     {

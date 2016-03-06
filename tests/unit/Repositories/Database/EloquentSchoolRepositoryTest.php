@@ -22,6 +22,30 @@ class EloquentSchoolRepositoryTest extends TestCase
         $this->school = factory(Fce\Models\School::class)->create();
     }
 
+    public function testInputParameters()
+    {
+        $createdSchools = factory(Fce\Models\School::class, 2)->create();
+        $createdSchools = array_merge(
+            [$this->repository->transform($this->school)['data']],
+            $this->repository->transform($createdSchools)['data']
+        );
+
+        $inputParameters = [
+            'query' => "school:=" . $createdSchools[2]['school'] . "|description:=" . $createdSchools[2]['description'],
+            'limit' => 1,
+            'page' => 1
+        ];
+
+        Input::merge($inputParameters);
+        $schools = $this->repository->getSchools();
+
+        $this->assertCount(1, $schools['data']);
+        $this->assertEquals($createdSchools[2], $schools['data'][0]);
+        $this->assertEquals($inputParameters['limit'], $schools['meta']['pagination']['per_page']);
+        $this->assertEquals($inputParameters['page'], $schools['meta']['pagination']['current_page']);
+        $this->assertEquals(1, $schools['meta']['pagination']['total']);
+    }
+
     public function testGetSchools()
     {
         $createdSchools = factory(Fce\Models\School::class, 2)->create();

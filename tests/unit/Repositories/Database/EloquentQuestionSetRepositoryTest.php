@@ -22,6 +22,30 @@ class EloquentQuestionSetRepositoryTest extends TestCase
         $this->questionSet = factory(Fce\Models\QuestionSet::class)->create();
     }
 
+    public function testInputParameters()
+    {
+        $questionSets = factory(Fce\Models\QuestionSet::class, 3)->create();
+        $questionSets = array_merge(
+            [$this->repository->transform($this->questionSet)['data']],
+            $this->repository->transform($questionSets)['data']
+        );
+
+        $inputParameters = [
+            'query' => "name:=" . $questionSets[1]['name'],
+            'limit' => 1,
+            'page' => 1
+        ];
+
+        Input::merge($inputParameters);
+        $allQuestionSets = $this->repository->getQuestionSets();
+
+        $this->assertCount(1, $allQuestionSets['data']);
+        $this->assertEquals($questionSets[1], $allQuestionSets['data'][0]);
+        $this->assertEquals($inputParameters['limit'], $allQuestionSets['meta']['pagination']['per_page']);
+        $this->assertEquals($inputParameters['page'], $allQuestionSets['meta']['pagination']['current_page']);
+        $this->assertEquals(1, $allQuestionSets['meta']['pagination']['total']);
+    }
+
     public function testGetQuestionSets()
     {
         $questionSets = factory(Fce\Models\QuestionSet::class, 3)->create();

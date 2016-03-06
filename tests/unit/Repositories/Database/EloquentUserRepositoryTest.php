@@ -23,6 +23,30 @@ class EloquentUserRepositoryTest extends TestCase
         $this->user = factory(Fce\Models\User::class)->create();
     }
 
+    public function testInputParameters()
+    {
+        $users = factory(Fce\Models\User::class, 4)->create();
+        $users = array_merge(
+            [$this->repository->transform($this->user)['data']],
+            $this->repository->transform($users)['data']
+        );
+
+        $inputParameters = [
+            'query' => "email:=" . $users[1]['email'] . "|name:=" . $users[1]['name'],
+            'limit' => 1,
+            'page' => 1
+        ];
+
+        Input::merge($inputParameters);
+        $allUsers = $this->repository->getUsers();
+
+        $this->assertCount(1, $allUsers['data']);
+        $this->assertEquals($users[1], $allUsers['data'][0]);
+        $this->assertEquals($inputParameters['limit'], $allUsers['meta']['pagination']['per_page']);
+        $this->assertEquals($inputParameters['page'], $allUsers['meta']['pagination']['current_page']);
+        $this->assertEquals(1, $allUsers['meta']['pagination']['total']);
+    }
+
     public function testGetUsers()
     {
         $users = factory(Fce\Models\User::class, 4)->create();
