@@ -30,6 +30,39 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->semester = factory(Fce\Models\Semester::class)->create();
     }
 
+    public function testInputParameters()
+    {
+        $semestersYear = factory(Fce\Models\Semester::class, 5)->create([
+            'year' => 2016
+        ]);
+        $semestersYear = $this->repository->transform($semestersYear)['data'];
+
+        Input::merge([
+            'query' => "year:=" . $semestersYear[0]['year'],
+        ]);
+        $semesters = $this->repository->getSemesters();
+
+        $this->assertCount(count($semestersYear), $semesters['data']);
+        $this->assertEquals($semestersYear, $semesters['data']);
+        $this->assertEquals(count($semestersYear), $semesters['meta']['pagination']['total']);
+
+        $semestersSeason = factory(Fce\Models\Semester::class, 5)->create([
+            'season' => 'Spring'
+        ]);
+        $semestersSeason = $this->repository->transform($semestersSeason)['data'];
+
+        Input::merge([
+            'query' => "season:=" . $semestersSeason[0]['season'],
+        ]);
+        $semesters = $this->repository->getSemesters();
+
+        $this->assertCount(count($semestersSeason), $semesters['data']);
+        $this->assertEquals($semestersSeason, $semesters['data']);
+        $this->assertEquals(count($semestersSeason), $semesters['meta']['pagination']['total']);
+
+        $this->assertNotEquals($semestersYear, $semestersSeason);
+    }
+
     public function testGetSemesters()
     {
         $createdSemesters = factory(Fce\Models\Semester::class, 2)->create();

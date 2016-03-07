@@ -31,18 +31,6 @@ abstract class Repository
     protected $model;
 
     /**
-     * Create and persist a new model.
-     *
-     * @param array $attributes
-     * @return array
-     * @throws \Illuminate\Database\QueryException
-     */
-    protected function create(array $attributes)
-    {
-        return $this->transform($this->model->create($attributes));
-    }
-
-    /**
      * Return a paginated list of all the available models.
      *
      * @param array $columns
@@ -50,7 +38,10 @@ abstract class Repository
      */
     public function all(array $columns = ['*'])
     {
-        return $this->transform($this->model->paginate($this->getLimit(), $columns, 'page', $this->getPage()));
+        $filtered = $this->filter();
+        $paginated = $filtered->paginate($this->getLimit(), $columns, 'page', $this->getPage());
+
+        return $this->transform($paginated);
     }
 
     /**
@@ -112,6 +103,18 @@ abstract class Repository
     }
 
     /**
+     * Create and persist a new model.
+     *
+     * @param array $attributes
+     * @return array
+     * @throws \Illuminate\Database\QueryException
+     */
+    protected function create(array $attributes)
+    {
+        return $this->transform($this->model->create($attributes));
+    }
+
+    /**
      * Update the model in the database.
      *
      * @param $id
@@ -142,5 +145,46 @@ abstract class Repository
     private function getLimit()
     {
         return Input::get('limit', 10);
+    }
+
+    /**
+     * Get the query specified in the url string.
+     *
+     * @return int
+     */
+    private function getQuery()
+    {
+        return Input::get('query', null);
+    }
+
+    /**
+     * Return collection of result based on query parameters.
+     *
+     * @return mixed
+     */
+    private function filter()
+    {
+        $query = $this->getQuery();
+
+        if (is_null($query)) {
+            return $this->model;
+        }
+
+        $attributes = [];
+        foreach (explode("|", $query) as $parameter) {
+            list($column, $value) = explode(":=", $parameter);
+            $attributes[$column] = $value;
+        }
+
+        // Removes columns that are not in the model's accessible columns
+        $attrtibutes = array_only($attributes, $this->model->getFillable());
+
+        $result = $this->model->where(function ($query) use ($attributes) {
+            foreach ($attributes as $column => $value) {
+                $query->where($column, 'LIKE', '%'. $value .'%');
+            }
+        });
+
+        return $result;
     }
 }
