@@ -45,8 +45,9 @@ Route::group(['prefix' => 'api'], function () {
 
     // Question Routes
     Route::get('/questions', 'QuestionController@index');
+    Route::get('/questions/{id}', 'QuestionController@show');
     Route::post('/questions', 'QuestionController@create');
-    Route::put('/questions', 'QuestionController@update');
+    
 
     // QuestionSet Routes
     Route::get('/question-sets', 'QuestionSetController@index');

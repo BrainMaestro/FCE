@@ -2,50 +2,43 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\IQuestionsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Http\Requests\QuestionRequest;
+use Fce\Repositories\Contracts\QuestionRepository;
 
 class QuestionController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, IQuestionsRepository $questionsRepository)
+    public function __construct(QuestionRepository $repository)
     {
-        $this->repository = $questionsRepository;
-        parent::__construct($request);
+        $this->repository = $repository;
     }
+
 
     public function index()
     {
         try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
-
-
+            return $this->repository->getQuestions();
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not list questions');
         }
     }
 
-    public function create()
+    public function show($id)
     {
         try {
-
+            return $this->repository->getQuestionById($id);
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not find question');
         }
     }
 
-    public function update($id)
+    public function create(QuestionRequest $request)
     {
         try {
-
+            return $this->repository->createQuestion($request->description, $request->category, $request->title);
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not create question');
         }
     }
 }
