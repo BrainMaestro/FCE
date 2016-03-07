@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api'], function() {
+Route::group(['prefix' => 'api'], function () {
 
     // Authentication Routes
     Route::post('/login', 'AuthController@login');
@@ -55,6 +55,7 @@ Route::group(['prefix' => 'api'], function() {
 
     // School Routes
     Route::get('/schools', 'SchoolController@index');
+    Route::get('/schools/{id}', 'SchoolController@show');
     Route::post('/schools', 'SchoolController@create');
     Route::put('/schools/{id}', 'SchoolController@update');
 

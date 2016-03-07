@@ -2,50 +2,54 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\ISchoolsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Http\Requests\SchoolRequest;
+use Fce\Repositories\Contracts\SchoolRepository;
 
 class SchoolController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, ISchoolsRepository $schoolsRepository)
+    public function __construct(SchoolRepository $repository)
     {
-        $this->repository = $schoolsRepository;
-        parent::__construct($request);
+        $this->repository = $repository;
     }
 
     public function index()
     {
         try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
-
-
+            return $this->repository->getSchools();
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not list schools');
         }
     }
 
-    public function create()
+
+    public function show($id)
     {
         try {
-
+            return $this->repository->getSchoolById($id);
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not find school');
         }
     }
 
-    public function update($id)
+    public function create(SchoolRequest $request)
     {
         try {
-
+            return $this->repository->createSchool($request->school, $request->description);
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not create school');
+        }
+    }
+
+    public function update(SchoolRequest $request, $id)
+    {
+        try {
+            if (!$this->repository->updateSchool($id, $request->all())) {
+                return $this->respondUnprocessable('School attributes were not provided');
+            }
+        } catch (\Exception $e) {
+            return $this->respondInternalServerError('Could not update school');
         }
     }
 }
