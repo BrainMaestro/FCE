@@ -31,77 +31,6 @@ abstract class Repository
     protected $model;
 
     /**
-     * Get the page specified in the url string.
-     *
-     * @return int
-     */
-    private function getPage()
-    {
-        return Input::get('page', 1);
-    }
-
-    /**
-     * Get the limit specified in the url string.
-     *
-     * @return int
-     */
-    private function getLimit()
-    {
-        return Input::get('limit', 10);
-    }
-
-    /**
-     * Get the query specified in the url string.
-     *
-     * @return int
-     */
-    private function getQuery()
-    {
-        return Input::get('query', null);
-    }
-
-    /**
-     * Returns the accessible model columns
-     *
-     * @return array
-     */
-    private function getFillable()
-    {
-        return $this->model->getFillable();
-    }
-
-    /**
-     * Return collection of result based on query parameters
-     *
-     * @return mixed
-     */
-    private function query()
-    {
-        $query = $this->getQuery();
-        $fillable = $this->getFillable();
-
-        if (is_null($query)) {
-            return $this->model;
-        }
-
-        $parameters = explode("|", $query);
-        $data = [];
-        foreach ($parameters as $parameter) {
-            $attributes = explode(":=", $parameter);
-            $data[$attributes[0]] = $attributes[1];
-        }
-
-        $result = $this->model->where(function ($query) use ($data, $fillable) {
-            foreach ($data as $column => $value) {
-                if (in_array($column, $fillable)) {
-                    $query->where($column, 'LIKE', '%'. $value .'%');
-                }
-            }
-        });
-        return $result;
-    }
-
-    /**
      * Return a paginated list of all the available models.
      *
      * @param array $columns
@@ -109,7 +38,10 @@ abstract class Repository
      */
     public function all(array $columns = ['*'])
     {
-        return $this->transform($this->query()->paginate($this->getLimit(), $columns, 'page', $this->getPage()));
+        $filtered = $this->filter();
+        $paginated = $filtered->paginate($this->getLimit(), $columns, 'page', $this->getPage());
+
+        return $this->transform($paginated);
     }
 
     /**
@@ -193,5 +125,66 @@ abstract class Repository
     protected function update($id, array $attributes)
     {
         return $this->model->findOrFail($id)->update($attributes);
+    }
+
+    /**
+     * Get the page specified in the url string.
+     *
+     * @return int
+     */
+    private function getPage()
+    {
+        return Input::get('page', 1);
+    }
+
+    /**
+     * Get the limit specified in the url string.
+     *
+     * @return int
+     */
+    private function getLimit()
+    {
+        return Input::get('limit', 10);
+    }
+
+    /**
+     * Get the query specified in the url string.
+     *
+     * @return int
+     */
+    private function getQuery()
+    {
+        return Input::get('query', null);
+    }
+
+    /**
+     * Return collection of result based on query parameters.
+     *
+     * @return mixed
+     */
+    private function filter()
+    {
+        $query = $this->getQuery();
+
+        if (is_null($query)) {
+            return $this->model;
+        }
+
+        $attributes = [];
+        foreach (explode("|", $query) as $parameter) {
+            list($column, $value) = explode(":=", $parameter);
+            $attributes[$column] = $value;
+        }
+
+        // Removes columns that are not in the model's accessible columns
+        $attrtibutes = array_only($attributes, $this->model->getFillable());
+
+        $result = $this->model->where(function ($query) use ($attributes) {
+            foreach ($attributes as $column => $value) {
+                $query->where($column, 'LIKE', '%'. $value .'%');
+            }
+        });
+
+        return $result;
     }
 }
