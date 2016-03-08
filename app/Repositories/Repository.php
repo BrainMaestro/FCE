@@ -38,7 +38,7 @@ abstract class Repository
      */
     public function all(array $columns = ['*'])
     {
-        $filtered = $this->filter();
+        $filtered = $this->search();
         $paginated = $filtered->paginate($this->getLimit(), $columns, 'page', $this->getPage());
 
         return $this->transform($paginated);
@@ -71,11 +71,7 @@ abstract class Repository
     protected function findBy(array $params, $count = self::PAGINATE, array $columns = ['*'], array $with = [])
     {
         // Model to use for the method chaining
-        $items = $this->model;
-
-        foreach ($params as $field => $value) {
-            $items = $items->where($field, 'like', '%' . $value . '%');
-        }
+        $items = $this->filter($params);
 
         if (count($with) > 0) {
             $items = $items->with($with);
@@ -166,7 +162,7 @@ abstract class Repository
      *
      * @return mixed
      */
-    private function filter()
+    private function search()
     {
         $query = $this->getQuery();
 
@@ -181,14 +177,23 @@ abstract class Repository
         }
 
         // Removes columns that are not in the model's accessible columns
-        $attrtibutes = array_only($attributes, $this->model->getFillable());
+        $attributes = array_only($attributes, $this->model->getFillable());
 
-        $result = $this->model->where(function ($query) use ($attributes) {
-            foreach ($attributes as $column => $value) {
+        return $this->filter($attributes);
+    }
+
+    /**
+     * Perform filter with the specified parameters.
+     *
+     * @param array $params
+     * @return mixed
+     */
+    private function filter(array $params)
+    {
+        return $this->model->where(function ($query) use ($params) {
+            foreach ($params as $column => $value) {
                 $query->where($column, 'LIKE', '%'. $value .'%');
             }
         });
-
-        return $result;
     }
 }
