@@ -32,7 +32,7 @@ class EloquentUserRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "email:=" . $users[1]['email'] . "|name:=" . $users[1]['name'],
+            'query' => "email:" . $users[1]['email'] . "|name:" . $users[1]['name'],
             'limit' => 1,
             'page' => 1
         ];
@@ -76,7 +76,7 @@ class EloquentUserRepositoryTest extends TestCase
         $users = factory(Fce\Models\User::class, 2)->create()->each(function ($user) use ($school) {
              $user->schools()->save($school);
         });
-        
+
         $users = $this->repository->transform($users)['data'];
 
         $otherUsers = $this->repository->getUsersBySchool($school->id);

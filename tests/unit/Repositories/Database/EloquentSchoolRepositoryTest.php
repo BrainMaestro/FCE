@@ -31,7 +31,7 @@ class EloquentSchoolRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "school:=" . $createdSchools[2]['school'] . "|description:=" . $createdSchools[2]['description'],
+            'query' => "school:" . $createdSchools[2]['school'] . "|description:" . $createdSchools[2]['description'],
             'limit' => 1,
             'page' => 1
         ];

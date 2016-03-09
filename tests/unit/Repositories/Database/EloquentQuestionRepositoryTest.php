@@ -33,7 +33,7 @@ class EloquentQuestionRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "category:=" . $questions[4]['category'] . "|description:=" . $questions[4]['description'],
+            'query' => "category:" . $questions[4]['category'] . "|description:" . $questions[4]['description'],
             'limit' => 1,
             'page' => 1
         ];

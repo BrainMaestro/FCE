@@ -38,7 +38,7 @@ class EloquentSemesterRepositoryTest extends TestCase
         $semestersYear = $this->repository->transform($semestersYear)['data'];
 
         Input::merge([
-            'query' => "year:=" . $semestersYear[0]['year'],
+            'query' => "year:" . $semestersYear[0]['year'],
         ]);
         $semesters = $this->repository->getSemesters();
 
@@ -52,7 +52,7 @@ class EloquentSemesterRepositoryTest extends TestCase
         $semestersSeason = $this->repository->transform($semestersSeason)['data'];
 
         Input::merge([
-            'query' => "season:=" . $semestersSeason[0]['season'],
+            'query' => "season:" . $semestersSeason[0]['season'],
         ]);
         $semesters = $this->repository->getSemesters();
 

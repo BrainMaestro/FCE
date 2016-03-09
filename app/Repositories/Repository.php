@@ -176,7 +176,7 @@ abstract class Repository
 
         $attributes = [];
         foreach (explode("|", $query) as $parameter) {
-            list($column, $value) = explode(":=", $parameter);
+            list($column, $value) = explode(":", $parameter);
             $attributes[$column] = $value;
         }
 

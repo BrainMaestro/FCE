@@ -31,7 +31,7 @@ class EloquentQuestionSetRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "name:=" . $questionSets[1]['name'],
+            'query' => "name:" . $questionSets[1]['name'],
             'limit' => 1,
             'page' => 1
         ];
