@@ -133,7 +133,7 @@ class EloquentSemesterRepositoryTest extends TestCase
             $this->repository->addQuestionSet(
                 $this->semester->id,
                 $questionSet['id'],
-                ['evaluation_type' => array_shift($types)]
+                array_shift($types)
             );
         }
 
@@ -158,7 +158,7 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->repository->addQuestionSet(
             $this->semester->id,
             $questionSet['id'],
-            ['evaluation_type' => 'midterm']
+            'midterm'
         );
 
         $semesterQuestionSet = $this->repository->getQuestionSets($this->semester->id)[0];
@@ -179,7 +179,7 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->repository->addQuestionSet(
             $this->semester->id,
             $questionSet['id'],
-            ['evaluation_type' => 'midterm']
+            'midterm'
         );
         $this->repository->setQuestionSetStatus(
             $this->semester->id,
