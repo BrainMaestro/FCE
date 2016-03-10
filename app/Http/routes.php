@@ -11,7 +11,10 @@
 |
 */
 
-Route::pattern('id', '[0-9]+');
+Route::patterns([
+    'id' => '[0-9]+',
+    'questionSetId' => '[0-9]+',
+]);
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,7 +50,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/questions', 'QuestionController@index');
     Route::get('/questions/{id}', 'QuestionController@show');
     Route::post('/questions', 'QuestionController@create');
-    
+
 
     // QuestionSet Routes
     Route::get('/question-sets', 'QuestionSetController@index');
@@ -65,4 +68,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/semesters', 'SemesterController@index');
     Route::post('/semesters', 'SemesterController@create');
     Route::put('/semesters/{id}', 'SemesterController@update');
+    Route::post('/semesters/{id}/question-sets', 'SemesterController@addQuestionSet');
+    Route::put('/semesters/{id}/question-sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
 });
