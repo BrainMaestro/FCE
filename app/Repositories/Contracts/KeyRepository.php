@@ -11,11 +11,13 @@ interface KeyRepository
 {
     public function getKeysBySection($sectionId);
 
+    public function getKeyByValue($value);
+
     public function createKeys(array $section);
 
-    public function setGivenOut($id);
+    public function setGivenOut($value);
 
-    public function setUsed($id);
+    public function setUsed($value);
 
     public function deleteKeys($sectionId);
 }

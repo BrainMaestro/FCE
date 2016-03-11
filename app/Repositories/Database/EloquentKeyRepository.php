@@ -37,11 +37,22 @@ class EloquentKeyRepository extends Repository implements KeyRepository
      * Gets all keys by the section they belong to.
      *
      * @param $sectionId
-     * @return mixed
+     * @return array
      */
     public function getKeysBySection($sectionId)
     {
         return $this->findBy(['section_id' => $sectionId]);
+    }
+
+    /**
+     * Gets a key's details by its value.
+     *
+     * @param $value
+     * @return array
+     */
+    public function getKeyByValue($value)
+    {
+        return $this->findBy(['value' => $value], self::ONE);
     }
 
     /**
@@ -83,23 +94,25 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     /**
      * Set a particular key as given out.
      *
-     * @param $id
+     * @param $value
      * @return boolean
      */
-    public function setGivenOut($id)
+    public function setGivenOut($value)
     {
-        return $this->update($id, ['given_out' => true]);
+        return $this->model->where('value', $value)
+            ->update(['given_out' => true]) == 1;
     }
 
     /**
      * Set a particular key as used.
      *
-     * @param $id
+     * @param $value
      * @return boolean
      */
-    public function setUsed($id)
+    public function setUsed($value)
     {
-        return $this->update($id, ['used' => true]);
+        return $this->model->where('value', $value)
+            ->update(['used' => true]) == 1;
     }
 
     /**

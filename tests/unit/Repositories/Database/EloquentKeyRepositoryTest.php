@@ -42,6 +42,13 @@ class EloquentKeyRepositoryTest extends TestCase
         $this->assertEquals($keys, $allKeys['data']);
     }
 
+    public function testGetKeyByValue()
+    {
+        $key = $this->repository->getKeyByValue($this->key->value);
+
+        $this->assertEquals($this->repository->transform($this->key), $key);
+    }
+
     public function testCreateKeys()
     {
         $keys = $this->repository->createKeys($this->key->section->toArray());
@@ -51,7 +58,7 @@ class EloquentKeyRepositoryTest extends TestCase
 
     public function testSetGivenOut()
     {
-        $this->assertTrue($this->repository->setGivenOut($this->key->id));
+        $this->assertTrue($this->repository->setGivenOut($this->key->value));
 
         $key = $this->repository->transform($this->key->fresh());
 
@@ -60,7 +67,7 @@ class EloquentKeyRepositoryTest extends TestCase
 
     public function testSetUsed()
     {
-        $this->assertTrue($this->repository->setUsed($this->key->id));
+        $this->assertTrue($this->repository->setUsed($this->key->value));
 
         $key = $this->repository->transform($this->key->fresh());
 
