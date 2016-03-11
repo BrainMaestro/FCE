@@ -39,6 +39,18 @@ class QuestionSetControllerTest extends TestCase
         );
     }
 
+    public function testIndexNotFoundException()
+    {
+        $this->repository->expects($this->once())
+            ->method('getQuestionSets')
+            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find any question sets'),
+            $this->controller->index()
+        );
+    }
+
     public function testShow()
     {
         $id = 1;

@@ -52,6 +52,18 @@ class UserControllerTest extends TestCase
         );
     }
 
+    public function testIndexNotFoundException()
+    {
+        $this->repository->expects($this->once())
+            ->method('getUsers')
+            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find any users'),
+            $this->controller->index()
+        );
+    }
+
     public function testShow()
     {
         $id = 1;
