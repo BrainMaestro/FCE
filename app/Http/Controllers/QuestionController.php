@@ -21,7 +21,7 @@ class QuestionController extends Controller
         try {
             return $this->repository->getQuestions();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound($e->getMessage());
+            return $this->respondNotFound('Could not find any questions');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list questions');
         }

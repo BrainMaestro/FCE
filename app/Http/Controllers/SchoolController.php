@@ -20,7 +20,7 @@ class SchoolController extends Controller
         try {
             return $this->repository->getSchools();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound($e->getMessage());
+            return $this->respondNotFound('Could not find any schools');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list schools');
         }

@@ -30,7 +30,7 @@ class SemesterController extends Controller
         try {
             return $this->repository->getSemesters();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound($e->getMessage());
+            return $this->respondNotFound('Could not find any semesters');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list semesters');
         }
@@ -136,6 +136,7 @@ class SemesterController extends Controller
      * @param $id
      * @param bool $status
      * @return bool
+     * @throws \Exception
      */
     private function changeCurrentSemester($id, $status = true)
     {
@@ -159,11 +160,11 @@ class SemesterController extends Controller
         } catch (ModelNotFoundException $e) {
             // No current semester set. Safe to ignore.
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             throw new \Exception($e->getMessage());
         }
-
         DB::commit();
+
         return $this->repository->setCurrentSemester($id);
     }
 }

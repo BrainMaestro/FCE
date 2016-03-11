@@ -24,7 +24,7 @@ class QuestionSetController extends Controller
         try {
             return $this->repository->getQuestionSets();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound($e->getMessage());
+            return $this->respondNotFound('Could not find any question sets');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list questions sets');
         }

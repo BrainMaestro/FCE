@@ -28,7 +28,7 @@ class UserController extends Controller
 
             return $this->repository->getUsers();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound($e->getMessage());
+            return $this->respondNotFound('Could not find any users');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list users');
         }
