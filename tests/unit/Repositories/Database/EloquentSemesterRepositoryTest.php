@@ -77,6 +77,15 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->assertEquals($createdSemesters, $semesters['data']);
     }
 
+    public function testGetSemestersException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'season:=12qwe1+']);
+
+        $this->repository->getSemesters();
+    }
+
     public function testSetCurrentSemester()
     {
         factory(Fce\Models\Semester::class, 2)->create();

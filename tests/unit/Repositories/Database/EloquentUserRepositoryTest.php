@@ -61,6 +61,15 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertEquals($users, $allUsers['data']);
     }
 
+    public function testGetUsersException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'email:=12qwe1+']);
+
+        $this->repository->getUsers();
+    }
+
     public function testGetUsersBySchool()
     {
         $school = factory(Fce\Models\School::class)->create();

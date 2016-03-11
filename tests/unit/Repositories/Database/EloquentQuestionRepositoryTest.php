@@ -12,6 +12,8 @@ class EloquentQuestionRepositoryTest extends TestCase
 
     protected $question;
 
+    protected $mock;
+
     public function setUp()
     {
         parent::setUp();
@@ -58,6 +60,15 @@ class EloquentQuestionRepositoryTest extends TestCase
 
         $this->assertCount(count($questions), $allQuestions['data']);
         $this->assertEquals($questions, $allQuestions['data']);
+    }
+
+    public function testGetQuestionsException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'category:=12qwe1+']);
+
+        $this->repository->getQuestions();
     }
 
     public function testGetQuestionById()

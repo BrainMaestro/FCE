@@ -60,6 +60,15 @@ class EloquentQuestionSetRepositoryTest extends TestCase
         $this->assertEquals($questionSets, $allQuestionSets['data']);
     }
 
+    public function testGetQuestionSetsException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'name:=12qwe1+']);
+
+        $this->repository->getQuestionSets();
+    }
+
     public function testGetQuestionSetById()
     {
         $questionSet = $this->repository->getQuestionSetById($this->questionSet->id);

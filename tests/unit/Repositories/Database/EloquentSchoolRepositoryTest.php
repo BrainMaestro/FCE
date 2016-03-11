@@ -60,6 +60,15 @@ class EloquentSchoolRepositoryTest extends TestCase
         $this->assertEquals($createdSchools, $schools['data']);
     }
 
+    public function testGetSchoolsException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'school:=12qwe1+']);
+
+        $this->repository->getSchools();
+    }
+
     public function testGetSchoolById()
     {
         $school = $this->repository->getSchoolById($this->school->id);
