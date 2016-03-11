@@ -9,6 +9,7 @@ use Fce\Http\Requests\SemesterUpdateRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class SemesterController extends Controller
 {
@@ -141,6 +142,7 @@ class SemesterController extends Controller
             return $this->repository->setCurrentSemester($id, false);
         }
 
+        DB::beginTransaction();
         try {
             $currentSemester = $this->repository->getCurrentSemester();
             $currentSemesterId = $currentSemester['data']['id'];
@@ -152,8 +154,14 @@ class SemesterController extends Controller
 
             // Unset the current semester.
             $this->repository->setCurrentSemester($currentSemesterId, false);
-        } catch (ModelNotFoundException $e) {} // No current semester set. Safe to ignore.
+        } catch (ModelNotFoundException $e) {
+            // No current semester set. Safe to ignore.
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw new \Exception($e->getMessage());
+        }
 
+        DB::commit();
         return $this->repository->setCurrentSemester($id);
     }
 }
