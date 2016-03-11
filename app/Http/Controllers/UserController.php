@@ -5,6 +5,7 @@ namespace Fce\Http\Controllers;
 use Fce\Http\Requests\UserCreateRequest;
 use Fce\Http\Requests\UserUpdateRequest;
 use Fce\Repositories\Contracts\UserRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
@@ -26,6 +27,8 @@ class UserController extends Controller
             }
 
             return $this->repository->getUsers();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound($e->getMessage());
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list users');
         }

@@ -4,6 +4,7 @@ namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\QuestionRequest;
 use Fce\Repositories\Contracts\QuestionRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionController extends Controller
 {
@@ -19,6 +20,8 @@ class QuestionController extends Controller
     {
         try {
             return $this->repository->getQuestions();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound($e->getMessage());
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list questions');
         }

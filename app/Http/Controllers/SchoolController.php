@@ -4,6 +4,7 @@ namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\SchoolRequest;
 use Fce\Repositories\Contracts\SchoolRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SchoolController extends Controller
 {
@@ -18,6 +19,8 @@ class SchoolController extends Controller
     {
         try {
             return $this->repository->getSchools();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound($e->getMessage());
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list schools');
         }

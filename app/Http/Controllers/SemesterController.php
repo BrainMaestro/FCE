@@ -29,6 +29,8 @@ class SemesterController extends Controller
     {
         try {
             return $this->repository->getSemesters();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound($e->getMessage());
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list semesters');
         }

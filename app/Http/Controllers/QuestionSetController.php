@@ -7,6 +7,7 @@ namespace Fce\Http\Controllers;
 use Fce\Http\Requests\QuestionSetRequest;
 use Fce\Http\Requests\QuestionSetAddQuestionRequest;
 use Fce\Repositories\Contracts\QuestionSetRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionSetController extends Controller
 {
@@ -22,6 +23,8 @@ class QuestionSetController extends Controller
     {
         try {
             return $this->repository->getQuestionSets();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound($e->getMessage());
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list questions sets');
         }
