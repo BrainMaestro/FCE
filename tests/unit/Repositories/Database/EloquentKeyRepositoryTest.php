@@ -58,6 +58,8 @@ class EloquentKeyRepositoryTest extends TestCase
 
     public function testSetGivenOut()
     {
+        $this->assertNotTrue($this->key->given_out);
+
         $this->assertTrue($this->repository->setGivenOut($this->key->value));
 
         $key = $this->repository->transform($this->key->fresh());
@@ -67,6 +69,8 @@ class EloquentKeyRepositoryTest extends TestCase
 
     public function testSetUsed()
     {
+        $this->assertNotTrue($this->key->used);
+
         $this->assertTrue($this->repository->setUsed($this->key->value));
 
         $key = $this->repository->transform($this->key->fresh());
