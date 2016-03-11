@@ -64,7 +64,7 @@ class EloquentSchoolRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        Input::merge(['query' => 'school:=12qwe1+']);
+        Input::merge(['query' => 'school:=*not_a_school*']);
 
         $this->repository->getSchools();
     }

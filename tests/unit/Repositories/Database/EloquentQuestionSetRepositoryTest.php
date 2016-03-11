@@ -64,7 +64,7 @@ class EloquentQuestionSetRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        Input::merge(['query' => 'name:=12qwe1+']);
+        Input::merge(['query' => 'name:=*not_a_name*']);
 
         $this->repository->getQuestionSets();
     }

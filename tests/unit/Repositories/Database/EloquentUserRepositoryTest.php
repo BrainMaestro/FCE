@@ -65,7 +65,7 @@ class EloquentUserRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        Input::merge(['query' => 'email:=12qwe1+']);
+        Input::merge(['query' => 'email:=*not_an_email*']);
 
         $this->repository->getUsers();
     }

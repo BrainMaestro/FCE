@@ -81,7 +81,7 @@ class EloquentSemesterRepositoryTest extends TestCase
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
-        Input::merge(['query' => 'season:=12qwe1+']);
+        Input::merge(['query' => 'season:=*not_a_season*']);
 
         $this->repository->getSemesters();
     }

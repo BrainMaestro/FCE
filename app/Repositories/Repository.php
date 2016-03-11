@@ -44,6 +44,7 @@ abstract class Repository
         if ($paginated->isEmpty()) {
             throw new ModelNotFoundException('No models were found');
         }
+
         return $this->transform($paginated);
     }
 
