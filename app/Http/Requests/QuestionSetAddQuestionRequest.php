@@ -4,20 +4,8 @@
 
 namespace Fce\Http\Requests;
 
-use Fce\Http\Requests\Request;
-
 class QuestionSetAddQuestionRequest extends Request
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     * @todo User must have admin role
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
