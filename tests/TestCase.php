@@ -3,6 +3,8 @@
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     const INVALID_ID = -1;
+    const ID = 1;
+    
     /**
      * The base URL to use while testing the application.
      *
