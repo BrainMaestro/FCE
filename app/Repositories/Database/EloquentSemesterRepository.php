@@ -106,4 +106,18 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
             $questionSetId, ['status' => $status]
         ) != 0;
     }
+
+    /**
+     * Get the question set with an open status.
+     *
+     * @param $id
+     * @return array
+     */
+    public function getOpenQuestionSet($id)
+    {
+        $questionSet = $this->model->findOrFail($id)->questionSets()
+            ->wherePivot('status', 'Open')->first();
+
+        return (new SemesterQuestionSetTransformer)->transform($questionSet);
+    }
 }
