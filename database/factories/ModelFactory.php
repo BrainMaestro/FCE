@@ -31,7 +31,7 @@ $factory->define(Fce\Models\Role::class, function (Faker\Generator $faker) {
 
 $factory->define(Fce\Models\QuestionSet::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->word,
+        'name' => $faker->unique()->sentence(),
     ];
 });
 
