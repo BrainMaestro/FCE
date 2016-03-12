@@ -15,12 +15,17 @@ class QuestionTransformer extends TransformerAbstract
 {
     public function transform(Question $question)
     {
-        return [
+        $attributes = [
             'id' => (int) $question->id,
             'category' => $question->category,
             'title' => $question->title,
-            'description' => $question->description,
-            'position' => isset($question->pivot) ? $question->pivot->position : null
+            'description' => $question->description
         ];
+
+        if (isset($question->pivot)) {
+            array_merge($attributes, ['position' => $question->pivot->position]);
+        }
+
+        return $attributes;
     }
 }

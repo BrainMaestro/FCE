@@ -108,13 +108,6 @@ class EloquentQuestionSetRepositoryTest extends TestCase
 
         $questionSet = $this->repository->transform($this->questionSet->fresh());
 
-        //Remove columns that would change because of pivot table
-        for ($i = 0; $i < count($questions); $i++)
-        {
-            unset($questionSet['data']['questions']['data'][$i]['position']);
-            unset($questions[$i]['position']);
-        }
-
         // Check that the added questions are in the question set
         $this->assertNotEmpty($questionSet['data']['questions']['data']);
         $this->assertEquals($questions, $questionSet['data']['questions']['data']);
