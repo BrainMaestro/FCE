@@ -11,6 +11,7 @@ use Fce\Models\QuestionSet;
 use Fce\Repositories\Contracts\QuestionSetRepository;
 use Fce\Repositories\Repository;
 use Fce\Transformers\QuestionSetTransformer;
+use Illuminate\Support\Facades\Input;
 
 class EloquentQuestionSetRepository extends Repository implements QuestionSetRepository
 {
@@ -24,6 +25,10 @@ class EloquentQuestionSetRepository extends Repository implements QuestionSetRep
     {
         $this->model = $model;
         $this->transformer = $transformer;
+        
+        //This is used to ensure questions are always included when question sets are retrieved
+        //It serves as a replacement to defaultIncludes
+        Input::merge(['include' => 'questions']);
     }
 
     /**
