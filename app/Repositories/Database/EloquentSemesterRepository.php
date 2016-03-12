@@ -11,7 +11,7 @@ namespace Fce\Repositories\Database;
 use Fce\Models\Semester;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Fce\Repositories\Repository;
-use Fce\Transformers\SemesterQuestionSetTransformer;
+use Fce\Transformers\QuestionSetTransformer;
 use Fce\Transformers\SemesterTransformer;
 
 class EloquentSemesterRepository extends Repository implements SemesterRepository
@@ -108,16 +108,18 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     }
 
     /**
-     * Get the question set with an open status.
+     * Get question set with an open status.
      *
      * @param $id
      * @return array
      */
     public function getOpenQuestionSet($id)
     {
-        $questionSet = $this->model->findOrFail($id)->questionSets()
-            ->wherePivot('status', 'Open')->first();
+        $questionSet = $this->model->findOrFail($id)
+            ->questionSets()
+            ->wherePivot('status', 'Open')
+            ->first();
 
-        return (new SemesterQuestionSetTransformer)->transform($questionSet);
+        return (new QuestionSetTransformer)->transform($questionSet);
     }
 }

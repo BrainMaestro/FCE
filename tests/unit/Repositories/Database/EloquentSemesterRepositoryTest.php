@@ -176,8 +176,8 @@ class EloquentSemesterRepositoryTest extends TestCase
             $status
         );
 
-        $semesterQuestionSet = $this->repository->transform($this->semester)['data']['details']['data'][0];
-        $this->assertEquals($status, $semesterQuestionSet['status']);
+        $semesterQuestionSet = $this->repository->getQuestionSets($this->semester->id)[0];
+        $this->assertEquals($status, $semesterQuestionSet['details']['status']);
     }
 
     /**
@@ -186,7 +186,7 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testGetOpenQuestionSet()
     {
         $status = 'Open';
-        $questionSet = factory(Fce\Models\QuestionSet::class)->create();
+        $questionSet = factory(\Fce\Models\QuestionSet::class)->create();
         $questionSet = $this->questionSetRepository->transform($questionSet)['data'];
 
         $this->repository->addQuestionSet(
@@ -196,7 +196,7 @@ class EloquentSemesterRepositoryTest extends TestCase
         );
         $this->repository->addQuestionSet(
             $this->semester->id,
-            factory(Fce\Models\QuestionSet::class)->create()->id,
+            factory(\Fce\Models\QuestionSet::class)->create()->id,
             'final'
         );
         $this->repository->setQuestionSetStatus(
@@ -205,9 +205,9 @@ class EloquentSemesterRepositoryTest extends TestCase
             $status
         );
 
-        $semesterQuestionSet = $this->repository->getOpenQuestionSet($this->semester->id);
+        $openQuestionSet = $this->repository->getOpenQuestionSet($this->semester->id);
 
-        $this->assertEquals($questionSet['id'], $semesterQuestionSet['id']);
-        $this->assertEquals($status, $semesterQuestionSet['status']);
+        $this->assertEquals($questionSet['id'], $openQuestionSet['id']);
+        $this->assertEquals($status, $openQuestionSet['status']);
     }
 }
