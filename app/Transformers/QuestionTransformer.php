@@ -19,7 +19,8 @@ class QuestionTransformer extends TransformerAbstract
             'id' => (int) $question->id,
             'category' => $question->category,
             'title' => $question->title,
-            'description' => $question->description
+            'description' => $question->description,
+            'position' => isset($question->pivot) ? $question->pivot->position : null
         ];
     }
 }
