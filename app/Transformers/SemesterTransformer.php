@@ -14,6 +14,13 @@ use League\Fractal\TransformerAbstract;
 class SemesterTransformer extends TransformerAbstract
 {
     /**
+     * @var array
+     */
+    protected $defaultIncludes = [
+        'details',
+    ];
+
+    /**
      * @param Semester $semester
      * @return array
      */
@@ -25,5 +32,14 @@ class SemesterTransformer extends TransformerAbstract
             'year' => (int) $semester->year,
             'current_semester' => (boolean) $semester->current_semester,
         ];
+    }
+
+    /**
+     * @param Semester $semester
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeDetails(Semester $semester)
+    {
+        return $this->collection($semester->questionSets, new SemesterQuestionSetTransformer);
     }
 }

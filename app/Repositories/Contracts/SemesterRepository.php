@@ -19,7 +19,7 @@ interface SemesterRepository
 
     public function addQuestionSet($id, $questionSetId, $evaluationType);
 
-    public function getQuestionSets($id);
-
     public function setQuestionSetStatus($id, $questionSetId, $status);
+
+    public function getOpenQuestionSet($id);
 }
