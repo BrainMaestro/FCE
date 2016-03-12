@@ -26,12 +26,19 @@ class QuestionSetTransformer extends TransformerAbstract
      */
     public function transform(QuestionSet $questionSet)
     {
-        return [
+        $attributes =  [
             'id' => (int) $questionSet->id,
             'name' => $questionSet->name,
-            'evaluation_type' => isset($questionSet->pivot) ? $questionSet->pivot->evaluation_type : null,
-            'status' => isset($questionSet->pivot) ? $questionSet->pivot->status : null,
         ];
+
+        if (isset($questionSet->pivot)) {
+            $attributes = array_merge($attributes, [
+                'evaluation_type' => $questionSet->pivot->evaluation_type,
+                'status' => $questionSet->pivot->status,
+            ]);
+        }
+
+        return $attributes;
     }
 
     /**

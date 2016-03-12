@@ -150,19 +150,10 @@ class EloquentSemesterRepositoryTest extends TestCase
             $this->semester->fresh()->questionSets
         )['data'];
 
-        //Remove columns that would change because of pivot
-        for ($i = 0; $i < count($semesterQuestionSets); $i++) {
-            unset($questionSets[$i]['evaluation_type']);
-            unset($questionSets[$i]['status']);
-
-            unset($semesterQuestionSets[$i]['evaluation_type']);
-            unset($semesterQuestionSets[$i]['status']);
-        }
-
         // Check that the added questionSets are in the semester
         $this->assertNotEmpty($semesterQuestionSets);
         $this->assertCount(count($questionSets), $semesterQuestionSets);
-        $this->assertEquals($questionSets, $semesterQuestionSets);
+        $this->assertArraySubset($questionSets, $semesterQuestionSets);
     }
 
     /**
