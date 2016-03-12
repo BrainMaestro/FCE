@@ -28,7 +28,9 @@ class QuestionSetTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $questionSet->id,
-            'name' => $questionSet->name
+            'name' => $questionSet->name,
+            'evaluation_type' => isset($questionSet->pivot) ? $questionSet->pivot->evaluation_type : null,
+            'status' => isset($questionSet->pivot) ? $questionSet->pivot->status : null,
         ];
     }
 

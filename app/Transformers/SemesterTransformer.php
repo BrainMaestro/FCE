@@ -17,7 +17,7 @@ class SemesterTransformer extends TransformerAbstract
      * @var array
      */
     protected $defaultIncludes = [
-        'details',
+        'questionSets'
     ];
 
     /**
@@ -38,8 +38,8 @@ class SemesterTransformer extends TransformerAbstract
      * @param Semester $semester
      * @return \League\Fractal\Resource\Collection
      */
-    public function includeDetails(Semester $semester)
+    public function includeQuestionSets(Semester $semester)
     {
-        return $this->collection($semester->questionSets, new SemesterQuestionSetTransformer);
+        return $this->collection($semester->questionSets, new QuestionSetTransformer);
     }
 }
