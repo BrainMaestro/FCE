@@ -7,34 +7,15 @@
 
 namespace Fce\Transformers;
 
-use Illuminate\Database\Eloquent\Collection;
 use League\Fractal\TransformerAbstract;
 
 class SemesterQuestionSetTransformer extends TransformerAbstract
 {
     /**
-     * @param $questionSets
-     * @return array
-     */
-    public function transform($questionSets)
-    {
-        if ($questionSets instanceof Collection) {
-            return array_map(function ($questionSet) {
-
-                return self::getDetails($questionSet);
-            }, $questionSets->toArray());
-        }
-
-        return self::getDetails($questionSets);
-    }
-
-    /**
-     * Get the relevant details from the question set.
-     *
      * @param $questionSet
      * @return array
      */
-    private static function getDetails($questionSet)
+    public function transform($questionSet)
     {
         return [
             'id' => $questionSet['id'],
