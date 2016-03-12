@@ -2,59 +2,56 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\IEvaluationsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Events\Event;
+use Fce\Http\Requests\EvaluationRequest;
+use Fce\Repositories\Contracts\EvaluationRepository;
+use Fce\Repositories\Contracts\KeyRepository;
+use Fce\Repositories\Contracts\SemesterRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EvaluationController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, IEvaluationsRepository $evaluationsRepository)
-    {
-        $this->repository = $evaluationsRepository;
-        parent::__construct($request);
+    protected $keyRepository;
+
+    protected $semesterRepository;
+
+    public function __construct(
+        EvaluationRepository $repository,
+        KeyRepository $keyRepository,
+        SemesterRepository $semesterRepository
+    ) {
+        $this->repository = $repository;
+        $this->keyRepository = $keyRepository;
+        $this->semesterRepository = $semesterRepository;
     }
 
-    public function index()
+    /**
+     * Get evaluations by the specified key.
+     *
+     * @param $key
+     * @return array
+     */
+    public function index($key)
     {
         try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
+            $key = $this->keyRepository->getKeyByValue($key)['data'];
 
+            if ($key['given_out']) {
+                return $this->respondForbidden('This key has already been given out');
+            }
 
+            $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
+            $questionSet = $this->semesterRepository->getOpenQuestionSet($semesterId);
+
+            event(Event::KEY_GIVEN_OUT, $key['value']); // The key has been given out.
+
+            return $this->repository->getEvaluationsBySectionAndQuestionSet($key['section_id'], $questionSet['id']);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Key does not exist');
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
-    }
-
-    public function create()
-    {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
-    }
-
-    public function showKeys()
-    {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
-    }
-
-    public function showKeysJson()
-    {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not list the evaluations');
         }
     }
 

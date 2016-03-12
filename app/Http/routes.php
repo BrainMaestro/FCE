@@ -14,6 +14,7 @@
 Route::patterns([
     'id' => '[0-9]+',
     'questionSetId' => '[0-9]+',
+    'key' => '[A-Z0-9]{6}',
 ]);
 
 Route::get('/', function () {
@@ -30,8 +31,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/search', 'SearchController@index');
 
     // Evaluation Routes
-    Route::get('/evaluations', 'EvaluationController@index');
-    Route::put('/evaluations', 'EvaluationController@incrementEvaluation');
+    Route::get('/evaluations/{key}', 'EvaluationController@index');
+    Route::put('/evaluations/{key}', 'EvaluationController@incrementEvaluations');
 
     // User Routes
     Route::get('/users', 'UserController@index');
@@ -47,7 +48,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::put('/sections/{id}', 'SectionController@update');
     Route::get('/sections/{id}/keys', 'SectionController@showKeys');
     Route::get('/sections/{id}/reports', 'SectionController@showReport');
-    Route::get('/sections/{id}/evaluations', 'SectionController@showEvaluations');
 
     // Question Routes
     Route::get('/questions', 'QuestionController@index');
