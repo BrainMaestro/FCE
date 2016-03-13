@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Event;
  */
 class EvaluationControllerTest extends TestCase
 {
-    const KEY = 'AAAAAA';
-
     protected $repository;
     protected $keyRepository;
     protected $semesterRepository;
@@ -34,10 +32,10 @@ class EvaluationControllerTest extends TestCase
     public function testIndex()
     {
         $this->keyRepository->expects($this->once())
-            ->method('getKeyByValue')->with(self::KEY)
+            ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
                 'data' => [
-                    'value' => self::KEY,
+                    'value' => parent::KEY,
                     'section_id' => parent::ID,
                     'given_out' => false,
                 ]
@@ -52,19 +50,19 @@ class EvaluationControllerTest extends TestCase
             ->willReturn(['id' => parent::ID]);
 
         Event::shouldReceive('fire')->once()
-            ->with(Fce\Events\Event::KEY_GIVEN_OUT, self::KEY, false);
+            ->with(Fce\Events\Event::KEY_GIVEN_OUT, parent::KEY, false);
 
         $this->repository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')
             ->with(parent::ID, parent::ID);
 
-        $this->controller->index(self::KEY);
+        $this->controller->index(parent::KEY);
     }
 
     public function testIndexWithGivenOutKey()
     {
         $this->keyRepository->expects($this->once())
-            ->method('getKeyByValue')->with(self::KEY)
+            ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
                 'data' => [
                     'given_out' => true,
@@ -73,7 +71,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondForbidden('This key has already been given out'),
-            $this->controller->index(self::KEY)
+            $this->controller->index(parent::KEY)
         );
     }
 
@@ -85,7 +83,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Key does not exist'),
-            $this->controller->index(self::KEY)
+            $this->controller->index(parent::KEY)
         );
 
         // 500 - Internal server error
@@ -94,7 +92,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not list the evaluations'),
-            $this->controller->index(self::KEY)
+            $this->controller->index(parent::KEY)
         );
     }
 
@@ -106,10 +104,10 @@ class EvaluationControllerTest extends TestCase
         $request->evaluations = [parent::ID];
 
         $this->keyRepository->expects($this->once())
-            ->method('getKeyByValue')->with(self::KEY)
+            ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
                 'data' => [
-                    'value' => self::KEY,
+                    'value' => parent::KEY,
                     'section_id' => parent::ID,
                     'given_out' => true,
                     'used' => false,
@@ -125,12 +123,12 @@ class EvaluationControllerTest extends TestCase
             ->willReturn(['id' => parent::ID]);
 
         Event::shouldReceive('fire')->once()
-            ->with(Fce\Events\Event::KEY_USED, self::KEY, false);
+            ->with(Fce\Events\Event::KEY_USED, parent::KEY, false);
 
         Event::shouldReceive('fire')->once()
             ->with(Fce\Events\Event::EVALUATION_SUBMITTED, $request->evaluations, false);
 
-        $this->controller->incrementEvaluations($request, self::KEY);
+        $this->controller->incrementEvaluations($request, parent::KEY);
     }
 
     public function testIncrementEvaluationsWithNotGivenOutKey()
@@ -138,7 +136,7 @@ class EvaluationControllerTest extends TestCase
         $request = new EvaluationRequest;
 
         $this->keyRepository->expects($this->once())
-            ->method('getKeyByValue')->with(self::KEY)
+            ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
                 'data' => [
                     'given_out' => false,
@@ -147,7 +145,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('This key has not yet been given out'),
-            $this->controller->incrementEvaluations($request, self::KEY)
+            $this->controller->incrementEvaluations($request, parent::KEY)
         );
     }
 
@@ -156,7 +154,7 @@ class EvaluationControllerTest extends TestCase
         $request = new EvaluationRequest;
 
         $this->keyRepository->expects($this->once())
-            ->method('getKeyByValue')->with(self::KEY)
+            ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
                 'data' => [
                     'given_out' => true,
@@ -166,7 +164,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondForbidden('This key has already been used'),
-            $this->controller->incrementEvaluations($request, self::KEY)
+            $this->controller->incrementEvaluations($request, parent::KEY)
         );
     }
 
@@ -175,7 +173,7 @@ class EvaluationControllerTest extends TestCase
         $request = new EvaluationRequest;
 
         $this->keyRepository->expects($this->once())
-            ->method('getKeyByValue')->with(self::KEY)
+            ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
                 'data' => [
                     'given_out' => true,
@@ -194,7 +192,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('The semester or question set provided is incorrect'),
-            $this->controller->incrementEvaluations($request, self::KEY)
+            $this->controller->incrementEvaluations($request, parent::KEY)
         );
     }
 
@@ -208,7 +206,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Key does not exist'),
-            $this->controller->incrementEvaluations($request, self::KEY)
+            $this->controller->incrementEvaluations($request, parent::KEY)
         );
 
         // 500 - Internal server error
@@ -217,7 +215,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not submit the evaluations'),
-            $this->controller->incrementEvaluations($request, self::KEY)
+            $this->controller->incrementEvaluations($request, parent::KEY)
         );
     }
 }
