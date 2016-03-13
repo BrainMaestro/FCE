@@ -10,15 +10,13 @@ use Fce\Http\Requests\SearchRequest;
  */
 class SearchControllerTest extends TestCase
 {
-    protected $mock;
     protected $controller;
-    protected $user;
 
     public function setUp()
     {
         parent::setUp();
+        factory(Fce\Models\User::class)->create();
         $this->controller = new SearchController();
-        $this->user = factory(Fce\Models\User::class)->create();
     }
 
     public function testIndex()
@@ -26,33 +24,53 @@ class SearchControllerTest extends TestCase
         $request = new SearchRequest();
         $request->merge(['model' => 'user', 'query' => 'email:@']);
 
-        $mock = $this->getMockBuilder(SearchController::class)->setMethods(['index', 'setRepository'])->getMock();
-        $mock->expects($this->once())->method('setRepository')->with('user');
-
-        $this->controller->index($request);
+        $this->assertNotEmpty($this->controller->index($request));
     }
 
-//    public function testIndexThrowableException()
-//    {
-//        $this->assertEquals(
-//            $this->controller->respondUnprocessable("Model doesn't exist or can't be searched"),
-//            $this->controller->index()
-//        );
-//    }
-//
-//    public function testIndexModelNotFoundException()
-//    {
-//        $this->assertEquals(
-//            $this->controller->respondNotFound("Could not find any users, that meet the search criteria"),
-//            $this->controller->index()
-//        );
-//    }
-//
-//    public function testIndexException()
-//    {
-//        $this->assertEquals(
-//            $this->controller->respondInternalServerError("Could not complete search, an error occurred"),
-//            $this->controller->index()
-//        );
-//    }
+    public function testIndexModelNotFoundException()
+    {
+        $request = new SearchRequest();
+        $request->merge(['model' => 'user', 'query' => 'email:@']);
+
+        $mock = $this->getMockBuilder(SearchController::class)
+            ->setMethods(['setRepository'])
+            ->getMock();
+        $mock->expects($this->once())
+            ->method('setRepository')
+            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound("Could not find any users, that meet the search criteria"),
+            $mock->index($request)
+        );
+    }
+
+    public function testIndexReflectionException()
+    {
+        $request = new SearchRequest();
+        $request->merge(['model' => 'companyxxx123', 'query' => 'email:@']);
+
+        $this->assertEquals(
+            $this->controller->respondUnprocessable("Model doesn't exist or can't be searched"),
+            $this->controller->index($request)
+        );
+    }
+
+    public function testIndexException()
+    {
+        $request = new SearchRequest();
+        $request->merge(['model' => 'user', 'query' => 'email:@']);
+
+        $mock = $this->getMockBuilder(SearchController::class)
+            ->setMethods(['setRepository'])
+            ->getMock();
+        $mock->expects($this->once())
+            ->method('setRepository')
+            ->will($this->throwException(new \Exception));
+
+        $this->assertEquals(
+            $this->controller->respondInternalServerError("Could not complete search, an error occurred"),
+            $mock->index($request)
+        );
+    }
 }

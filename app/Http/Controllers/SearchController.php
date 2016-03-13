@@ -24,20 +24,24 @@ class SearchController extends Controller
             $this->setRepository($this->request->model);
 
             return $this->repository->all();
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $m) {
             return $this->respondNotFound("Could not find any " . $this->request->model . "s, that meet the search criteria");
-        } catch (\Throwable $t) {
+        } catch (\ReflectionException $r) {
             return $this->respondUnprocessable("Model doesn't exist or can't be searched");
         } catch (\Exception $e) {
             return $this->respondInternalServerError("Could not complete search, an error occurred");
         }
     }
 
-    private function setRepository($model)
+    protected function setRepository($model)
     {
             $this->model = "Fce\\Models\\" . ucfirst($model);
             $this->transformer = "Fce\\Transformers\\" . ucfirst($model) . "Transformer";
             $this->repository = "Fce\\Repositories\\Database\\Eloquent" . ucfirst($model) . "Repository";
+
+            if (!class_exists($this->repository)) {
+                throw new \ReflectionException('Class does not exist');
+            }
 
             $this->model = new $this->model();
             $this->transformer = new $this->transformer();
