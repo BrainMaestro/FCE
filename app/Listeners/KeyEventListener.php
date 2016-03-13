@@ -31,6 +31,14 @@ class KeyEventListener
     }
 
     /**
+     * Handle key used events.
+     */
+    public function onKeyUsed($value)
+    {
+        return $this->repository->setUsed($value);
+    }
+
+    /**
      * Register the listeners for the subscriber.
      *
      * @param  \Illuminate\Events\Dispatcher  $events
@@ -40,6 +48,11 @@ class KeyEventListener
         $events->listen(
             Event::KEY_GIVEN_OUT,
             'Fce\Listeners\KeyEventListener@onKeyGivenOut'
+        );
+
+        $events->listen(
+            Event::KEY_USED,
+            'Fce\Listeners\KeyEventListener@onKeyUsed'
         );
     }
 }

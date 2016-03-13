@@ -6,4 +6,8 @@ abstract class Event
 {
     // Key events.
     const KEY_GIVEN_OUT = 'key.given_out';
+    const KEY_USED = 'key.used';
+
+    // Evaluation events.
+    const EVALUATION_SUBMITTED = 'evaluation.submitted';
 }

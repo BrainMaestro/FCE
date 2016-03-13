@@ -2,6 +2,7 @@
 
 namespace Fce\Providers;
 
+use Fce\Events\Event;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -13,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Fce\Events\SomeEvent' => [
-            'Fce\Listeners\EventListener',
+        Event::EVALUATION_SUBMITTED => [
+            'Fce\Listeners\EvaluationSubmitted',
         ],
     ];
 

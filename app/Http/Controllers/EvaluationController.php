@@ -55,12 +55,33 @@ class EvaluationController extends Controller
         }
     }
 
-    public function show($id)
+    public function incrementEvaluations(EvaluationRequest $request, $key)
     {
         try {
+            $key = $this->keyRepository->getKeyByValue($key)['data'];
 
+            // Key has not been given out for some reason.
+            if (!$key['given_out']) {
+                return $this->respondUnprocessable('This key has not yet been given out');
+            }
+
+            if ($key['used']) {
+                return $this->respondForbidden('This key has already been used');
+            }
+
+            $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
+            $questionSetId = $this->semesterRepository->getOpenQuestionSet($semesterId)['id'];
+
+            if ($request->semester_id != $semesterId || $request->question_set_id != $questionSetId) {
+                return $this->respondUnprocessable('The semester or question set provided is incorrect');
+            }
+
+            event(Event::KEY_USED, $key['value']); // The key has been used.
+            event(Event::EVALUATION_SUBMITTED, $request->evaluations);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Key does not exist');
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not submit the evaluations');
         }
     }
 }
