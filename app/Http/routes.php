@@ -26,6 +26,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/logout', 'AuthController@logout');
 
+    //Search Route
+    Route::post('/search', 'SearchController@index');
+
     // Evaluation Routes
     Route::get('/evaluations', 'EvaluationController@index');
     Route::put('/evaluations', 'EvaluationController@incrementEvaluation');
