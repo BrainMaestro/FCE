@@ -161,7 +161,7 @@ class SemesterController extends Controller
             // No current semester set. Safe to ignore.
         } catch (\Exception $e) {
             DB::rollBack();
-            throw new \Exception($e->getMessage());
+            throw $e;
         }
         DB::commit();
 

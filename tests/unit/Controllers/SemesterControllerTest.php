@@ -139,6 +139,7 @@ class SemesterControllerTest extends TestCase
         $this->repository->method('setCurrentSemester')
             ->will($this->throwException(new Exception));
 
+        $request->current_semester = true;
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not update semester'),
             $this->controller->update($request, parent::ID)
