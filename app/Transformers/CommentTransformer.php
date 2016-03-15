@@ -19,6 +19,8 @@ class CommentTransformer extends TransformerAbstract
      */
     public function transform(Comment $comment)
     {
-        return $comment->comment;
+        return [
+            'comment' => $comment->comment
+        ];
     }
 }

@@ -10,15 +10,6 @@ use Fce\Repositories\Database\EloquentEvaluationRepository;
 class EloquentEvaluationRepositoryTest extends TestCase
 {
     protected $repository;
-
-    /**
-     * The basic models that are needed for all tests
-     */
-    protected $questionSet;
-    protected $question;
-    protected $semester;
-    protected $school;
-    protected $section;
     protected $evaluation;
 
     public function setUp()
@@ -103,5 +94,3 @@ class EloquentEvaluationRepositoryTest extends TestCase
         $this->assertEquals($this->evaluation->one + 1, $incrementedEvaluation['data'][0]['one']);
     }
 }
-
-

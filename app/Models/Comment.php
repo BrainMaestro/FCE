@@ -11,7 +11,7 @@ class Comment extends Model
      */
     protected $fillable = [
         'section_id',
-        'question_id',
+        'question_set_id',
         'comment'
     ];
 

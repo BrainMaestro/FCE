@@ -61,7 +61,7 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     }
 
     /**
-     * Creates a new semester from the specified attributes.
+     * Create a new semester from the specified attributes.
      *
      * @param $season
      * @param $year
