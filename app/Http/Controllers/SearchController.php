@@ -16,22 +16,16 @@ class SearchController extends Controller
 
             return $this->repository->all();
         } catch (ModelNotFoundException $m) {
-            return $this->respondNotFound("Could not find any " . $request->model . "s, that meet the search criteria");
+            return $this->respondNotFound('Could not find any ' . $request->model . 's, that meet the search criteria');
         } catch (\ReflectionException $r) {
-            return $this->respondUnprocessable("Model doesn't exist or can't be searched");
+            return $this->respondUnprocessable('Model does not exist or cannot be searched');
         } catch (\Exception $e) {
-            return $this->respondInternalServerError("Could not complete search, an error occurred");
+            return $this->respondInternalServerError('Could not complete search, an error occurred');
         }
     }
 
     protected function setRepository($model)
     {
-        $repository = "Fce\\Repositories\\Database\\Eloquent" . ucfirst($model) . "Repository";
-        
-        if (!class_exists($repository)) {
-            throw new \ReflectionException('Class does not exist');
-        }
-        
-        $this->repository = app($repository);
+        $this->repository = app(ucfirst($model) . 'Repository');
     }
 }

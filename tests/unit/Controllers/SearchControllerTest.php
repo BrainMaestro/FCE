@@ -40,7 +40,7 @@ class SearchControllerTest extends TestCase
             ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
 
         $this->assertEquals(
-            $this->controller->respondNotFound("Could not find any users, that meet the search criteria"),
+            $this->controller->respondNotFound('Could not find any users, that meet the search criteria'),
             $mock->index($request)
         );
     }
@@ -51,7 +51,7 @@ class SearchControllerTest extends TestCase
         $request->merge(['model' => 'companyxxx123', 'query' => 'email:@']);
 
         $this->assertEquals(
-            $this->controller->respondUnprocessable("Model doesn't exist or can't be searched"),
+            $this->controller->respondUnprocessable('Model does not exist or cannot be searched'),
             $this->controller->index($request)
         );
     }
@@ -69,7 +69,7 @@ class SearchControllerTest extends TestCase
             ->will($this->throwException(new \Exception));
 
         $this->assertEquals(
-            $this->controller->respondInternalServerError("Could not complete search, an error occurred"),
+            $this->controller->respondInternalServerError('Could not complete search, an error occurred'),
             $mock->index($request)
         );
     }
