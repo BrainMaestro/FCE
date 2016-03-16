@@ -21,6 +21,7 @@ class EvaluationRequest extends Request
             'question_set_id' => 'required|integer',
             'evaluations.*.id' => 'required|integer',
             'evaluations.*.column' => 'required|in:one,two,three,four,five',
+            'comment' => 'string',
         ];
     }
 }

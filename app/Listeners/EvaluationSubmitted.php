@@ -8,15 +8,18 @@
 namespace Fce\Listeners;
 
 use Fce\Repositories\Contracts\EvaluationRepository;
+use Fce\Repositories\Contracts\CommentRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EvaluationSubmitted implements ShouldQueue
 {
     protected $repository;
+    protected $commentRepository;
 
-    public function __construct(EvaluationRepository $repository)
+    public function __construct(EvaluationRepository $repository, CommentRepository $commentRepository)
     {
         $this->repository = $repository;
+        $this->commentRepository = $commentRepository;
     }
 
     /**
@@ -24,13 +27,17 @@ class EvaluationSubmitted implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle($evaluations, $comment, $semesterId, $questionSetId)
     {
-        foreach (func_get_args() as $evaluation) {
+        foreach ($evaluations as $evaluation) {
             $this->repository->incrementEvaluation(
                 $evaluation['id'],
                 $evaluation['column']
             );
+        }
+
+        if (!is_null($comment)) {
+            $this->commentRepository->createComment($semesterId, $questionSetId, $comment);
         }
     }
 }

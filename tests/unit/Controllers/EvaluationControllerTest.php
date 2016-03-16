@@ -102,6 +102,7 @@ class EvaluationControllerTest extends TestCase
         $request->semester_id = parent::ID;
         $request->question_set_id = parent::ID;
         $request->evaluations = [parent::ID];
+        $request->comment = 'comment';
 
         $this->keyRepository->expects($this->once())
             ->method('getKeyByValue')->with(parent::KEY)
@@ -126,7 +127,11 @@ class EvaluationControllerTest extends TestCase
             ->with(Fce\Events\Event::KEY_USED, parent::KEY, false);
 
         Event::shouldReceive('fire')->once()
-            ->with(Fce\Events\Event::EVALUATION_SUBMITTED, $request->evaluations, false);
+            ->with(
+                Fce\Events\Event::EVALUATION_SUBMITTED,
+                [$request->evaluations, $request->comment, $request->semester_id, $request->question_set_id],
+                false
+            );
 
         $this->controller->incrementEvaluations($request, parent::KEY);
     }

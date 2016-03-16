@@ -77,7 +77,7 @@ class EvaluationController extends Controller
             }
 
             event(Event::KEY_USED, $key['value']); // The key has been used.
-            event(Event::EVALUATION_SUBMITTED, $request->evaluations);
+            event(Event::EVALUATION_SUBMITTED, [$request->evaluations, $request->comment, $semesterId, $questionSetId]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Key does not exist');
         } catch (\Exception $e) {
