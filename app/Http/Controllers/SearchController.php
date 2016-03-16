@@ -12,11 +12,6 @@ class SearchController extends Controller
     protected $transformer;
     protected $repository;
 
-//    public function __construct(SearchRequest $request)
-//    {
-//        $this->request = $request;
-//    }
-
     public function index(SearchRequest $request)
     {
         try {
