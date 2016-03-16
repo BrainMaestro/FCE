@@ -12,8 +12,7 @@ class SearchController extends Controller
     public function index(SearchRequest $request)
     {
         try {
-            $request = $request;
-            $this->setRepository($this->request->model);
+            $this->setRepository($request->model);
 
             return $this->repository->all();
         } catch (ModelNotFoundException $m) {
