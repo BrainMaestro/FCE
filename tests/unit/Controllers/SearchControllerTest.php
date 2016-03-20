@@ -42,48 +42,36 @@ class SearchControllerTest extends TestCase
 
     public function testIndexModelNotFoundException()
     {
-        $request = new SearchRequest();
-        $request->merge(['model' => 'user', 'query' => 'email:@']);
-
-        $mock = $this->getMockBuilder(SearchController::class)
-            ->setMethods(['setRepository'])
-            ->getMock();
-        $mock->expects($this->once())
-            ->method('setRepository')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
+        Input::merge(['query' => 'email:not_an_email_$%^&*']);
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find any users, that meet the search criteria'),
-            $mock->index($request)
+            $this->controller->index($this->request)
         );
     }
 
     public function testIndexReflectionException()
     {
-        $request = new SearchRequest();
-        $request->merge(['model' => 'companyxxx123', 'query' => 'email:@']);
+        $this->request->model = 'not_a_model';
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('Model does not exist or cannot be searched'),
-            $this->controller->index($request)
+            $this->controller->index($this->request)
         );
     }
 
     public function testIndexException()
     {
-        $request = new SearchRequest();
-        $request->merge(['model' => 'user', 'query' => 'email:@']);
-
-        $mock = $this->getMockBuilder(SearchController::class)
+        $controller = $this->getMockBuilder(SearchController::class)
             ->setMethods(['setRepository'])
             ->getMock();
-        $mock->expects($this->once())
+        $controller->expects($this->once())
             ->method('setRepository')
             ->will($this->throwException(new \Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not complete search, an error occurred'),
-            $mock->index($request)
+            $controller->index($this->request)
         );
     }
 }
