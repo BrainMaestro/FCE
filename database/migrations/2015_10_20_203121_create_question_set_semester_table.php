@@ -1,5 +1,6 @@
 <?php
 
+use Fce\Utility\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -17,7 +18,12 @@ class CreateQuestionSetSemesterTable extends Migration
             $table->unsignedInteger('question_set_id');
             $table->unsignedInteger('semester_id');
             $table->string('evaluation_type');
-            $table->enum('status', ['Locked', 'Open', 'Done'])->default('Locked');
+            // Include all the available statuses except 'In progress'.
+            $table->enum('status', [
+                Status::LOCKED,
+                Status::OPEN,
+                Status::DONE,
+            ])->default(Status::LOCKED);
             $table->timestamps();
 
             $table->foreign('question_set_id')->references('id')->on('question_sets');

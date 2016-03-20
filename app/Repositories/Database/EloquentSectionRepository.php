@@ -12,6 +12,7 @@ use Fce\Models\Section;
 use Fce\Repositories\Repository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Transformers\SectionTransformer;
+use Fce\Utility\Status;
 
 class EloquentSectionRepository extends Repository implements SectionRepository
 {
@@ -96,7 +97,7 @@ class EloquentSectionRepository extends Repository implements SectionRepository
      */
     public function setSectionStatus($id, $status)
     {
-        if (!in_array($status, Section::STATUSES)) {
+        if (!in_array($status, Status::STATUSES)) {
             throw new \InvalidArgumentException($status . ' is not an available section status');
         }
 
