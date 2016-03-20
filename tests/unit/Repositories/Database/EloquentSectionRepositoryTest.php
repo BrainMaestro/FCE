@@ -128,11 +128,11 @@ class EloquentSectionRepositoryTest extends TestCase
 
     public function testSetSectionStatus()
     {
-        $this->repository->setSectionStatus($this->section->id, Section::STATUS_OPEN);
+        $this->repository->setSectionStatus($this->section->id, Fce\Utility\Status::OPEN);
 
         $this->section = $this->repository->getSectionById($this->section->id);
 
-        $this->assertEquals(Section::STATUS_OPEN, $this->section['data']['status']);
+        $this->assertEquals(Fce\Utility\Status::OPEN, $this->section['data']['status']);
     }
 
     public function testSetSectionStatusWIthIncorrectStatus()
