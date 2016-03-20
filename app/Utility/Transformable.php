@@ -5,7 +5,7 @@
  * Time: 9:50 PM
  */
 
-namespace Fce\Traits;
+namespace Fce\Utility;
 
 use App;
 use Fce\Providers\Fractal;

@@ -2,7 +2,7 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Traits\ApiClient;
+use Fce\Utility\ApiClient;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;

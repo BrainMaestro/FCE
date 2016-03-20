@@ -5,7 +5,7 @@
  * Time: 7:57 PM
  */
 
-namespace Fce\Traits;
+namespace Fce\Utility;
 
 use Illuminate\Http\Response;
 
