@@ -1,6 +1,7 @@
 <?php
 use Fce\Http\Controllers\SearchController;
 use Fce\Http\Requests\SearchRequest;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Created by PhpStorm.
@@ -11,20 +12,32 @@ use Fce\Http\Requests\SearchRequest;
 class SearchControllerTest extends TestCase
 {
     protected $controller;
+    protected $request;
 
     public function setUp()
     {
         parent::setUp();
+        $this->controller = new SearchController;
+        $this->request = new SearchRequest;
+
+        // Default model
+        $this->request->model = 'user';
         factory(Fce\Models\User::class)->create();
-        $this->controller = new SearchController();
     }
 
     public function testIndex()
     {
-        $request = new SearchRequest();
-        $request->merge(['model' => 'user', 'query' => 'email:@']);
+        factory(Fce\Models\User::class, 2)->create();
+        $this->assertCount(3, $this->controller->index($this->request)['data']);
 
-        $this->assertNotEmpty($this->controller->index($request));
+        $user = app(Fce\Repositories\Contracts\UserRepository::class)
+            ->transform(Fce\Models\User::first())['data'];
+        Input::merge(['query' => 'email:' . $user['email']]);
+
+        $this->assertEquals(
+            $user,
+            $this->controller->index($this->request)['data'][0]
+        );
     }
 
     public function testIndexModelNotFoundException()
