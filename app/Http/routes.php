@@ -14,7 +14,7 @@
 Route::patterns([
     'id' => '[0-9]+',
     'questionSetId' => '[0-9]+',
-    'key' => '[A-Z0-9]{6}',
+    'key' => '[A-Z0-9]{' . \Fce\Models\Key::LENGTH . '}',
 ]);
 
 Route::get('/', function () {

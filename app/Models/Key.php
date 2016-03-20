@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Key extends Model
 {
     /**
+     * Number of characters in a key.
+     */
+    const LENGTH = 6;
+
+    /**
      * @var array
      */
     protected $fillable = [

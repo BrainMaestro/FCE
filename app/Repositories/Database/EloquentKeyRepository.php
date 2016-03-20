@@ -70,7 +70,7 @@ class EloquentKeyRepository extends Repository implements KeyRepository
         for ($i = $tries = 0; $i < $section['enrolled']; $i++) {
             try {
                 $key = $this->create([
-                    'value' => strtoupper(str_random(6)),
+                    'value' => strtoupper(str_random(Key::LENGTH)),
                     'section_id' => $section['id']
                 ]);
 
