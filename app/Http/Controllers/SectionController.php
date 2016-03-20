@@ -5,6 +5,7 @@ namespace Fce\Http\Controllers;
 use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\KeyRepository;
+use Fce\Repositories\Contracts\EvaluationRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
@@ -14,10 +15,12 @@ class SectionController extends Controller
 
     public function __construct(
         SectionRepository $repository,
-        KeyRepository $keyRepository
+        KeyRepository $keyRepository,
+        EvaluationRepository $evaluationRepository
     ) {
         $this->repository = $repository;
         $this->keyRepository = $keyRepository;
+        $this->evaluationRepository = $evaluationRepository;
     }
 
     public function index()
@@ -72,12 +75,14 @@ class SectionController extends Controller
         }
     }
 
-    public function showReport($id)
+    public function showReport($id, $questionSetId)
     {
         try {
-            // Will have to update the evaluation repository and come back to this
+            return $this->evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find report');
         } catch (\Exception $e) {
-            return $this->repondInternalServerError('Could not show report(s)');
+            return $this->respondInternalServerError('Could not show report');
         }
     }
 

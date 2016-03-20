@@ -47,7 +47,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/sections', 'SectionController@create');
     Route::put('/sections/{id}', 'SectionController@update');
     Route::get('/sections/{id}/keys', 'SectionController@showKeys');
-    Route::get('/sections/{id}/reports', 'SectionController@showReport');
+    Route::get('/sections/{id}/question-set/{questionSetId}/report', 'SectionController@showReport');
 
     // Question Routes
     Route::get('/questions', 'QuestionController@index');

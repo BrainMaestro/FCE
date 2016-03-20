@@ -5,6 +5,7 @@
 use Fce\Http\Controllers\SectionController;
 use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\SectionRepository;
+use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
 
 class SectionControllerTest extends TestCase
@@ -12,14 +13,16 @@ class SectionControllerTest extends TestCase
     protected $repository;
     protected $keyRepository;
     protected $controller;
+    protected $evaluationRepository;
 
     public function setUp()
     {
         parent::setUp();
         $this->repository = $this->getMockBuilder(SectionRepository::class)->getMock();
         $this->keyRepository = $this->getMockBuilder(KeyRepository::class)->getMock();
+        $this->evaluationRepository = $this->getMockBuilder(EvaluationRepository::class)->getMock();
 
-        $this->controller = new SectionController($this->repository, $this->keyRepository);
+        $this->controller = new SectionController($this->repository, $this->keyRepository, $this->evaluationRepository);
     }
 
     public function testIndexWithSemester()
@@ -185,7 +188,6 @@ class SectionControllerTest extends TestCase
     public function testShowKeysException()
     {
         $id = 1;
-        $request = new SectionRequest;
 
         $this->keyRepository->expects($this->once())
             ->method('getKeysBySection')
@@ -194,6 +196,46 @@ class SectionControllerTest extends TestCase
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not show key(s)'),
             $this->controller->showKeys($id)
+        );
+    }
+
+    public function testShowReport()
+    {
+        $id = 1;
+        $questionSetId = 1;
+        $this->evaluationRepository->expects($this->once())
+            ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId);
+
+        $this->controller->showReport($id, $questionSetId);
+
+
+    }
+
+    public function testShowReportNotFound()
+    {
+        $id = 1;
+        $questionSetId = 1;
+        $this->evaluationRepository->expects($this->once())
+            ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId)
+            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find report'),
+            $this->controller->showReport($id, $questionSetId)
+        );
+    }
+
+    public function testShowReportException()
+    {
+        $id = 1;
+        $questionSetId = 1;
+        $this->evaluationRepository->expects($this->once())
+            ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId)
+            ->will($this->throwException(new Exception));
+
+        $this->assertEquals(
+            $this->controller->respondInternalServerError('Could not show report'),
+            $this->controller->showReport($id, $questionSetId)
         );
     }
 }
