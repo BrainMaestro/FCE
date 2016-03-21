@@ -32,24 +32,22 @@ class SectionController extends Controller
     public function index()
     {
         try {
-            $semester = Input::get('semester');
+            $semester = Input::get(
+                'semester',
+                $this->semesterRepository->getCurrentSemester()['data']['id']
+            );
             $school = Input::get('school');
 
-            if ($semester && !$school) {
-                return $this->repository->getSectionsBySemester($semester);
-            }
-
-            if ($semester && $school) {
+            if ($school) {
                 return $this->repository->getSectionsBySemesterAndSchool($semester, $school);
             }
 
-            return $this->repository->getSectionsBySemester($this->semesterRepository->getCurrentSemester()['data']['id']);
+            return $this->repository->getSectionsBySemester($semester);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find such section(s)');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list section(s)');
         }
-
     }
 
     public function show($id)
