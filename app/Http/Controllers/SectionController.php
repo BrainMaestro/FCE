@@ -5,6 +5,7 @@ namespace Fce\Http\Controllers;
 use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\KeyRepository;
+use Fce\Repositories\Contracts\SemesterRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
@@ -12,15 +13,20 @@ use Illuminate\Support\Facades\Input;
 class SectionController extends Controller
 {
     protected $repository;
+    protected $keyRepository;
+    protected $evaluationRepository;
+    protected $semesterRepository;
 
     public function __construct(
         SectionRepository $repository,
         KeyRepository $keyRepository,
-        EvaluationRepository $evaluationRepository
+        EvaluationRepository $evaluationRepository,
+        SemesterRepository $semesterRepository
     ) {
         $this->repository = $repository;
         $this->keyRepository = $keyRepository;
         $this->evaluationRepository = $evaluationRepository;
+        $this->semesterRepository = $semesterRepository;
     }
 
     public function index()
@@ -37,7 +43,7 @@ class SectionController extends Controller
                 return $this->repository->getSectionsBySemesterAndSchool($semester, $school);
             }
 
-            return $this->respondUnprocessable('Could not find any criteria');
+            return $this->repository->getSectionsBySemester($this->semesterRepository->getCurrentSemester()['data']['id']);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find such section(s)');
         } catch (\Exception $e) {
@@ -50,8 +56,10 @@ class SectionController extends Controller
     {
         try {
             return $this->repository->getSectionById($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find such section');
         } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not find section');
+            return $this->respondInternalServerError('Could not show section');
         }
     }
 
