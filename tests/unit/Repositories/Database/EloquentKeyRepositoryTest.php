@@ -1,6 +1,7 @@
 <?php
 
 use Fce\Repositories\Database\EloquentKeyRepository;
+use Illuminate\Database\QueryException;
 
 /**
  * Created by BrainMaestro
@@ -54,6 +55,23 @@ class EloquentKeyRepositoryTest extends TestCase
         $keys = $this->repository->createKeys($this->key->section->toArray());
 
         $this->assertCount((int) $this->key->section->enrolled, $keys);
+    }
+
+    public function testCreateKeysException()
+    {
+        $repository = $this->getMockBuilder(EloquentKeyRepository::class)
+            ->setMethods(['create'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository->expects($this->exactly(EloquentKeyRepository::MAX_TRIES + 1))
+            ->method('create')
+            ->will($this->throwException(
+                new QueryException('', [], new \Exception)
+            ));
+
+        $this->setExpectedException(QueryException::class);
+
+        $repository->createKeys($this->key->section->toArray());
     }
 
     public function testSetGivenOut()
