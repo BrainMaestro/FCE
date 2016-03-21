@@ -55,7 +55,7 @@ class EvaluationController extends Controller
         }
     }
 
-    public function incrementEvaluations(EvaluationRequest $request, $key)
+    public function submitEvaluations(EvaluationRequest $request, $key)
     {
         try {
             $key = $this->keyRepository->getKeyByValue($key)['data'];

@@ -32,7 +32,7 @@ Route::group(['prefix' => 'api'], function () {
 
     // Evaluation Routes
     Route::get('/evaluations/{key}', 'EvaluationController@index');
-    Route::put('/evaluations/{key}', 'EvaluationController@incrementEvaluations');
+    Route::put('/evaluations/{key}', 'EvaluationController@submitEvaluations');
 
     // User Routes
     Route::get('/users', 'UserController@index');
