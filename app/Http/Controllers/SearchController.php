@@ -26,6 +26,6 @@ class SearchController extends Controller
 
     protected function setRepository($model)
     {
-        $this->repository = app('Fce\Repositories\Contracts\\' . ucfirst($model) . 'Repository');
+        $this->repository = app('Fce\\Repositories\\Contracts\\' . ucfirst($model) . 'Repository');
     }
 }
