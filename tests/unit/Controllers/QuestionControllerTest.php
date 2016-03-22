@@ -1,6 +1,6 @@
 <?php
 
-/* [Created by SkaeX @ 2016-03-07 12:27:23] 
+/* [Created by SkaeX @ 2016-03-07 12:27:23]
 */
 
 use Fce\Http\Controllers\QuestionController;
@@ -53,11 +53,10 @@ class QuestionControllerTest extends TestCase
 
     public function testShow()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getQuestionById')->with($id);
+            ->method('getQuestionById')->with(parent::ID);
 
-        $this->controller->show($id);
+        $this->controller->show(parent::ID);
     }
 
     public function testShowNotFoundException()
@@ -74,14 +73,13 @@ class QuestionControllerTest extends TestCase
 
     public function testShowException()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getQuestionById')->with($id)
+            ->method('getQuestionById')->with(parent::ID)
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not find question'),
-            $this->controller->show($id)
+            $this->controller->respondInternalServerError('Could not show question'),
+            $this->controller->show(parent::ID)
         );
     }
 

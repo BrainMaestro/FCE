@@ -54,11 +54,10 @@ class QuestionSetControllerTest extends TestCase
 
     public function testShow()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getQuestionSetById')->with($id);
+            ->method('getQuestionSetById')->with(parent::ID);
 
-        $this->controller->show($id);
+        $this->controller->show(parent::ID);
     }
 
     public function testShowNotFoundException()
@@ -75,14 +74,13 @@ class QuestionSetControllerTest extends TestCase
 
     public function testShowException()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getQuestionSetById')->with($id)
+            ->method('getQuestionSetById')->with(parent::ID)
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not find question set'),
-            $this->controller->show($id)
+            $this->controller->respondInternalServerError('Could not show question set'),
+            $this->controller->show(parent::ID)
         );
     }
 
@@ -113,19 +111,16 @@ class QuestionSetControllerTest extends TestCase
     }
     public function testAddQuestions()
     {
-        $id = 1;
         $request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')
-            ->with($id, $request->all());
+            ->with(parent::ID, $request->all());
 
-        $this->controller->addQuestions($request, $id);
+        $this->controller->addQuestions($request, parent::ID);
     }
 
-    public function testAddQuestionsException()
     public function testAddQuestionsNotFoundException()
     {
-        $id = 1;
         $request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')
@@ -143,12 +138,12 @@ class QuestionSetControllerTest extends TestCase
     	$request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')
-            ->with($id, $request->all())
+            ->with(parent::ID, $request->all())
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not add question(s) to question set'),
-            $this->controller->addQuestions($request, $id)
+            $this->controller->addQuestions($request, parent::ID)
         );
     }
 }

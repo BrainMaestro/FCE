@@ -51,11 +51,10 @@ class SchoolControllerTest extends TestCase
 
     public function testShow()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getSchoolById')->with($id);
+            ->method('getSchoolById')->with(parent::ID);
 
-        $this->controller->show($id);
+        $this->controller->show(parent::ID);
     }
 
     public function testShowNotFoundException()
@@ -72,14 +71,13 @@ class SchoolControllerTest extends TestCase
 
     public function testShowException()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getSchoolById')->with($id)
+            ->method('getSchoolById')->with(parent::ID)
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not find school'),
-            $this->controller->show($id)
+            $this->controller->respondInternalServerError('Could not show school'),
+            $this->controller->show(parent::ID)
         );
     }
 
@@ -110,35 +108,32 @@ class SchoolControllerTest extends TestCase
     }
     public function testUpdate()
     {
-        $id = 1;
         $request = new SchoolRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSchool')
-            ->with($id, $request->all())->willReturn(true);
+            ->with(parent::ID, $request->all())->willReturn(true);
 
-        $response = $this->controller->update($request, $id);
+        $response = $this->controller->update($request, parent::ID);
         $this->assertEquals(null, $response);
     }
 
     public function testUpdateWithEmptyAttributes()
     {
-        $id = 1;
         $request = new SchoolRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSchool')
-            ->with($id, $request->all())->willReturn(false);
+            ->with(parent::ID, $request->all())->willReturn(false);
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('School attributes were not provided'),
-            $this->controller->update($request, $id)
+            $this->controller->update($request, parent::ID)
         );
     }
 
     public function testUpdateException()
     {
-        $id = 1;
         $request = new SchoolRequest;
 
         $this->repository->expects($this->once())
@@ -147,7 +142,7 @@ class SchoolControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not update school'),
-            $this->controller->update($request, $id)
+            $this->controller->update($request, parent::ID)
         );
     }
 }

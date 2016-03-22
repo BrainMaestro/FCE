@@ -67,36 +67,33 @@ class UserControllerTest extends TestCase
 
     public function testShow()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getUserById')->with($id);
+            ->method('getUserById')->with(parent::ID);
 
-        $this->controller->show($id);
+        $this->controller->show(parent::ID);
     }
 
     public function testShowNotFoundException()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getUserById')->with($id)
+            ->method('getUserById')->with(parent::ID)
             ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not find user'),
-            $this->controller->show($id)
+            $this->controller->respondNotFound('Could not find user'),
+            $this->controller->show(parent::ID)
         );
     }
 
     public function testShowException()
     {
-        $id = 1;
         $this->repository->expects($this->once())
-            ->method('getUserById')->with($id)
+            ->method('getUserById')->with(parent::ID)
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not find user'),
-            $this->controller->show($id)
+            $this->controller->respondInternalServerError('Could not show user'),
+            $this->controller->show(parent::ID)
         );
     }
 
@@ -128,35 +125,32 @@ class UserControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $id = 1;
         $request = new UserUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateUser')
-            ->with($id, $request->all())->willReturn(true);
+            ->with(parent::ID, $request->all())->willReturn(true);
 
-        $response = $this->controller->update($request, $id);
+        $response = $this->controller->update($request, parent::ID);
         $this->assertEquals(null, $response);
     }
 
     public function testUpdateWithEmptyAttributes()
     {
-        $id = 1;
         $request = new UserUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateUser')
-            ->with($id, $request->all())->willReturn(false);
+            ->with(parent::ID, $request->all())->willReturn(false);
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('User attributes were not provided'),
-            $this->controller->update($request, $id)
+            $this->controller->update($request, parent::ID)
         );
     }
 
     public function testUpdateException()
     {
-        $id = 1;
         $request = new UserUpdateRequest;
 
         $this->repository->expects($this->once())
@@ -165,31 +159,27 @@ class UserControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not update user'),
-            $this->controller->update($request, $id)
+            $this->controller->update($request, parent::ID)
         );
     }
 
     public function testDestroy()
     {
-        $id = 1;
-
         $this->repository->expects($this->once())
-            ->method('deleteUser')->with($id);
+            ->method('deleteUser')->with(parent::ID);
 
-        $this->controller->destroy($id);
+        $this->controller->destroy(parent::ID);
     }
 
     public function testDestroyException()
     {
-        $id = 1;
-
         $this->repository->expects($this->once())
             ->method('deleteUser')
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not delete user'),
-            $this->controller->destroy($id)
+            $this->controller->destroy(parent::ID)
         );
     }
 }
