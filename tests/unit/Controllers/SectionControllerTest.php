@@ -8,6 +8,7 @@ use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SectionControllerTest extends TestCase
 {
@@ -70,12 +71,12 @@ class SectionControllerTest extends TestCase
         $this->repository->expects($this->once())
             ->method('getSectionsBySemester')
             ->with($semesterId)
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         Input::merge(['semester' => Parent::ID]);
 
         $this->assertEquals(
-            $this->controller->respondNotFound('Could not find such section(s)'),
+            $this->controller->respondNotFound('Could not find section(s)'),
             $this->controller->index()
         );
     }
@@ -107,10 +108,10 @@ class SectionControllerTest extends TestCase
         $this->repository->expects($this->once())
             ->method('getSectionById')
             ->with(Parent::ID)
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
-            $this->controller->respondNotFound('Could not find such section'),
+            $this->controller->respondNotFound('Could not find section'),
             $this->controller->show(Parent::ID)
         );
     }
@@ -181,7 +182,22 @@ class SectionControllerTest extends TestCase
             $this->controller->update($request, $id)
         );
     }
+    
+    public function testUpdateNotFoundException()
+    {
+        $id = Parent::ID;
+        $request = new SectionRequest;
 
+        $this->repository->expects($this->once())
+            ->method('updateSection')
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find section'),
+            $this->controller->update($request, $id)
+        );
+    }
+    
     public function testUpdateException()
     {
         $id = Parent::ID;
@@ -211,7 +227,7 @@ class SectionControllerTest extends TestCase
         $id = Parent::ID;
         $this->keyRepository->expects($this->once())
             ->method('getKeysBySection')->with($id)
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find key(s)'),
@@ -233,6 +249,48 @@ class SectionControllerTest extends TestCase
         );
     }
 
+    public function testListReports()
+    {
+        $id = Parent::ID;
+        $this->repository->expects($this->once())
+            ->method('getSectionById')
+            ->with($id)
+            ->willReturn(['data' => ['semester_id' => $id]]);
+
+        $this->semesterRepository->expects($this->once())
+            ->method('getSemesterById')->with($id);
+
+        $this->controller->listReports($id);
+    }
+
+    public function testListReportsNotFoundException()
+    {
+        $id = Parent::ID;
+        $this->repository->expects($this->once())
+            ->method('getSectionById')
+            ->with($id)
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find section'),
+            $this->controller->listReports($id)
+        );
+    }
+
+    public function testListReportsException()
+    {
+        $id = Parent::ID;
+        $this->repository->expects($this->once())
+            ->method('getSectionById')
+            ->with($id)
+            ->will($this->throwException(new \Exception));
+
+        $this->assertEquals(
+            $this->controller->respondInternalServerError('Could not list reports'),
+            $this->controller->listReports($id)
+        );
+    }
+    
     public function testShowReport()
     {
         $id = Parent::ID;
@@ -241,8 +299,6 @@ class SectionControllerTest extends TestCase
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId);
 
         $this->controller->showReport($id, $questionSetId);
-
-
     }
 
     public function testShowReportNotFound()
@@ -251,7 +307,7 @@ class SectionControllerTest extends TestCase
         $questionSetId = Parent::ID;
         $this->evaluationRepository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId)
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find report'),

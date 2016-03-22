@@ -16,6 +16,7 @@ class SectionController extends Controller
     protected $keyRepository;
     protected $evaluationRepository;
     protected $semesterRepository;
+    protected $currentSemester;
 
     public function __construct(
         SectionRepository $repository,
@@ -27,6 +28,7 @@ class SectionController extends Controller
         $this->keyRepository = $keyRepository;
         $this->evaluationRepository = $evaluationRepository;
         $this->semesterRepository = $semesterRepository;
+        $this->currentSemester = $semesterRepository->getCurrentSemester()['data'];
     }
 
     public function index()
@@ -34,7 +36,7 @@ class SectionController extends Controller
         try {
             $semester = Input::get(
                 'semester',
-                $this->semesterRepository->getCurrentSemester()['data']['id']
+                $this->currentSemester['id']
             );
             $school = Input::get('school');
 
@@ -44,7 +46,7 @@ class SectionController extends Controller
 
             return $this->repository->getSectionsBySemester($semester);
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find such section(s)');
+            return $this->respondNotFound('Could not find section(s)');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not list section(s)');
         }
@@ -55,7 +57,7 @@ class SectionController extends Controller
         try {
             return $this->repository->getSectionById($id);
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find such section');
+            return $this->respondNotFound('Could not find section');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not show section');
         }
@@ -76,8 +78,27 @@ class SectionController extends Controller
             if (!$this->repository->updateSection($id, $request->all())) {
                 return $this->respondUnprocessable('Section attribute(s) were not provided');
             }
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find section');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not update section');
+        }
+    }
+
+    public function listReports($id)
+    {
+        try {
+            $section = $this->repository->getSectionById($id)['data'];
+            
+            $semester = $section['semester_id'] == $this->currentSemester['id']
+                ? $this->currentSemester
+                : $this->semesterRepository->getSemesterById($section['semester_id'])['data'];
+            
+            return $semester['questionSets'];
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find section');
+        } catch (\Exception $e) {
+            return $this->respondInternalServerError('Could not list reports');
         }
     }
 
