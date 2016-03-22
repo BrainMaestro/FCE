@@ -43,7 +43,7 @@ class QuestionControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getQuestions')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find any questions'),
@@ -58,6 +58,18 @@ class QuestionControllerTest extends TestCase
             ->method('getQuestionById')->with($id);
 
         $this->controller->show($id);
+    }
+
+    public function testShowNotFoundException()
+    {
+        $this->repository->expects($this->once())
+            ->method('getQuestionById')->with(parent::ID)
+            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find question'),
+            $this->controller->show(parent::ID)
+        );
     }
 
     public function testShowException()

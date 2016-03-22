@@ -3,6 +3,7 @@
 use Fce\Http\Controllers\SchoolController;
 use Fce\Http\Requests\SchoolRequest;
 use Fce\Repositories\Contracts\SchoolRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SchoolControllerTest extends TestCase
 {
@@ -40,7 +41,7 @@ class SchoolControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getSchools')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find any schools'),
@@ -55,6 +56,18 @@ class SchoolControllerTest extends TestCase
             ->method('getSchoolById')->with($id);
 
         $this->controller->show($id);
+    }
+
+    public function testShowNotFoundException()
+    {
+        $this->repository->expects($this->once())
+            ->method('getSchoolById')->with(parent::ID)
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find school'),
+            $this->controller->show(parent::ID)
+        );
     }
 
     public function testShowException()

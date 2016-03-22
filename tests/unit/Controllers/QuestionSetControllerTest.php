@@ -6,6 +6,7 @@ use Fce\Http\Controllers\QuestionSetController;
 use Fce\Http\Requests\QuestionSetRequest;
 use Fce\Http\Requests\QuestionSetAddQuestionRequest;
 use Fce\Repositories\Contracts\QuestionSetRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionSetControllerTest extends TestCase
 {
@@ -43,7 +44,7 @@ class QuestionSetControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getQuestionSets')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find any question sets'),
@@ -58,6 +59,18 @@ class QuestionSetControllerTest extends TestCase
             ->method('getQuestionSetById')->with($id);
 
         $this->controller->show($id);
+    }
+
+    public function testShowNotFoundException()
+    {
+        $this->repository->expects($this->once())
+            ->method('getQuestionSetById')->with(parent::ID)
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find question set'),
+            $this->controller->show(parent::ID)
+        );
     }
 
     public function testShowException()
@@ -110,9 +123,23 @@ class QuestionSetControllerTest extends TestCase
     }
 
     public function testAddQuestionsException()
+    public function testAddQuestionsNotFoundException()
     {
         $id = 1;
+        $request = new QuestionSetAddQuestionRequest;
+        $this->repository->expects($this->once())
+            ->method('addQuestions')
+            ->with(parent::ID, $request->all())
+            ->will($this->throwException(new ModelNotFoundException));
 
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find question set'),
+            $this->controller->addQuestions($request, parent::ID)
+        );
+    }
+
+    public function testAddQuestionsException()
+    {
     	$request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')

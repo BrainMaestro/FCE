@@ -4,6 +4,7 @@ use Fce\Http\Controllers\UserController;
 use Fce\Http\Requests\UserCreateRequest;
 use Fce\Http\Requests\UserUpdateRequest;
 use Fce\Repositories\Contracts\UserRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Created by BrainMaestro
@@ -56,7 +57,7 @@ class UserControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getUsers')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find any users'),
@@ -71,6 +72,19 @@ class UserControllerTest extends TestCase
             ->method('getUserById')->with($id);
 
         $this->controller->show($id);
+    }
+
+    public function testShowNotFoundException()
+    {
+        $id = 1;
+        $this->repository->expects($this->once())
+            ->method('getUserById')->with($id)
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondInternalServerError('Could not find user'),
+            $this->controller->show($id)
+        );
     }
 
     public function testShowException()
