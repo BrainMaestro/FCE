@@ -96,7 +96,7 @@ class EvaluationControllerTest extends TestCase
         );
     }
 
-    public function testIncrementEvaluations()
+    public function testSubmitEvaluations()
     {
         $request = new EvaluationRequest;
         $request->semester_id = parent::ID;
@@ -133,10 +133,10 @@ class EvaluationControllerTest extends TestCase
                 false
             );
 
-        $this->controller->incrementEvaluations($request, parent::KEY);
+        $this->controller->submitEvaluations($request, parent::KEY);
     }
 
-    public function testIncrementEvaluationsWithNotGivenOutKey()
+    public function testSubmitEvaluationsWithNotGivenOutKey()
     {
         $request = new EvaluationRequest;
 
@@ -150,11 +150,11 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('This key has not yet been given out'),
-            $this->controller->incrementEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($request, parent::KEY)
         );
     }
 
-    public function testIncrementEvaluationsWithUsedKey()
+    public function testSubmitEvaluationsWithUsedKey()
     {
         $request = new EvaluationRequest;
 
@@ -169,11 +169,11 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondForbidden('This key has already been used'),
-            $this->controller->incrementEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($request, parent::KEY)
         );
     }
 
-    public function testIncrementEvaluationsWithIncorrectIds()
+    public function testSubmitEvaluationsWithIncorrectIds()
     {
         $request = new EvaluationRequest;
 
@@ -197,7 +197,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('The semester or question set provided is incorrect'),
-            $this->controller->incrementEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($request, parent::KEY)
         );
     }
 
@@ -211,7 +211,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Key does not exist'),
-            $this->controller->incrementEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($request, parent::KEY)
         );
 
         // 500 - Internal server error
@@ -220,7 +220,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not submit the evaluations'),
-            $this->controller->incrementEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($request, parent::KEY)
         );
     }
 }
