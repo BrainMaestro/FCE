@@ -18,7 +18,6 @@ class QuestionSetController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index()
     {
         try {
@@ -34,8 +33,10 @@ class QuestionSetController extends Controller
     {
         try {
             return $this->repository->getQuestionSetById($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find question set');
         } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not find question set');
+            return $this->respondInternalServerError('Could not show question set');
         }
     }
 
@@ -52,6 +53,8 @@ class QuestionSetController extends Controller
     {
         try {
             return $this->repository->addQuestions($id, $request->all());
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find question set');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not add question(s) to question set');
         }

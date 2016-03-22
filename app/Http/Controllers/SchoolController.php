@@ -31,8 +31,10 @@ class SchoolController extends Controller
     {
         try {
             return $this->repository->getSchoolById($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find school');
         } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not find school');
+            return $this->respondInternalServerError('Could not show school');
         }
     }
 

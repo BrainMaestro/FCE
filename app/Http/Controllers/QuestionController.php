@@ -15,7 +15,6 @@ class QuestionController extends Controller
         $this->repository = $repository;
     }
 
-
     public function index()
     {
         try {
@@ -31,8 +30,10 @@ class QuestionController extends Controller
     {
         try {
             return $this->repository->getQuestionById($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find question');
         } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not find question');
+            return $this->respondInternalServerError('Could not show question');
         }
     }
 

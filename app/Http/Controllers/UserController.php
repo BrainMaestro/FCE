@@ -38,8 +38,10 @@ class UserController extends Controller
     {
         try {
             return $this->repository->getUserById($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find user');
         } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not find user');
+            return $this->respondInternalServerError('Could not show user');
         }
     }
 
