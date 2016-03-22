@@ -86,6 +86,20 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->repository->getSemesters();
     }
 
+    public function testGetSemesterById()
+    {
+        $semester = $this->repository->getSemesterById($this->semester->id);
+
+        $this->assertEquals($this->repository->transform($this->semester), $semester);
+    }
+
+    public function testGetSemesterByIdWithInvalidId()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        $this->repository->getSemesterById(parent::INVALID_ID);
+    }
+
     public function testSetCurrentSemester()
     {
         factory(Fce\Models\Semester::class, 2)->create();

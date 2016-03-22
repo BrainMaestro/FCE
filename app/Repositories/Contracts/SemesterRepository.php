@@ -11,7 +11,9 @@ interface SemesterRepository
 {
     public function getSemesters();
 
-    public function getCurrentSemester();
+    public function getCurrentSemester(); /* We might remove this when we find cleaner way to use getSemesterById */
+
+    public function getSemesterById($id);
 
     public function setCurrentSemester($id, $status = true);
 

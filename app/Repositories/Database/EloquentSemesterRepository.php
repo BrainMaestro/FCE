@@ -50,6 +50,17 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     }
 
     /**
+     * Get a single semester by its id.
+     *
+     * @param $id
+     * @return array
+     */
+    public function getSemesterById($id)
+    {
+        return $this->find($id);
+    }
+
+    /**
      * Set current semester by its id.
      *
      * @param $id
