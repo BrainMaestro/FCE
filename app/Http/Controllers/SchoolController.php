@@ -15,6 +15,11 @@ class SchoolController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * Get all schools.
+     *
+     * @return array
+     */
     public function index()
     {
         try {
@@ -26,7 +31,12 @@ class SchoolController extends Controller
         }
     }
 
-
+    /**
+     * Get a specific school by its id.
+     *
+     * @param $id
+     * @return array
+     */
     public function show($id)
     {
         try {
@@ -38,6 +48,12 @@ class SchoolController extends Controller
         }
     }
 
+    /**
+     * Create a new school.
+     *
+     * @param SchoolRequest $request
+     * @return array
+     */
     public function create(SchoolRequest $request)
     {
         try {
@@ -47,6 +63,13 @@ class SchoolController extends Controller
         }
     }
 
+    /**
+     * Update the attributes of an existing school.
+     *
+     * @param SchoolRequest $request
+     * @param $id
+     * @return array
+     */
     public function update(SchoolRequest $request, $id)
     {
         try {

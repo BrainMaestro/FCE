@@ -17,6 +17,12 @@ class UserController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * Get all users.
+     * If specified, the school is used to limit results.
+     *
+     * @return array
+     */
     public function index()
     {
         try {
@@ -34,6 +40,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Get a specific user by their id.
+     *
+     * @param $id
+     * @return array
+     */
     public function show($id)
     {
         try {
@@ -45,6 +57,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param UserCreateRequest $request
+     * @return array
+     */
     public function create(UserCreateRequest $request)
     {
         try {
@@ -54,6 +72,13 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Update a user's attributes.
+     *
+     * @param UserUpdateRequest $request
+     * @param $id
+     * @return array
+     */
     public function update(UserUpdateRequest $request, $id)
     {
         try {
@@ -65,6 +90,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Delete a user.
+     * 
+     * @param $id
+     * @return array
+     */
     public function destroy($id)
     {
         try {

@@ -15,6 +15,11 @@ class QuestionController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * Get all questions.
+     * 
+     * @return array
+     */
     public function index()
     {
         try {
@@ -26,6 +31,12 @@ class QuestionController extends Controller
         }
     }
 
+    /**
+     * Get a specific question by id.
+     * 
+     * @param $id
+     * @return array
+     */
     public function show($id)
     {
         try {
@@ -37,6 +48,12 @@ class QuestionController extends Controller
         }
     }
 
+    /**
+     * Create a new question.
+     * 
+     * @param QuestionRequest $request
+     * @return mixed
+     */
     public function create(QuestionRequest $request)
     {
         try {

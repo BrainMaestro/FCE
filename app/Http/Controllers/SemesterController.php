@@ -21,7 +21,7 @@ class SemesterController extends Controller
     }
 
     /**
-     * List all semesters.
+     * Get all semesters.
      *
      * @return mixed
      */

@@ -18,6 +18,11 @@ class QuestionSetController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * Get all question sets.
+     * 
+     * @return array
+     */
     public function index()
     {
         try {
@@ -29,6 +34,12 @@ class QuestionSetController extends Controller
         }
     }
 
+    /**
+     * Get a specific question set by id.
+     * 
+     * @param $id
+     * @return array
+     */
     public function show($id)
     {
         try {
@@ -40,6 +51,12 @@ class QuestionSetController extends Controller
         }
     }
 
+    /**
+     * Create a new question set.
+     * 
+     * @param QuestionSetRequest $request
+     * @return array
+     */
     public function create(QuestionSetRequest $request)
     {
         try {
@@ -49,6 +66,13 @@ class QuestionSetController extends Controller
         }
     }
 
+    /**
+     * Add questions to a question set.
+     * 
+     * @param QuestionSetAddQuestionRequest $request
+     * @param $id
+     * @return array
+     */
     public function addQuestions(QuestionSetAddQuestionRequest $request, $id)
     {
         try {

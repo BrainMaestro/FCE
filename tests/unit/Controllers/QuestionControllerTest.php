@@ -6,6 +6,7 @@
 use Fce\Http\Controllers\QuestionController;
 use Fce\Http\Requests\QuestionRequest;
 use Fce\Repositories\Contracts\QuestionRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionControllerTest extends TestCase
 {
@@ -43,7 +44,7 @@ class QuestionControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getQuestions')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find any questions'),
@@ -63,7 +64,7 @@ class QuestionControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getQuestionById')->with(parent::ID)
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException));
+            ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find question'),

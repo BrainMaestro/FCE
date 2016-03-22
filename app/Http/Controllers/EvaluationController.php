@@ -55,6 +55,13 @@ class EvaluationController extends Controller
         }
     }
 
+    /**
+     * Submit an evaluation and a comment if present.
+     * 
+     * @param EvaluationRequest $request
+     * @param $key
+     * @return array
+     */
     public function submitEvaluations(EvaluationRequest $request, $key)
     {
         try {
