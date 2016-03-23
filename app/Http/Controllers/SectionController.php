@@ -28,7 +28,6 @@ class SectionController extends Controller
         $this->keyRepository = $keyRepository;
         $this->evaluationRepository = $evaluationRepository;
         $this->semesterRepository = $semesterRepository;
-        $this->currentSemester = $semesterRepository->getCurrentSemester()['data'];
     }
 
     public function index()
@@ -36,7 +35,7 @@ class SectionController extends Controller
         try {
             $semester = Input::get(
                 'semester',
-                $this->currentSemester['id']
+                $this->semesterRepository->getCurrentSemester()['data']['id']
             );
             $school = Input::get('school');
 
@@ -90,11 +89,9 @@ class SectionController extends Controller
         try {
             $section = $this->repository->getSectionById($id)['data'];
             
-            $semester = $section['semester_id'] == $this->currentSemester['id']
-                ? $this->currentSemester
-                : $this->semesterRepository->getSemesterById($section['semester_id'])['data'];
+            $semester = $this->semesterRepository->getSemesterById($section['semester_id']);
             
-            return $semester['questionSets'];
+            return $semester['data']['questionSets'];
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find section');
         } catch (\Exception $e) {
