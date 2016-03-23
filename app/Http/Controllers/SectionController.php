@@ -14,20 +14,10 @@ use Illuminate\Support\Facades\Input;
 class SectionController extends Controller
 {
     protected $repository;
-    protected $keyRepository;
-    protected $evaluationRepository;
     protected $semesterRepository;
-    protected $currentSemester;
 
-    public function __construct(
-        SectionRepository $repository,
-        KeyRepository $keyRepository,
-        EvaluationRepository $evaluationRepository,
-        SemesterRepository $semesterRepository
-    ) {
+    public function __construct(SectionRepository $repository, SemesterRepository $semesterRepository) {
         $this->repository = $repository;
-        $this->keyRepository = $keyRepository;
-        $this->evaluationRepository = $evaluationRepository;
         $this->semesterRepository = $semesterRepository;
     }
     
@@ -135,14 +125,15 @@ class SectionController extends Controller
     /**
      * Shows report of the a section for a question-set.
      *
+     * @param EvaluationRepository $evaluationRepository
      * @param  $id Section's Id
      * @param  $questionSetId Question Set's Id
      * @return array
      */
-    public function showReport($id, $questionSetId)
+    public function showReport(EvaluationRepository $evaluationRepository, $id, $questionSetId)
     {
         try {
-            return $this->evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
+            return $evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find report');
         } catch (\Exception $e) {
@@ -153,13 +144,14 @@ class SectionController extends Controller
     /**
      * Gets keys for the given section.
      *
+     * @param KeyRepository $keyRepository
      * @param $id Section's Id
-     * @return  array
+     * @return array
      */
-    public function showKeys($id)
+    public function showKeys(KeyRepository $keyRepository, $id)
     {
         try {
-            return $this->keyRepository->getKeysBySection($id);
+            return $keyRepository->getKeysBySection($id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find key(s)');
         } catch (\Exception $e) {

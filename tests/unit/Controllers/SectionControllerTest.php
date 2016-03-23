@@ -29,8 +29,6 @@ class SectionControllerTest extends TestCase
 
         $this->controller = new SectionController(
             $this->repository,
-            $this->keyRepository,
-            $this->evaluationRepository,
             $this->semesterRepository
         );
     }
@@ -222,7 +220,7 @@ class SectionControllerTest extends TestCase
         $this->keyRepository->expects($this->once())
             ->method('getKeysBySection')->with($id);
 
-        $this->controller->showKeys($id);
+        $this->controller->showKeys($this->keyRepository, $id);
     }
 
     public function testShowKeysNotFound()
@@ -234,7 +232,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find key(s)'),
-            $this->controller->showkeys($id)
+            $this->controller->showKeys($this->keyRepository, $id)
         );
     }
 
@@ -248,7 +246,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not show key(s)'),
-            $this->controller->showKeys($id)
+            $this->controller->showKeys($this->keyRepository, $id)
         );
     }
 
@@ -301,7 +299,7 @@ class SectionControllerTest extends TestCase
         $this->evaluationRepository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId);
 
-        $this->controller->showReport($id, $questionSetId);
+        $this->controller->showReport($this->evaluationRepository, $id, $questionSetId);
     }
 
     public function testShowReportNotFound()
@@ -314,7 +312,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find report'),
-            $this->controller->showReport($id, $questionSetId)
+            $this->controller->showReport($this->evaluationRepository, $id, $questionSetId)
         );
     }
 
@@ -328,7 +326,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not show report'),
-            $this->controller->showReport($id, $questionSetId)
+            $this->controller->showReport($this->evaluationRepository, $id, $questionSetId)
         );
     }
 }
