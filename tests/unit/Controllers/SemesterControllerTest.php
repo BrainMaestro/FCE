@@ -90,8 +90,10 @@ class SemesterControllerTest extends TestCase
             ->method('setCurrentSemester')
             ->with(parent::ID)->willReturn(true);
 
-        $response = $this->controller->update($request, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Semester successfully updated'),
+            $this->controller->update($request, parent::ID)
+        );
     }
 
     public function testUpdateCurrentSemesterTrue()
@@ -102,8 +104,10 @@ class SemesterControllerTest extends TestCase
         $this->repository->expects($this->once())
             ->method('getCurrentSemester');
 
-        $response = $this->controller->update($request, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Semester successfully updated'),
+            $this->controller->update($request, parent::ID)
+        );
 
         return $request;
     }
@@ -118,8 +122,10 @@ class SemesterControllerTest extends TestCase
             ->method('getCurrentSemester')
             ->willReturn(['data' => ['id' => parent::ID]]);
 
-        $response = $this->controller->update($request, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Semester successfully updated'),
+            $this->controller->update($request, parent::ID)
+        );
     }
 
     public function testUpdateException()
@@ -154,8 +160,10 @@ class SemesterControllerTest extends TestCase
             ->method('addQuestionSet')
             ->with(parent::ID, $request->question_set_id, $request->evaluation_type);
 
-        $response = $this->controller->addQuestionSet($request, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Question set successfully added to semester'),
+            $this->controller->addQuestionSet($request, parent::ID)
+        );
     }
 
     public function testAddQuestionSetException()
@@ -198,8 +206,10 @@ class SemesterControllerTest extends TestCase
             ->method('setQuestionSetStatus')
             ->with(parent::ID, parent::ID, $request->status);
 
-        $response = $this->controller->updateQuestionSetStatus($request, parent::ID, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Question set status successfully updated'),
+            $this->controller->updateQuestionSetStatus($request, parent::ID, parent::ID)
+        );
     }
 
     public function testUpdateQuestionSetStatusException()

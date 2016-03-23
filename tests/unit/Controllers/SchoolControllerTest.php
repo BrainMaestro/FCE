@@ -114,8 +114,10 @@ class SchoolControllerTest extends TestCase
             ->method('updateSchool')
             ->with(parent::ID, $request->all())->willReturn(true);
 
-        $response = $this->controller->update($request, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('School successfully updated'),
+            $this->controller->update($request, parent::ID)
+        );
     }
 
     public function testUpdateWithEmptyAttributes()

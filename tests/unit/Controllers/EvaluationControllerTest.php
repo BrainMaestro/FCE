@@ -133,7 +133,10 @@ class EvaluationControllerTest extends TestCase
                 false
             );
 
-        $this->controller->submitEvaluations($request, parent::KEY);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Evaluation successfully submitted'),
+            $this->controller->submitEvaluations($request, parent::KEY)
+        );
     }
 
     public function testSubmitEvaluationsWithNotGivenOutKey()

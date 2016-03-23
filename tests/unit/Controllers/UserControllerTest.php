@@ -131,8 +131,10 @@ class UserControllerTest extends TestCase
             ->method('updateUser')
             ->with(parent::ID, $request->all())->willReturn(true);
 
-        $response = $this->controller->update($request, parent::ID);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('User successfully updated'),
+            $this->controller->update($request, parent::ID)
+        );
     }
 
     public function testUpdateWithEmptyAttributes()
@@ -145,6 +147,20 @@ class UserControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('User attributes were not provided'),
+            $this->controller->update($request, parent::ID)
+        );
+    }
+
+    public function testUpdateNotFoundException()
+    {
+        $request = new UserUpdateRequest;
+
+        $this->repository->expects($this->once())
+            ->method('updateUser')
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find user'),
             $this->controller->update($request, parent::ID)
         );
     }
