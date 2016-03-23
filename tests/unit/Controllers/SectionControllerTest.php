@@ -165,8 +165,10 @@ class SectionControllerTest extends TestCase
             ->method('updateSection')
             ->with($id, $request->all())->willReturn(true);
 
-        $response = $this->controller->update($request, $id);
-        $this->assertEquals(null, $response);
+        $this->assertEquals(
+            $this->controller->respondSuccess('Section was updated successfully'),
+            $this->controller->update($request, $id)
+        );
     }
 
     public function testUpdateWithEmptyAttributes()

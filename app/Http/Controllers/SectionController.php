@@ -32,7 +32,7 @@ class SectionController extends Controller
     }
     
     /**
-     * Gets section by semester and/or school if both specified or by current semester
+     * Gets section by semester and/or school if both specified or by current semester.
      * 
      * @return array
      */
@@ -58,7 +58,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Gets a section by the specified id
+     * Gets a section by the specified id.
      *
      * @param  int $id Section's Id
      * @return array
@@ -75,7 +75,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Create a new section
+     * Create a new section.
      *
      * @param SectionCreateRequest $request
      * @return mixed
@@ -90,7 +90,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Updates a section
+     * Updates a section.
      *
      * @param SectionUpdateRequest $request
      * @param int $id Section's Id
@@ -102,6 +102,8 @@ class SectionController extends Controller
             if (!$this->repository->updateSection($id, $request->all())) {
                 return $this->respondUnprocessable('Section attribute(s) were not provided');
             }
+            
+            return $this->respondSuccess('Section was updated successfully');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find section');
         } catch (\Exception $e) {
@@ -110,7 +112,7 @@ class SectionController extends Controller
     }
 
     /**
-     * List reports of the Section
+     * List reports of the Section.
      *
      * @param int $id Section's Id
      * @return array
@@ -131,7 +133,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Shows report of the a section for a question-set
+     * Shows report of the a section for a question-set.
      *
      * @param  $id Section's Id
      * @param  $questionSetId Question Set's Id
@@ -149,7 +151,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Gets keys for the given section
+     * Gets keys for the given section.
      *
      * @param $id Section's Id
      * @return  array
