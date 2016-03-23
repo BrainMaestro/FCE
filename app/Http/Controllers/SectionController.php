@@ -4,10 +4,11 @@ namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\SectionCreateRequest;
 use Fce\Http\Requests\SectionUpdateRequest;
-use Fce\Repositories\Contracts\SectionRepository;
-use Fce\Repositories\Contracts\KeyRepository;
-use Fce\Repositories\Contracts\SemesterRepository;
+use Fce\Repositories\Contracts\CommentRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
+use Fce\Repositories\Contracts\KeyRepository;
+use Fce\Repositories\Contracts\SectionRepository;
+use Fce\Repositories\Contracts\SemesterRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
@@ -16,14 +17,15 @@ class SectionController extends Controller
     protected $repository;
     protected $semesterRepository;
 
-    public function __construct(SectionRepository $repository, SemesterRepository $semesterRepository) {
+    public function __construct(SectionRepository $repository, SemesterRepository $semesterRepository)
+    {
         $this->repository = $repository;
         $this->semesterRepository = $semesterRepository;
     }
-    
+
     /**
      * Gets section by semester and/or school if both specified or by current semester.
-     * 
+     *
      * @return array
      */
     public function index()
@@ -92,7 +94,7 @@ class SectionController extends Controller
             if (!$this->repository->updateSection($id, $request->all())) {
                 return $this->respondUnprocessable('Section attribute(s) were not provided');
             }
-            
+
             return $this->respondSuccess('Section was updated successfully');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find section');
@@ -111,9 +113,9 @@ class SectionController extends Controller
     {
         try {
             $section = $this->repository->getSectionById($id)['data'];
-            
+
             $semester = $this->semesterRepository->getSemesterById($section['semester_id']);
-            
+
             return $semester['data']['questionSets'];
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find section');
@@ -126,14 +128,25 @@ class SectionController extends Controller
      * Shows report of the a section for a question-set.
      *
      * @param EvaluationRepository $evaluationRepository
+     * @param CommentRepository $commentRepository
      * @param  $id Section's Id
      * @param  $questionSetId Question Set's Id
      * @return array
      */
-    public function showReport(EvaluationRepository $evaluationRepository, $id, $questionSetId)
-    {
+    public function showReport(
+        EvaluationRepository $evaluationRepository,
+        CommentRepository $commentRepository,
+        $id,
+        $questionSetId
+    ) {
         try {
-            return $evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
+            $evaluations = $evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
+            $comments = $commentRepository->getComments($id, $questionSetId);
+            
+            return $this->respondSuccess([
+                'evaluations' => $evaluations,
+                'comments' => $comments,
+            ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find report');
         } catch (\Exception $e) {

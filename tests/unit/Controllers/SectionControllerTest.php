@@ -5,6 +5,7 @@
 use Fce\Http\Controllers\SectionController;
 use Fce\Http\Requests\SectionCreateRequest;
 use Fce\Http\Requests\SectionUpdateRequest;
+use Fce\Repositories\Contracts\CommentRepository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
@@ -18,6 +19,7 @@ class SectionControllerTest extends TestCase
     protected $semesterRepository;
     protected $controller;
     protected $evaluationRepository;
+    protected $commentRepository;
 
     public function setUp()
     {
@@ -26,6 +28,7 @@ class SectionControllerTest extends TestCase
         $this->keyRepository = $this->getMockBuilder(KeyRepository::class)->getMock();
         $this->evaluationRepository = $this->getMockBuilder(EvaluationRepository::class)->getMock();
         $this->semesterRepository = $this->getMockBuilder(SemesterRepository::class)->getMock();
+        $this->commentRepository = $this->getMockBuilder(CommentRepository::class)->getMock();
 
         $this->controller = new SectionController(
             $this->repository,
@@ -298,8 +301,10 @@ class SectionControllerTest extends TestCase
         $questionSetId = Parent::ID;
         $this->evaluationRepository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId);
+        $this->commentRepository->expects($this->once())
+            ->method('getComments')->with($id, $questionSetId);
 
-        $this->controller->showReport($this->evaluationRepository, $id, $questionSetId);
+        $this->controller->showReport($this->evaluationRepository, $this->commentRepository, $id, $questionSetId);
     }
 
     public function testShowReportNotFound()
@@ -312,7 +317,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find report'),
-            $this->controller->showReport($this->evaluationRepository, $id, $questionSetId)
+            $this->controller->showReport($this->evaluationRepository, $this->commentRepository, $id, $questionSetId)
         );
     }
 
@@ -326,7 +331,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not show report'),
-            $this->controller->showReport($this->evaluationRepository, $id, $questionSetId)
+            $this->controller->showReport($this->evaluationRepository, $this->commentRepository, $id, $questionSetId)
         );
     }
 }
