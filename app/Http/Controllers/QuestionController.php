@@ -57,7 +57,9 @@ class QuestionController extends Controller
     public function create(QuestionRequest $request)
     {
         try {
-            return $this->repository->createQuestion($request->description, $request->category, $request->title);
+            return $this->respondCreated(
+                $this->repository->createQuestion($request->description, $request->category, $request->title)
+            );
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not create question');
         }

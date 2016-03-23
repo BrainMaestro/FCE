@@ -85,6 +85,10 @@ class UserController extends Controller
             if (!$this->repository->updateUser($id, $request->all())) {
                 return $this->respondUnprocessable('User attributes were not provided');
             }
+            
+            return $this->respondSuccess('User successfully updated');
+        }  catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find user');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not update user');
         }

@@ -74,6 +74,8 @@ class SemesterController extends Controller
     {
         try {
             $this->changeCurrentSemester($id, $request->current_semester);
+            
+            return $this->respondSuccess('Semester successfully updated');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Semester does not exist');
         } catch (\Exception $e) {
@@ -96,6 +98,8 @@ class SemesterController extends Controller
                 $request->question_set_id,
                 $request->evaluation_type
             );
+
+            return $this->respondSuccess('Question set successfully added to semester');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Semester does not exist');
         } catch (QueryException $e) {
@@ -121,6 +125,8 @@ class SemesterController extends Controller
                 $questionSetId,
                 $request->status
             );
+            
+            return $this->respondSuccess('Question set status successfully updated');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Semester does not exist');
         } catch (QueryException $e) {

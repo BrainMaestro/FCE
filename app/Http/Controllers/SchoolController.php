@@ -57,7 +57,9 @@ class SchoolController extends Controller
     public function create(SchoolRequest $request)
     {
         try {
-            return $this->repository->createSchool($request->school, $request->description);
+            return $this->respondCreated(
+                $this->repository->createSchool($request->school, $request->description)
+            );
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not create school');
         }
@@ -76,6 +78,8 @@ class SchoolController extends Controller
             if (!$this->repository->updateSchool($id, $request->all())) {
                 return $this->respondUnprocessable('School attributes were not provided');
             }
+            
+            return $this->respondSuccess('School successfully updated');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not update school');
         }

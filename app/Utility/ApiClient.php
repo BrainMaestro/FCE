@@ -99,6 +99,21 @@ trait ApiClient
     }
 
     /**
+     * Used to respond with a 200 and a message when there is no data to be returned.
+     * 
+     * @param string $message
+     * @return mixed
+     */
+    public function respondSuccess($message = 'Operation Successful')
+    {
+        return $this->setStatusCode(Response::HTTP_OK)->respond([
+            'data' => [
+                'message' => $message
+            ]
+        ]);
+    }
+
+    /**
      * @param $data
      * @param array $headers
      * @return mixed
