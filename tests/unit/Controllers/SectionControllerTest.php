@@ -3,7 +3,8 @@
 /* [Created by SkaeX @ 2016-03-19 20:18:11]  */
 
 use Fce\Http\Controllers\SectionController;
-use Fce\Http\Requests\SectionRequest;
+use Fce\Http\Requests\SectionCreateRequest;
+use Fce\Http\Requests\SectionUpdateRequest;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
@@ -131,7 +132,7 @@ class SectionControllerTest extends TestCase
 
     public function testCreate()
     {
-        $request = new SectionRequest;
+        $request = new SectionCreateRequest;
 
         $this->repository->expects($this->once())
             ->method('createSection')
@@ -142,7 +143,7 @@ class SectionControllerTest extends TestCase
 
     public function testCreateException()
     {
-        $request = new SectionRequest;
+        $request = new SectionCreateRequest;
 
         $this->repository->expects($this->once())
             ->method('createSection')
@@ -158,7 +159,7 @@ class SectionControllerTest extends TestCase
     public function testUpdate()
     {
         $id = Parent::ID;
-        $request = new SectionRequest;
+        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -171,7 +172,7 @@ class SectionControllerTest extends TestCase
     public function testUpdateWithEmptyAttributes()
     {
         $id = Parent::ID;
-        $request = new SectionRequest;
+        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -186,7 +187,7 @@ class SectionControllerTest extends TestCase
     public function testUpdateNotFoundException()
     {
         $id = Parent::ID;
-        $request = new SectionRequest;
+        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -201,7 +202,7 @@ class SectionControllerTest extends TestCase
     public function testUpdateException()
     {
         $id = Parent::ID;
-        $request = new SectionRequest;
+        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')

@@ -4,7 +4,7 @@ namespace Fce\Http\Requests;
 
 use Fce\Http\Requests\Request;
 
-class SectionRequest extends Request
+class SectionCreateRequest extends Request
 {
 
     /**

@@ -2,7 +2,8 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Http\Requests\SectionRequest;
+use Fce\Http\Requests\SectionCreateRequest;
+use Fce\Http\Requests\SectionUpdateRequest;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
@@ -29,7 +30,12 @@ class SectionController extends Controller
         $this->evaluationRepository = $evaluationRepository;
         $this->semesterRepository = $semesterRepository;
     }
-
+    
+    /**
+     * Gets section by semester and/or school if both specified or by current semester
+     * 
+     * @return array
+     */
     public function index()
     {
         try {
@@ -51,6 +57,12 @@ class SectionController extends Controller
         }
     }
 
+    /**
+     * Gets a section by the specified id
+     *
+     * @param  int $id Section's Id
+     * @return array
+     */
     public function show($id)
     {
         try {
@@ -62,7 +74,13 @@ class SectionController extends Controller
         }
     }
 
-    public function create(SectionRequest $request)
+    /**
+     * Create a new section
+     *
+     * @param SectionCreateRequest $request
+     * @return mixed
+     */
+    public function create(SectionCreateRequest $request)
     {
         try {
             return $this->respondCreated($this->repository->createSection($request->all()));
@@ -71,7 +89,14 @@ class SectionController extends Controller
         }
     }
 
-    public function update(SectionRequest $request, $id)
+    /**
+     * Updates a section
+     *
+     * @param SectionUpdateRequest $request
+     * @param int $id Section's Id
+     * @return array
+     */
+    public function update(SectionUpdateRequest $request, $id)
     {
         try {
             if (!$this->repository->updateSection($id, $request->all())) {
@@ -84,6 +109,12 @@ class SectionController extends Controller
         }
     }
 
+    /**
+     * List reports of the Section
+     *
+     * @param int $id Section's Id
+     * @return array
+     */
     public function listReports($id)
     {
         try {
@@ -99,6 +130,13 @@ class SectionController extends Controller
         }
     }
 
+    /**
+     * Shows report of the a section for a question-set
+     *
+     * @param  $id Section's Id
+     * @param  $questionSetId Question Set's Id
+     * @return array
+     */
     public function showReport($id, $questionSetId)
     {
         try {
@@ -110,10 +148,16 @@ class SectionController extends Controller
         }
     }
 
+    /**
+     * Gets keys for the given section
+     *
+     * @param $id Section's Id
+     * @return  array
+     */
     public function showKeys($id)
     {
         try {
-            $this->keyRepository->getKeysBySection($id);
+            return $this->keyRepository->getKeysBySection($id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find key(s)');
         } catch (\Exception $e) {
