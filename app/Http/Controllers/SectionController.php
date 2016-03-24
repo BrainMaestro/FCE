@@ -2,8 +2,7 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Http\Requests\SectionCreateRequest;
-use Fce\Http\Requests\SectionUpdateRequest;
+use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\CommentRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
@@ -14,11 +13,16 @@ use Illuminate\Support\Facades\Input;
 
 class SectionController extends Controller
 {
+    protected $request;
     protected $repository;
     protected $semesterRepository;
 
-    public function __construct(SectionRepository $repository, SemesterRepository $semesterRepository)
-    {
+    public function __construct(
+        SectionRequest $request,
+        SectionRepository $repository,
+        SemesterRepository $semesterRepository
+    ) {
+        $this->request = $request;
         $this->repository = $repository;
         $this->semesterRepository = $semesterRepository;
     }
@@ -69,13 +73,12 @@ class SectionController extends Controller
     /**
      * Create a new section.
      *
-     * @param SectionCreateRequest $request
      * @return mixed
      */
-    public function create(SectionCreateRequest $request)
+    public function create()
     {
         try {
-            return $this->respondCreated($this->repository->createSection($request->all()));
+            return $this->respondCreated($this->repository->createSection($this->request->all()));
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not create section');
         }
@@ -84,14 +87,13 @@ class SectionController extends Controller
     /**
      * Updates a section.
      *
-     * @param SectionUpdateRequest $request
      * @param int $id Section's Id
      * @return array
      */
-    public function update(SectionUpdateRequest $request, $id)
+    public function update($id)
     {
         try {
-            if (!$this->repository->updateSection($id, $request->all())) {
+            if (!$this->repository->updateSection($id, $this->request->all())) {
                 return $this->respondUnprocessable('Section attribute(s) were not provided');
             }
 

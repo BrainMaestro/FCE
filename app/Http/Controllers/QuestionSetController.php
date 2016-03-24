@@ -5,16 +5,17 @@
 namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\QuestionSetRequest;
-use Fce\Http\Requests\QuestionSetAddQuestionRequest;
 use Fce\Repositories\Contracts\QuestionSetRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionSetController extends Controller
 {
+    protected $request;
     protected $repository;
 
-    public function __construct(QuestionSetRepository $repository)
+    public function __construct(QuestionSetRequest $request, QuestionSetRepository $repository)
     {
+        $this->request = $request;
         $this->repository = $repository;
     }
 
@@ -54,13 +55,12 @@ class QuestionSetController extends Controller
     /**
      * Create a new question set.
      * 
-     * @param QuestionSetRequest $request
      * @return array
      */
-    public function create(QuestionSetRequest $request)
+    public function create()
     {
         try {
-            return $this->respondCreated($this->repository->createQuestionSet($request->name));
+            return $this->respondCreated($this->repository->createQuestionSet($this->request->name));
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not create question set');
         }
@@ -69,14 +69,13 @@ class QuestionSetController extends Controller
     /**
      * Add questions to a question set.
      * 
-     * @param QuestionSetAddQuestionRequest $request
      * @param $id
      * @return array
      */
-    public function addQuestions(QuestionSetAddQuestionRequest $request, $id)
+    public function addQuestions($id)
     {
         try {
-            return $this->repository->addQuestions($id, $request->all());
+            return $this->repository->addQuestions($id, $this->request->all());
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find question set');
         } catch (\Exception $e) {

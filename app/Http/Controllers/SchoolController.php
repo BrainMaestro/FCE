@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SchoolController extends Controller
 {
+    protected $request;
     protected $repository;
 
-    public function __construct(SchoolRepository $repository)
+    public function __construct(SchoolRequest $request, SchoolRepository $repository)
     {
+        $this->request = $request;
         $this->repository = $repository;
     }
 
@@ -51,14 +53,13 @@ class SchoolController extends Controller
     /**
      * Create a new school.
      *
-     * @param SchoolRequest $request
      * @return array
      */
-    public function create(SchoolRequest $request)
+    public function create()
     {
         try {
             return $this->respondCreated(
-                $this->repository->createSchool($request->school, $request->description)
+                $this->repository->createSchool($this->request->school, $this->request->description)
             );
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not create school');
@@ -68,14 +69,13 @@ class SchoolController extends Controller
     /**
      * Update the attributes of an existing school.
      *
-     * @param SchoolRequest $request
      * @param $id
      * @return array
      */
-    public function update(SchoolRequest $request, $id)
+    public function update($id)
     {
         try {
-            if (!$this->repository->updateSchool($id, $request->all())) {
+            if (!$this->repository->updateSchool($id, $this->request->all())) {
                 return $this->respondUnprocessable('School attributes were not provided');
             }
             

@@ -2,18 +2,19 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Http\Requests\UserCreateRequest;
-use Fce\Http\Requests\UserUpdateRequest;
+use Fce\Http\Requests\UserRequest;
 use Fce\Repositories\Contracts\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
+    protected $request;
     protected $repository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRequest $request, UserRepository $repository)
     {
+        $this->request = $request;
         $this->repository = $repository;
     }
 
@@ -60,13 +61,12 @@ class UserController extends Controller
     /**
      * Create a new user.
      *
-     * @param UserCreateRequest $request
      * @return array
      */
-    public function create(UserCreateRequest $request)
+    public function create()
     {
         try {
-            return $this->repository->createUser($request->name, $request->email, $request->password);
+            return $this->repository->createUser($this->request->name, $this->request->email, $this->request->password);
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not create user');
         }
@@ -75,19 +75,18 @@ class UserController extends Controller
     /**
      * Update a user's attributes.
      *
-     * @param UserUpdateRequest $request
      * @param $id
      * @return array
      */
-    public function update(UserUpdateRequest $request, $id)
+    public function update($id)
     {
         try {
-            if (!$this->repository->updateUser($id, $request->all())) {
+            if (!$this->repository->updateUser($id, $this->request->all())) {
                 return $this->respondUnprocessable('User attributes were not provided');
             }
             
             return $this->respondSuccess('User successfully updated');
-        }  catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find user');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not update user');
@@ -96,7 +95,7 @@ class UserController extends Controller
 
     /**
      * Delete a user.
-     * 
+     *
      * @param $id
      * @return array
      */

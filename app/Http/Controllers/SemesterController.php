@@ -2,10 +2,8 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Http\Requests\SemesterCreateRequest;
-use Fce\Http\Requests\SemesterQuestionSetRequest;
-use Fce\Http\Requests\SemesterStatusRequest;
-use Fce\Http\Requests\SemesterUpdateRequest;
+
+use Fce\Http\Requests\SemesterRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -13,10 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class SemesterController extends Controller
 {
+    protected $request;
     protected $repository;
 
-    public function __construct(SemesterRepository $repository)
+    public function __construct(SemesterRequest $request, SemesterRepository $repository)
     {
+        $this->request = $request;
         $this->repository = $repository;
     }
 
@@ -40,20 +40,19 @@ class SemesterController extends Controller
      * Create a new semester from request data after validation.
      * Ensures that the new semester is the only current semester if specified.
      *
-     * @param SemesterCreateRequest $request
-     * @return mixed
+     * @return array
      */
-    public function create(SemesterCreateRequest $request)
+    public function create()
     {
         try {
             $semester = $this->repository->createSemester(
-                $request->season,
-                $request->year,
-                $request->current_semester
+                $this->request->season,
+                $this->request->year,
+                $this->request->current_semester
             );
 
             // If this is the new current semester, unset the old current semester.
-            if ($request->current_semester) {
+            if ($this->request->current_semester) {
                 $this->changeCurrentSemester($semester['data']['id']);
             }
 
@@ -66,14 +65,13 @@ class SemesterController extends Controller
     /**
      * Update the specified semester.
      *
-     * @param SemesterUpdateRequest $request
      * @param $id
-     * @return mixed
+     * @return array
      */
-    public function update(SemesterUpdateRequest $request, $id)
+    public function update($id)
     {
         try {
-            $this->changeCurrentSemester($id, $request->current_semester);
+            $this->changeCurrentSemester($id, $this->request->current_semester);
             
             return $this->respondSuccess('Semester successfully updated');
         } catch (ModelNotFoundException $e) {
@@ -86,17 +84,16 @@ class SemesterController extends Controller
     /**
      * Add a question set to the semester.
      *
-     * @param SemesterQuestionSetRequest $request
      * @param $id
-     * @return mixed
+     * @return array
      */
-    public function addQuestionSet(SemesterQuestionSetRequest $request, $id)
+    public function addQuestionSet($id)
     {
         try {
             $this->repository->addQuestionSet(
                 $id,
-                $request->question_set_id,
-                $request->evaluation_type
+                $this->request->question_set_id,
+                $this->request->evaluation_type
             );
 
             return $this->respondSuccess('Question set successfully added to semester');
@@ -112,18 +109,17 @@ class SemesterController extends Controller
     /**
      * Update the question set status.
      *
-     * @param SemesterStatusRequest $request
      * @param $id
      * @param $questionSetId
-     * @return mixed
+     * @return array
      */
-    public function updateQuestionSetStatus(SemesterStatusRequest $request, $id, $questionSetId)
+    public function updateQuestionSetStatus($id, $questionSetId)
     {
         try {
             $this->repository->setQuestionSetStatus(
                 $id,
                 $questionSetId,
-                $request->status
+                $this->request->status
             );
             
             return $this->respondSuccess('Question set status successfully updated');
