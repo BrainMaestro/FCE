@@ -3,8 +3,7 @@
 /* [Created by SkaeX @ 2016-03-19 20:18:11]  */
 
 use Fce\Http\Controllers\SectionController;
-use Fce\Http\Requests\SectionCreateRequest;
-use Fce\Http\Requests\SectionUpdateRequest;
+use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\CommentRepository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SectionControllerTest extends TestCase
 {
+    protected $request;
     protected $repository;
     protected $keyRepository;
     protected $semesterRepository;
@@ -24,6 +24,7 @@ class SectionControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->request = new SectionRequest;
         $this->repository = $this->getMockBuilder(SectionRepository::class)->getMock();
         $this->keyRepository = $this->getMockBuilder(KeyRepository::class)->getMock();
         $this->evaluationRepository = $this->getMockBuilder(EvaluationRepository::class)->getMock();
@@ -31,6 +32,7 @@ class SectionControllerTest extends TestCase
         $this->commentRepository = $this->getMockBuilder(CommentRepository::class)->getMock();
 
         $this->controller = new SectionController(
+            $this->request,
             $this->repository,
             $this->semesterRepository
         );
@@ -133,64 +135,57 @@ class SectionControllerTest extends TestCase
 
     public function testCreate()
     {
-        $request = new SectionCreateRequest;
-
         $this->repository->expects($this->once())
             ->method('createSection')
-            ->with($request->all());
+            ->with($this->request->all());
 
-        $this->controller->create($request);
+        $this->controller->create();
     }
 
     public function testCreateException()
     {
-        $request = new SectionCreateRequest;
-
         $this->repository->expects($this->once())
             ->method('createSection')
-            ->with($request->all())
+            ->with($this->request->all())
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not create section'),
-            $this->controller->create($request)
+            $this->controller->create()
         );
     }
 
     public function testUpdate()
     {
         $id = Parent::ID;
-        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
-            ->with($id, $request->all())->willReturn(true);
+            ->with($id, $this->request->all())->willReturn(true);
 
         $this->assertEquals(
             $this->controller->respondSuccess('Section was updated successfully'),
-            $this->controller->update($request, $id)
+            $this->controller->update($id)
         );
     }
 
     public function testUpdateWithEmptyAttributes()
     {
         $id = Parent::ID;
-        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
-            ->with($id, $request->all())->willReturn(false);
+            ->with($id, $this->request->all())->willReturn(false);
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('Section attribute(s) were not provided'),
-            $this->controller->update($request, $id)
+            $this->controller->update($id)
         );
     }
     
     public function testUpdateNotFoundException()
     {
         $id = Parent::ID;
-        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -198,14 +193,13 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find section'),
-            $this->controller->update($request, $id)
+            $this->controller->update($id)
         );
     }
     
     public function testUpdateException()
     {
         $id = Parent::ID;
-        $request = new SectionUpdateRequest;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -213,7 +207,7 @@ class SectionControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not update section'),
-            $this->controller->update($request, $id)
+            $this->controller->update($id)
         );
     }
 

@@ -1,8 +1,7 @@
 <?php
 
 use Fce\Http\Controllers\UserController;
-use Fce\Http\Requests\UserCreateRequest;
-use Fce\Http\Requests\UserUpdateRequest;
+use Fce\Http\Requests\UserRequest;
 use Fce\Repositories\Contracts\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -13,14 +12,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  */
 class UserControllerTest extends TestCase
 {
+    protected $request;
     protected $repository;
     protected $controller;
 
     public function setUp()
     {
         parent::setUp();
+        $this->request = new UserRequest;
         $this->repository = $this->getMockBuilder(UserRepository::class)->getMock();
-        $this->controller = new UserController($this->repository);
+        $this->controller = new UserController($this->request, $this->repository);
     }
 
     public function testIndex()
@@ -99,83 +100,71 @@ class UserControllerTest extends TestCase
 
     public function testCreate()
     {
-        $request = new UserCreateRequest;
-
         $this->repository->expects($this->once())
             ->method('createUser')
-            ->with($request->name, $request->email, $request->password);
+            ->with($this->request->name, $this->request->email, $this->request->password);
 
-        $this->controller->create($request);
+        $this->controller->create();
     }
 
     public function testCreateException()
     {
-        $request = new UserCreateRequest;
-
         $this->repository->expects($this->once())
             ->method('createUser')
-            ->with($request->name, $request->email, $request->password)
+            ->with($this->request->name, $this->request->email, $this->request->password)
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not create user'),
-            $this->controller->create($request)
+            $this->controller->create()
         );
     }
 
     public function testUpdate()
     {
-        $request = new UserUpdateRequest;
-
         $this->repository->expects($this->once())
             ->method('updateUser')
-            ->with(parent::ID, $request->all())->willReturn(true);
+            ->with(parent::ID, $this->request->all())->willReturn(true);
 
         $this->assertEquals(
             $this->controller->respondSuccess('User successfully updated'),
-            $this->controller->update($request, parent::ID)
+            $this->controller->update(parent::ID)
         );
     }
 
     public function testUpdateWithEmptyAttributes()
     {
-        $request = new UserUpdateRequest;
-
         $this->repository->expects($this->once())
             ->method('updateUser')
-            ->with(parent::ID, $request->all())->willReturn(false);
+            ->with(parent::ID, $this->request->all())->willReturn(false);
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('User attributes were not provided'),
-            $this->controller->update($request, parent::ID)
+            $this->controller->update(parent::ID)
         );
     }
 
     public function testUpdateNotFoundException()
     {
-        $request = new UserUpdateRequest;
-
         $this->repository->expects($this->once())
             ->method('updateUser')
             ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find user'),
-            $this->controller->update($request, parent::ID)
+            $this->controller->update(parent::ID)
         );
     }
 
     public function testUpdateException()
     {
-        $request = new UserUpdateRequest;
-
         $this->repository->expects($this->once())
             ->method('updateUser')
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not update user'),
-            $this->controller->update($request, parent::ID)
+            $this->controller->update(parent::ID)
         );
     }
 

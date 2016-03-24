@@ -4,20 +4,21 @@
 
 use Fce\Http\Controllers\QuestionSetController;
 use Fce\Http\Requests\QuestionSetRequest;
-use Fce\Http\Requests\QuestionSetAddQuestionRequest;
 use Fce\Repositories\Contracts\QuestionSetRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionSetControllerTest extends TestCase
 {
+    protected $request;
     protected $repository;
     protected $controller;
 
     public function setUp()
     {
         parent::setUp();
+        $this->request = new QuestionSetRequest;
         $this->repository = $this->getMockBuilder(QuestionSetRepository::class)->getMock();
-        $this->controller = new QuestionSetController($this->repository);
+        $this->controller = new QuestionSetController($this->request, $this->repository);
     }
 
     public function testIndex()
@@ -86,64 +87,57 @@ class QuestionSetControllerTest extends TestCase
 
     public function testCreate()
     {
-        $request = new QuestionSetRequest;
-
         $this->repository->expects($this->once())
             ->method('createQuestionSet')
-            ->with($request->name);
+            ->with($this->request->name);
 
-        $this->controller->create($request);
+        $this->controller->create($this->request);
     }
 
     public function testCreateException()
     {
-        $request = new QuestionSetRequest;
-
         $this->repository->expects($this->once())
             ->method('createQuestionSet')
-            ->with($request->name)
+            ->with($this->request->name)
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not create question set'),
-            $this->controller->create($request)
+            $this->controller->create($this->request)
         );
     }
     public function testAddQuestions()
     {
-        $request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')
-            ->with(parent::ID, $request->all());
+            ->with(parent::ID, $this->request->all());
 
-        $this->controller->addQuestions($request, parent::ID);
+        $this->controller->addQuestions(parent::ID);
     }
 
     public function testAddQuestionsNotFoundException()
     {
-        $request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')
-            ->with(parent::ID, $request->all())
+            ->with(parent::ID, $this->request->all())
             ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find question set'),
-            $this->controller->addQuestions($request, parent::ID)
+            $this->controller->addQuestions(parent::ID)
         );
     }
 
     public function testAddQuestionsException()
     {
-    	$request = new QuestionSetAddQuestionRequest;
         $this->repository->expects($this->once())
             ->method('addQuestions')
-            ->with(parent::ID, $request->all())
+            ->with(parent::ID, $this->request->all())
             ->will($this->throwException(new Exception));
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not add question(s) to question set'),
-            $this->controller->addQuestions($request, parent::ID)
+            $this->controller->addQuestions(parent::ID)
         );
     }
 }

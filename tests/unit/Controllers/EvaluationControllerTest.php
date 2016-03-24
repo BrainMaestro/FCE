@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Event;
  */
 class EvaluationControllerTest extends TestCase
 {
+    protected $request;
     protected $repository;
     protected $keyRepository;
     protected $semesterRepository;
@@ -22,6 +23,7 @@ class EvaluationControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->request = new EvaluationRequest;
         $this->repository = $this->getMockBuilder(EvaluationRepository::class)->getMock();
         $this->keyRepository = $this->getMockBuilder(KeyRepository::class)->getMock();
         $this->semesterRepository = $this->getMockBuilder(SemesterRepository::class)->getMock();
@@ -98,11 +100,12 @@ class EvaluationControllerTest extends TestCase
 
     public function testSubmitEvaluations()
     {
-        $request = new EvaluationRequest;
-        $request->semester_id = parent::ID;
-        $request->question_set_id = parent::ID;
-        $request->evaluations = [parent::ID];
-        $request->comment = 'comment';
+        $this->request->merge([
+            'semester_id' => parent::ID,
+            'question_set_id' => parent::ID,
+            'evaluations' => [parent::ID],
+            'comment' => 'comment',
+        ]);
 
         $this->keyRepository->expects($this->once())
             ->method('getKeyByValue')->with(parent::KEY)
@@ -129,20 +132,18 @@ class EvaluationControllerTest extends TestCase
         Event::shouldReceive('fire')->once()
             ->with(
                 Fce\Events\Event::EVALUATION_SUBMITTED,
-                [$request->evaluations, $request->comment, $request->semester_id, $request->question_set_id],
+                [$this->request->evaluations, $this->request->comment, $this->request->semester_id, $this->request->question_set_id],
                 false
             );
 
         $this->assertEquals(
             $this->controller->respondSuccess('Evaluation successfully submitted'),
-            $this->controller->submitEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($this->request, parent::KEY)
         );
     }
 
     public function testSubmitEvaluationsWithNotGivenOutKey()
     {
-        $request = new EvaluationRequest;
-
         $this->keyRepository->expects($this->once())
             ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
@@ -153,14 +154,12 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('This key has not yet been given out'),
-            $this->controller->submitEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($this->request, parent::KEY)
         );
     }
 
     public function testSubmitEvaluationsWithUsedKey()
     {
-        $request = new EvaluationRequest;
-
         $this->keyRepository->expects($this->once())
             ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
@@ -172,14 +171,12 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondForbidden('This key has already been used'),
-            $this->controller->submitEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($this->request, parent::KEY)
         );
     }
 
     public function testSubmitEvaluationsWithIncorrectIds()
     {
-        $request = new EvaluationRequest;
-
         $this->keyRepository->expects($this->once())
             ->method('getKeyByValue')->with(parent::KEY)
             ->willReturn([
@@ -200,21 +197,19 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('The semester or question set provided is incorrect'),
-            $this->controller->submitEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($this->request, parent::KEY)
         );
     }
 
     public function testIncremetEvaluationsException()
     {
-        $request = new EvaluationRequest;
-
         // 404 - Not found
         $this->keyRepository->method('getKeyByValue')
             ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Key does not exist'),
-            $this->controller->submitEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($this->request, parent::KEY)
         );
 
         // 500 - Internal server error
@@ -223,7 +218,7 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondInternalServerError('Could not submit the evaluations'),
-            $this->controller->submitEvaluations($request, parent::KEY)
+            $this->controller->submitEvaluations($this->request, parent::KEY)
         );
     }
 }
