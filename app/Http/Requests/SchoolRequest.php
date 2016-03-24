@@ -11,9 +11,20 @@ class SchoolRequest extends Request
      */
     public function rules()
     {
-        return [
-            'school' => 'required|min:2',
-            'description' => 'required',
-        ];
+        switch ($this->method()) {
+            case 'POST':
+                // Route::post('/schools', 'SchoolController@create');
+                return [
+                    'school' => 'required|min:2',
+                    'description' => 'required|string',
+                ];
+            
+            case 'PUT':
+                // Route::put('/schools/{id}', 'SchoolController@update');
+                return [
+                    'school' => 'string|min:2',
+                    'description' => 'string',
+                ];
+        }
     }
 }

@@ -16,6 +16,7 @@ class EvaluationRequest extends Request
      */
     public function rules()
     {
+        // Route::put('/evaluations/{key}', 'EvaluationController@submitEvaluations');
         return [
             'section_id' => 'required|integer',
             'question_set_id' => 'required|integer',

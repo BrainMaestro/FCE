@@ -11,9 +11,10 @@ class SearchRequest extends Request
      */
     public function rules()
     {
+        // Route::get('/search', 'SearchController@index');
         return [
-            "model" => "required|string",
-            "query" => "required|string"
+            'model' => 'required|string',
+            'query' => 'required|string',
         ];
     }
 }

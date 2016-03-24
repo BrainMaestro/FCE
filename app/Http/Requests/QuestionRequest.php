@@ -11,10 +11,11 @@ class QuestionRequest extends Request
      */
     public function rules()
     {
+        // Route::post('/questions', 'QuestionController@create');
         return [
             'description' => 'required|string',
             'category' => 'string',
-            'title' => 'string'
+            'title' => 'string',
         ];
     }
 }
