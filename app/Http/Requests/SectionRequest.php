@@ -2,6 +2,8 @@
 
 namespace Fce\Http\Requests;
 
+use Fce\Utility\Status;
+
 class SectionRequest extends Request
 {
     /**
@@ -36,9 +38,19 @@ class SectionRequest extends Request
                     'school_id' => 'integer',
                     'class_time' => 'string',
                     'location' => 'string',
-                    'status' => 'string',
                     'enrolled' => 'integer'
                 ];
+
+            case 'PATCH':
+                // Route::patch('/sections/{id}/status', 'SectionController@updateStatus');
+                return [
+                    'status' => 'required|string|in:'
+                        . Status::OPEN . ','
+                        . Status::DONE,
+                ];
+
+            default:
+                return [];
         }
     }
 }

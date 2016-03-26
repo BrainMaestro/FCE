@@ -104,6 +104,8 @@ trait ApiClient
      */
     public function respondSuccess($data = 'Operation Successful')
     {
+        $this->setStatusCode(Response::HTTP_OK);
+        
         if (is_string($data)) {
             return $this->respond([
                 'data' => [

@@ -3,11 +3,13 @@
 namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\SectionRequest;
+use Fce\Events\Event;
 use Fce\Repositories\Contracts\CommentRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
+use Fce\Utility\Status;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
@@ -93,7 +95,7 @@ class SectionController extends Controller
     public function update($id)
     {
         try {
-            if (!$this->repository->updateSection($id, $this->request->all())) {
+            if (!$this->repository->updateSection($id, $this->request->except('status'))) {
                 return $this->respondUnprocessable('Section attribute(s) were not provided');
             }
 
@@ -102,6 +104,45 @@ class SectionController extends Controller
             return $this->respondNotFound('Could not find section');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not update section');
+        }
+    }
+
+    /**
+     * Update a section's status.
+     *
+     * @param $id
+     * @return array
+     */
+    public function updateStatus($id)
+    {
+        try {
+            $section = $this->repository->getSectionById($id)['data'];
+            $status = $this->request->only('status');
+
+            // Prevent a section's status from changing to the same value.
+            if ($section['status'] === $status['status']) {
+                return $this->respondUnprocessable('Section is already ' . $section['status']);
+            }
+
+            // Update the section status.
+            $this->repository->updateSection($id, $status);
+
+            // Fire relevant events based on the status type.
+            switch ($status['status']) {
+                case Status::OPEN:
+                    event(Event::SECTION_OPENED, $id);
+                    break;
+
+                case Status::DONE:
+                    event(Event::SECTION_CLOSED, $id);
+                    break;
+            }
+            
+            return $this->respondSuccess('Section status updated successfully');
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find section');
+        } catch (\Exception $e) {
+            return $this->respondInternalServerError('Could not update section status');
         }
     }
 
@@ -143,8 +184,12 @@ class SectionController extends Controller
     ) {
         try {
             $evaluations = $evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
-            $comments = $commentRepository->getComments($id, $questionSetId);
-            
+
+            $comments = [];
+            try {
+                $comments = $commentRepository->getComments($id, $questionSetId);
+            } catch (ModelNotFoundException $e) {} // Safe to ignore if there are no comments.
+
             return $this->respondSuccess([
                 'evaluations' => $evaluations,
                 'comments' => $comments,

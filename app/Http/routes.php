@@ -46,6 +46,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/sections/{id}', 'SectionController@show');
     Route::post('/sections', 'SectionController@create');
     Route::put('/sections/{id}', 'SectionController@update');
+    Route::patch('/sections/{id}/status', 'SectionController@updateStatus');
     Route::get('/sections/{id}/keys', 'SectionController@showKeys');
     Route::get('/sections/{id}/reports', 'SectionController@listReports');
     // Not technically restful but no one cares anymore.

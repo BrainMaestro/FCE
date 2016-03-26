@@ -25,7 +25,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
-        'Fce\Listeners\KeyEventListener'
+        'Fce\Listeners\KeyEventListener',
+        'Fce\Listeners\SectionEventListener',
     ];
 
     /**
