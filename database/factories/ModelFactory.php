@@ -67,7 +67,7 @@ $factory->define(Fce\Models\Section::class, function (Faker\Generator $faker) {
         'course_title' => $faker->sentence,
         'class_time' => $faker->time(),
         'location' => $faker->sentence,
-        'status' => 'Locked',
+        'status' => \Fce\Utility\Status::LOCKED,
         'enrolled' => $faker->randomNumber(1) + 1, // So that it'll never be zero
     ];
 });

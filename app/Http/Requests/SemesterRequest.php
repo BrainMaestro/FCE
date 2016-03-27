@@ -2,6 +2,8 @@
 
 namespace Fce\Http\Requests;
 
+use Fce\Utility\Status;
+
 class SemesterRequest extends Request
 {
     /**
@@ -37,7 +39,10 @@ class SemesterRequest extends Request
                 if (str_is('api/semesters/*/question-sets/*', $path)) {
                     // Route::put('/semesters/{id}/question-sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
                     return [
-                        'status' => 'required|string|in:Locked,Open,Done',
+                        'status' => 'required|string|in:'
+                            . Status::LOCKED . ', '
+                            . Status::OPEN . ', '
+                            . Status::DONE,
                     ];
                 }
 

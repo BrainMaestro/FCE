@@ -12,10 +12,10 @@ class Status
     /**
      * Constants for depicting the status of a section or question set.
      */
-    const OPEN = 'Open';
-    const LOCKED = 'Locked';
-    const IN_PROGRESS = 'In Progress';
-    const DONE = 'Done';
+    const OPEN = 'open';
+    const LOCKED = 'locked';
+    const IN_PROGRESS = 'in.progress';
+    const DONE = 'done';
 
     const STATUSES = [
         self::OPEN,
