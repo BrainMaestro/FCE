@@ -5,10 +5,11 @@
 use Fce\Http\Controllers\SectionController;
 use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\CommentRepository;
-use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
+use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
+use Fce\Utility\Status;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SectionControllerTest extends TestCase
@@ -43,7 +44,7 @@ class SectionControllerTest extends TestCase
         $this->repository->expects($this->once())
             ->method('getSectionsBySemester');
 
-        Input::merge(['semester' => Parent::ID]);
+        Input::merge(['semester' => parent::ID]);
 
         $this->controller->index();
     }
@@ -54,9 +55,9 @@ class SectionControllerTest extends TestCase
             ->method('getSectionsBySemesterAndSchool');
 
         Input::merge([
-            'semester' => Parent::ID,
-            'school' => Parent::ID
-            ]);
+            'semester' => parent::ID,
+            'school' => parent::ID
+        ]);
 
         $this->controller->index();
     }
@@ -71,13 +72,13 @@ class SectionControllerTest extends TestCase
 
     public function testIndexNotFoundException()
     {
-        $semesterId = Parent::ID;
+        $semesterId = parent::ID;
         $this->repository->expects($this->once())
             ->method('getSectionsBySemester')
             ->with($semesterId)
             ->will($this->throwException(new ModelNotFoundException));
 
-        Input::merge(['semester' => Parent::ID]);
+        Input::merge(['semester' => parent::ID]);
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find section(s)'),
@@ -100,7 +101,7 @@ class SectionControllerTest extends TestCase
 
     public function testShow()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->repository->expects($this->once())
             ->method('getSectionById')->with($id);
 
@@ -111,18 +112,18 @@ class SectionControllerTest extends TestCase
     {
         $this->repository->expects($this->once())
             ->method('getSectionById')
-            ->with(Parent::ID)
+            ->with(parent::ID)
             ->will($this->throwException(new ModelNotFoundException));
 
         $this->assertEquals(
             $this->controller->respondNotFound('Could not find section'),
-            $this->controller->show(Parent::ID)
+            $this->controller->show(parent::ID)
         );
     }
 
     public function testShowException()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->repository->expects($this->once())
             ->method('getSectionById')->with($id)
             ->will($this->throwException(new Exception));
@@ -157,7 +158,7 @@ class SectionControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -171,7 +172,7 @@ class SectionControllerTest extends TestCase
 
     public function testUpdateWithEmptyAttributes()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -182,10 +183,10 @@ class SectionControllerTest extends TestCase
             $this->controller->update($id)
         );
     }
-    
+
     public function testUpdateNotFoundException()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -196,10 +197,10 @@ class SectionControllerTest extends TestCase
             $this->controller->update($id)
         );
     }
-    
+
     public function testUpdateException()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
 
         $this->repository->expects($this->once())
             ->method('updateSection')
@@ -211,9 +212,88 @@ class SectionControllerTest extends TestCase
         );
     }
 
+    public function testUpdateStatus()
+    {
+        $id = parent::ID;
+        
+        $this->repository->expects($this->exactly(2))
+            ->method('getSectionById')
+            ->with($id);
+
+        $this->repository->expects($this->exactly(2))
+            ->method('updateSection')
+            ->with($id);
+
+        Event::shouldReceive('fire')->once()
+            ->with(Fce\Events\Event::SECTION_OPENED, $id, false);
+
+        Event::shouldReceive('fire')->once()
+            ->with(Fce\Events\Event::SECTION_CLOSED, $id, false);
+
+        $this->request->merge(['status' => Status::OPEN]);
+
+        $this->assertEquals(
+            $this->controller->respondSuccess('Section status updated successfully'),
+            $this->controller->updateStatus($id)
+        );
+
+        $this->request->merge(['status' => Status::DONE]);
+
+        $this->assertEquals(
+            $this->controller->respondSuccess('Section status updated successfully'),
+            $this->controller->updateStatus($id)
+        );
+    }
+
+    public function testUpdateStatusWithAlreadyExistingStatus()
+    {
+        $id = parent::ID;
+        $status = Status::OPEN;
+
+        $this->repository->expects($this->once())
+            ->method('getSectionById')
+            ->with($id)
+            ->willReturn(['data' => ['status' => $status]]);
+
+        $this->request->merge(['status' => $status]);
+
+        $this->assertEquals(
+            $this->controller->respondUnprocessable('Section is already ' . $status),
+            $this->controller->updateStatus($id)
+        );
+    }
+
+    public function testUpdateStatusNotFoundException()
+    {
+        $id = parent::ID;
+
+        $this->repository->expects($this->once())
+            ->method('getSectionById')
+            ->will($this->throwException(new ModelNotFoundException));
+
+        $this->assertEquals(
+            $this->controller->respondNotFound('Could not find section'),
+            $this->controller->updateStatus($id)
+        );
+    }
+
+    public function testUpdateStatusException()
+    {
+        $id = parent::ID;
+
+        $this->repository->expects($this->once())
+            ->method('getSectionById')
+            ->will($this->throwException(new Exception));
+
+        $this->assertEquals(
+            $this->controller->respondInternalServerError('Could not update section status'),
+            $this->controller->updateStatus($id)
+        );
+    }
+
     public function testShowKeys()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->keyRepository->expects($this->once())
             ->method('getKeysBySection')->with($id);
 
@@ -222,7 +302,7 @@ class SectionControllerTest extends TestCase
 
     public function testShowKeysNotFound()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->keyRepository->expects($this->once())
             ->method('getKeysBySection')->with($id)
             ->will($this->throwException(new ModelNotFoundException));
@@ -235,7 +315,7 @@ class SectionControllerTest extends TestCase
 
     public function testShowKeysException()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
 
         $this->keyRepository->expects($this->once())
             ->method('getKeysBySection')
@@ -249,7 +329,7 @@ class SectionControllerTest extends TestCase
 
     public function testListReports()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->repository->expects($this->once())
             ->method('getSectionById')
             ->with($id)
@@ -263,7 +343,7 @@ class SectionControllerTest extends TestCase
 
     public function testListReportsNotFoundException()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->repository->expects($this->once())
             ->method('getSectionById')
             ->with($id)
@@ -277,7 +357,7 @@ class SectionControllerTest extends TestCase
 
     public function testListReportsException()
     {
-        $id = Parent::ID;
+        $id = parent::ID;
         $this->repository->expects($this->once())
             ->method('getSectionById')
             ->with($id)
@@ -288,11 +368,11 @@ class SectionControllerTest extends TestCase
             $this->controller->listReports($id)
         );
     }
-    
+
     public function testShowReport()
     {
-        $id = Parent::ID;
-        $questionSetId = Parent::ID;
+        $id = parent::ID;
+        $questionSetId = parent::ID;
         $this->evaluationRepository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId);
         $this->commentRepository->expects($this->once())
@@ -303,8 +383,8 @@ class SectionControllerTest extends TestCase
 
     public function testShowReportNotFound()
     {
-        $id = Parent::ID;
-        $questionSetId = Parent::ID;
+        $id = parent::ID;
+        $questionSetId = parent::ID;
         $this->evaluationRepository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId)
             ->will($this->throwException(new ModelNotFoundException));
@@ -317,8 +397,8 @@ class SectionControllerTest extends TestCase
 
     public function testShowReportException()
     {
-        $id = Parent::ID;
-        $questionSetId = Parent::ID;
+        $id = parent::ID;
+        $questionSetId = parent::ID;
         $this->evaluationRepository->expects($this->once())
             ->method('getEvaluationsBySectionAndQuestionSet')->with($id, $questionSetId)
             ->will($this->throwException(new Exception));
