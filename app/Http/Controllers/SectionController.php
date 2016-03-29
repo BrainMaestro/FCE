@@ -2,8 +2,8 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Http\Requests\SectionRequest;
 use Fce\Events\Event;
+use Fce\Http\Requests\SectionRequest;
 use Fce\Repositories\Contracts\CommentRepository;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
@@ -11,6 +11,7 @@ use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Fce\Utility\Status;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class SectionController extends Controller
@@ -124,20 +125,22 @@ class SectionController extends Controller
                 return $this->respondUnprocessable('Section is already ' . $section['status']);
             }
 
-            // Update the section status.
-            $this->repository->updateSection($id, $status);
+            DB::transaction(function () use ($id, $status) {
+                // Update the section status.
+                $this->repository->updateSection($id, $status);
 
-            // Fire relevant events based on the status type.
-            switch ($status['status']) {
-                case Status::OPEN:
-                    event(Event::SECTION_OPENED, $id);
-                    break;
+                // Fire relevant events based on the status type.
+                switch ($status['status']) {
+                    case Status::OPEN:
+                        event(Event::SECTION_OPENED, $id);
+                        break;
 
-                case Status::DONE:
-                    event(Event::SECTION_CLOSED, $id);
-                    break;
-            }
-            
+                    case Status::DONE:
+                        event(Event::SECTION_CLOSED, $id);
+                        break;
+                }
+            });
+
             return $this->respondSuccess('Section status updated successfully');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Could not find section');
