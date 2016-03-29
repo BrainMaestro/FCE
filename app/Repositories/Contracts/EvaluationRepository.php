@@ -11,8 +11,6 @@ interface EvaluationRepository
 {
     public function getEvaluationsBySectionAndQuestionSet($sectionId, $questionSetId);
 
-    public function getEvaluationBySectionQuestionSetAndQuestion($sectionId, $questionSetId, $questionId);
-
     public function createEvaluations($sectionId, array $questionSet);
 
     public function incrementEvaluation($id, $column);
