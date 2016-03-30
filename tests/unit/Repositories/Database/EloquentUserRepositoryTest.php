@@ -127,22 +127,4 @@ class EloquentUserRepositoryTest extends TestCase
 
         $this->repository->getUserById($this->user->id);
     }
-
-    public function testDisableUser()
-    {
-        $this->assertTrue($this->repository->disableUser($this->user->id));
-
-        $user = $this->repository->transform($this->user->fresh());
-
-        $this->assertFalse($user['data']['active']);
-    }
-
-    public function testEnableUser()
-    {
-        $this->assertTrue($this->repository->enableUser($this->user->id));
-
-        $user = $this->repository->transform($this->user->fresh());
-
-        $this->assertTrue($user['data']['active']);
-    }
 }

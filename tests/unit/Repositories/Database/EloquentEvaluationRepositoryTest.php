@@ -57,48 +57,12 @@ class EloquentEvaluationRepositoryTest extends TestCase
         $this->repository->getEvaluationsBySectionAndQuestionSet(parent::INVALID_ID, parent::INVALID_ID);
     }
 
-    public function testGetEvaluationsBySectionQuestionSetAndQuestion()
-    {
-        $evaluation = $this->repository->getEvaluationBySectionQuestionSetAndQuestion(
-            $this->evaluation->section->id,
-            $this->evaluation->questionSet->id,
-            $this->evaluation->question->id
-        );
-
-        $this->assertCount(1, $evaluation);
-
-        $this->assertEquals($this->repository->transform($this->evaluation), $evaluation);
-
-        $question = factory(Fce\Models\Question::class)->create();
-        $this->evaluation = factory(Fce\Models\Evaluation::class)->create([
-            'question_id' => $question->id
-        ]);
-
-        $otherEvaluation = $this->repository->getEvaluationBySectionQuestionSetAndQuestion(
-            $this->evaluation->section->id,
-            $this->evaluation->questionSet->id,
-            $question->id
-        );
-
-        $this->assertCount(1, $otherEvaluation);
-
-        $this->assertEquals($this->repository->transform($this->evaluation), $otherEvaluation);
-        $this->assertNotEquals($evaluation, $otherEvaluation);
-    }
-
-    public function testGetEvaluationBySectionQuestionSetAndQuestionWithInvalidIds()
-    {
-        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
-
-        $this->repository->getEvaluationBySectionQuestionSetAndQuestion(parent::INVALID_ID, parent::INVALID_ID, parent::INVALID_ID);
-    }
-
     public function testCreateEvaluations()
     {
         $questions = factory(Fce\Models\Question::class, 5)->create();
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
         $questionSet->questions()->attach($questions);
-        $questionSet = App::make(\Fce\Repositories\Database\EloquentQuestionSetRepository::class)
+        $questionSet = app(\Fce\Repositories\Database\EloquentQuestionSetRepository::class)
             ->transform($questionSet)['data'];
 
         $section = factory(Fce\Models\Section::class)->create();
@@ -131,13 +95,12 @@ class EloquentEvaluationRepositoryTest extends TestCase
     {
         $this->assertEquals(1, $this->repository->incrementEvaluation($this->evaluation->id, 'one'));
 
-        $incrementedEvaluation = $this->repository->getEvaluationBySectionQuestionSetAndQuestion(
+        $incrementedEvaluation = $this->repository->getEvaluationsBySectionAndQuestionSet(
             $this->evaluation->section->id,
-            $this->evaluation->questionSet->id,
-            $this->evaluation->question->id
+            $this->evaluation->questionSet->id
         );
 
-        $this->assertEquals($this->evaluation->one + 1, $incrementedEvaluation['data']['one']);
+        $this->assertEquals($this->evaluation->one + 1, $incrementedEvaluation['data'][0]['one']);
     }
 }
 

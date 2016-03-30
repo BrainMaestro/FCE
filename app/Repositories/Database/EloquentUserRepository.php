@@ -100,25 +100,4 @@ class EloquentUserRepository extends Repository implements UserRepository
     {
         return $this->model->findOrFail($id)->delete() == 1;
     }
-
-    /**
-     * Disables user to prevent access to the system.
-     * 
-     * @param $id [id of the the user to be disabled]
-     * @return bool
-     */
-    public function disableUser($id)
-    {
-        return $this->update($id, ['active' => false]);
-    }
-    /**
-     * Enables user access to the system.
-     * 
-     * @param $id [id of the the user to be disabled]
-     * @return bool
-     */
-    public function enableUser($id)
-    {
-        return $this->update($id, ['active' => true]);
-    }
 }

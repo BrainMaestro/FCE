@@ -45,23 +45,6 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
     }
 
     /**
-     * Get a single evaluation by the section, question set and question it belongs to.
-     *
-     * @param $sectionId
-     * @param $questionSetId
-     * @param $questionId
-     * @return array
-     */
-    public function getEvaluationBySectionQuestionSetAndQuestion($sectionId, $questionSetId, $questionId)
-    {
-        return $this->findBy([
-            'section_id' => $sectionId,
-            'question_set_id' => $questionSetId,
-            'question_id' => $questionId
-        ], self::ONE);
-    }
-
-    /**
      * Create a new set of evaluations for the specified question and question set.
      *
      * @param $sectionId

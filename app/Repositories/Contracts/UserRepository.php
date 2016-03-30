@@ -21,8 +21,4 @@ interface UserRepository
     public function updateUser($id, array $attributes);
 
     public function deleteUser($id);
-
-    public function disableUser($id);
-
-    public function enableUser($id);
 }
