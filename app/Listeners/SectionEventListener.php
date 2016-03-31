@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 26/3/2016
- * Time: 6:24 PM
+ * Time: 6:24 PM.
  */
-
 namespace Fce\Listeners;
 
 use Fce\Events\Event;
@@ -13,7 +12,6 @@ use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\QuestionSetRepository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
-use Illuminate\Support\Facades\Input;
 
 class SectionEventListener
 {
@@ -63,7 +61,7 @@ class SectionEventListener
 
     /**
      * Handle section opened events.
-     * 
+     *
      * @param $sectionId
      */
     public function onSectionOpened($sectionId)
@@ -72,24 +70,24 @@ class SectionEventListener
         $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
         $questionSetId = $this->semesterRepository->getOpenQuestionSet($semesterId)['id'];
         $questionSet = $this->questionSetRepository->getQuestionSetById($questionSetId)['data'];
-        
+
         // Create the section's evaluations.
         $this->evaluationRepository->createEvaluations($sectionId, $questionSet);
-        
+
         // Create the section's keys.
         $this->keyRepository->createKeys($section);
     }
 
     /**
      * Handle section closed events.
-     * 
+     *
      * @param $sectionId
      */
     public function onSectionClosed($sectionId)
     {
         $this->keyRepository->deleteKeys($sectionId);
     }
-    
+
     /**
      * Register the listeners for the subscriber.
      *

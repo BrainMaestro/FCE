@@ -18,7 +18,7 @@ class SchoolRequest extends Request
                     'school' => 'required|min:2',
                     'description' => 'required|string',
                 ];
-            
+
             case 'PUT':
                 // Route::put('/schools/{id}', 'SchoolController@update');
                 return [

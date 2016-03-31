@@ -12,7 +12,6 @@ class EloquentUserRepositoryTest extends TestCase
     protected $repository;
     protected $user;
 
-
     public function setUp()
     {
         parent::setUp();
@@ -32,9 +31,9 @@ class EloquentUserRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "email:" . $users[1]['email'] . "|name:" . $users[1]['name'],
+            'query' => 'email:' . $users[1]['email'] . '|name:' . $users[1]['name'],
             'limit' => 1,
-            'page' => 1
+            'page' => 1,
         ];
 
         Input::merge($inputParameters);

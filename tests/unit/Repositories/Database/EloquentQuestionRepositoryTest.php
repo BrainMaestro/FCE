@@ -1,10 +1,11 @@
 <?php
+
 use Fce\Repositories\Database\EloquentQuestionRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 21/2/2016
- * Time: 8:13 PM
+ * Time: 8:13 PM.
  */
 class EloquentQuestionRepositoryTest extends TestCase
 {
@@ -33,9 +34,9 @@ class EloquentQuestionRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "category:" . $questions[4]['category'] . "|description:" . $questions[4]['description'],
+            'query' => 'category:' . $questions[4]['category'] . '|description:' . $questions[4]['description'],
             'limit' => 1,
-            'page' => 1
+            'page' => 1,
         ];
 
         Input::merge($inputParameters);

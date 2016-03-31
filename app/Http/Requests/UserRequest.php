@@ -4,7 +4,6 @@ namespace Fce\Http\Requests;
 
 class UserRequest extends Request
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -20,7 +19,7 @@ class UserRequest extends Request
                     'email' => 'required|email|regex:/@aun.edu.ng$/',
                     'password' => 'required|min:6|confirmed',
                 ];
-            
+
             case 'PUT':
                 // Route::put('/users/{id}', 'UserController@update');
                 return [

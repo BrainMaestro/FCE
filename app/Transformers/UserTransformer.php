@@ -17,7 +17,7 @@ class UserTransformer extends TransformerAbstract
      * @var array
      */
     protected $defaultIncludes = [
-        'schools'
+        'schools',
     ];
 
     /**
@@ -38,7 +38,7 @@ class UserTransformer extends TransformerAbstract
             'id' => (int) $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'active' => (boolean) $user->active,
+            'active' => (bool) $user->active,
         ];
     }
 

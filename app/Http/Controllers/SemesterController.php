@@ -2,7 +2,6 @@
 
 namespace Fce\Http\Controllers;
 
-
 use Fce\Http\Requests\SemesterRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -72,7 +71,7 @@ class SemesterController extends Controller
     {
         try {
             $this->changeCurrentSemester($id, $this->request->current_semester);
-            
+
             return $this->respondSuccess('Semester successfully updated');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Semester does not exist');
@@ -121,7 +120,7 @@ class SemesterController extends Controller
                 $questionSetId,
                 $this->request->status
             );
-            
+
             return $this->respondSuccess('Question set status successfully updated');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Semester does not exist');
@@ -143,7 +142,7 @@ class SemesterController extends Controller
     private function changeCurrentSemester($id, $status = true)
     {
         // If we only choose to unset the specified semester.
-        if (!$status) {
+        if (! $status) {
             return $this->repository->setCurrentSemester($id, false);
         }
 

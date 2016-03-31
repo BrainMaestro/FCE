@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 10:03 PM
+ * Time: 10:03 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Section;
@@ -17,7 +16,7 @@ class SectionTransformer extends TransformerAbstract
      * @var array
      */
     protected $defaultIncludes = [
-        'users'
+        'users',
     ];
 
     /**
@@ -27,7 +26,7 @@ class SectionTransformer extends TransformerAbstract
         'school',
         'evaluation',
         'semester',
-        'keys'
+        'keys',
     ];
 
     /**
@@ -46,7 +45,7 @@ class SectionTransformer extends TransformerAbstract
             'class_time' => $section->class_time,
             'location' => $section->location,
             'status' => $section->status,
-            'enrolled' => (int) $section->enrolled
+            'enrolled' => (int) $section->enrolled,
         ];
     }
 

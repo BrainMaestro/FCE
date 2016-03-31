@@ -17,7 +17,7 @@ class QuestionController extends Controller
 
     /**
      * Get all questions.
-     * 
+     *
      * @return array
      */
     public function index()
@@ -33,7 +33,7 @@ class QuestionController extends Controller
 
     /**
      * Get a specific question by id.
-     * 
+     *
      * @param $id
      * @return array
      */
@@ -50,7 +50,7 @@ class QuestionController extends Controller
 
     /**
      * Create a new question.
-     * 
+     *
      * @param QuestionRequest $request
      * @return mixed
      */

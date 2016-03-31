@@ -11,7 +11,7 @@ class SearchController extends Controller
 
     /**
      * Search the specified model with the input query.
-     * 
+     *
      * @param SearchRequest $request
      * @return array
      */
@@ -32,7 +32,7 @@ class SearchController extends Controller
 
     /**
      * Set the repository to use for searching.
-     * 
+     *
      * @param $model
      */
     protected function setRepository($model)

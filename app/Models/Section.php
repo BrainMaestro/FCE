@@ -18,12 +18,12 @@ class Section extends Model
         'class_time',
         'location',
         'status',
-        'enrolled'
+        'enrolled',
     ];
 
     /**
      * The Section relationship to School
-     * A section belongsTo school
+     * A section belongsTo school.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -34,7 +34,7 @@ class Section extends Model
 
     /**
      * The Section relationship to evaluation
-     * A section hasMany evaluation
+     * A section hasMany evaluation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -45,7 +45,7 @@ class Section extends Model
 
     /**
      * The Section relationship to Semester
-     * A section belongsTo semester
+     * A section belongsTo semester.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -56,7 +56,7 @@ class Section extends Model
 
     /**
      * The Section relationship to key
-     * A section hasMany keys
+     * A section hasMany keys.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -67,7 +67,7 @@ class Section extends Model
 
     /**
      * The Section relationship to User
-     * A section can have many users
+     * A section can have many users.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -78,7 +78,7 @@ class Section extends Model
 
     /**
      * The Section relationship to comment
-     * A section hasMany comment
+     * A section hasMany comment.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

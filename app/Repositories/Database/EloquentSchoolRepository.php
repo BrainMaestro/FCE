@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/29/2015
- * Time: 8:34 PM
+ * Time: 8:34 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\School;
@@ -68,7 +67,7 @@ class EloquentSchoolRepository extends Repository implements SchoolRepository
      *
      * @param $id
      * @param array $attributes
-     * @return boolean
+     * @return bool
      */
     public function updateSchool($id, array $attributes)
     {

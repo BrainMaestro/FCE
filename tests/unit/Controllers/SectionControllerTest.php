@@ -56,7 +56,7 @@ class SectionControllerTest extends TestCase
 
         Input::merge([
             'semester' => parent::ID,
-            'school' => parent::ID
+            'school' => parent::ID,
         ]);
 
         $this->controller->index();
@@ -97,7 +97,6 @@ class SectionControllerTest extends TestCase
             $this->controller->index()
         );
     }
-
 
     public function testShow()
     {
@@ -215,7 +214,7 @@ class SectionControllerTest extends TestCase
     public function testUpdateStatus()
     {
         $id = parent::ID;
-        
+
         $this->repository->expects($this->exactly(2))
             ->method('getSectionById')
             ->with($id);

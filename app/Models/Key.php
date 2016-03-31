@@ -18,12 +18,12 @@ class Key extends Model
         'value',
         'given_out',
         'used',
-        'section_id'
+        'section_id',
     ];
 
     /**
      * The Key relationship to Section
-     * A key belongsTo a section
+     * A key belongsTo a section.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

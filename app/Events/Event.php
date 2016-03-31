@@ -10,7 +10,7 @@ abstract class Event
 
     // Evaluation events.
     const EVALUATION_SUBMITTED = 'evaluation.submitted';
-    
+
     // Section events.
     const SECTION_OPENED = 'section.opened';
     const SECTION_CLOSED = 'section.closed';

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 2/11/2016
- * Time: 8:42 PM
+ * Time: 8:42 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Comment;
@@ -20,7 +19,7 @@ class CommentTransformer extends TransformerAbstract
     public function transform(Comment $comment)
     {
         return [
-            'comment' => $comment->comment
+            'comment' => $comment->comment,
         ];
     }
 }

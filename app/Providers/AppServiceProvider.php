@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Registers the repositories according to the specified namespace and type
+     * Registers the repositories according to the specified namespace and type.
      *
      * @param string $namespace
      * @param string $type
@@ -47,6 +47,5 @@ class AppServiceProvider extends ServiceProvider
                 $prefix . $namespace . '\\' . $type . $contract
             );
         }
-
     }
 }

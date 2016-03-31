@@ -21,7 +21,7 @@ class QuestionSetController extends Controller
 
     /**
      * Get all question sets.
-     * 
+     *
      * @return array
      */
     public function index()
@@ -37,7 +37,7 @@ class QuestionSetController extends Controller
 
     /**
      * Get a specific question set by id.
-     * 
+     *
      * @param $id
      * @return array
      */
@@ -54,7 +54,7 @@ class QuestionSetController extends Controller
 
     /**
      * Create a new question set.
-     * 
+     *
      * @return array
      */
     public function create()
@@ -68,7 +68,7 @@ class QuestionSetController extends Controller
 
     /**
      * Add questions to a question set.
-     * 
+     *
      * @param $id
      * @return array
      */

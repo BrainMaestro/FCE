@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/29/2015
- * Time: 8:20 PM
+ * Time: 8:20 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Question;

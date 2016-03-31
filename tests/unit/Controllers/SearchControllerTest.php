@@ -1,4 +1,5 @@
 <?php
+
 use Fce\Http\Controllers\SearchController;
 use Fce\Http\Requests\SearchRequest;
 use Illuminate\Support\Facades\Input;
@@ -7,7 +8,7 @@ use Illuminate\Support\Facades\Input;
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 3/13/2016
- * Time: 2:05 PM
+ * Time: 2:05 PM.
  */
 class SearchControllerTest extends TestCase
 {

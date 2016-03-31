@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
         'question_sets',
         'question_question_set',
     ];
+
     /**
      * Run the database seeds.
      *

@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 22/2/2016
- * Time: 12:04 PM
+ * Time: 12:04 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\QuestionSet;
@@ -25,7 +24,7 @@ class EloquentQuestionSetRepository extends Repository implements QuestionSetRep
     {
         $this->model = $model;
         $this->transformer = $transformer;
-        
+
         //This is used to ensure questions are always included when question sets are retrieved
         //It serves as a replacement to defaultIncludes
         Input::merge(['include' => 'questions']);

@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 4/3/2016
- * Time: 7:57 PM
+ * Time: 7:57 PM.
  */
-
 namespace Fce\Utility;
 
 use Illuminate\Http\Response;
@@ -105,12 +104,12 @@ trait ApiClient
     public function respondSuccess($data = 'Operation Successful')
     {
         $this->setStatusCode(Response::HTTP_OK);
-        
+
         if (is_string($data)) {
             return $this->respond([
                 'data' => [
-                    'message' => $data
-                ]
+                    'message' => $data,
+                ],
             ]);
         }
 
@@ -137,7 +136,7 @@ trait ApiClient
             'error' => [
                 'code' => $this->getStatusCode(),
                 'message' => $message,
-            ]
+            ],
         ]);
     }
 }

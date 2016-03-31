@@ -57,7 +57,7 @@ class EvaluationController extends Controller
 
     /**
      * Submit an evaluation and a comment if present.
-     * 
+     *
      * @param EvaluationRequest $request
      * @param $key
      * @return array
@@ -68,7 +68,7 @@ class EvaluationController extends Controller
             $key = $this->keyRepository->getKeyByValue($key)['data'];
 
             // Key has not been given out for some reason.
-            if (!$key['given_out']) {
+            if (! $key['given_out']) {
                 return $this->respondUnprocessable('This key has not yet been given out');
             }
 
@@ -85,7 +85,7 @@ class EvaluationController extends Controller
 
             event(Event::KEY_USED, $key['value']); // The key has been used.
             event(Event::EVALUATION_SUBMITTED, [$request->evaluations, $request->comment, $semesterId, $questionSetId]);
-            
+
             return $this->respondSuccess('Evaluation successfully submitted');
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Key does not exist');

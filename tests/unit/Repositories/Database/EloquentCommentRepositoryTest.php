@@ -5,7 +5,7 @@ use Fce\Repositories\Database\EloquentCommentRepository;
 /**
  * Created by BrainMaestro
  * Date: 12/2/2016
- * Time: 11:16 PM
+ * Time: 11:16 PM.
  */
 class EloquentCommentRepositoryTest extends TestCase
 {

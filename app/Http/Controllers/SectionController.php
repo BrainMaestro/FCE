@@ -96,7 +96,7 @@ class SectionController extends Controller
     public function update($id)
     {
         try {
-            if (!$this->repository->updateSection($id, $this->request->except('status'))) {
+            if (! $this->repository->updateSection($id, $this->request->except('status'))) {
                 return $this->respondUnprocessable('Section attribute(s) were not provided');
             }
 
@@ -191,7 +191,8 @@ class SectionController extends Controller
             $comments = [];
             try {
                 $comments = $commentRepository->getComments($id, $questionSetId);
-            } catch (ModelNotFoundException $e) {} // Safe to ignore if there are no comments.
+            } catch (ModelNotFoundException $e) {
+            } // Safe to ignore if there are no comments.
 
             return $this->respondSuccess([
                 'evaluations' => $evaluations,

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 10:43 PM
+ * Time: 10:43 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Evaluation;
@@ -17,7 +16,7 @@ class EvaluationTransformer extends TransformerAbstract
      * @var array
      */
     protected $defaultIncludes = [
-        'question'
+        'question',
     ];
 
     public function transform(Evaluation $evaluation)
@@ -31,7 +30,7 @@ class EvaluationTransformer extends TransformerAbstract
             'two' => (int) $evaluation->two,
             'three' => (int) $evaluation->three,
             'four' => (int) $evaluation->four,
-            'five' => (int) $evaluation->five
+            'five' => (int) $evaluation->five,
         ];
     }
 

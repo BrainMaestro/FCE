@@ -14,7 +14,7 @@ class Question extends Model
     protected $fillable = ['category', 'title', 'description'];
 
     /**
-     * The Question relationship to QuestionSet
+     * The Question relationship to QuestionSet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
@@ -24,7 +24,7 @@ class Question extends Model
     }
 
     /**
-     * The Question relationship to Evaluation
+     * The Question relationship to Evaluation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */

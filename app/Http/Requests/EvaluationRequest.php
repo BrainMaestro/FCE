@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 12/3/2016
- * Time: 6:24 PM
+ * Time: 6:24 PM.
  */
-
 namespace Fce\Http\Requests;
 
 class EvaluationRequest extends Request

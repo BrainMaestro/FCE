@@ -15,7 +15,7 @@ class Role extends Model
 
     /**
      * The Role relationship to User
-     * A role can belong to many users
+     * A role can belong to many users.
      */
     public function users()
     {

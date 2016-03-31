@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 8:30 PM
+ * Time: 8:30 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\QuestionSet;
@@ -17,7 +16,7 @@ class QuestionSetTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'questions'
+        'questions',
     ];
 
     /**
@@ -26,7 +25,7 @@ class QuestionSetTransformer extends TransformerAbstract
      */
     public function transform(QuestionSet $questionSet)
     {
-        $attributes =  [
+        $attributes = [
             'id' => (int) $questionSet->id,
             'name' => $questionSet->name,
         ];

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/17/2015
- * Time: 2:36 PM
+ * Time: 2:36 PM.
  */
-
 namespace Fce\Repositories;
 
 use Fce\Utility\Transformable;
@@ -17,7 +16,7 @@ abstract class Repository
     use Transformable;
 
     /**
-     * Constants for pagination
+     * Constants for pagination.
      */
     const ALL = 'all';
     const ONE = 'one';
@@ -95,7 +94,7 @@ abstract class Repository
                 $items = $items->paginate($this->getLimit(), $columns, 'page', $this->getPage());
         }
 
-        if (is_null($items) || !count($items)) {
+        if (is_null($items) || ! count($items)) {
             throw new ModelNotFoundException('Could not find the specified model');
         }
 
@@ -119,7 +118,7 @@ abstract class Repository
      *
      * @param $id
      * @param array $attributes
-     * @return boolean
+     * @return bool
      * @throws ModelNotFoundException
      */
     protected function update($id, array $attributes)
@@ -175,8 +174,8 @@ abstract class Repository
         }
 
         $attributes = [];
-        foreach (explode("|", $query) as $parameter) {
-            list($column, $value) = explode(":", $parameter);
+        foreach (explode('|', $query) as $parameter) {
+            list($column, $value) = explode(':', $parameter);
             $attributes[$column] = $value;
         }
 
@@ -196,7 +195,7 @@ abstract class Repository
     {
         return $this->model->where(function ($query) use ($params) {
             foreach ($params as $column => $value) {
-                $query->where($column, 'LIKE', '%'. $value .'%');
+                $query->where($column, 'LIKE', '%' . $value . '%');
             }
         });
     }

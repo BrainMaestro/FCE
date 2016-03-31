@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/29/2015
- * Time: 7:26 PM
+ * Time: 7:26 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Comment;
@@ -15,7 +14,6 @@ use Fce\Transformers\CommentTransformer;
 
 class EloquentCommentRepository extends Repository implements CommentRepository
 {
-
     /**
      * Create a new repository instance.
      *
@@ -39,7 +37,7 @@ class EloquentCommentRepository extends Repository implements CommentRepository
     {
         return $this->findBy([
             'section_id' => $sectionId,
-            'question_set_id' => $questionSetId
+            'question_set_id' => $questionSetId,
         ], self::ALL);
     }
 

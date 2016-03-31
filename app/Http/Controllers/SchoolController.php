@@ -75,10 +75,10 @@ class SchoolController extends Controller
     public function update($id)
     {
         try {
-            if (!$this->repository->updateSchool($id, $this->request->all())) {
+            if (! $this->repository->updateSchool($id, $this->request->all())) {
                 return $this->respondUnprocessable('School attributes were not provided');
             }
-            
+
             return $this->respondSuccess('School successfully updated');
         } catch (\Exception $e) {
             return $this->respondInternalServerError('Could not update school');

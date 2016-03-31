@@ -25,7 +25,7 @@ class SectionRequest extends Request
                     'class_time' => 'required|string',
                     'location' => 'required|string',
                     'status' => 'required|string',
-                    'enrolled' => 'required|integer'
+                    'enrolled' => 'required|integer',
                 ];
 
             case 'PUT':
@@ -38,7 +38,7 @@ class SectionRequest extends Request
                     'school_id' => 'integer',
                     'class_time' => 'string',
                     'location' => 'string',
-                    'enrolled' => 'integer'
+                    'enrolled' => 'integer',
                 ];
 
             case 'PATCH':

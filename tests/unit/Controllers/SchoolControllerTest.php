@@ -106,6 +106,7 @@ class SchoolControllerTest extends TestCase
             $this->controller->create()
         );
     }
+
     public function testUpdate()
     {
         $this->repository->expects($this->once())

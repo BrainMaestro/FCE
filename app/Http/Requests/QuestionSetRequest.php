@@ -14,14 +14,14 @@ class QuestionSetRequest extends Request
     public function rules()
     {
         $path = $this->path();
-        
+
         if (str_is('api/question-sets/*/questions', $path)) {
             // Route::post('/question-sets/{id}/questions', 'QuestionSetController@addQuestions');
             return [
                 'questions' => 'array|required',
             ];
         }
-        
+
         if (str_is('api/question-sets', $path)) {
             //Route::post('/question-sets', 'QuestionSetController@create');
             return [

@@ -6,7 +6,7 @@ use Illuminate\Database\QueryException;
 /**
  * Created by BrainMaestro
  * Date: 19/2/2016
- * Time: 8:14 PM
+ * Time: 8:14 PM.
  */
 class EloquentKeyRepositoryTest extends TestCase
 {

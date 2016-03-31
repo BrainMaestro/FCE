@@ -106,6 +106,7 @@ class QuestionSetControllerTest extends TestCase
             $this->controller->create($this->request)
         );
     }
+
     public function testAddQuestions()
     {
         $this->repository->expects($this->once())

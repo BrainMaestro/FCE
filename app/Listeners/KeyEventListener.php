@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 12/3/2016
- * Time: 7:02 PM
+ * Time: 7:02 PM.
  */
-
 namespace Fce\Listeners;
 
 use Fce\Events\Event;

@@ -12,12 +12,12 @@ class Comment extends Model
     protected $fillable = [
         'section_id',
         'question_set_id',
-        'comment'
+        'comment',
     ];
 
     /**
      * The Comment relationship to Section
-     * A comment belongsTo section
+     * A comment belongsTo section.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -28,7 +28,7 @@ class Comment extends Model
 
     /**
      * The Comment relationship to QuestionSet
-     * A comment belongsTo a questionset
+     * A comment belongsTo a questionset.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

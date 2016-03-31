@@ -1,4 +1,5 @@
 <?php
+
 use Fce\Repositories\Database\EloquentQuestionSetRepository;
 use Fce\Repositories\Database\EloquentSemesterRepository;
 
@@ -6,7 +7,7 @@ use Fce\Repositories\Database\EloquentSemesterRepository;
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 2/22/2016
- * Time: 8:12 PM
+ * Time: 8:12 PM.
  */
 class EloquentSemesterRepositoryTest extends TestCase
 {
@@ -33,12 +34,12 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testInputParameters()
     {
         $semestersYear = factory(Fce\Models\Semester::class, 5)->create([
-            'year' => 2016
+            'year' => 2016,
         ]);
         $semestersYear = $this->repository->transform($semestersYear)['data'];
 
         Input::merge([
-            'query' => "year:" . $semestersYear[0]['year'],
+            'query' => 'year:' . $semestersYear[0]['year'],
         ]);
         $semesters = $this->repository->getSemesters();
 
@@ -47,12 +48,12 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->assertEquals(count($semestersYear), $semesters['meta']['pagination']['total']);
 
         $semestersSeason = factory(Fce\Models\Semester::class, 5)->create([
-            'season' => 'Spring'
+            'season' => 'Spring',
         ]);
         $semestersSeason = $this->repository->transform($semestersSeason)['data'];
 
         Input::merge([
-            'query' => "season:" . $semestersSeason[0]['season'],
+            'query' => 'season:' . $semestersSeason[0]['season'],
         ]);
         $semesters = $this->repository->getSemesters();
 

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 8:53 PM
+ * Time: 8:53 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Question;
@@ -19,7 +18,7 @@ class QuestionTransformer extends TransformerAbstract
             'id' => (int) $question->id,
             'category' => $question->category,
             'title' => $question->title,
-            'description' => $question->description
+            'description' => $question->description,
         ];
 
         if (isset($question->pivot)) {

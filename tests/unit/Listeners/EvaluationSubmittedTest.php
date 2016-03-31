@@ -1,4 +1,5 @@
 <?php
+
 use Fce\Listeners\EvaluationSubmitted;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\CommentRepository;
@@ -6,7 +7,7 @@ use Fce\Repositories\Contracts\CommentRepository;
 /**
  * Created by BrainMaestro
  * Date: 13/3/2016
- * Time: 2:25 AM
+ * Time: 2:25 AM.
  */
 class EvaluationSubmittedTest extends TestCase
 {
@@ -28,7 +29,7 @@ class EvaluationSubmittedTest extends TestCase
         $evaluations = [
             ['id' => parent::ID, 'column' => parent::ID],
             ['id' => parent::ID, 'column' => parent::ID],
-            ['id' => parent::ID, 'column' => parent::ID]
+            ['id' => parent::ID, 'column' => parent::ID],
         ];
         $comment = factory(Fce\Models\Comment::class)->make()->comment;
         $sectionId = parent::ID;

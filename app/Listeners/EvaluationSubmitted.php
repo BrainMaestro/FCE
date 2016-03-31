@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 13/3/2016
- * Time: 1:15 AM
+ * Time: 1:15 AM.
  */
-
 namespace Fce\Listeners;
 
 use Fce\Repositories\Contracts\EvaluationRepository;
@@ -36,7 +35,7 @@ class EvaluationSubmitted implements ShouldQueue
             );
         }
 
-        if (!is_null($comment)) {
+        if (! is_null($comment)) {
             $this->commentRepository->createComment($semesterId, $questionSetId, $comment);
         }
     }

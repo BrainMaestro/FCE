@@ -5,7 +5,7 @@ use Fce\Repositories\Database\EloquentEvaluationRepository;
 /**
  * Created by BrainMaestro
  * Date: 12/2/2016
- * Time: 11:16 PM
+ * Time: 11:16 PM.
  */
 class EloquentEvaluationRepositoryTest extends TestCase
 {
@@ -75,8 +75,8 @@ class EloquentEvaluationRepositoryTest extends TestCase
         $inserted = $this->repository->createEvaluations(parent::INVALID_ID, [
             'id' => parent::INVALID_ID,
             'questions' => ['data' => [
-                ['id' => parent::INVALID_ID]
-            ]]
+                ['id' => parent::INVALID_ID],
+            ]],
         ]);
 
         $this->assertFalse($inserted);

@@ -15,7 +15,7 @@ class School extends Model
 
     /**
      * The School relationship to Section
-     * A school hasMany section
+     * A school hasMany section.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -26,7 +26,7 @@ class School extends Model
 
     /**
      * The School relationship to User
-     * A school hasMany users
+     * A school hasMany users.
      * @return mixed
      */
     public function users()

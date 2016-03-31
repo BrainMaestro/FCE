@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 19/2/2016
- * Time: 8:14 PM
+ * Time: 8:14 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Key;
@@ -17,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class EloquentKeyRepository extends Repository implements KeyRepository
 {
     /**
-     * Maximum number of tries allowed for failing key creation
+     * Maximum number of tries allowed for failing key creation.
      */
     const MAX_TRIES = 3;
 
@@ -71,7 +70,7 @@ class EloquentKeyRepository extends Repository implements KeyRepository
             try {
                 $key = $this->create([
                     'value' => strtoupper(str_random(Key::LENGTH)),
-                    'section_id' => $section['id']
+                    'section_id' => $section['id'],
                 ]);
 
                 $keys[] = $key['data'];
@@ -95,7 +94,7 @@ class EloquentKeyRepository extends Repository implements KeyRepository
      * Set a particular key as given out.
      *
      * @param $value
-     * @return boolean
+     * @return bool
      */
     public function setGivenOut($value)
     {
@@ -107,7 +106,7 @@ class EloquentKeyRepository extends Repository implements KeyRepository
      * Set a particular key as used.
      *
      * @param $value
-     * @return boolean
+     * @return bool
      */
     public function setUsed($value)
     {
@@ -119,7 +118,7 @@ class EloquentKeyRepository extends Repository implements KeyRepository
      * Delete the keys that belong to a section.
      *
      * @param $sectionId
-     * @return boolean
+     * @return bool
      */
     public function deleteKeys($sectionId)
     {

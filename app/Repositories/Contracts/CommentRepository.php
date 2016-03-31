@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 10/2/2016
- * Time: 11:09 PM
+ * Time: 11:09 PM.
  */
-
 namespace Fce\Repositories\Contracts;
 
 interface CommentRepository

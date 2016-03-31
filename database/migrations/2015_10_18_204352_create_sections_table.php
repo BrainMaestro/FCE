@@ -1,6 +1,5 @@
 <?php
 
-use Fce\Models\Section;
 use Fce\Utility\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

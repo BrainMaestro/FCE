@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 /**
  * Created by BrainMaestro
  * Date: 6/3/2016
- * Time: 12:35 AM
+ * Time: 12:35 AM.
  */
 class UserControllerTest extends TestCase
 {

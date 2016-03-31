@@ -1,4 +1,5 @@
 <?php
+
 use Fce\Http\Controllers\EvaluationController;
 use Fce\Http\Requests\EvaluationRequest;
 use Fce\Repositories\Contracts\EvaluationRepository;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Event;
 /**
  * Created by BrainMaestro
  * Date: 12/3/2016
- * Time: 7:15 PM
+ * Time: 7:15 PM.
  */
 class EvaluationControllerTest extends TestCase
 {
@@ -40,7 +41,7 @@ class EvaluationControllerTest extends TestCase
                     'value' => parent::KEY,
                     'section_id' => parent::ID,
                     'given_out' => false,
-                ]
+                ],
             ]);
 
         $this->semesterRepository->expects($this->once())
@@ -68,7 +69,7 @@ class EvaluationControllerTest extends TestCase
             ->willReturn([
                 'data' => [
                     'given_out' => true,
-                ]
+                ],
             ]);
 
         $this->assertEquals(
@@ -115,7 +116,7 @@ class EvaluationControllerTest extends TestCase
                     'section_id' => parent::ID,
                     'given_out' => true,
                     'used' => false,
-                ]
+                ],
             ]);
 
         $this->semesterRepository->expects($this->once())
@@ -149,7 +150,7 @@ class EvaluationControllerTest extends TestCase
             ->willReturn([
                 'data' => [
                     'given_out' => false,
-                ]
+                ],
             ]);
 
         $this->assertEquals(
@@ -166,7 +167,7 @@ class EvaluationControllerTest extends TestCase
                 'data' => [
                     'given_out' => true,
                     'used' => true,
-                ]
+                ],
             ]);
 
         $this->assertEquals(
@@ -183,13 +184,12 @@ class EvaluationControllerTest extends TestCase
                 'data' => [
                     'given_out' => true,
                     'used' => false,
-                ]
+                ],
             ]);
 
         $this->semesterRepository->expects($this->once())
             ->method('getCurrentSemester')
             ->willReturn(['data' => ['id' => parent::ID]]);
-
 
         $this->semesterRepository->expects($this->once())
             ->method('getOpenQuestionSet')->with(parent::ID)

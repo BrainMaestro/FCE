@@ -1,11 +1,12 @@
 <?php
+
 use Fce\Listeners\KeyEventListener;
 use Fce\Repositories\Contracts\KeyRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 13/3/2016
- * Time: 2:18 AM
+ * Time: 2:18 AM.
  */
 class KeyEventListenerTest extends TestCase
 {

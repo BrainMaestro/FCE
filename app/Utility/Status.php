@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 13/3/2016
- * Time: 1:53 PM
+ * Time: 1:53 PM.
  */
-
 namespace Fce\Utility;
 
 class Status
@@ -21,6 +20,6 @@ class Status
         self::OPEN,
         self::LOCKED,
         self::IN_PROGRESS,
-        self::DONE
+        self::DONE,
     ];
 }
