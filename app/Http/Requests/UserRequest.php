@@ -29,5 +29,7 @@ class UserRequest extends Request
                     'active' => 'boolean',
                 ];
         }
+
+        return [];
     }
 }

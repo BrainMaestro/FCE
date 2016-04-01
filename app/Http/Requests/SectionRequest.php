@@ -48,9 +48,8 @@ class SectionRequest extends Request
                         . Status::OPEN . ','
                         . Status::DONE,
                 ];
-
-            default:
-                return [];
         }
+        
+        return [];
     }
 }

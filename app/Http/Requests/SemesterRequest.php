@@ -55,5 +55,7 @@ class SemesterRequest extends Request
 
                 break;
         }
+
+        return [];
     }
 }
