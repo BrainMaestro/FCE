@@ -21,11 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api'], function () {
+// Authentication Routes
+Route::post('/login', 'Auth\AuthController@login');
+Route::delete('/logout', ['uses' => 'Auth\AuthController@login', 'middleware' => 'jwt.auth']);
 
-    // Authentication Routes
-    Route::post('/login', 'AuthController@login');
-    Route::post('/logout', 'AuthController@logout');
+Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
 
     // Search Route
     Route::get('/search', 'SearchController@index');

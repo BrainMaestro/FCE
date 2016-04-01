@@ -155,6 +155,7 @@ return [
         Fce\Providers\AuthServiceProvider::class,
         Fce\Providers\EventServiceProvider::class,
         Fce\Providers\RouteServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
