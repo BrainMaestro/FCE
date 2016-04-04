@@ -99,7 +99,7 @@ class AuthController extends Controller
             $this->incrementLoginAttempts($request);
         }
 
-        return $this->sendFailedLoginResponse($request);
+        return $this->sendFailedLoginResponse();
     }
 
     /**

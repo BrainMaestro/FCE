@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro.
  * Date: 4/4/16
- * Time: 2:02 PM
+ * Time: 2:02 PM.
  */
-
 namespace Fce\Http\Middleware;
 
 use Closure;
