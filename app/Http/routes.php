@@ -32,7 +32,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
     Route::put('/evaluations/{key}', 'EvaluationController@submitEvaluations');
 
     // Routes that require authentication
-    Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::group(['middleware' => ['jwt.auth', 'token.refresh']], function () {
 
         // Search Route
         Route::get('/search', 'SearchController@index');

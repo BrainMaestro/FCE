@@ -29,5 +29,6 @@ class Kernel extends HttpKernel
         'auth' => \Fce\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Fce\Http\Middleware\RedirectIfAuthenticated::class,
+        'token.refresh' => \Fce\Http\Middleware\RefreshToken::class,
     ];
 }
