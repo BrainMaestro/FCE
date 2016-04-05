@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 10/2/2016
- * Time: 10:30 PM
+ * Time: 10:30 PM.
  */
-
 namespace Fce\Repositories\Contracts;
 
 interface SchoolRepository

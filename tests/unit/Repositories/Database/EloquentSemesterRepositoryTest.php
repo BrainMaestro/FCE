@@ -1,4 +1,5 @@
 <?php
+
 use Fce\Repositories\Database\EloquentQuestionSetRepository;
 use Fce\Repositories\Database\EloquentSemesterRepository;
 
@@ -6,7 +7,7 @@ use Fce\Repositories\Database\EloquentSemesterRepository;
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 2/22/2016
- * Time: 8:12 PM
+ * Time: 8:12 PM.
  */
 class EloquentSemesterRepositoryTest extends TestCase
 {
@@ -33,12 +34,12 @@ class EloquentSemesterRepositoryTest extends TestCase
     public function testInputParameters()
     {
         $semestersYear = factory(Fce\Models\Semester::class, 5)->create([
-            'year' => 2016
+            'year' => 2016,
         ]);
         $semestersYear = $this->repository->transform($semestersYear)['data'];
 
         Input::merge([
-            'query' => "year:=" . $semestersYear[0]['year'],
+            'query' => 'year:' . $semestersYear[0]['year'],
         ]);
         $semesters = $this->repository->getSemesters();
 
@@ -47,12 +48,12 @@ class EloquentSemesterRepositoryTest extends TestCase
         $this->assertEquals(count($semestersYear), $semesters['meta']['pagination']['total']);
 
         $semestersSeason = factory(Fce\Models\Semester::class, 5)->create([
-            'season' => 'Spring'
+            'season' => 'Spring',
         ]);
         $semestersSeason = $this->repository->transform($semestersSeason)['data'];
 
         Input::merge([
-            'query' => "season:=" . $semestersSeason[0]['season'],
+            'query' => 'season:' . $semestersSeason[0]['season'],
         ]);
         $semesters = $this->repository->getSemesters();
 
@@ -75,6 +76,29 @@ class EloquentSemesterRepositoryTest extends TestCase
 
         $this->assertCount(count($createdSemesters), $semesters['data']);
         $this->assertEquals($createdSemesters, $semesters['data']);
+    }
+
+    public function testGetSemestersException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'season:=*not_a_season*']);
+
+        $this->repository->getSemesters();
+    }
+
+    public function testGetSemesterById()
+    {
+        $semester = $this->repository->getSemesterById($this->semester->id);
+
+        $this->assertEquals($this->repository->transform($this->semester), $semester);
+    }
+
+    public function testGetSemesterByIdWithInvalidId()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        $this->repository->getSemesterById(parent::INVALID_ID);
     }
 
     public function testSetCurrentSemester()
@@ -133,7 +157,7 @@ class EloquentSemesterRepositoryTest extends TestCase
             $this->repository->addQuestionSet(
                 $this->semester->id,
                 $questionSet['id'],
-                ['evaluation_type' => array_shift($types)]
+                array_shift($types)
             );
         }
 
@@ -144,50 +168,60 @@ class EloquentSemesterRepositoryTest extends TestCase
         // Check that the added questionSets are in the semester
         $this->assertNotEmpty($semesterQuestionSets);
         $this->assertCount(count($questionSets), $semesterQuestionSets);
-        $this->assertEquals($questionSets, $semesterQuestionSets);
+        $this->assertArraySubset($questionSets, $semesterQuestionSets);
     }
 
     /**
      * @depends testAddQuestionSet
-     */
-    public function testGetQuestionSets()
-    {
-        $questionSet = factory(Fce\Models\QuestionSet::class)->create();
-        $questionSet = $this->questionSetRepository->transform($questionSet)['data'];
-
-        $this->repository->addQuestionSet(
-            $this->semester->id,
-            $questionSet['id'],
-            ['evaluation_type' => 'midterm']
-        );
-
-        $semesterQuestionSet = $this->repository->getQuestionSets($this->semester->id)[0];
-        $this->assertEquals($questionSet['id'], $semesterQuestionSet['id']);
-        $this->assertEquals(['evaluation_type' => 'midterm', 'status' => 'Locked'], $semesterQuestionSet['details']);
-    }
-
-    /**
-     * @depends testAddQuestionSet
-     * @depends testGetQuestionSets
      */
     public function testSetQuestionSetStatus()
     {
-        $status = 'Open';
         $questionSet = factory(Fce\Models\QuestionSet::class)->create();
         $questionSet = $this->questionSetRepository->transform($questionSet)['data'];
 
         $this->repository->addQuestionSet(
             $this->semester->id,
             $questionSet['id'],
-            ['evaluation_type' => 'midterm']
+            'midterm'
         );
         $this->repository->setQuestionSetStatus(
             $this->semester->id,
             $questionSet['id'],
-            $status
+            Fce\Utility\Status::OPEN
         );
 
-        $semesterQuestionSet = $this->repository->getQuestionSets($this->semester->id)[0];
-        $this->assertEquals($status, $semesterQuestionSet['details']['status']);
+        $semesterQuestionSet = $this->repository->transform($this->semester->fresh())['data'];
+
+        $this->assertEquals(Fce\Utility\Status::OPEN, $semesterQuestionSet['questionSets']['data'][0]['status']);
+    }
+
+    /**
+     * @depends testSetQuestionSetStatus
+     */
+    public function testGetOpenQuestionSet()
+    {
+        $questionSet = factory(\Fce\Models\QuestionSet::class)->create();
+        $questionSet = $this->questionSetRepository->transform($questionSet)['data'];
+
+        $this->repository->addQuestionSet(
+            $this->semester->id,
+            $questionSet['id'],
+            'midterm'
+        );
+        $this->repository->addQuestionSet(
+            $this->semester->id,
+            factory(\Fce\Models\QuestionSet::class)->create()->id,
+            'final'
+        );
+        $this->repository->setQuestionSetStatus(
+            $this->semester->id,
+            $questionSet['id'],
+            Fce\Utility\Status::OPEN
+        );
+
+        $openQuestionSet = $this->repository->getOpenQuestionSet($this->semester->id);
+
+        $this->assertEquals($questionSet['id'], $openQuestionSet['id']);
+        $this->assertEquals(Fce\Utility\Status::OPEN, $openQuestionSet['status']);
     }
 }

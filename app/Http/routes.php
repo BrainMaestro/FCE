@@ -11,55 +11,72 @@
 |
 */
 
-Route::pattern('id', '[0-9]+');
+Route::patterns([
+    'id' => '[0-9]+',
+    'questionSetId' => '[0-9]+',
+    'key' => '[A-Z0-9]{' . \Fce\Models\Key::LENGTH . '}',
+]);
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api'], function() {
+// Authentication Routes
+Route::post('/login', 'Auth\AuthController@login');
+Route::delete('/logout', ['uses' => 'Auth\AuthController@login', 'middleware' => 'jwt.auth']);
 
-    // Authentication Routes
-    Route::post('/login', 'AuthController@login');
-    Route::post('/logout', 'AuthController@logout');
+Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
 
     // Evaluation Routes
-    Route::get('/evaluations', 'EvaluationController@index');
-    Route::put('/evaluations', 'EvaluationController@incrementEvaluation');
+    Route::get('/evaluations/{key}', 'EvaluationController@index');
+    Route::put('/evaluations/{key}', 'EvaluationController@submitEvaluations');
 
-    // User Routes
-    Route::get('/users', 'UserController@index');
-    Route::get('/users/{id}', 'UserController@show');
-    Route::post('/users', 'UserController@create');
-    Route::delete('/users', 'UserController@destroy');
-    Route::put('/users', 'UserController@update');
+    // Routes that require authentication
+    Route::group(['middleware' => ['jwt.auth', 'token.refresh']], function () {
 
-    // Section Routes
-    Route::get('/sections', 'SectionController@index');
-    Route::get('/sections/{id}', 'SectionController@show');
-    Route::post('/sections', 'SectionController@create');
-    Route::put('/sections/{id}', 'SectionController@update');
-    Route::get('/sections/{id}/keys', 'SectionController@showKeys');
-    Route::get('/sections/{id}/reports', 'SectionController@showReport');
-    Route::get('/sections/{id}/evaluations', 'SectionController@showEvaluations');
+        // Search Route
+        Route::get('/search', 'SearchController@index');
 
-    // Question Routes
-    Route::get('/questions', 'QuestionController@index');
-    Route::post('/questions', 'QuestionController@create');
-    Route::put('/questions', 'QuestionController@update');
+        // User Routes
+        Route::get('/users', 'UserController@index');
+        Route::get('/users/{id}', 'UserController@show');
+        Route::post('/users', 'UserController@create');
+        Route::delete('/users/{id}', 'UserController@destroy');
+        Route::put('/users/{id}', 'UserController@update');
 
-    // QuestionSet Routes
-    Route::get('/question-sets', 'QuestionSetController@index');
-    Route::post('/question-sets/{id}', 'QuestionSetController@create');
-    Route::put('/question-sets/{id}', 'QuestionSetController@update');
+        // Section Routes
+        Route::get('/sections', 'SectionController@index');
+        Route::get('/sections/{id}', 'SectionController@show');
+        Route::post('/sections', 'SectionController@create');
+        Route::put('/sections/{id}', 'SectionController@update');
+        Route::patch('/sections/{id}/status', 'SectionController@updateStatus');
+        Route::get('/sections/{id}/keys', 'SectionController@showKeys');
+        Route::get('/sections/{id}/reports', 'SectionController@listReports');
+        // Not technically restful but no one cares anymore.
+        Route::get('/sections/{id}/report/{questionSetId}', 'SectionController@showReport');
 
-    // School Routes
-    Route::get('/schools', 'SchoolController@index');
-    Route::post('/schools', 'SchoolController@create');
-    Route::put('/schools/{id}', 'SchoolController@update');
+        // Question Routes
+        Route::get('/questions', 'QuestionController@index');
+        Route::get('/questions/{id}', 'QuestionController@show');
+        Route::post('/questions', 'QuestionController@create');
 
-    // Semester Routes
-    Route::get('/semesters', 'SemesterController@index');
-    Route::post('/semesters', 'SemesterController@create');
-    Route::put('/semesters/{id}', 'SemesterController@update');
+        // QuestionSet Routes
+        Route::get('/question-sets', 'QuestionSetController@index');
+        Route::get('/question-sets/{id}', 'QuestionSetController@show');
+        Route::post('/question-sets', 'QuestionSetController@create');
+        Route::post('/question-sets/{id}/questions', 'QuestionSetController@addQuestions');
+
+        // School Routes
+        Route::get('/schools', 'SchoolController@index');
+        Route::get('/schools/{id}', 'SchoolController@show');
+        Route::post('/schools', 'SchoolController@create');
+        Route::put('/schools/{id}', 'SchoolController@update');
+
+        // Semester Routes
+        Route::get('/semesters', 'SemesterController@index');
+        Route::post('/semesters', 'SemesterController@create');
+        Route::put('/semesters/{id}', 'SemesterController@update');
+        Route::post('/semesters/{id}/question-sets', 'SemesterController@addQuestionSet');
+        Route::put('/semesters/{id}/question-sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
+    });
 });

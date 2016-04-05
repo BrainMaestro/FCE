@@ -14,7 +14,7 @@ class QuestionSetTableSeeder extends Seeder
         DB::table('question_sets')
             ->insert([
                 ['name' => 'Original Midterm Question Set'],
-                ['name' => 'Original Final Question Set']
+                ['name' => 'Original Final Question Set'],
             ]);
     }
 }

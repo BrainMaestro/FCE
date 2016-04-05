@@ -3,12 +3,11 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/17/2015
- * Time: 2:36 PM
+ * Time: 2:36 PM.
  */
-
 namespace Fce\Repositories;
 
-use Fce\Transformers\Transformable;
+use Fce\Utility\Transformable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
@@ -17,7 +16,7 @@ abstract class Repository
     use Transformable;
 
     /**
-     * Constants for pagination
+     * Constants for pagination.
      */
     const ALL = 'all';
     const ONE = 'one';
@@ -38,8 +37,12 @@ abstract class Repository
      */
     public function all(array $columns = ['*'])
     {
-        $filtered = $this->filter();
+        $filtered = $this->search();
         $paginated = $filtered->paginate($this->getLimit(), $columns, 'page', $this->getPage());
+
+        if ($paginated->isEmpty()) {
+            throw new ModelNotFoundException('No models were found');
+        }
 
         return $this->transform($paginated);
     }
@@ -71,11 +74,7 @@ abstract class Repository
     protected function findBy(array $params, $count = self::PAGINATE, array $columns = ['*'], array $with = [])
     {
         // Model to use for the method chaining
-        $items = $this->model;
-
-        foreach ($params as $field => $value) {
-            $items = $items->where($field, 'like', '%' . $value . '%');
-        }
+        $items = $this->filter($params);
 
         if (count($with) > 0) {
             $items = $items->with($with);
@@ -95,7 +94,7 @@ abstract class Repository
                 $items = $items->paginate($this->getLimit(), $columns, 'page', $this->getPage());
         }
 
-        if (is_null($items) || !count($items)) {
+        if (is_null($items) || ! count($items)) {
             throw new ModelNotFoundException('Could not find the specified model');
         }
 
@@ -119,11 +118,15 @@ abstract class Repository
      *
      * @param $id
      * @param array $attributes
-     * @return boolean
+     * @return bool
      * @throws ModelNotFoundException
      */
     protected function update($id, array $attributes)
     {
+        if (count($attributes) == 0) {
+            return false;
+        }
+
         return $this->model->findOrFail($id)->update($attributes);
     }
 
@@ -162,7 +165,7 @@ abstract class Repository
      *
      * @return mixed
      */
-    private function filter()
+    private function search()
     {
         $query = $this->getQuery();
 
@@ -171,20 +174,29 @@ abstract class Repository
         }
 
         $attributes = [];
-        foreach (explode("|", $query) as $parameter) {
-            list($column, $value) = explode(":=", $parameter);
+        foreach (explode('|', $query) as $parameter) {
+            list($column, $value) = explode(':', $parameter);
             $attributes[$column] = $value;
         }
 
         // Removes columns that are not in the model's accessible columns
-        $attrtibutes = array_only($attributes, $this->model->getFillable());
+        $attributes = array_only($attributes, $this->model->getFillable());
 
-        $result = $this->model->where(function ($query) use ($attributes) {
-            foreach ($attributes as $column => $value) {
-                $query->where($column, 'LIKE', '%'. $value .'%');
+        return $this->filter($attributes);
+    }
+
+    /**
+     * Perform filter with the specified parameters.
+     *
+     * @param array $params
+     * @return mixed
+     */
+    private function filter(array $params)
+    {
+        return $this->model->where(function ($query) use ($params) {
+            foreach ($params as $column => $value) {
+                $query->where($column, 'LIKE', '%' . $value . '%');
             }
         });
-
-        return $result;
     }
 }

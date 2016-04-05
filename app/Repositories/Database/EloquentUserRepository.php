@@ -83,7 +83,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      *
      * @param $id
      * @param array $attributes
-     * @return boolean
+     * @return bool
      */
     public function updateUser($id, array $attributes)
     {
@@ -94,7 +94,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Delete a user to prevent access to the system.
      *
      * @param $id
-     * @return boolean
+     * @return bool
      */
     public function deleteUser($id)
     {

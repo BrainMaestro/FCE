@@ -1,7 +1,7 @@
 <?php
 
 return [
-    
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -12,7 +12,7 @@ return [
     | services your application utilizes. Set this in your ".env" file.
     |
     */
-    
+
     'env' => env('APP_ENV', 'production'),
 
     /*
@@ -155,6 +155,7 @@ return [
         Fce\Providers\AuthServiceProvider::class,
         Fce\Providers\EventServiceProvider::class,
         Fce\Providers\RouteServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
@@ -204,7 +205,7 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];

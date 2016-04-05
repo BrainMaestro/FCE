@@ -1,10 +1,11 @@
 <?php
+
 use Fce\Repositories\Database\EloquentSchoolRepository;
 
 /**
  * Created by BrainMaestro.
  * Date: 2/18/16
- * Time: 3:59 PM
+ * Time: 3:59 PM.
  */
 class EloquentSchoolRepositoryTest extends TestCase
 {
@@ -31,9 +32,9 @@ class EloquentSchoolRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "school:=" . $createdSchools[2]['school'] . "|description:=" . $createdSchools[2]['description'],
+            'query' => 'school:' . $createdSchools[2]['school'] . '|description:' . $createdSchools[2]['description'],
             'limit' => 1,
-            'page' => 1
+            'page' => 1,
         ];
 
         Input::merge($inputParameters);
@@ -58,6 +59,15 @@ class EloquentSchoolRepositoryTest extends TestCase
 
         $this->assertCount(count($createdSchools), $schools['data']);
         $this->assertEquals($createdSchools, $schools['data']);
+    }
+
+    public function testGetSchoolsException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'school:=*not_a_school*']);
+
+        $this->repository->getSchools();
     }
 
     public function testGetSchoolById()

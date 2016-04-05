@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/29/2015
- * Time: 8:04 PM
+ * Time: 8:04 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Section;
 use Fce\Repositories\Repository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Transformers\SectionTransformer;
+use Fce\Utility\Status;
 
 class EloquentSectionRepository extends Repository implements SectionRepository
 {
@@ -49,7 +49,7 @@ class EloquentSectionRepository extends Repository implements SectionRepository
     {
         return $this->findBy([
             'semester_id' => $semesterId,
-            'school_id' => $schoolId
+            'school_id' => $schoolId,
         ]);
     }
 
@@ -96,7 +96,7 @@ class EloquentSectionRepository extends Repository implements SectionRepository
      */
     public function setSectionStatus($id, $status)
     {
-        if (!in_array($status, Section::STATUSES)) {
+        if (! in_array($status, Status::STATUSES)) {
             throw new \InvalidArgumentException($status . ' is not an available section status');
         }
 

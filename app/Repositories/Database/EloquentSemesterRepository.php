@@ -3,15 +3,16 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 2/22/2016
- * Time: 9:02 PM
+ * Time: 9:02 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Semester;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Fce\Repositories\Repository;
+use Fce\Transformers\QuestionSetTransformer;
 use Fce\Transformers\SemesterTransformer;
+use Fce\Utility\Status;
 
 class EloquentSemesterRepository extends Repository implements SemesterRepository
 {
@@ -48,6 +49,17 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     }
 
     /**
+     * Get a single semester by its id.
+     *
+     * @param $id
+     * @return array
+     */
+    public function getSemesterById($id)
+    {
+        return $this->find($id);
+    }
+
+    /**
      * Set current semester by its id.
      *
      * @param $id
@@ -60,7 +72,7 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     }
 
     /**
-     * Creates a new semester from the specified attributes.
+     * Create a new semester from the specified attributes.
      *
      * @param $season
      * @param $year
@@ -81,32 +93,14 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
      *
      * @param $id
      * @param $questionSetId
-     * @param array $attributes
+     * @param $evaluationType
      * @return array
      */
-    public function addQuestionSet($id, $questionSetId, array $attributes)
+    public function addQuestionSet($id, $questionSetId, $evaluationType)
     {
-        return $this->model->findOrFail($id)->questionSets()->attach($questionSetId, $attributes);
-    }
-
-    /**
-     * Get all question sets that belong to a semester and the associated details.
-     *
-     * @param $id
-     * @return array
-     */
-    public function getQuestionSets($id)
-    {
-        return array_map(function ($questionSet) {
-            $questionSet['details'] = array_except($questionSet['pivot'], [
-                'semester_id',
-                'question_set_id',
-                'created_at',
-                'updated_at'
-            ]);
-
-            return array_except($questionSet, ['pivot', 'created_at', 'updated_at']);
-        }, $this->model->findOrFail($id)->questionSets->toArray());
+        return $this->model->findOrFail($id)
+            ->questionSets()
+            ->attach($questionSetId, ['evaluation_type' => $evaluationType]);
     }
 
     /**
@@ -122,5 +116,21 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
         return $this->model->findOrFail($id)->questionSets()->updateExistingPivot(
             $questionSetId, ['status' => $status]
         ) != 0;
+    }
+
+    /**
+     * Get question set with an open status.
+     *
+     * @param $id
+     * @return array
+     */
+    public function getOpenQuestionSet($id)
+    {
+        $questionSet = $this->model->findOrFail($id)
+            ->questionSets()
+            ->wherePivot('status', Status::OPEN)
+            ->first();
+
+        return (new QuestionSetTransformer)->transform($questionSet);
     }
 }

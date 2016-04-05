@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 7:15 PM
+ * Time: 7:15 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Role;
@@ -17,7 +16,7 @@ class RoleTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'user'
+        'user',
     ];
 
     /**
@@ -29,7 +28,7 @@ class RoleTransformer extends TransformerAbstract
         return [
             'id' => (int) $role->id,
             'role' => $role->role,
-            'display_name' => $role->display_name
+            'display_name' => $role->display_name,
         ];
     }
 

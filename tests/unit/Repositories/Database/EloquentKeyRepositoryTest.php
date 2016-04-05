@@ -1,11 +1,12 @@
 <?php
 
 use Fce\Repositories\Database\EloquentKeyRepository;
+use Illuminate\Database\QueryException;
 
 /**
  * Created by BrainMaestro
  * Date: 19/2/2016
- * Time: 8:14 PM
+ * Time: 8:14 PM.
  */
 class EloquentKeyRepositoryTest extends TestCase
 {
@@ -42,6 +43,13 @@ class EloquentKeyRepositoryTest extends TestCase
         $this->assertEquals($keys, $allKeys['data']);
     }
 
+    public function testGetKeyByValue()
+    {
+        $key = $this->repository->getKeyByValue($this->key->value);
+
+        $this->assertEquals($this->repository->transform($this->key), $key);
+    }
+
     public function testCreateKeys()
     {
         $keys = $this->repository->createKeys($this->key->section->toArray());
@@ -49,9 +57,28 @@ class EloquentKeyRepositoryTest extends TestCase
         $this->assertCount((int) $this->key->section->enrolled, $keys);
     }
 
+    public function testCreateKeysException()
+    {
+        $repository = $this->getMockBuilder(EloquentKeyRepository::class)
+            ->setMethods(['create'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository->expects($this->exactly(EloquentKeyRepository::MAX_TRIES + 1))
+            ->method('create')
+            ->will($this->throwException(
+                new QueryException('', [], new \Exception)
+            ));
+
+        $this->setExpectedException(QueryException::class);
+
+        $repository->createKeys($this->key->section->toArray());
+    }
+
     public function testSetGivenOut()
     {
-        $this->assertTrue($this->repository->setGivenOut($this->key->id));
+        $this->assertNotTrue($this->key->given_out);
+
+        $this->assertTrue($this->repository->setGivenOut($this->key->value));
 
         $key = $this->repository->transform($this->key->fresh());
 
@@ -60,7 +87,9 @@ class EloquentKeyRepositoryTest extends TestCase
 
     public function testSetUsed()
     {
-        $this->assertTrue($this->repository->setUsed($this->key->id));
+        $this->assertNotTrue($this->key->used);
+
+        $this->assertTrue($this->repository->setUsed($this->key->value));
 
         $key = $this->repository->transform($this->key->fresh());
 

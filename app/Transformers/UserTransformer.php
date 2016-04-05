@@ -16,6 +16,13 @@ class UserTransformer extends TransformerAbstract
     /**
      * @var array
      */
+    protected $defaultIncludes = [
+        'schools',
+    ];
+
+    /**
+     * @var array
+     */
     protected $availableIncludes = [
         'role',
     ];
@@ -31,8 +38,18 @@ class UserTransformer extends TransformerAbstract
             'id' => (int) $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'active' => (boolean) $user->active,
+            'active' => (bool) $user->active,
         ];
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeSchools(User $user)
+    {
+        return $this->collection($user->schools, new SchoolTransformer);
     }
 
     /**

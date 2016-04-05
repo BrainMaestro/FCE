@@ -12,7 +12,6 @@ class EloquentUserRepositoryTest extends TestCase
     protected $repository;
     protected $user;
 
-
     public function setUp()
     {
         parent::setUp();
@@ -32,9 +31,9 @@ class EloquentUserRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "email:=" . $users[1]['email'] . "|name:=" . $users[1]['name'],
+            'query' => 'email:' . $users[1]['email'] . '|name:' . $users[1]['name'],
             'limit' => 1,
-            'page' => 1
+            'page' => 1,
         ];
 
         Input::merge($inputParameters);
@@ -61,13 +60,22 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertEquals($users, $allUsers['data']);
     }
 
+    public function testGetUsersException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'email:=*not_an_email*']);
+
+        $this->repository->getUsers();
+    }
+
     public function testGetUsersBySchool()
     {
         $school = factory(Fce\Models\School::class)->create();
         $users = factory(Fce\Models\User::class, 2)->create()->each(function ($user) use ($school) {
              $user->schools()->save($school);
         });
-        
+
         $users = $this->repository->transform($users)['data'];
 
         $otherUsers = $this->repository->getUsersBySchool($school->id);

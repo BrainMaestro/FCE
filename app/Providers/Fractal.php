@@ -3,11 +3,9 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/17/2015
- * Time: 2:38 PM
+ * Time: 2:38 PM.
  */
-
 namespace Fce\Providers;
-
 
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;

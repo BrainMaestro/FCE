@@ -2,12 +2,10 @@
 /**
  * Created by BrainMaestro
  * Date: 17/2/2016
- * Time: 9:50 PM
+ * Time: 9:50 PM.
  */
+namespace Fce\Utility;
 
-namespace Fce\Transformers;
-
-use App;
 use Fce\Providers\Fractal;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;

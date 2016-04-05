@@ -16,23 +16,23 @@ class RoleTableSeeder extends Seeder
             ->insert([
                 [
                     'role' => 'admin',
-                    'display_name' => 'Administrator'
+                    'display_name' => 'Administrator',
                 ],
                 [
                     'role' => 'dean',
-                    'display_name' => 'Dean'
+                    'display_name' => 'Dean',
                 ],
                 [
                     'role' => 'executive',
-                    'display_name' => 'Executive'
+                    'display_name' => 'Executive',
                 ],
                 [
                     'role' => 'faculty',
-                    'display_name' => 'Faculty'
+                    'display_name' => 'Faculty',
                 ],
                 [
                     'role' => 'secretary',
-                    'display_name' => 'Secretary'
+                    'display_name' => 'Secretary',
                 ],
             ]);
     }

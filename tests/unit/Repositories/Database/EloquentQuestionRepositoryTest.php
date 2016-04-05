@@ -1,16 +1,19 @@
 <?php
+
 use Fce\Repositories\Database\EloquentQuestionRepository;
 
 /**
  * Created by BrainMaestro
  * Date: 21/2/2016
- * Time: 8:13 PM
+ * Time: 8:13 PM.
  */
 class EloquentQuestionRepositoryTest extends TestCase
 {
     protected $repository;
 
     protected $question;
+
+    protected $mock;
 
     public function setUp()
     {
@@ -31,9 +34,9 @@ class EloquentQuestionRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "category:=" . $questions[4]['category'] . "|description:=" . $questions[4]['description'],
+            'query' => 'category:' . $questions[4]['category'] . '|description:' . $questions[4]['description'],
             'limit' => 1,
-            'page' => 1
+            'page' => 1,
         ];
 
         Input::merge($inputParameters);
@@ -58,6 +61,15 @@ class EloquentQuestionRepositoryTest extends TestCase
 
         $this->assertCount(count($questions), $allQuestions['data']);
         $this->assertEquals($questions, $allQuestions['data']);
+    }
+
+    public function testGetQuestionsException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'category:=*not_a_category*']);
+
+        $this->repository->getQuestions();
     }
 
     public function testGetQuestionById()

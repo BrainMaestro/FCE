@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
 
 /**
  * Class User.
@@ -17,7 +18,8 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 class User extends Model implements
     AuthenticatableContract,
     AuthorizableContract,
-    CanResetPasswordContract
+    CanResetPasswordContract,
+    AuthenticatableUserContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
 
@@ -74,5 +76,21 @@ class User extends Model implements
     public function sections()
     {
         return $this->belongsToMany(Section::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); // Eloquent model method
+    }
+
+    /**
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

@@ -16,16 +16,16 @@ class SchoolTableSeeder extends Seeder
             ->insert([
                 [
                     'school' => 'SITC',
-                    'description' => 'School of Information Technology and Computing'
+                    'description' => 'School of Information Technology and Computing',
                 ],
                 [
                     'school' => 'SAS',
-                    'description' => 'School of Arts and Science'
+                    'description' => 'School of Arts and Science',
                 ],
                 [
                     'school' => 'SBE',
-                    'description' => 'School of Business and Entrepreneurship'
-                ]
+                    'description' => 'School of Business and Entrepreneurship',
+                ],
             ]);
     }
 }

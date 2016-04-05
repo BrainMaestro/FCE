@@ -5,20 +5,11 @@ use Fce\Repositories\Database\EloquentEvaluationRepository;
 /**
  * Created by BrainMaestro
  * Date: 12/2/2016
- * Time: 11:16 PM
+ * Time: 11:16 PM.
  */
 class EloquentEvaluationRepositoryTest extends TestCase
 {
     protected $repository;
-
-    /**
-     * The basic models that are needed for all tests
-     */
-    protected $questionSet;
-    protected $question;
-    protected $semester;
-    protected $school;
-    protected $section;
     protected $evaluation;
 
     public function setUp()
@@ -84,8 +75,8 @@ class EloquentEvaluationRepositoryTest extends TestCase
         $inserted = $this->repository->createEvaluations(parent::INVALID_ID, [
             'id' => parent::INVALID_ID,
             'questions' => ['data' => [
-                ['id' => parent::INVALID_ID]
-            ]]
+                ['id' => parent::INVALID_ID],
+            ]],
         ]);
 
         $this->assertFalse($inserted);
@@ -103,5 +94,3 @@ class EloquentEvaluationRepositoryTest extends TestCase
         $this->assertEquals($this->evaluation->one + 1, $incrementedEvaluation['data'][0]['one']);
     }
 }
-
-

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 8:30 PM
+ * Time: 8:30 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\QuestionSet;
@@ -16,8 +15,8 @@ class QuestionSetTransformer extends TransformerAbstract
     /**
      * @var array
      */
-    protected $defaultIncludes = [
-        'questions'
+    protected $availableIncludes = [
+        'questions',
     ];
 
     /**
@@ -26,10 +25,19 @@ class QuestionSetTransformer extends TransformerAbstract
      */
     public function transform(QuestionSet $questionSet)
     {
-        return [
+        $attributes = [
             'id' => (int) $questionSet->id,
-            'name' => $questionSet->name
+            'name' => $questionSet->name,
         ];
+
+        if (isset($questionSet->pivot)) {
+            $attributes = array_merge($attributes, [
+                'evaluation_type' => $questionSet->pivot->evaluation_type,
+                'status' => $questionSet->pivot->status,
+            ]);
+        }
+
+        return $attributes;
     }
 
     /**

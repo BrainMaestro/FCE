@@ -1,10 +1,11 @@
 <?php
 
 use Fce\Repositories\Database\EloquentQuestionSetRepository;
+
 /**
  * Created by BrainMaestro
  * Date: 22/2/2016
- * Time: 12:11 PM
+ * Time: 12:11 PM.
  */
 class EloquentQuestionSetRepositoryTest extends TestCase
 {
@@ -31,9 +32,9 @@ class EloquentQuestionSetRepositoryTest extends TestCase
         );
 
         $inputParameters = [
-            'query' => "name:=" . $questionSets[1]['name'],
+            'query' => 'name:' . $questionSets[1]['name'],
             'limit' => 1,
-            'page' => 1
+            'page' => 1,
         ];
 
         Input::merge($inputParameters);
@@ -58,6 +59,15 @@ class EloquentQuestionSetRepositoryTest extends TestCase
 
         $this->assertCount(count($questionSets), $allQuestionSets['data']);
         $this->assertEquals($questionSets, $allQuestionSets['data']);
+    }
+
+    public function testGetQuestionSetsException()
+    {
+        $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        Input::merge(['query' => 'name:=*not_a_name*']);
+
+        $this->repository->getQuestionSets();
     }
 
     public function testGetQuestionSetById()

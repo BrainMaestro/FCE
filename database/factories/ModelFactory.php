@@ -31,7 +31,7 @@ $factory->define(Fce\Models\Role::class, function (Faker\Generator $faker) {
 
 $factory->define(Fce\Models\QuestionSet::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->word,
+        'name' => $faker->unique()->sentence(),
     ];
 });
 
@@ -67,7 +67,7 @@ $factory->define(Fce\Models\Section::class, function (Faker\Generator $faker) {
         'course_title' => $faker->sentence,
         'class_time' => $faker->time(),
         'location' => $faker->sentence,
-        'status' => 'Locked',
+        'status' => \Fce\Utility\Status::LOCKED,
         'enrolled' => $faker->randomNumber(1) + 1, // So that it'll never be zero
     ];
 });
@@ -94,8 +94,8 @@ $factory->define(Fce\Models\Key::class, function () {
 
 $factory->define(Fce\Models\Comment::class, function (Faker\Generator $faker) {
     return [
-        'section_id' => factory(Fce\Models\Section::class)->id,
-        'question_set_id' => factory(Fce\Models\QuestionSet::class)->id,
+        'section_id' => factory(Fce\Models\Section::class)->create()->id,
+        'question_set_id' => factory(Fce\Models\QuestionSet::class)->create()->id,
         'comment' => $faker->sentence,
     ];
 });

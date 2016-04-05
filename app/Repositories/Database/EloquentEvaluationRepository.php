@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/29/2015
- * Time: 7:26 PM
+ * Time: 7:26 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Carbon\Carbon;
@@ -16,7 +15,6 @@ use Fce\Transformers\EvaluationTransformer;
 
 class EloquentEvaluationRepository extends Repository implements EvaluationRepository
 {
-
     /**
      * Create a new repository instance.
      *
@@ -40,7 +38,7 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
     {
         return $this->findBy([
             'section_id' => $sectionId,
-            'question_set_id' => $questionSetId
+            'question_set_id' => $questionSetId,
         ], self::ALL);
     }
 
@@ -49,7 +47,7 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
      *
      * @param $sectionId
      * @param array $questionSet
-     * @return boolean
+     * @return bool
      */
     public function createEvaluations($sectionId, array $questionSet)
     {
@@ -57,7 +55,7 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
         // Bulk insert does not insert timestamps, so we'll generate them ourselves
         $now = Carbon::now('utc');
 
-        $attributes = array_map(function($question) use ($sectionId, $questionSetId, $now) {
+        $attributes = array_map(function ($question) use ($sectionId, $questionSetId, $now) {
             return [
                 'section_id' => $sectionId,
                 'question_set_id' => $questionSetId,
@@ -71,7 +69,7 @@ class EloquentEvaluationRepository extends Repository implements EvaluationRepos
     }
 
     /**
-     * Increments a field in the evaluation
+     * Increments a field in the evaluation.
      *
      * @param $id
      * @param $column

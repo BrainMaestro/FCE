@@ -14,12 +14,12 @@ class Semester extends Model
     protected $fillable = [
         'season',
         'year',
-        'current_semester'
+        'current_semester',
     ];
 
     /**
      * The Semester relationship to Section
-     * A semester hasMany section
+     * A semester hasMany section.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -30,7 +30,7 @@ class Semester extends Model
 
     /**
      * The Semester relationship to QuestionSet
-     * A semester belongsToMany questionSet
+     * A semester belongsToMany questionSet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

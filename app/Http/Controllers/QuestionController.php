@@ -2,50 +2,66 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\IQuestionsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Http\Requests\QuestionRequest;
+use Fce\Repositories\Contracts\QuestionRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, IQuestionsRepository $questionsRepository)
+    public function __construct(QuestionRepository $repository)
     {
-        $this->repository = $questionsRepository;
-        parent::__construct($request);
+        $this->repository = $repository;
     }
 
+    /**
+     * Get all questions.
+     *
+     * @return array
+     */
     public function index()
     {
         try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
-
-
+            return $this->repository->getQuestions();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find any questions');
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not list questions');
         }
     }
 
-    public function create()
+    /**
+     * Get a specific question by id.
+     *
+     * @param $id
+     * @return array
+     */
+    public function show($id)
     {
         try {
-
+            return $this->repository->getQuestionById($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Could not find question');
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not show question');
         }
     }
 
-    public function update($id)
+    /**
+     * Create a new question.
+     *
+     * @param QuestionRequest $request
+     * @return mixed
+     */
+    public function create(QuestionRequest $request)
     {
         try {
-
+            return $this->respondCreated(
+                $this->repository->createQuestion($request->description, $request->category, $request->title)
+            );
         } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+            return $this->respondInternalServerError('Could not create question');
         }
     }
 }

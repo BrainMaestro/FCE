@@ -2,9 +2,8 @@
 /**
  * Created by BrainMaestro
  * Date: 19/2/2016
- * Time: 8:14 PM
+ * Time: 8:14 PM.
  */
-
 namespace Fce\Repositories\Database;
 
 use Fce\Models\Key;
@@ -17,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class EloquentKeyRepository extends Repository implements KeyRepository
 {
     /**
-     * Maximum number of tries allowed for failing key creation
+     * Maximum number of tries allowed for failing key creation.
      */
     const MAX_TRIES = 3;
 
@@ -37,11 +36,22 @@ class EloquentKeyRepository extends Repository implements KeyRepository
      * Gets all keys by the section they belong to.
      *
      * @param $sectionId
-     * @return mixed
+     * @return array
      */
     public function getKeysBySection($sectionId)
     {
         return $this->findBy(['section_id' => $sectionId]);
+    }
+
+    /**
+     * Gets a key's details by its value.
+     *
+     * @param $value
+     * @return array
+     */
+    public function getKeyByValue($value)
+    {
+        return $this->findBy(['value' => $value], self::ONE);
     }
 
     /**
@@ -59,8 +69,8 @@ class EloquentKeyRepository extends Repository implements KeyRepository
         for ($i = $tries = 0; $i < $section['enrolled']; $i++) {
             try {
                 $key = $this->create([
-                    'value' => strtoupper(str_random(6)),
-                    'section_id' => $section['id']
+                    'value' => strtoupper(str_random(Key::LENGTH)),
+                    'section_id' => $section['id'],
                 ]);
 
                 $keys[] = $key['data'];
@@ -83,30 +93,32 @@ class EloquentKeyRepository extends Repository implements KeyRepository
     /**
      * Set a particular key as given out.
      *
-     * @param $id
-     * @return boolean
+     * @param $value
+     * @return bool
      */
-    public function setGivenOut($id)
+    public function setGivenOut($value)
     {
-        return $this->update($id, ['given_out' => true]);
+        return $this->model->where('value', $value)
+            ->update(['given_out' => true]) == 1;
     }
 
     /**
      * Set a particular key as used.
      *
-     * @param $id
-     * @return boolean
+     * @param $value
+     * @return bool
      */
-    public function setUsed($id)
+    public function setUsed($value)
     {
-        return $this->update($id, ['used' => true]);
+        return $this->model->where('value', $value)
+            ->update(['used' => true]) == 1;
     }
 
     /**
      * Delete the keys that belong to a section.
      *
      * @param $sectionId
-     * @return boolean
+     * @return bool
      */
     public function deleteKeys($sectionId)
     {
