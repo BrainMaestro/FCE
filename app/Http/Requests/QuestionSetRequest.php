@@ -28,7 +28,7 @@ class QuestionSetRequest extends Request
                 'name' => 'string|required',
             ];
         }
-        
+
         return [];
     }
 }

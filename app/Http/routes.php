@@ -37,7 +37,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
         // Search Route
         Route::get('/search', 'SearchController@index');
 
-
         // User Routes
         Route::get('/users', 'UserController@index');
         Route::get('/users/{id}', 'UserController@show');

@@ -49,7 +49,7 @@ class SectionRequest extends Request
                         . Status::DONE,
                 ];
         }
-        
+
         return [];
     }
 }

@@ -26,7 +26,7 @@ class SchoolRequest extends Request
                     'description' => 'string',
                 ];
         }
-        
+
         return [];
     }
 }

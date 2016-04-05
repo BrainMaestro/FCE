@@ -5,7 +5,6 @@ namespace Fce\Http\Controllers\Auth;
 use Fce\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Validator;
 use Fce\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -27,8 +26,6 @@ class AuthController extends Controller
 
     /**
      * Create a new authentication controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -38,7 +35,8 @@ class AuthController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -75,9 +73,10 @@ class AuthController extends Controller
     /**
      * Send the response after the user was authenticated.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  bool $throttles
+     * @param \Illuminate\Http\Request $request
+     * @param bool                     $throttles
      * @param $token
+     *
      * @return \Illuminate\Http\Response
      */
     protected function handleUserWasAuthenticated(Request $request, $throttles, $token)
