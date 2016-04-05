@@ -7,7 +7,6 @@ use Fce\Http\Requests\EvaluationRequest;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EvaluationController extends Controller
 {

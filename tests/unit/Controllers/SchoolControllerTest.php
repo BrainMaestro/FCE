@@ -3,7 +3,6 @@
 use Fce\Http\Controllers\SchoolController;
 use Fce\Http\Requests\SchoolRequest;
 use Fce\Repositories\Contracts\SchoolRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SchoolControllerTest extends TestCase
 {
@@ -43,7 +42,7 @@ class SchoolControllerTest extends TestCase
 
         $this->controller->create();
     }
-    
+
     public function testUpdate()
     {
         $this->repository->expects($this->once())

@@ -10,7 +10,6 @@ use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\SectionRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Fce\Utility\Status;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SectionControllerTest extends TestCase
 {
@@ -69,7 +68,7 @@ class SectionControllerTest extends TestCase
 
         $this->controller->index();
     }
-    
+
     public function testShow()
     {
         $id = parent::ID;

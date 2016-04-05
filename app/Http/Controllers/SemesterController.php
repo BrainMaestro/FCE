@@ -5,7 +5,6 @@ namespace Fce\Http\Controllers;
 use Fce\Http\Requests\SemesterRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class SemesterController extends Controller
@@ -114,16 +113,16 @@ class SemesterController extends Controller
             return $this->repository->setCurrentSemester($id, false);
         }
 
-        DB::transaction(function() use ($id) {
+        DB::transaction(function () use ($id) {
             try {
                 $currentSemester = $this->repository->getCurrentSemester();
                 $currentSemesterId = $currentSemester['data']['id'];
-    
+
                 // This is already the current semester. No need to perform this operation.
                 if ($currentSemesterId == $id) {
                     return false;
                 }
-    
+
                 // Unset the current semester.
                 $this->repository->setCurrentSemester($currentSemesterId, false);
             } catch (ModelNotFoundException $e) {

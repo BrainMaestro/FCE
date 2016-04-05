@@ -5,7 +5,6 @@
 use Fce\Http\Controllers\QuestionSetController;
 use Fce\Http\Requests\QuestionSetRequest;
 use Fce\Repositories\Contracts\QuestionSetRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionSetControllerTest extends TestCase
 {
@@ -28,7 +27,7 @@ class QuestionSetControllerTest extends TestCase
 
         $this->controller->index();
     }
-    
+
     public function testShow()
     {
         $this->repository->expects($this->once())

@@ -3,7 +3,6 @@
 namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\SearchRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SearchController extends Controller
 {

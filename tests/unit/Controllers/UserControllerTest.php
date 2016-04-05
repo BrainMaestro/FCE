@@ -3,7 +3,6 @@
 use Fce\Http\Controllers\UserController;
 use Fce\Http\Requests\UserRequest;
 use Fce\Repositories\Contracts\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Created by BrainMaestro
@@ -58,7 +57,7 @@ class UserControllerTest extends TestCase
 
         $this->controller->create();
     }
-    
+
     public function testUpdate()
     {
         $this->repository->expects($this->once())

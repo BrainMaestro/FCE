@@ -4,7 +4,6 @@ namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\QuestionRequest;
 use Fce\Repositories\Contracts\QuestionRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionController extends Controller
 {

@@ -4,7 +4,6 @@ namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\SchoolRequest;
 use Fce\Repositories\Contracts\SchoolRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SchoolController extends Controller
 {

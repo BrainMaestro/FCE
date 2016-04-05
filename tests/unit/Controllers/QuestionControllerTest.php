@@ -6,7 +6,6 @@
 use Fce\Http\Controllers\QuestionController;
 use Fce\Http\Requests\QuestionRequest;
 use Fce\Repositories\Contracts\QuestionRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuestionControllerTest extends TestCase
 {

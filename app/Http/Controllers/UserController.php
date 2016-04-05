@@ -4,7 +4,6 @@ namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\UserRequest;
 use Fce\Repositories\Contracts\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller

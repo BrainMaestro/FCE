@@ -3,8 +3,6 @@
 use Fce\Http\Controllers\SemesterController;
 use Fce\Http\Requests\SemesterRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Response;
 
 class SemesterControllerTest extends TestCase
