@@ -78,27 +78,6 @@ class EvaluationControllerTest extends TestCase
         );
     }
 
-    public function testIndexException()
-    {
-        // 404 - Not found
-        $this->keyRepository->method('getKeyByValue')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Key does not exist'),
-            $this->controller->index(parent::KEY)
-        );
-
-        // 500 - Internal server error
-        $this->keyRepository->method('getKeyByValue')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not list the evaluations'),
-            $this->controller->index(parent::KEY)
-        );
-    }
-
     public function testSubmitEvaluations()
     {
         $this->request->merge([
@@ -197,27 +176,6 @@ class EvaluationControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondUnprocessable('The semester or question set provided is incorrect'),
-            $this->controller->submitEvaluations($this->request, parent::KEY)
-        );
-    }
-
-    public function testIncremetEvaluationsException()
-    {
-        // 404 - Not found
-        $this->keyRepository->method('getKeyByValue')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Key does not exist'),
-            $this->controller->submitEvaluations($this->request, parent::KEY)
-        );
-
-        // 500 - Internal server error
-        $this->keyRepository->method('getKeyByValue')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not submit the evaluations'),
             $this->controller->submitEvaluations($this->request, parent::KEY)
         );
     }

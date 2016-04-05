@@ -42,12 +42,4 @@ class AuthControllerTest extends TestCase
             $this->controller->login($this->request)
         );
     }
-
-    public function testLogoutWithoutToken()
-    {
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Logout Unsuccessful'),
-            $this->controller->logout()
-        );
-    }
 }

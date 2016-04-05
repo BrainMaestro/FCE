@@ -28,60 +28,12 @@ class QuestionControllerTest extends TestCase
         $this->controller->index();
     }
 
-    public function testIndexException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getQuestions')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not list questions'),
-            $this->controller->index()
-        );
-    }
-
-    public function testIndexNotFoundException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getQuestions')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Could not find any questions'),
-            $this->controller->index()
-        );
-    }
-
     public function testShow()
     {
         $this->repository->expects($this->once())
             ->method('getQuestionById')->with(parent::ID);
 
         $this->controller->show(parent::ID);
-    }
-
-    public function testShowNotFoundException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getQuestionById')->with(parent::ID)
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Could not find question'),
-            $this->controller->show(parent::ID)
-        );
-    }
-
-    public function testShowException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getQuestionById')->with(parent::ID)
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not show question'),
-            $this->controller->show(parent::ID)
-        );
     }
 
     public function testCreate()
@@ -93,20 +45,5 @@ class QuestionControllerTest extends TestCase
             ->with($request->description, $request->category, $request->title);
 
         $this->controller->create($request);
-    }
-
-    public function testCreateException()
-    {
-        $request = new QuestionRequest;
-
-        $this->repository->expects($this->once())
-            ->method('createQuestion')
-            ->with($request->description, $request->category, $request->title)
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not create question'),
-            $this->controller->create($request)
-        );
     }
 }
