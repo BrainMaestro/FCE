@@ -26,13 +26,7 @@ class QuestionSetController extends Controller
      */
     public function index()
     {
-        try {
-            return $this->repository->getQuestionSets();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find any question sets');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list questions sets');
-        }
+        return $this->repository->getQuestionSets();
     }
 
     /**
@@ -43,13 +37,7 @@ class QuestionSetController extends Controller
      */
     public function show($id)
     {
-        try {
-            return $this->repository->getQuestionSetById($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find question set');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show question set');
-        }
+        return $this->repository->getQuestionSetById($id);
     }
 
     /**
@@ -59,11 +47,7 @@ class QuestionSetController extends Controller
      */
     public function create()
     {
-        try {
-            return $this->respondCreated($this->repository->createQuestionSet($this->request->name));
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not create question set');
-        }
+        return $this->respondCreated($this->repository->createQuestionSet($this->request->name));
     }
 
     /**
@@ -74,12 +58,6 @@ class QuestionSetController extends Controller
      */
     public function addQuestions($id)
     {
-        try {
-            return $this->repository->addQuestions($id, $this->request->all());
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find question set');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not add question(s) to question set');
-        }
+        return $this->repository->addQuestions($id, $this->request->all());
     }
 }

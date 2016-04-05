@@ -26,19 +26,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        try {
-            $school = Input::get('school');
+        $school = Input::get('school');
 
-            if ($school) {
-                return $this->repository->getUsersBySchool($school);
-            }
-
-            return $this->repository->getUsers();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find any users');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list users');
+        if ($school) {
+            return $this->repository->getUsersBySchool($school);
         }
+
+        return $this->repository->getUsers();
     }
 
     /**
@@ -49,13 +43,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        try {
-            return $this->repository->getUserById($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find user');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show user');
-        }
+        return $this->repository->getUserById($id);
     }
 
     /**
@@ -65,11 +53,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        try {
-            return $this->repository->createUser($this->request->name, $this->request->email, $this->request->password);
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not create user');
-        }
+        return $this->repository->createUser($this->request->name, $this->request->email, $this->request->password);
     }
 
     /**
@@ -80,17 +64,11 @@ class UserController extends Controller
      */
     public function update($id)
     {
-        try {
-            if (! $this->repository->updateUser($id, $this->request->all())) {
-                return $this->respondUnprocessable('User attributes were not provided');
-            }
-
-            return $this->respondSuccess('User successfully updated');
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find user');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not update user');
+        if (! $this->repository->updateUser($id, $this->request->all())) {
+            return $this->respondUnprocessable('User attributes were not provided');
         }
+
+        return $this->respondSuccess('User successfully updated');
     }
 
     /**
@@ -101,10 +79,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $this->repository->deleteUser($id);
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not delete user');
-        }
+        $this->repository->deleteUser($id);
     }
 }

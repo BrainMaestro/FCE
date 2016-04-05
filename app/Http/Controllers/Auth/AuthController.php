@@ -109,12 +109,8 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        try {
-            Auth::guard($this->getGuard())->logout();
+        Auth::guard($this->getGuard())->logout();
 
-            return $this->respondSuccess('Logout Successful');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Logout Unsuccessful');
-        }
+        return $this->respondSuccess('Logout Successful');
     }
 }

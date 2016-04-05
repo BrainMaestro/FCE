@@ -24,13 +24,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        try {
-            return $this->repository->getSchools();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find any schools');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list schools');
-        }
+        return $this->repository->getSchools();
     }
 
     /**
@@ -41,13 +35,7 @@ class SchoolController extends Controller
      */
     public function show($id)
     {
-        try {
-            return $this->repository->getSchoolById($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find school');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show school');
-        }
+        return $this->repository->getSchoolById($id);
     }
 
     /**
@@ -57,13 +45,9 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        try {
-            return $this->respondCreated(
-                $this->repository->createSchool($this->request->school, $this->request->description)
-            );
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not create school');
-        }
+        return $this->respondCreated(
+            $this->repository->createSchool($this->request->school, $this->request->description)
+        );
     }
 
     /**
@@ -74,14 +58,10 @@ class SchoolController extends Controller
      */
     public function update($id)
     {
-        try {
-            if (! $this->repository->updateSchool($id, $this->request->all())) {
-                return $this->respondUnprocessable('School attributes were not provided');
-            }
-
-            return $this->respondSuccess('School successfully updated');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not update school');
+        if (! $this->repository->updateSchool($id, $this->request->all())) {
+            return $this->respondUnprocessable('School attributes were not provided');
         }
+
+        return $this->respondSuccess('School successfully updated');
     }
 }

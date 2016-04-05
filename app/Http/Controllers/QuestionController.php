@@ -22,13 +22,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        try {
-            return $this->repository->getQuestions();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find any questions');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list questions');
-        }
+        return $this->repository->getQuestions();
     }
 
     /**
@@ -39,13 +33,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        try {
-            return $this->repository->getQuestionById($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find question');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show question');
-        }
+        return $this->repository->getQuestionById($id);
     }
 
     /**
@@ -56,12 +44,8 @@ class QuestionController extends Controller
      */
     public function create(QuestionRequest $request)
     {
-        try {
-            return $this->respondCreated(
-                $this->repository->createQuestion($request->description, $request->category, $request->title)
-            );
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not create question');
-        }
+        return $this->respondCreated(
+            $this->repository->createQuestion($request->description, $request->category, $request->title)
+        );
     }
 }
