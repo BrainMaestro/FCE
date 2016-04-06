@@ -49,7 +49,9 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {
         if ($e instanceof ModelNotFoundException) {
-            return $this->respondNotFound($e->getMessage());
+            $modelClass = self::getClassName($e->getModel());
+
+            return $this->respondNotFound('No ' . $modelClass . 's were found');
         } elseif ($e instanceof \ReflectionException) {
             return $this->respondUnprocessable('Model does not exist');
         } elseif ($e instanceof MethodNotAllowedHttpException) {
@@ -66,5 +68,16 @@ class Handler extends ExceptionHandler
 
         // Should only be removed for debugging
         // return parent::render($request, $e);
+    }
+
+    /**
+     * Get the short unqualified name of an objects class for error messages.
+     * See @link http://stackoverflow.com/a/27457689.
+     *
+     * @param $class
+     */
+    private static function getClassName($class)
+    {
+        return strtolower(substr(strrchr($class, '\\'), 1));
     }
 }

@@ -41,7 +41,7 @@ abstract class Repository
         $paginated = $filtered->paginate($this->getLimit(), $columns, 'page', $this->getPage());
 
         if ($paginated->isEmpty()) {
-            throw new ModelNotFoundException('No models were found');
+            throw (new ModelNotFoundException)->setModel(get_class($this->model));
         }
 
         return $this->transform($paginated);
@@ -95,7 +95,7 @@ abstract class Repository
         }
 
         if (is_null($items) || ! count($items)) {
-            throw new ModelNotFoundException('Could not find the specified model');
+            throw (new ModelNotFoundException)->setModel(get_class($this->model));
         }
 
         return $this->transform($items);
