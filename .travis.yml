@@ -22,11 +22,10 @@ env:
 before_script:
   - mysql -e 'create database testing;'
   - composer install --prefer-dist
-  - mkdir -p build/logs
 
 script:
   - php artisan migrate
-  - phpunit --coverage-clover build/logs/clover.xml
+  - phpunit --coverage-clover=coverage.xml
 
 after_success:
-  - php vendor/bin/coveralls -v;
+  - bash <(curl -s https://codecov.io/bash)
