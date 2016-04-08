@@ -31,9 +31,14 @@ trait Transformable
     {
         $fractalManager = new FractalManager();
         $includes = Input::get('include');
+        $excludes = Input::get('exclude');
 
         if ($includes) {
             $fractalManager = $fractalManager->parseIncludes($includes);
+        }
+
+        if ($excludes) {
+            $fractalManager = $fractalManager->parseExcludes($excludes);
         }
 
         return new Fractal($fractalManager);
