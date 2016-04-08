@@ -21,7 +21,7 @@ env:
 
 before_script:
   - mysql -e 'create database testing;'
-  - composer install --prefer-dist
+  - composer install --prefer-dist --no-scripts
 
 script:
   - php artisan migrate
