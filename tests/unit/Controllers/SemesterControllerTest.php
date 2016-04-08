@@ -3,8 +3,6 @@
 use Fce\Http\Controllers\SemesterController;
 use Fce\Http\Requests\SemesterRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Response;
 
 class SemesterControllerTest extends TestCase
@@ -29,30 +27,6 @@ class SemesterControllerTest extends TestCase
         $this->controller->index();
     }
 
-    public function testIndexException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getSemesters')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not list semesters'),
-            $this->controller->index()
-        );
-    }
-
-    public function testIndexNotFoundException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getSemesters')
-            ->will($this->throwException(new \Illuminate\Database\Eloquent\ModelNotFoundException()));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Could not find any semesters'),
-            $this->controller->index()
-        );
-    }
-
     public function testCreate()
     {
         $this->request->merge(['current_semester' => true]);
@@ -63,19 +37,6 @@ class SemesterControllerTest extends TestCase
 
         $response = $this->controller->create();
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-    }
-
-    public function testCreateException()
-    {
-        $this->repository->expects($this->once())
-            ->method('createSemester')
-            ->with($this->request->season, $this->request->year, $this->request->current_semester)
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not create semester'),
-            $this->controller->create()
-        );
     }
 
     public function testUpdate()
@@ -121,28 +82,6 @@ class SemesterControllerTest extends TestCase
         );
     }
 
-    public function testUpdateException()
-    {
-        // 404 - Not found
-        $this->repository->method('setCurrentSemester')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Semester does not exist'),
-            $this->controller->update(parent::ID)
-        );
-
-        // 500 - Internal server error
-        $this->repository->method('setCurrentSemester')
-            ->will($this->throwException(new Exception));
-
-        $this->request->current_semester = true;
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not update semester'),
-            $this->controller->update(parent::ID)
-        );
-    }
-
     public function testAddQuestionSet()
     {
         $this->repository->expects($this->once())
@@ -155,36 +94,6 @@ class SemesterControllerTest extends TestCase
         );
     }
 
-    public function testAddQuestionSetException()
-    {
-        // 404 - Not Found
-        $this->repository->method('addQuestionSet')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Semester does not exist'),
-            $this->controller->addQuestionSet(parent::ID)
-        );
-
-        // 422 - Unprocessable
-        $this->repository->method('addQuestionSet')
-            ->will($this->throwException(new QueryException('', [], new \Exception)));
-
-        $this->assertEquals(
-            $this->controller->respondUnprocessable('Question set does not exist'),
-            $this->controller->addQuestionSet(parent::ID)
-        );
-
-        // 500 - Internal server error
-        $this->repository->method('addQuestionSet')
-            ->will($this->throwException(new \Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not add question set to semester'),
-            $this->controller->addQuestionSet(parent::ID)
-        );
-    }
-
     public function testUpdateQuestionSetStatus()
     {
         $this->repository->expects($this->once())
@@ -193,36 +102,6 @@ class SemesterControllerTest extends TestCase
 
         $this->assertEquals(
             $this->controller->respondSuccess('Question set status successfully updated'),
-            $this->controller->updateQuestionSetStatus(parent::ID, parent::ID)
-        );
-    }
-
-    public function testUpdateQuestionSetStatusException()
-    {
-        // 404 - Not Found
-        $this->repository->method('setQuestionSetStatus')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Semester does not exist'),
-            $this->controller->updateQuestionSetStatus(parent::ID, parent::ID)
-        );
-
-        // 422 - Unprocessable
-        $this->repository->method('setQuestionSetStatus')
-            ->will($this->throwException(new QueryException('', [], new \Exception)));
-
-        $this->assertEquals(
-            $this->controller->respondUnprocessable('Question set does not exist'),
-            $this->controller->updateQuestionSetStatus(parent::ID, parent::ID)
-        );
-
-        // 500 - Internal server error
-        $this->repository->method('setQuestionSetStatus')
-            ->will($this->throwException(new \Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not update question set status'),
             $this->controller->updateQuestionSetStatus(parent::ID, parent::ID)
         );
     }

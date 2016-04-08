@@ -3,7 +3,6 @@
 namespace Fce\Http\Controllers;
 
 use Fce\Http\Requests\SearchRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SearchController extends Controller
 {
@@ -17,17 +16,9 @@ class SearchController extends Controller
      */
     public function index(SearchRequest $request)
     {
-        try {
-            $this->setRepository($request->model);
+        $this->setRepository($request->model);
 
-            return $this->repository->all();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find any ' . $request->model . 's, that meet the search criteria');
-        } catch (\ReflectionException $e) {
-            return $this->respondUnprocessable('Model does not exist or cannot be searched');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not complete search, an error occurred');
-        }
+        return $this->repository->all();
     }
 
     /**

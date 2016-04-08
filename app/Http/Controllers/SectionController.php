@@ -37,23 +37,17 @@ class SectionController extends Controller
      */
     public function index()
     {
-        try {
-            $semester = Input::get(
-                'semester',
-                $this->semesterRepository->getCurrentSemester()['data']['id']
-            );
-            $school = Input::get('school');
+        $semester = Input::get(
+            'semester',
+            $this->semesterRepository->getCurrentSemester()['data']['id']
+        );
+        $school = Input::get('school');
 
-            if ($school) {
-                return $this->repository->getSectionsBySemesterAndSchool($semester, $school);
-            }
-
-            return $this->repository->getSectionsBySemester($semester);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find section(s)');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list section(s)');
+        if ($school) {
+            return $this->repository->getSectionsBySemesterAndSchool($semester, $school);
         }
+
+        return $this->repository->getSectionsBySemester($semester);
     }
 
     /**
@@ -64,13 +58,7 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        try {
-            return $this->repository->getSectionById($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find section');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show section');
-        }
+        return $this->repository->getSectionById($id);
     }
 
     /**
@@ -80,11 +68,7 @@ class SectionController extends Controller
      */
     public function create()
     {
-        try {
-            return $this->respondCreated($this->repository->createSection($this->request->all()));
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not create section');
-        }
+        return $this->respondCreated($this->repository->createSection($this->request->all()));
     }
 
     /**
@@ -95,17 +79,11 @@ class SectionController extends Controller
      */
     public function update($id)
     {
-        try {
-            if (! $this->repository->updateSection($id, $this->request->except('status'))) {
-                return $this->respondUnprocessable('Section attribute(s) were not provided');
-            }
-
-            return $this->respondSuccess('Section was updated successfully');
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find section');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not update section');
+        if (! $this->repository->updateSection($id, $this->request->except('status'))) {
+            return $this->respondUnprocessable('Section attribute(s) were not provided');
         }
+
+        return $this->respondSuccess('Section was updated successfully');
     }
 
     /**
@@ -116,37 +94,31 @@ class SectionController extends Controller
      */
     public function updateStatus($id)
     {
-        try {
-            $section = $this->repository->getSectionById($id)['data'];
-            $status = $this->request->only('status');
+        $section = $this->repository->getSectionById($id)['data'];
+        $status = $this->request->only('status');
 
-            // Prevent a section's status from changing to the same value.
-            if ($section['status'] === $status['status']) {
-                return $this->respondUnprocessable('Section is already ' . $section['status']);
-            }
-
-            DB::transaction(function () use ($id, $status) {
-                // Update the section status.
-                $this->repository->updateSection($id, $status);
-
-                // Fire relevant events based on the status type.
-                switch ($status['status']) {
-                    case Status::OPEN:
-                        event(Event::SECTION_OPENED, $id);
-                        break;
-
-                    case Status::DONE:
-                        event(Event::SECTION_CLOSED, $id);
-                        break;
-                }
-            });
-
-            return $this->respondSuccess('Section status updated successfully');
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find section');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not update section status');
+        // Prevent a section's status from changing to the same value.
+        if ($section['status'] === $status['status']) {
+            return $this->respondUnprocessable('Section is already ' . $section['status']);
         }
+
+        DB::transaction(function () use ($id, $status) {
+            // Update the section status.
+            $this->repository->updateSection($id, $status);
+
+            // Fire relevant events based on the status type.
+            switch ($status['status']) {
+                case Status::OPEN:
+                    event(Event::SECTION_OPENED, $id);
+                    break;
+
+                case Status::DONE:
+                    event(Event::SECTION_CLOSED, $id);
+                    break;
+            }
+        });
+
+        return $this->respondSuccess('Section status updated successfully');
     }
 
     /**
@@ -157,17 +129,11 @@ class SectionController extends Controller
      */
     public function listReports($id)
     {
-        try {
-            $section = $this->repository->getSectionById($id)['data'];
+        $section = $this->repository->getSectionById($id)['data'];
 
-            $semester = $this->semesterRepository->getSemesterById($section['semester_id']);
+        $semester = $this->semesterRepository->getSemesterById($section['semester_id']);
 
-            return $semester['data']['questionSets'];
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find section');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list reports');
-        }
+        return $semester['data']['questionSets'];
     }
 
     /**
@@ -185,24 +151,18 @@ class SectionController extends Controller
         $id,
         $questionSetId
     ) {
+        $evaluations = $evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
+
+        $comments = [];
         try {
-            $evaluations = $evaluationRepository->getEvaluationsBySectionAndQuestionSet($id, $questionSetId);
-
-            $comments = [];
-            try {
-                $comments = $commentRepository->getComments($id, $questionSetId);
-            } catch (ModelNotFoundException $e) {
-            } // Safe to ignore if there are no comments.
-
-            return $this->respondSuccess([
-                'evaluations' => $evaluations,
-                'comments' => $comments,
-            ]);
+            $comments = $commentRepository->getComments($id, $questionSetId);
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find report');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show report');
-        }
+        } // Safe to ignore if there are no comments.
+
+        return $this->respondSuccess([
+            'evaluations' => $evaluations,
+            'comments' => $comments,
+        ]);
     }
 
     /**
@@ -214,12 +174,6 @@ class SectionController extends Controller
      */
     public function showKeys(KeyRepository $keyRepository, $id)
     {
-        try {
-            return $keyRepository->getKeysBySection($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Could not find key(s)');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not show key(s)');
-        }
+        return $keyRepository->getKeysBySection($id);
     }
 }

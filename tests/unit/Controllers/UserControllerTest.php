@@ -3,7 +3,6 @@
 use Fce\Http\Controllers\UserController;
 use Fce\Http\Requests\UserRequest;
 use Fce\Repositories\Contracts\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Created by BrainMaestro
@@ -42,60 +41,12 @@ class UserControllerTest extends TestCase
         $this->controller->index();
     }
 
-    public function testIndexException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getUsers')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not list users'),
-            $this->controller->index()
-        );
-    }
-
-    public function testIndexNotFoundException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getUsers')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Could not find any users'),
-            $this->controller->index()
-        );
-    }
-
     public function testShow()
     {
         $this->repository->expects($this->once())
             ->method('getUserById')->with(parent::ID);
 
         $this->controller->show(parent::ID);
-    }
-
-    public function testShowNotFoundException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getUserById')->with(parent::ID)
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Could not find user'),
-            $this->controller->show(parent::ID)
-        );
-    }
-
-    public function testShowException()
-    {
-        $this->repository->expects($this->once())
-            ->method('getUserById')->with(parent::ID)
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not show user'),
-            $this->controller->show(parent::ID)
-        );
     }
 
     public function testCreate()
@@ -105,19 +56,6 @@ class UserControllerTest extends TestCase
             ->with($this->request->name, $this->request->email, $this->request->password);
 
         $this->controller->create();
-    }
-
-    public function testCreateException()
-    {
-        $this->repository->expects($this->once())
-            ->method('createUser')
-            ->with($this->request->name, $this->request->email, $this->request->password)
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not create user'),
-            $this->controller->create()
-        );
     }
 
     public function testUpdate()
@@ -144,47 +82,11 @@ class UserControllerTest extends TestCase
         );
     }
 
-    public function testUpdateNotFoundException()
-    {
-        $this->repository->expects($this->once())
-            ->method('updateUser')
-            ->will($this->throwException(new ModelNotFoundException));
-
-        $this->assertEquals(
-            $this->controller->respondNotFound('Could not find user'),
-            $this->controller->update(parent::ID)
-        );
-    }
-
-    public function testUpdateException()
-    {
-        $this->repository->expects($this->once())
-            ->method('updateUser')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not update user'),
-            $this->controller->update(parent::ID)
-        );
-    }
-
     public function testDestroy()
     {
         $this->repository->expects($this->once())
             ->method('deleteUser')->with(parent::ID);
 
         $this->controller->destroy(parent::ID);
-    }
-
-    public function testDestroyException()
-    {
-        $this->repository->expects($this->once())
-            ->method('deleteUser')
-            ->will($this->throwException(new Exception));
-
-        $this->assertEquals(
-            $this->controller->respondInternalServerError('Could not delete user'),
-            $this->controller->destroy(parent::ID)
-        );
     }
 }

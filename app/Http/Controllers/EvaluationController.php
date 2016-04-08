@@ -7,7 +7,6 @@ use Fce\Http\Requests\EvaluationRequest;
 use Fce\Repositories\Contracts\EvaluationRepository;
 use Fce\Repositories\Contracts\KeyRepository;
 use Fce\Repositories\Contracts\SemesterRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EvaluationController extends Controller
 {
@@ -35,24 +34,18 @@ class EvaluationController extends Controller
      */
     public function index($key)
     {
-        try {
-            $key = $this->keyRepository->getKeyByValue($key)['data'];
+        $key = $this->keyRepository->getKeyByValue($key)['data'];
 
-            if ($key['given_out']) {
-                return $this->respondForbidden('This key has already been given out');
-            }
-
-            $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
-            $questionSet = $this->semesterRepository->getOpenQuestionSet($semesterId);
-
-            event(Event::KEY_GIVEN_OUT, $key['value']); // The key has been given out.
-
-            return $this->repository->getEvaluationsBySectionAndQuestionSet($key['section_id'], $questionSet['id']);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Key does not exist');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not list the evaluations');
+        if ($key['given_out']) {
+            return $this->respondForbidden('This key has already been given out');
         }
+
+        $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
+        $questionSet = $this->semesterRepository->getOpenQuestionSet($semesterId);
+
+        event(Event::KEY_GIVEN_OUT, $key['value']); // The key has been given out.
+
+        return $this->repository->getEvaluationsBySectionAndQuestionSet($key['section_id'], $questionSet['id']);
     }
 
     /**
@@ -64,33 +57,27 @@ class EvaluationController extends Controller
      */
     public function submitEvaluations(EvaluationRequest $request, $key)
     {
-        try {
-            $key = $this->keyRepository->getKeyByValue($key)['data'];
+        $key = $this->keyRepository->getKeyByValue($key)['data'];
 
-            // Key has not been given out for some reason.
-            if (! $key['given_out']) {
-                return $this->respondUnprocessable('This key has not yet been given out');
-            }
-
-            if ($key['used']) {
-                return $this->respondForbidden('This key has already been used');
-            }
-
-            $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
-            $questionSetId = $this->semesterRepository->getOpenQuestionSet($semesterId)['id'];
-
-            if ($request->semester_id != $semesterId || $request->question_set_id != $questionSetId) {
-                return $this->respondUnprocessable('The semester or question set provided is incorrect');
-            }
-
-            event(Event::KEY_USED, $key['value']); // The key has been used.
-            event(Event::EVALUATION_SUBMITTED, [$request->evaluations, $request->comment, $semesterId, $questionSetId]);
-
-            return $this->respondSuccess('Evaluation successfully submitted');
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Key does not exist');
-        } catch (\Exception $e) {
-            return $this->respondInternalServerError('Could not submit the evaluations');
+        // Key has not been given out for some reason.
+        if (! $key['given_out']) {
+            return $this->respondUnprocessable('This key has not yet been given out');
         }
+
+        if ($key['used']) {
+            return $this->respondForbidden('This key has already been used');
+        }
+
+        $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
+        $questionSetId = $this->semesterRepository->getOpenQuestionSet($semesterId)['id'];
+
+        if ($request->semester_id != $semesterId || $request->question_set_id != $questionSetId) {
+            return $this->respondUnprocessable('The semester or question set provided is incorrect');
+        }
+
+        event(Event::KEY_USED, $key['value']); // The key has been used.
+        event(Event::EVALUATION_SUBMITTED, [$request->evaluations, $request->comment, $semesterId, $questionSetId]);
+
+        return $this->respondSuccess('Evaluation successfully submitted');
     }
 }
