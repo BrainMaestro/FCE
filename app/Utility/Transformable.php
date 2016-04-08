@@ -48,6 +48,12 @@ trait Transformable
      */
     public function transform($model)
     {
+        $columns = $this->getColumns();
+
+        if ($columns != ['*']) {
+            return $this->transformWithColumns($model, $columns);
+        }
+
         $method = self::getTransformMethod($model);
 
         return self::setFractal()->$method($model, $this->transformer)->toArray();
@@ -71,5 +77,38 @@ trait Transformable
         } else {
             throw new \InvalidArgumentException('Could not transform provided model');
         }
+    }
+
+    /**
+     * Get the columns specified in the url string.
+     *
+     * @return array
+     */
+    private function getColumns()
+    {
+        return explode(',', Input::get('columns', '*'));
+    }
+
+    /**
+     * Transforms a model when specific columns are provided.
+     * Removes columns that are not specified.
+     *
+     * @param $model
+     * @param $columns
+     * @return array
+     */
+    private function transformWithColumns($model, $columns)
+    {
+        if ($model instanceof Model) {
+            return [
+                'data' => array_only($model->toArray(), $columns),
+            ];
+        }
+
+        return [
+            'data' => array_map(function ($item) use ($columns) {
+                return array_only($item, $columns);
+            }, $model->toArray()['data']),
+        ];
     }
 }

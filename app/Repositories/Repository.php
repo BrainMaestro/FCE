@@ -158,16 +158,6 @@ abstract class Repository
     }
 
     /**
-     * Get the columns specified in the url string.
-     *
-     * @return array
-     */
-    private function getColumns()
-    {
-        return explode(',', Input::get('columns', '*'));
-    }
-
-    /**
      * Return collection of result based on query parameters.
      *
      * @return mixed
