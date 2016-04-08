@@ -32,13 +32,12 @@ abstract class Repository
     /**
      * Return a paginated list of all the available models.
      *
-     * @param array $columns
      * @return array
      */
-    public function all(array $columns = ['*'])
+    public function all()
     {
         $filtered = $this->search();
-        $paginated = $filtered->paginate($this->getLimit(), $columns, 'page', $this->getPage());
+        $paginated = $filtered->paginate($this->getLimit(), $this->getColumns(), 'page', $this->getPage());
 
         if ($paginated->isEmpty()) {
             throw (new ModelNotFoundException)->setModel(get_class($this->model));
@@ -51,13 +50,12 @@ abstract class Repository
      * Find a model by its id.
      *
      * @param $id
-     * @param array $columns
      * @return array
      * @throws ModelNotFoundException
      */
-    protected function find($id, array $columns = ['*'])
+    protected function find($id)
     {
-        return $this->transform($this->model->findOrFail($id, $columns));
+        return $this->transform($this->model->findOrFail($id, $this->getColumns()));
     }
 
     /**
@@ -66,14 +64,13 @@ abstract class Repository
      *
      * @param array $params
      * @param $count
-     * @param array $columns
      * @param array $with
      * @return array
      * @throws ModelNotFoundException
      */
-    protected function findBy(array $params, $count = self::PAGINATE, array $columns = ['*'], array $with = [])
+    protected function findBy(array $params, $count = self::PAGINATE, array $with = [])
     {
-        // Model to use for the method chaining
+        $columns = $this->getColumns();
         $items = $this->filter($params);
 
         if (count($with) > 0) {
@@ -158,6 +155,16 @@ abstract class Repository
     private function getQuery()
     {
         return Input::get('query', null);
+    }
+
+    /**
+     * Get the columns specified in the url string.
+     *
+     * @return array
+     */
+    private function getColumns()
+    {
+        return explode(',', Input::get('columns', '*'));
     }
 
     /**
