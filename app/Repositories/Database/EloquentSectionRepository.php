@@ -31,11 +31,12 @@ class EloquentSectionRepository extends Repository implements SectionRepository
      * Gets all sections by the semester they belong to.
      *
      * @param $semesterId
+     * @param bool $all
      * @return array
      */
-    public function getSectionsBySemester($semesterId)
+    public function getSectionsBySemester($semesterId, $all = false)
     {
-        return $this->findBy(['semester_id' => $semesterId]);
+        return $this->findBy(['semester_id' => $semesterId], $all ? self::ALL : self::PAGINATE);
     }
 
     /**
