@@ -2,8 +2,10 @@
 
 namespace Fce\Http\Controllers;
 
+use Fce\Events\Event;
 use Fce\Http\Requests\SemesterRequest;
 use Fce\Repositories\Contracts\SemesterRepository;
+use Fce\Utility\Status;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -83,17 +85,36 @@ class SemesterController extends Controller
     /**
      * Update the question set status.
      *
-     * @param $id
      * @param $questionSetId
      * @return array
      */
-    public function updateQuestionSetStatus($id, $questionSetId)
+    public function updateQuestionSetStatus($questionSetId)
     {
-        $this->repository->setQuestionSetStatus(
-            $id,
-            $questionSetId,
-            $this->request->status
-        );
+        $semester = $this->repository->getCurrentSemester()['data'];
+        $status = $this->request->only('status');
+
+        // Prevent a question set's status from changing to the same value.
+        foreach ($semester['questionSets']['data'] as $questionSet) {
+            if ($questionSet['id'] == $questionSetId && $questionSet['status'] == $status['status']) {
+                return $this->respondUnprocessable('Question set is already ' . $questionSet['status']);
+            }
+        }
+
+        DB::transaction(function () use ($questionSetId, $status, $semester) {
+            // Update the section status.
+            $this->repository->setQuestionSetStatus($semester['id'], $questionSetId, $status['status']);
+
+            // Fire relevant events based on the status type.
+            switch ($status['status']) {
+                case Status::OPEN:
+                    event(Event::QUESTION_SET_OPENED, $semester['id']);
+                    break;
+
+                case Status::DONE:
+                    event(Event::QUESTION_SET_CLOSED);
+                    break;
+            }
+        });
 
         return $this->respondSuccess('Question set status successfully updated');
     }
