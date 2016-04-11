@@ -4,10 +4,7 @@ namespace Fce\Listeners;
 
 use Fce\Events\Event;
 use Fce\Repositories\Contracts\UserRepository;
-use Fce\Utility\Status;
 use Fce\Repositories\Contracts\SectionRepository;
-use Fce\Repositories\Contracts\SemesterRepository;
-use Fce\Repositories\Contracts\HelperRepository;
 use Illuminate\Support\Facades\Input;
 
 class QuestionSetEventListener
@@ -27,7 +24,8 @@ class QuestionSetEventListener
      * @param UserRepository $userRepository
      * @param SectionRepository $sectionRepository
      */
-    public function __construct(UserRepository $userRepository, SectionRepository $sectionRepository) {
+    public function __construct(UserRepository $userRepository, SectionRepository $sectionRepository)
+    {
         $this->userRepository = $userRepository;
         $this->sectionRepository = $sectionRepository;
     }
@@ -53,7 +51,7 @@ class QuestionSetEventListener
     {
         $this->userRepository->deleteHelperUsers();
     }
-    
+
     /**
      * Register the listeners for the subscriber.
      *

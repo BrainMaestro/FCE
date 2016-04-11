@@ -18,7 +18,7 @@ use Fce\Transformers\UserTransformer;
 class EloquentUserRepository extends Repository implements UserRepository
 {
     const PASSKEY_LENGTH = 6;
-    
+
     /**
      * Create a new repository instance.
      *
@@ -84,7 +84,7 @@ class EloquentUserRepository extends Repository implements UserRepository
 
     /**
      * Create a new set of helper users.
-     * 
+     *
      * @param array $sections
      */
     public function createHelperUsers(array $sections)
@@ -106,7 +106,7 @@ class EloquentUserRepository extends Repository implements UserRepository
                 'updated_at' => $now,
             ];
         }
-        
+
         $this->model->insert($helpers);
     }
 
