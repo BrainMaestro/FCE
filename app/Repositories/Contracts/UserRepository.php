@@ -17,8 +17,12 @@ interface UserRepository
     public function getUserById($id);
 
     public function createUser($name, $email, $password);
+    
+    public function createHelperUsers(array $sections);
 
     public function updateUser($id, array $attributes);
 
     public function deleteUser($id);
+    
+    public function deleteHelperUsers();
 }

@@ -8,6 +8,7 @@
  */
 namespace Fce\Repositories\Database;
 
+use Carbon\Carbon;
 use Fce\Models\User;
 use Fce\Models\School;
 use Fce\Repositories\Repository;
@@ -16,6 +17,8 @@ use Fce\Transformers\UserTransformer;
 
 class EloquentUserRepository extends Repository implements UserRepository
 {
+    const PASSKEY_LENGTH = 6;
+    
     /**
      * Create a new repository instance.
      *
@@ -46,6 +49,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      */
     public function getUsersBySchool($schoolId)
     {
+        // TODO Find a better way to do this.
         return $this->transform(School::findOrFail($schoolId)->users()->paginate(15, ['*'], 'page', 1));
     }
 
@@ -79,6 +83,34 @@ class EloquentUserRepository extends Repository implements UserRepository
     }
 
     /**
+     * Create a new set of helper users.
+     * 
+     * @param array $sections
+     */
+    public function createHelperUsers(array $sections)
+    {
+        $helpers = [];
+        $passkeys = [];
+        $now = Carbon::now('utc');
+
+        foreach ($sections as $section) {
+            do {
+                $passkey = strtoupper(str_random(self::PASSKEY_LENGTH));
+            } while (in_array($passkey, $passkeys));
+
+            $helpers[] = [
+                'name' => $section['course_code'] . ' helper',
+                'email' => 'helper.' . $section['id'] . '@aun.edu.ng',
+                'password' => bcrypt($passkey),
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+        
+        $this->model->insert($helpers);
+    }
+
+    /**
      * Update a user's attributes.
      *
      * @param $id
@@ -99,5 +131,13 @@ class EloquentUserRepository extends Repository implements UserRepository
     public function deleteUser($id)
     {
         return $this->model->findOrFail($id)->delete() == 1;
+    }
+
+    /**
+     * Delete all the helper users.
+     */
+    public function deleteHelperUsers()
+    {
+        $this->model->where('name', 'LIKE', '%helper')->forceDelete();
     }
 }
