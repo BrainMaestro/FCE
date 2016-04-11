@@ -21,6 +21,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Password Reset Routes
+Route::post('password/email', 'Auth\PasswordController@postEmail');
+Route::post('password/reset', 'Auth\PasswordController@postReset');
+
 // Authentication Routes
 Route::post('/login', 'Auth\AuthController@login');
 Route::delete('/logout', ['uses' => 'Auth\AuthController@login', 'middleware' => 'jwt.auth']);
