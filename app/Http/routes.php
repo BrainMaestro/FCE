@@ -61,10 +61,10 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
         Route::post('/questions', 'QuestionController@create');
 
         // QuestionSet Routes
-        Route::get('/question-sets', 'QuestionSetController@index');
-        Route::get('/question-sets/{id}', 'QuestionSetController@show');
-        Route::post('/question-sets', 'QuestionSetController@create');
-        Route::post('/question-sets/{id}/questions', 'QuestionSetController@addQuestions');
+        Route::get('/question_sets', 'QuestionSetController@index');
+        Route::get('/question_sets/{id}', 'QuestionSetController@show');
+        Route::post('/question_sets', 'QuestionSetController@create');
+        Route::post('/question_sets/{id}/questions', 'QuestionSetController@addQuestions');
 
         // School Routes
         Route::get('/schools', 'SchoolController@index');
@@ -76,7 +76,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
         Route::get('/semesters', 'SemesterController@index');
         Route::post('/semesters', 'SemesterController@create');
         Route::put('/semesters/{id}', 'SemesterController@update');
-        Route::post('/semesters/{id}/question-sets', 'SemesterController@addQuestionSet');
-        Route::put('/semesters/{id}/question-sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
     });
+        Route::post('/semesters/{id}/question_sets', 'SemesterController@addQuestionSet');
+        Route::put('/semesters/{id}/question_sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
 });

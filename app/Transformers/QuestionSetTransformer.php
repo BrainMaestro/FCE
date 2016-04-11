@@ -15,7 +15,7 @@ class QuestionSetTransformer extends TransformerAbstract
     /**
      * @var array
      */
-    protected $availableIncludes = [
+    protected $defaultIncludes = [
         'questions',
     ];
 

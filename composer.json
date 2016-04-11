@@ -7,7 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "league/fractal": "^0.13.0",
+        "league/fractal": "dev-master",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {

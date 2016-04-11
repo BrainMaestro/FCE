@@ -13,6 +13,7 @@ use Fce\Repositories\Repository;
 use Fce\Transformers\QuestionSetTransformer;
 use Fce\Transformers\SemesterTransformer;
 use Fce\Utility\Status;
+use Illuminate\Support\Facades\Input;
 
 class EloquentSemesterRepository extends Repository implements SemesterRepository
 {
@@ -26,6 +27,9 @@ class EloquentSemesterRepository extends Repository implements SemesterRepositor
     {
         $this->model = $model;
         $this->transformer = $transformer;
+
+        // Exclude a question set's nested questions.
+        Input::merge(['exclude' => 'questionSets.questions']);
     }
 
     /**
