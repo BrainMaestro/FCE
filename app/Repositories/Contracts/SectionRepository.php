@@ -8,7 +8,7 @@ namespace Fce\Repositories\Contracts;
 
 interface SectionRepository
 {
-    public function getSectionsBySemester($semesterId);
+    public function getSectionsBySemester($semesterId, $all = false);
 
     public function getSectionsBySemesterAndSchool($semesterId, $schoolId);
 

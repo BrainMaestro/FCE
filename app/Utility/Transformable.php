@@ -56,6 +56,7 @@ trait Transformable
         $columns = $this->getColumns();
 
         if ($columns != ['*']) {
+            Input::merge(['columns' => '']); // Clear the columns field.
             return $this->transformWithColumns($model, $columns);
         }
 
@@ -113,7 +114,7 @@ trait Transformable
         return [
             'data' => array_map(function ($item) use ($columns) {
                 return array_only($item, $columns);
-            }, $model->toArray()['data']),
+            }, isset($model->toArray()['data']) ? $model->toArray()['data'] : $model->toArray()),
         ];
     }
 }

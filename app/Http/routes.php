@@ -80,7 +80,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
         Route::get('/semesters', 'SemesterController@index');
         Route::post('/semesters', 'SemesterController@create');
         Route::put('/semesters/{id}', 'SemesterController@update');
-    });
         Route::post('/semesters/{id}/question_sets', 'SemesterController@addQuestionSet');
-        Route::put('/semesters/{id}/question_sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
+        Route::put('/semesters/question_sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
+    });
 });

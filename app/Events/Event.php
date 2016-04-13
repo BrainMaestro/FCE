@@ -14,4 +14,8 @@ abstract class Event
     // Section events.
     const SECTION_OPENED = 'section.opened';
     const SECTION_CLOSED = 'section.closed';
+
+    // Question set events.
+    const QUESTION_SET_OPENED = 'question_set.opened';
+    const QUESTION_SET_CLOSED = 'question_set.closed';
 }

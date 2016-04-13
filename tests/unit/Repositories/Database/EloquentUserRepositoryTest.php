@@ -1,6 +1,7 @@
 <?php
 
 use Fce\Repositories\Database\EloquentUserRepository;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Created by BrainMaestro
@@ -60,6 +61,19 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertEquals($users, $allUsers['data']);
     }
 
+    public function testGetHelperUsers()
+    {
+        // Facsimile for helper users. :)
+        $users = factory(Fce\Models\User::class, 5)->create([
+            'name' => str_random(6) . ' helper',
+        ]);
+        $users = $this->repository->transform($users);
+
+        $helperUsers = $this->repository->getHelperUsers();
+
+        $this->assertArraySubset($users, $helperUsers);
+    }
+
     public function testGetUsersException()
     {
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
@@ -115,6 +129,15 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertArraySubset($attributes, $user['data']);
     }
 
+    public function testCreateHelperUsers()
+    {
+        $sections = factory(Fce\Models\Section::class, 3)->create()->toArray();
+
+        $inserted = $this->repository->createHelperUsers($sections);
+
+        $this->assertTrue($inserted);
+    }
+
     public function testUpdateUser()
     {
         $attributes = factory(Fce\Models\User::class)->make()->toArray();
@@ -134,5 +157,16 @@ class EloquentUserRepositoryTest extends TestCase
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
         $this->repository->getUserById($this->user->id);
+    }
+
+    public function testDeleteHelperUsers()
+    {
+        $sections = factory(Fce\Models\Section::class, 3)->create()->toArray();
+
+        $inserted = $this->repository->createHelperUsers($sections);
+        $deleted = $this->repository->deleteHelperUsers();
+
+        $this->assertTrue($inserted);
+        $this->assertTrue($deleted);
     }
 }

@@ -26,8 +26,8 @@ class SemesterRequest extends Request
                     ];
                 }
 
-                if (str_is('api/semesters/*/question-sets', $path)) {
-                    // Route::post('/semesters/{id}/question-sets', 'SemesterController@addQuestionSet');
+                if (str_is('api/semesters/*/question_sets', $path)) {
+                    // Route::post('/semesters/{id}/question_sets', 'SemesterController@addQuestionSet');
                     return [
                         'question_set_id' => 'required|integer',
                         'evaluation_type' => 'required|string|min:3',
@@ -36,12 +36,11 @@ class SemesterRequest extends Request
 
                 break;
             case 'PUT':
-                if (str_is('api/semesters/*/question-sets/*', $path)) {
-                    // Route::put('/semesters/{id}/question-sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
+                if (str_is('api/semesters/question_sets/*', $path)) {
+                    // Route::put('/semesters/question_sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
                     return [
                         'status' => 'required|string|in:'
-                            . Status::LOCKED . ', '
-                            . Status::OPEN . ', '
+                            . Status::OPEN . ','
                             . Status::DONE,
                     ];
                 }
