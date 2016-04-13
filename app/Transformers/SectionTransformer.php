@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 10:03 PM
+ * Time: 10:03 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Section;
@@ -16,11 +15,18 @@ class SectionTransformer extends TransformerAbstract
     /**
      * @var array
      */
+    protected $defaultIncludes = [
+        'users',
+    ];
+
+    /**
+     * @var array
+     */
     protected $availableIncludes = [
         'school',
         'evaluation',
         'semester',
-        'keys'
+        'keys',
     ];
 
     /**
@@ -44,12 +50,21 @@ class SectionTransformer extends TransformerAbstract
     }
 
     /**
+     * @param section $section
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeUsers(Section $section)
+    {
+        return $this->collection($section->users, new UserTransformer);
+    }
+
+    /**
      * @param Section $section
      * @return \League\Fractal\Resource\Item
      */
     public function includeSchool(Section $section)
     {
-        return $this->item($section->school, new SchoolTransformer());
+        return $this->item($section->school, new SchoolTransformer);
     }
 
     /**
@@ -58,7 +73,7 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeEvaluation(Section $section)
     {
-        return $this->collection($section->evaluations, new EvaluationTransformer());
+        return $this->collection($section->evaluations, new EvaluationTransformer);
     }
 
     /**
@@ -67,7 +82,7 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeSemester(Section $section)
     {
-        return $this->item($section->semester, new SemesterTransformer());
+        return $this->item($section->semester, new SemesterTransformer);
     }
 
     /**
@@ -76,6 +91,6 @@ class SectionTransformer extends TransformerAbstract
      */
     public function includeKey(Section $section)
     {
-        return $this->collection($section->keys(), new KeyTransformer());
+        return $this->collection($section->keys, new KeyTransformer);
     }
 }

@@ -22,7 +22,6 @@ class CreateEvaluationsTable extends Migration
             $table->unsignedInteger('three')->default(0);
             $table->unsignedInteger('four')->default(0);
             $table->unsignedInteger('five')->default(0);
-            $table->string('comment')->nullable();
             $table->timestamps();
 
             $table->foreign('question_id')->references('id')->on('questions');

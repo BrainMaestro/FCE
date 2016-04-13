@@ -2,68 +2,82 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\IUsersRepository;
-use Illuminate\Http\Request;
+use Fce\Http\Requests\UserRequest;
+use Fce\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
+    protected $request;
     protected $repository;
 
-    public function __construct(Request $request, IUsersRepository $usersRepository)
+    public function __construct(UserRequest $request, UserRepository $repository)
     {
-        $this->repository = $usersRepository;
-        parent::__construct($request);
+        $this->request = $request;
+        $this->repository = $repository;
     }
 
+    /**
+     * Get all users.
+     * If specified, the school is used to limit results.
+     *
+     * @return array
+     */
     public function index()
     {
-        try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
+        $school = Input::get('school');
 
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        if ($school) {
+            return $this->repository->getUsersBySchool($school);
         }
+
+        return $this->repository->getUsers();
     }
 
+    /**
+     * Get a specific user by their id.
+     *
+     * @param $id
+     * @return array
+     */
     public function show($id)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->repository->getUserById($id);
     }
 
+    /**
+     * Create a new user.
+     *
+     * @return array
+     */
     public function create()
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->repository->createUser($this->request->name, $this->request->email, $this->request->password);
     }
 
+    /**
+     * Update a user's attributes.
+     *
+     * @param $id
+     * @return array
+     */
     public function update($id)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        if (! $this->repository->updateUser($id, $this->request->all())) {
+            return $this->respondUnprocessable('User attributes were not provided');
         }
+
+        return $this->respondSuccess('User successfully updated');
     }
 
-    public function delete()
+    /**
+     * Delete a user.
+     *
+     * @param $id
+     * @return array
+     */
+    public function destroy($id)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        $this->repository->deleteUser($id);
     }
 }

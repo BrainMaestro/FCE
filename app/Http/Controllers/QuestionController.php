@@ -2,50 +2,49 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\IQuestionsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Http\Requests\QuestionRequest;
+use Fce\Repositories\Contracts\QuestionRepository;
 
 class QuestionController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, IQuestionsRepository $questionsRepository)
+    public function __construct(QuestionRepository $repository)
     {
-        $this->repository = $questionsRepository;
-        parent::__construct($request);
+        $this->repository = $repository;
     }
 
+    /**
+     * Get all questions.
+     *
+     * @return array
+     */
     public function index()
     {
-        try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
-
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->repository->getQuestions();
     }
 
-    public function create()
+    /**
+     * Get a specific question by id.
+     *
+     * @param $id
+     * @return array
+     */
+    public function show($id)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->repository->getQuestionById($id);
     }
 
-    public function update($id)
+    /**
+     * Create a new question.
+     *
+     * @param QuestionRequest $request
+     * @return mixed
+     */
+    public function create(QuestionRequest $request)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->respondCreated(
+            $this->repository->createQuestion($request->description, $request->category, $request->title)
+        );
     }
 }

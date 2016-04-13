@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuestionSet extends Model
 {
-
     /**
      * @var array
      */
@@ -14,23 +13,45 @@ class QuestionSet extends Model
 
     /**
      * The QuestionSet relationship to Question
-     * A questionSet belongsToMany questions
+     * A questionSet belongsToMany questions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function questions()
     {
-        return $this->belongsToMany(Question::class);
+        return $this->belongsToMany(Question::class)->withPivot('position')->withTimestamps();
     }
 
     /**
      * The QuestionSet relationship to Semester
-     * A questionSet belongsToMany semesters
+     * A questionSet belongsToMany semesters.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function semesters()
     {
-        return $this->belongsToMany(Semester::class);
+        return $this->belongsToMany(Semester::class)->withPivot(['evaluation_type', 'status'])->withTimestamps();
+    }
+
+    /**
+     * The QuestionSet relationship to evaluation
+     * A questionSet hasMany evaluation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
+
+    /**
+     * The QuestionSet relationship to comment
+     * A questionSet hasMany commet.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

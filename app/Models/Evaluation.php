@@ -12,17 +12,17 @@ class Evaluation extends Model
     protected $fillable = [
         'section_id',
         'question_id',
+        'question_set_id',
         'one',
         'two',
         'three',
         'four',
         'five',
-        'comment'
     ];
 
     /**
      * The Evaluation relationship to Section
-     * A evaluation belongsTo section
+     * A evaluation belongsTo section.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -33,7 +33,7 @@ class Evaluation extends Model
 
     /**
      * The Evaluation relationship to Question
-     * A evaluation belongsTo a question
+     * A evaluation belongsTo a question.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -44,7 +44,7 @@ class Evaluation extends Model
 
     /**
      * The Evaluation relationship to QuestionSet
-     * A evaluation belongsTo a questionset
+     * A evaluation belongsTo a questionset.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

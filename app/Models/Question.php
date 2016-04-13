@@ -14,17 +14,17 @@ class Question extends Model
     protected $fillable = ['category', 'title', 'description'];
 
     /**
-     * The Question relationship to QuestionSet
+     * The Question relationship to QuestionSet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function questionSets()
     {
-        return $this->belongsToMany(QuestionSet::class);
+        return $this->belongsToMany(QuestionSet::class)->withPivot('position')->withTimestamps();
     }
 
     /**
-     * The Question relationship to Evaluation
+     * The Question relationship to Evaluation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */

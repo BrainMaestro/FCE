@@ -1,5 +1,6 @@
 <?php
 
+use Fce\Utility\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -21,7 +22,7 @@ class CreateSectionsTable extends Migration
             $table->string('course_title');
             $table->string('class_time');
             $table->string('location');
-            $table->enum('status', ['Locked', 'Open', 'Done']);
+            $table->enum('status', Status::STATUSES);
             $table->integer('enrolled');
             $table->timestamps();
 

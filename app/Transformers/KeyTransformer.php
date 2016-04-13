@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Maestro
  * Date: 27/10/2015
- * Time: 5:12 PM
+ * Time: 5:12 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\Key;
@@ -18,9 +17,9 @@ class KeyTransformer extends TransformerAbstract
         return [
             'id' => (int) $key->id,
             'value' => $key->value,
-            'given_out' => (boolean) $key->given_out,
-            'used' => (boolean) $key->used,
-            'section_id' => (int) $key->section->id,
+            'given_out' => (bool) $key->given_out,
+            'used' => (bool) $key->used,
+            'section_id' => (int) $key->section_id,
         ];
     }
 }

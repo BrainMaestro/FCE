@@ -2,50 +2,65 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\ISchoolsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Http\Requests\SchoolRequest;
+use Fce\Repositories\Contracts\SchoolRepository;
 
 class SchoolController extends Controller
 {
+    protected $request;
     protected $repository;
 
-    public function __construct(Request $request, ISchoolsRepository $schoolsRepository)
+    public function __construct(SchoolRequest $request, SchoolRepository $repository)
     {
-        $this->repository = $schoolsRepository;
-        parent::__construct($request);
+        $this->request = $request;
+        $this->repository = $repository;
     }
 
+    /**
+     * Get all schools.
+     *
+     * @return array
+     */
     public function index()
     {
-        try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
-
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->repository->getSchools();
     }
 
+    /**
+     * Get a specific school by its id.
+     *
+     * @param $id
+     * @return array
+     */
+    public function show($id)
+    {
+        return $this->repository->getSchoolById($id);
+    }
+
+    /**
+     * Create a new school.
+     *
+     * @return array
+     */
     public function create()
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->respondCreated(
+            $this->repository->createSchool($this->request->school, $this->request->description)
+        );
     }
 
+    /**
+     * Update the attributes of an existing school.
+     *
+     * @param $id
+     * @return array
+     */
     public function update($id)
     {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        if (! $this->repository->updateSchool($id, $this->request->all())) {
+            return $this->respondUnprocessable('School attributes were not provided');
         }
+
+        return $this->respondSuccess('School successfully updated');
     }
 }

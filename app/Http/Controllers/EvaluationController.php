@@ -2,68 +2,82 @@
 
 namespace Fce\Http\Controllers;
 
-use Fce\Repositories\IEvaluationsRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Fce\Events\Event;
+use Fce\Http\Requests\EvaluationRequest;
+use Fce\Repositories\Contracts\EvaluationRepository;
+use Fce\Repositories\Contracts\KeyRepository;
+use Fce\Repositories\Contracts\SemesterRepository;
 
 class EvaluationController extends Controller
 {
     protected $repository;
 
-    public function __construct(Request $request, IEvaluationsRepository $evaluationsRepository)
-    {
-        $this->repository = $evaluationsRepository;
-        parent::__construct($request);
+    protected $keyRepository;
+
+    protected $semesterRepository;
+
+    public function __construct(
+        EvaluationRepository $repository,
+        KeyRepository $keyRepository,
+        SemesterRepository $semesterRepository
+    ) {
+        $this->repository = $repository;
+        $this->keyRepository = $keyRepository;
+        $this->semesterRepository = $semesterRepository;
     }
 
-    public function index()
+    /**
+     * Get evaluations by the specified key.
+     *
+     * @param $key
+     * @return array
+     */
+    public function index($key)
     {
-        try {
-            $fields['query'] = Input::get('query', null);
-            $fields['sort'] = Input::get('sort', 'created_at');
-            $fields['order'] = Input::get('order', 'ASC');
-            $fields['limit'] = Input::get('limit', 10);
-            $fields['offset'] = Input::get('offset', 1);
+        $key = $this->keyRepository->getKeyByValue($key)['data'];
 
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        if ($key['given_out']) {
+            return $this->respondForbidden('This key has already been given out');
         }
+
+        $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
+        $questionSet = $this->semesterRepository->getOpenQuestionSet($semesterId);
+
+        event(Event::KEY_GIVEN_OUT, $key['value']); // The key has been given out.
+
+        return $this->repository->getEvaluationsBySectionAndQuestionSet($key['section_id'], $questionSet['id']);
     }
 
-    public function create()
+    /**
+     * Submit an evaluation and a comment if present.
+     *
+     * @param EvaluationRequest $request
+     * @param $key
+     * @return array
+     */
+    public function submitEvaluations(EvaluationRequest $request, $key)
     {
-        try {
+        $key = $this->keyRepository->getKeyByValue($key)['data'];
 
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        // Key has not been given out for some reason.
+        if (! $key['given_out']) {
+            return $this->respondUnprocessable('This key has not yet been given out');
         }
-    }
 
-    public function showKeys()
-    {
-        try {
-
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        if ($key['used']) {
+            return $this->respondForbidden('This key has already been used');
         }
-    }
 
-    public function showKeysJson()
-    {
-        try {
+        $semesterId = $this->semesterRepository->getCurrentSemester()['data']['id'];
+        $questionSetId = $this->semesterRepository->getOpenQuestionSet($semesterId)['id'];
 
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
+        if ($request->semester_id != $semesterId || $request->question_set_id != $questionSetId) {
+            return $this->respondUnprocessable('The semester or question set provided is incorrect');
         }
-    }
 
-    public function show($id)
-    {
-        try {
+        event(Event::KEY_USED, $key['value']); // The key has been used.
+        event(Event::EVALUATION_SUBMITTED, [$request->evaluations, $request->comment, $semesterId, $questionSetId]);
 
-        } catch (\Exception $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
+        return $this->respondSuccess('Evaluation successfully submitted');
     }
 }

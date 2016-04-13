@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Cheezzy Tenorz
  * Date: 10/18/2015
- * Time: 7:21 PM
+ * Time: 7:21 PM.
  */
-
 namespace Fce\Transformers;
 
 use Fce\Models\School;
@@ -17,7 +16,7 @@ class SchoolTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'section'
+        'section',
     ];
 
     /**
@@ -39,6 +38,6 @@ class SchoolTransformer extends TransformerAbstract
      */
     public function includeSection(School $school)
     {
-        return $this->collection($school->sections, new SectionTransformer());
+        return $this->collection($school->sections, new SectionTransformer);
     }
 }

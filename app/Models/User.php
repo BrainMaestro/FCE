@@ -10,15 +10,16 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
 
 /**
- * Class User
- * @package App
+ * Class User.
  */
 class User extends Model implements
     AuthenticatableContract,
     AuthorizableContract,
-    CanResetPasswordContract
+    CanResetPasswordContract,
+    AuthenticatableUserContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
 
@@ -34,7 +35,12 @@ class User extends Model implements
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'active',
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -45,7 +51,7 @@ class User extends Model implements
 
     /**
      * The User relationship to Role
-     * A user can have many roles
+     * A user can have many roles.
      */
     public function roles()
     {
@@ -54,20 +60,37 @@ class User extends Model implements
 
     /**
      * The User relationship to School
-     * A user can have one school
+     * A user can have one school.
+     *
      * @return mixed
      */
     public function schools()
     {
-        return $this->belongsTo(School::class);
+        return $this->belongsToMany(School::class)->withTimestamps();
     }
 
     /**
      * The User relationship to Section
-     * A user can have many sections
+     * A user can have many sections.
      */
     public function sections()
     {
         return $this->belongsToMany(Section::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); // Eloquent model method
+    }
+
+    /**
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
