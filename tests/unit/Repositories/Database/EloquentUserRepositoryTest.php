@@ -1,6 +1,7 @@
 <?php
 
 use Fce\Repositories\Database\EloquentUserRepository;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Created by BrainMaestro
@@ -58,6 +59,19 @@ class EloquentUserRepositoryTest extends TestCase
 
         $this->assertCount(count($users), $allUsers['data']);
         $this->assertEquals($users, $allUsers['data']);
+    }
+
+    public function testGetHelperUsers()
+    {
+        // Facsimile for helper users. :)
+        $users = factory(Fce\Models\User::class, 5)->create([
+            'name' => str_random(6) . ' helper',
+        ]);
+        $users = $this->repository->transform($users);
+
+        $helperUsers = $this->repository->getHelperUsers();
+
+        $this->assertArraySubset($users, $helperUsers);
     }
 
     public function testGetUsersException()
@@ -144,7 +158,7 @@ class EloquentUserRepositoryTest extends TestCase
 
         $this->repository->getUserById($this->user->id);
     }
-    
+
     public function testDeleteHelperUsers()
     {
         $sections = factory(Fce\Models\Section::class, 3)->create()->toArray();

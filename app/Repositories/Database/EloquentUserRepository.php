@@ -14,6 +14,7 @@ use Fce\Models\School;
 use Fce\Repositories\Repository;
 use Fce\Repositories\Contracts\UserRepository;
 use Fce\Transformers\UserTransformer;
+use Illuminate\Support\Facades\Input;
 
 class EloquentUserRepository extends Repository implements UserRepository
 {
@@ -29,6 +30,9 @@ class EloquentUserRepository extends Repository implements UserRepository
     {
         $this->model = $model;
         $this->transformer = $transformer;
+
+        // Get only active users by default.
+        Input::merge(['active' => true]);
     }
 
     /**
@@ -39,6 +43,19 @@ class EloquentUserRepository extends Repository implements UserRepository
     public function getUsers()
     {
         return $this->all();
+    }
+
+    /**
+     * Get all helper users.
+     *
+     * @return array
+     */
+    public function getHelperUsers()
+    {
+        // Helper users are not active by default.
+        Input::merge(['active' => false]);
+
+        return $this->findBy(['name' => 'helper']);
     }
 
     /**
@@ -137,7 +154,7 @@ class EloquentUserRepository extends Repository implements UserRepository
 
     /**
      * Delete all the helper users.
-     * 
+     *
      * @return bool
      */
     public function deleteHelperUsers()

@@ -12,6 +12,8 @@ interface UserRepository
 {
     public function getUsers();
 
+    public function getHelperUsers();
+
     public function getUsersBySchool($schoolId);
 
     public function getUserById($id);
