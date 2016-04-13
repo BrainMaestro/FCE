@@ -92,7 +92,6 @@ class SemesterController extends Controller
     {
         $semester = $this->repository->getCurrentSemester()['data'];
         $status = $this->request->only('status');
-
         // Prevent a question set's status from changing to the same value.
         foreach ($semester['questionSets']['data'] as $questionSet) {
             if ($questionSet['id'] == $questionSetId && $questionSet['status'] == $status['status']) {

@@ -86,6 +86,7 @@ class EloquentUserRepository extends Repository implements UserRepository
      * Create a new set of helper users.
      *
      * @param array $sections
+     * @return bool
      */
     public function createHelperUsers(array $sections)
     {
@@ -102,12 +103,13 @@ class EloquentUserRepository extends Repository implements UserRepository
                 'name' => $section['course_code'] . ' helper',
                 'email' => 'helper.' . $section['id'] . '@aun.edu.ng',
                 'password' => bcrypt($passkey),
+                'active' => false, // To prevent retrieving with regular users.
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
         }
 
-        $this->model->insert($helpers);
+        return $this->model->insert($helpers);
     }
 
     /**
@@ -135,9 +137,11 @@ class EloquentUserRepository extends Repository implements UserRepository
 
     /**
      * Delete all the helper users.
+     * 
+     * @return bool
      */
     public function deleteHelperUsers()
     {
-        $this->model->where('name', 'LIKE', '%helper')->forceDelete();
+        return $this->model->where('name', 'LIKE', '%helper')->forceDelete() > 0;
     }
 }

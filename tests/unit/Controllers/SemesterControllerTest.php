@@ -96,13 +96,46 @@ class SemesterControllerTest extends TestCase
 
     public function testUpdateQuestionSetStatus()
     {
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
+            ->method('getCurrentSemester')->willReturn([
+            'data' => [
+                'id' => parent::ID,
+                'questionSets' => [
+                    'data' => [
+                        [
+                            'id' => parent::ID,
+                            'status' => Fce\Utility\Status::LOCKED,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->repository->expects($this->exactly(2))
             ->method('setQuestionSetStatus')
-            ->with(parent::ID, parent::ID, $this->request->status);
+            ->withConsecutive(
+                [parent::ID, parent::ID, Fce\Utility\Status::OPEN],
+                [parent::ID, parent::ID, Fce\Utility\Status::DONE]
+            );
+
+        Event::shouldReceive('fire')->once()
+            ->with(Fce\Events\Event::QUESTION_SET_OPENED, parent::ID, false);
+
+        Event::shouldReceive('fire')->once()
+            ->with(Fce\Events\Event::QUESTION_SET_CLOSED, [], false);
+
+        $this->request->merge(['status' => Fce\Utility\Status::OPEN]);
 
         $this->assertEquals(
             $this->controller->respondSuccess('Question set status successfully updated'),
-            $this->controller->updateQuestionSetStatus(parent::ID, parent::ID)
+            $this->controller->updateQuestionSetStatus(parent::ID)
+        );
+
+        $this->request->merge(['status' => Fce\Utility\Status::DONE]);
+
+        $this->assertEquals(
+            $this->controller->respondSuccess('Question set status successfully updated'),
+            $this->controller->updateQuestionSetStatus(parent::ID)
         );
     }
 }

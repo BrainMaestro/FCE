@@ -115,6 +115,15 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertArraySubset($attributes, $user['data']);
     }
 
+    public function testCreateHelperUsers()
+    {
+        $sections = factory(Fce\Models\Section::class, 3)->create()->toArray();
+
+        $inserted = $this->repository->createHelperUsers($sections);
+
+        $this->assertTrue($inserted);
+    }
+
     public function testUpdateUser()
     {
         $attributes = factory(Fce\Models\User::class)->make()->toArray();
@@ -134,5 +143,16 @@ class EloquentUserRepositoryTest extends TestCase
         $this->setExpectedException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
 
         $this->repository->getUserById($this->user->id);
+    }
+    
+    public function testDeleteHelperUsers()
+    {
+        $sections = factory(Fce\Models\Section::class, 3)->create()->toArray();
+
+        $inserted = $this->repository->createHelperUsers($sections);
+        $deleted = $this->repository->deleteHelperUsers();
+
+        $this->assertTrue($inserted);
+        $this->assertTrue($deleted);
     }
 }
