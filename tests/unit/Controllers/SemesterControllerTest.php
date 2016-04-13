@@ -96,7 +96,7 @@ class SemesterControllerTest extends TestCase
 
     public function testUpdateQuestionSetStatus()
     {
-        $this->repository->expects($this->exactly(2))
+        $this->repository->expects($this->exactly(3))
             ->method('getCurrentSemester')->willReturn([
             'data' => [
                 'id' => parent::ID,
@@ -123,6 +123,13 @@ class SemesterControllerTest extends TestCase
 
         Event::shouldReceive('fire')->once()
             ->with(Fce\Events\Event::QUESTION_SET_CLOSED, [], false);
+
+        $this->request->merge(['status' => Fce\Utility\Status::LOCKED]);
+
+        $this->assertEquals(
+            $this->controller->respondUnprocessable('Question set is already ' . Fce\Utility\Status::LOCKED),
+            $this->controller->updateQuestionSetStatus(parent::ID)
+        );
 
         $this->request->merge(['status' => Fce\Utility\Status::OPEN]);
 
