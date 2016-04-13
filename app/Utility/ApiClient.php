@@ -38,54 +38,60 @@ trait ApiClient
      * @param string $message
      * @return mixed
      */
-    public function respondNotFound($message = 'Not Found')
+    public function respondNotFound($message)
     {
-        return $this->setStatusCode(Response::HTTP_NOT_FOUND)->respondWithError($message);
+        return $this->setStatusCode(Response::HTTP_NOT_FOUND)
+            ->respondWithError($message, 'Not Found');
     }
 
     /**
      * @param string $message
      * @return mixed
      */
-    public function respondBadRequest($message = 'Bad Request')
+    public function respondBadRequest($message)
     {
-        return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respondWithError($message);
+        return $this->setStatusCode(Response::HTTP_BAD_REQUEST)
+            ->respondWithError($message, 'Bad Request');
     }
 
     /**
      * @param string $message
      * @return mixed
      */
-    public function respondInternalServerError($message = 'Server Error')
+    public function respondInternalServerError($message)
     {
-        return $this->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR)->respondWithError($message);
+        return $this->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->respondWithError($message, 'Internal Server Error');
     }
 
     /**
      * @param string $message
      * @return mixed
      */
-    public function respondUnprocessable($message = 'Unprocessable Entity')
+    public function respondUnprocessable($message)
     {
-        return $this->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)->respondWithError($message);
+        return $this->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->respondWithError($message, 'Unprocessable Entity');
     }
 
     /**
      * @param string $message
      * @return mixed
      */
-    public function respondUnauthorized($message = 'Unauthorized')
+    public function respondUnauthorized($message)
     {
-        return $this->setStatusCode(Response::HTTP_UNAUTHORIZED)->respondWithError($message);
+        return $this->setStatusCode(Response::HTTP_UNAUTHORIZED)
+            ->respondWithError($message, 'Unauthorized');
     }
 
     /**
      * @param string $message
      * @return mixed
      */
-    public function respondForbidden($message = 'Forbidden')
+    public function respondForbidden($message)
     {
-        return $this->setStatusCode(Response::HTTP_FORBIDDEN)->respondWithError($message);
+        return $this->setStatusCode(Response::HTTP_FORBIDDEN)
+            ->respondWithError($message, 'Forbidden');
     }
 
     /**
@@ -127,13 +133,15 @@ trait ApiClient
     }
 
     /**
-     * @param $message
+     * @param string $message
+     * @param string $status
      * @return mixed
      */
-    private function respondWithError($message)
+    private function respondWithError($message, $status)
     {
         return $this->respond([
             'error' => [
+                'status' => $status,
                 'code' => $this->getStatusCode(),
                 'message' => $message,
             ],
