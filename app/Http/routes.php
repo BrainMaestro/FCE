@@ -18,7 +18,7 @@ Route::patterns([
 ]);
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 // Password Reset Routes
