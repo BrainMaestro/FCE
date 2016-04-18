@@ -8,6 +8,6 @@
   </head>
   <body>
     <app></app>
-    <script src="js/build.js"></script>
+    <script src="js/bundle.js"></script>
   </body>
 </html>

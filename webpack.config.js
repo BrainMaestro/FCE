@@ -2,27 +2,26 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './resources/assets/js/main.js',
+  context: path.resolve('resources/assets/js/'),
+  entry: './main',
   output: {
-    path: path.resolve(__dirname, './public/js'),
+    path: path.resolve('public/js'),
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: 'bundle.js'
   },
-  resolveLoader: {
-    root: path.join(__dirname, 'node_modules'),
-  },
+
   module: {
     loaders: [
       { test: /\.vue$/, loader: 'vue' },
       { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
     ]
   },
+
   devServer: {
     contentBase: 'public',
     historyApiFallback: true,
     noInfo: true
-  },
-  devtool: '#eval-source-map'
+  }
 };
 
 if (process.env.NODE_ENV === 'production') {
