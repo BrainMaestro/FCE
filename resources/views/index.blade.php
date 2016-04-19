@@ -7,7 +7,7 @@
     <title>FCE</title>
   </head>
   <body>
-    <app></app>
+    <div id="app"></div>
     <script src="js/bundle.js"></script>
   </body>
 </html>
