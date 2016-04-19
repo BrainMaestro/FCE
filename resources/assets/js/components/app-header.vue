@@ -4,13 +4,10 @@
             <!-- Left side -->
             <div class="header-left">
                 <a class="header-item" href="#">
-                    <img src="http://bulma.io/images/bulma.png" alt="Logo">
-                </a>
-                <a class="header-tab" href="#">
-                    Tab
+                    <img src="/images/aun_logo.png" alt="AUN Logo">
                 </a>
                 <a class="header-tab is-active" href="#">
-                    Active tab
+                    Faculty Course Evaluation 
                 </a>
             </div>
 
@@ -24,13 +21,10 @@
             <!-- Right side -->
             <div class="header-right header-menu">
                 <span class="header-item">
-                    <a href="#">Nav item</a>
+                    <a href="#">Evaluate</a>
                 </span>
                 <span class="header-item">
-                    <a href="#">Other nav item</a>
-                </span>
-                <span class="header-item">
-                    <a class="button" href="#">Button</a>
+                    <a href="#">Login</a>
                 </span>
             </div>
         </div>

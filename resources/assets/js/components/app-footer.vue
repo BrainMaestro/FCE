@@ -3,7 +3,7 @@
         <div class="container">
             <div class="content has-text-centered">
                 <p>
-                    The source code is licensed is licensed
+                    The source code is licensed
                     <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/">CC BY-NC-ND 3.0</a>.<br>
                     And can be found at
                     <a class="icon" href="https://github.com/BrainMaestro/FCE">
@@ -19,7 +19,7 @@
 
 <style>
     .footer {
-        background: #32074b;
+        background: #333275;
         color: white;
         padding-bottom: 2em;
     }
