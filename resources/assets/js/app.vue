@@ -1,13 +1,15 @@
 <template>
-    <app-header></app-header>
+    <div id="app" class="is-flex">
+        <app-header></app-header>
 
-    <main>
-        <div class="container">
-            <router-view></router-view>
-        </div>
-    </main>
+        <main>
+            <div class="container">
+                <router-view></router-view>
+            </div>
+        </main>
 
-    <app-footer></app-footer>
+        <app-footer></app-footer>
+    </div>
 </template>
 
 <script>
@@ -23,15 +25,13 @@
 </script>
 
 <style>
-    body {
-        display: flex;
+    #app {
         min-height: 100vh;
         flex-direction: column;
     }
 
     main {
         flex: 1 0 auto;
-        padding-top: 3em;
-        padding-bottom: 3em;
+        padding: 3em 0;
     }
 </style>

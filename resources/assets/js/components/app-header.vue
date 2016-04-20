@@ -3,11 +3,8 @@
         <div class="container">
             <!-- Left side -->
             <div class="header-left">
-                <a class="header-item" href="#">
-                    <img src="/images/aun_logo.png" alt="AUN Logo">
-                </a>
                 <a class="header-tab is-active" href="#">
-                    Faculty Course Evaluation 
+                    Faculty Course Evaluation
                 </a>
             </div>
 
@@ -21,12 +18,16 @@
             <!-- Right side -->
             <div class="header-right header-menu">
                 <span class="header-item">
-                    <a href="#">Evaluate</a>
-                </span>
-                <span class="header-item">
-                    <a href="#">Login</a>
+                    <button class="button is-primary is-outlined">Login</button>
                 </span>
             </div>
         </div>
     </header>
 </template>
+
+<style>
+    .header {
+        background: #333275;
+        color: white;
+    }
+</style>
