@@ -15,9 +15,8 @@
 
             <!--Evaluation input-->
             <div class="has-text-centered" v-show="evaluationTab">
-                <label class="label">Key</label>
                 <p class="control has-icon">
-                    <input class="input" type="text" placeholder="ABCDEF">
+                    <input class="input" type="text" placeholder="Evaluation Key">
                     <i class="fa fa-key"></i>
                 </p>
                 <button class="button is-primary">Ready</button>
@@ -25,18 +24,14 @@
 
             <!--Login input-->
             <div class="has-text-centered" v-else="evaluationTab">
-                <label class="label">Email</label>
                 <p class="control has-icon">
-                    <input class="input" type="email" placeholder="fce@aun.edu.ng" v-model="email">
+                    <input class="input" type="email" placeholder="AUN Email" v-model="email">
                     <i class="fa fa-envelope"></i>
                 </p>
-
-                <label class="label">Password</label>
                 <p class="control has-icon">
-                    <input class="input" type="password" placeholder="password" v-model="password">
+                    <input class="input" type="password" placeholder="FCE Password" v-model="password">
                     <i class="fa fa-lock"></i>
                 </p>
-
                 <button class="button is-primary" @click="login">Login</button>
             </div>
         </div>
