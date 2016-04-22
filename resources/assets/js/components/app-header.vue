@@ -18,7 +18,7 @@
             <!-- Right side -->
             <div class="header-right header-menu">
                 <span class="header-item">
-                    <button class="button is-primary is-outlined">Login</button>
+                    <!--<button class="button is-primary is-outlined">Login</button>-->
                 </span>
             </div>
         </div>
