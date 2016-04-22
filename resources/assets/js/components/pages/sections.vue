@@ -25,8 +25,8 @@
 </template>
 
 <script>
-    import sectionStore from '../stores/section';
-    import { section as columns } from '../utils/table-columns'
+    import sectionStore from '../../stores/section';
+    import { section as columns } from '../../utils/table-columns'
 
     export default {
         data() {

@@ -2,8 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from 'store';
 
-import Login from '../components/login.vue';
-import Sections from '../components/sections.vue';
+import Login from '../components/pages/login.vue';
+import Sections from '../components/pages/sections.vue';
 
 Vue.use(VueRouter);
 

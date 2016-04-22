@@ -16,8 +16,8 @@
     import 'bulma/css/bulma.css';
     import 'font-awesome/css/font-awesome.css';
 
-    import AppHeader from './components/app-header.vue';
-    import AppFooter from './components/app-footer.vue';
+    import AppHeader from './components/layout/app-header.vue';
+    import AppFooter from './components/layout/app-footer.vue';
 
     export default {
         components: { AppHeader, AppFooter },
