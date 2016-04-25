@@ -39,8 +39,8 @@
 </template>
 
 <script>
-    import userStore from '../stores/user';
-    import router from '../config/router';
+    import userStore from '../../stores/user';
+    import router from '../../config/router';
     import store from 'store';
 
     export default {
