@@ -16,7 +16,8 @@ class RoleTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'user',
+        'users',
+        'permissions',
     ];
 
     /**
@@ -27,8 +28,9 @@ class RoleTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $role->id,
-            'role' => $role->role,
+            'name' => $role->name,
             'display_name' => $role->display_name,
+            'description' => $role->description,
         ];
     }
 
@@ -36,8 +38,17 @@ class RoleTransformer extends TransformerAbstract
      * @param Role $role
      * @return \League\Fractal\Resource\Collection
      */
-    public function includeUser(Role $role)
+    public function includeUsers(Role $role)
     {
         return $this->collection($role->users, new UserTransformer);
+    }
+
+    /**
+     * @param Role $role
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includePermissions(Role $role)
+    {
+        return $this->collection($role->permissions, new PermissionTransformer);
     }
 }

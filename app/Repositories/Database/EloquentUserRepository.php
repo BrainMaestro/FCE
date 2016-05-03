@@ -9,6 +9,7 @@
 namespace Fce\Repositories\Database;
 
 use Carbon\Carbon;
+use Fce\Models\Role;
 use Fce\Models\User;
 use Fce\Models\School;
 use Fce\Repositories\Repository;
@@ -160,5 +161,29 @@ class EloquentUserRepository extends Repository implements UserRepository
     public function deleteHelperUsers()
     {
         return $this->model->where('name', 'LIKE', '%helper')->forceDelete() > 0;
+    }
+
+    /**
+     * Add a role used for user access.
+     *
+     * @param $id
+     * @param $role
+     * @return bool
+     */
+    public function addRole($id, $role)
+    {
+        return $this->model->findOrFail($id)->attachRole($role) == null;
+    }
+
+    /**
+     * Add a permission to a role.
+     *
+     * @param $roleId
+     * @param $permission
+     * @return bool
+     */
+    public function addPermission($roleId, $permission)
+    {
+        return Role::findOrFail($roleId)->attachPermission($permission) == null;
     }
 }

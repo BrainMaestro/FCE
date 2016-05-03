@@ -169,4 +169,29 @@ class EloquentUserRepositoryTest extends TestCase
         $this->assertTrue($inserted);
         $this->assertTrue($deleted);
     }
+
+    public function testAddRole()
+    {
+        $role = factory(\Fce\Models\Role::class)->create();
+        $role = app('\\Fce\\Transformers\\RoleTransformer')->transform($role);
+
+        $this->repository->addRole($this->user->id, $role);
+
+        Input::merge(['include' => 'roles']);
+        $user = $this->repository->transform($this->user->fresh());
+
+        // Check that the added roles are in the user.
+        $this->assertNotEmpty($user['data']['roles']['data']);
+        $this->assertEquals($role, $user['data']['roles']['data'][0]);
+    }
+
+    public function testAddPermission()
+    {
+        $role = factory(\Fce\Models\Role::class)->create();
+        $permission = factory(\Fce\Models\Permission::class)->create();
+        $permission = app('\\Fce\\Transformers\\PermissionTransformer')->transform($permission);
+
+        $result = $this->repository->addPermission($role->id, $permission);
+        $this->assertTrue($result);
+    }
 }

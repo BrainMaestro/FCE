@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 /**
  * Class User.
@@ -22,6 +23,10 @@ class User extends Model implements
     AuthenticatableUserContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
+    use EntrustUserTrait {
+        EntrustUserTrait::restore insteadof SoftDeletes;
+        EntrustUserTrait::can insteadof Authorizable;
+    }
 
     /**
      * The database table used by the model.

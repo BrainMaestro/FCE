@@ -21,10 +21,19 @@ $factory->define(Fce\Models\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(Fce\Models\Role::class, function (Faker\Generator $faker) {
-    $role = $faker->randomElement(['admin', 'dean', 'executive', 'faculty', 'secretary']);
+    $role = $faker->randomElement(['admin', 'executive', 'faculty', 'secretary']);
 
     return [
-        'role' => $role,
+        'name' => $role,
+        'display_name' => ucfirst($role),
+    ];
+});
+
+$factory->define(Fce\Models\Permission::class, function (Faker\Generator $faker) {
+    $role = $faker->randomElement(['view-users', 'create-user', 'view-sections', 'create-school', 'view-all-keys']);
+
+    return [
+        'name' => $role,
         'display_name' => ucfirst($role),
     ];
 });

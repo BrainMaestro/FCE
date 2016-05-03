@@ -20,11 +20,15 @@ interface UserRepository
 
     public function createUser($name, $email, $password);
 
-    public function createHelperUsers(array $sections);
+    public function deleteUser($id);
 
     public function updateUser($id, array $attributes);
 
-    public function deleteUser($id);
+    public function createHelperUsers(array $sections);
 
     public function deleteHelperUsers();
+
+    public function addRole($id, $role);
+
+    public function addPermission($roleId, $permission);
 }

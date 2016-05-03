@@ -36,7 +36,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
     Route::put('/evaluations/{key}', 'EvaluationController@submitEvaluations');
 
     // Routes that require authentication
-    Route::group(['middleware' => ['jwt.auth', 'token.refresh']], function () {
+    Route::group(['middleware' => ['jwt.auth', 'token.refresh', 'check.user.permission']], function () {
 
         // Search Route
         Route::get('/search', 'SearchController@index');
@@ -81,6 +81,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
         Route::post('/semesters', 'SemesterController@create');
         Route::put('/semesters/{id}', 'SemesterController@update');
         Route::post('/semesters/{id}/question_sets', 'SemesterController@addQuestionSet');
-        Route::put('/semesters/question_sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
+        Route::put('/semesters/{id}/question_sets/{questionSetId}', 'SemesterController@updateQuestionSetStatus');
     });
 });

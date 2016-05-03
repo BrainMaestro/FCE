@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         'questions',
         'question_sets',
         'question_question_set',
+        'permissions',
     ];
 
     /**
@@ -28,6 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionTableSeeder::class);
         $this->call(QuestionSetTableSeeder::class);
         $this->call(QuestionQuestionSetTableSeeder::class);
+        $this->call(PermissionTableSeeder::class);
+        $this->call(PermissionRoleTableSeeder::class);
 
         Model::reguard();
     }

@@ -24,7 +24,7 @@ class UserTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-        'role',
+        'roles',
     ];
 
     /**
@@ -57,7 +57,7 @@ class UserTransformer extends TransformerAbstract
      *
      * @return \League\Fractal\Resource\Collection
      */
-    public function includeRole(User $user)
+    public function includeRoles(User $user)
     {
         return $this->collection($user->roles, new RoleTransformer);
     }

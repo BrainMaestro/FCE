@@ -15,24 +15,36 @@ class RoleTableSeeder extends Seeder
         DB::table('roles')
             ->insert([
                 [
-                    'role' => 'admin',
+                    'name' => 'admin',
                     'display_name' => 'Administrator',
                 ],
                 [
-                    'role' => 'dean',
-                    'display_name' => 'Dean',
+                    'name' => 'sas-dean',
+                    'display_name' => 'SAS Dean',
                 ],
                 [
-                    'role' => 'executive',
+                    'name' => 'sbe-dean',
+                    'display_name' => 'SBE Dean',
+                ],
+                [
+                    'name' => 'sitc-dean',
+                    'display_name' => 'SITC Dean',
+                ],
+                [
+                    'name' => 'executive',
                     'display_name' => 'Executive',
                 ],
                 [
-                    'role' => 'faculty',
+                    'name' => 'faculty',
                     'display_name' => 'Faculty',
                 ],
                 [
-                    'role' => 'secretary',
+                    'name' => 'secretary',
                     'display_name' => 'Secretary',
+                ],
+                [
+                    'name' => 'helper',
+                    'display_name' => 'Helper',
                 ],
             ]);
     }

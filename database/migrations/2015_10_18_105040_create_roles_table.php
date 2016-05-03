@@ -14,8 +14,9 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->enum('role', ['admin', 'dean', 'executive', 'faculty', 'secretary']);
-            $table->enum('display_name', ['Administrator', 'Dean', 'Executive', 'Faculty', 'Secretary']);
+            $table->enum('name', ['admin', 'sas-dean', 'sbe-dean', 'sitc-dean', 'executive', 'faculty', 'secretary', 'helper']);
+            $table->enum('display_name', ['Administrator', 'SAS Dean', 'SBE Dean', 'SITC Dean', 'Executive', 'Faculty', 'Secretary', 'Helper'])->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

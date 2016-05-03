@@ -2,16 +2,16 @@
 
 namespace Fce\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\EntrustRole;
 
-class Role extends Model
+class Role extends EntrustRole
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['role', 'display_name'];
+    protected $fillable = ['name', 'display_name', 'description'];
 
     /**
      * The Role relationship to User
@@ -20,5 +20,14 @@ class Role extends Model
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * The Role relationship to Permission
+     * A permission can belong to many users.
+     */
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
     }
 }
