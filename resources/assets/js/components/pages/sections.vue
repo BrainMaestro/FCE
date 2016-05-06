@@ -1,7 +1,6 @@
 <template>
-    <bulma-table :columns="columns" :rows="sections">
-        <span></span>
-    </bulma-table>
+    <search :model="'section'" :on-search="refreshData" :columns="columns" :default="default"></search>
+    <bulma-table :columns="columns" :rows="sections"></bulma-table>
 </template>
 
 <script>
@@ -9,49 +8,26 @@
     import { section as columns } from '../../utils/table-columns';
 
     import BulmaTable from '../shared/table.vue';
+    import Search from '../shared/search.vue';
 
     export default {
-        components: { BulmaTable },
+        components: { BulmaTable, Search },
 
         data() {
             return {
                 columns,
-                sections: []
+                sections: [],
+                default: sectionStore.getAllSections
             }
         },
 
         created() {
-            sectionStore.getAllSections((res) => {
-                this.sections = res.data.map(this.formatSection);
-            });
+            sectionStore.getAllSections(this.refreshData);
         },
 
         methods: {
-            // Format the sections properly for display.
-            formatSection(section) {
-                return Object.keys(this.columns).map((key) => {
-                    const value = section[key];
-                    let item = {};
-
-                    switch (key) {
-                        case 'semester':
-                            item[key] = `${value.data.season} ${value.data.year}`;
-                            break;
-
-                        case 'school':
-                            item[key] = value.data.school;
-                            break;
-
-                        case 'users':
-                            item[key] = value.data.map(user => user.name);
-                            break;
-
-                        default:
-                            item[key] = value;
-                    }
-
-                    return item;
-                });
+            refreshData(res) {
+                this.sections = res.data;
             }
         }
     }

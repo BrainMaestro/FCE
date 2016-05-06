@@ -6,7 +6,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in rows">
+        <tr v-for="row in formatedRows">
             <td v-for="pair in row">
                 <span v-for="(key, item) in pair">
                     <!--If item is an array or object, display the individual elements as tags-->
@@ -30,13 +30,44 @@
 <script>
     import Status from './status.vue';
 
+
     export default {
         props: {
             columns: Object,
             rows: Array
         },
 
-        components: { Status }
+        components: { Status },
+
+        computed: {
+            formatedRows() {
+                return this.rows.map((row) => {
+                    return Object.keys(this.columns).map((key) => {
+                        const value = row[key];
+                        let item = {};
+
+                        switch (key) {
+                            case 'semester':
+                                item[key] = `${value.data.season} ${value.data.year}`;
+                                break;
+
+                            case 'school':
+                                item[key] = value.data.school;
+                                break;
+
+                            case 'users':
+                                item[key] = value.data.map(user => user.name);
+                                break;
+
+                            default:
+                                item[key] = value;
+                        }
+
+                        return item;
+                    });
+                });
+            }
+        }
     };
 </script>
 
