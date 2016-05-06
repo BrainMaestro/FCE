@@ -15,5 +15,3 @@ Just a few major (or noteworthy) features of the system are listed here:
 1. Reports on the evaluations can be viewed by faculty members and other persons of interest (dean, provost, president, etc).
 1. Simple statistics can be generated from these reports (best & worst course, best & worst department, etc).
 1. List of courses and their details in a spreadsheet can be added directly to the system by the admin through an upload form.
-
-![codecov.io](https://codecov.io/github/BrainMaestro/FCE/branch.svg?branch=develop)

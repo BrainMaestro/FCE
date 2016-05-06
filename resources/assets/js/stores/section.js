@@ -11,5 +11,5 @@ export default {
         http.get('/api/sections?include=semester,school')
             .then(successCb)
             .catch();
-    }
+    },
 };

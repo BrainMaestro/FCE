@@ -19,7 +19,7 @@ http.interceptors.push({
     response(res) {
         // Remove duplicate data property.
         if (res.data.data) {
-            res.data = res.data.data
+            res.data = res.data.data;
         } else if (res.data.error) {
             res.error = res.data.error;
             delete res.data;
@@ -30,11 +30,11 @@ http.interceptors.push({
         }
 
         // Redirects user to home if token has expired.
-        if (res.error && res.error.message == 'Token has expired') {
+        if (res.error && res.error.message === 'Token has expired') {
             store.remove('jwt-token');
             router.go('/');
         }
 
         return res;
-    }
+    },
 });

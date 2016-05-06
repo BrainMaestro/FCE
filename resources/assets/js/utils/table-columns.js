@@ -8,5 +8,5 @@ export const section = {
     location: 'Location',
     status: 'Status',
     enrolled: 'Enrolled',
-    users: 'Instructors'
+    users: 'Instructors',
 };

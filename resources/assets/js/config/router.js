@@ -11,13 +11,13 @@ const router = new VueRouter();
 
 router.map({
     '/': {
-        component: Login
+        component: Login,
     },
 
     '/sections': {
         component: Sections,
-        auth: true
-    }
+        auth: true,
+    },
 });
 
 router.beforeEach((transition) => {

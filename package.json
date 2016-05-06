@@ -3,7 +3,9 @@
   "description": "Faculty evaluation system",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot -d",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --watch"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --watch",
+    "lint": "eslint resources/assets/js && echo \"eslint: no lint errors\"",
+    "lint:fix": "eslint ./resources/assets/js --fix"
   },
   "dependencies": {
     "bulma": "0.0.23",
