@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from 'store';
+import userStore from '../stores/user';
 
 import Login from '../components/pages/login.vue';
 import Sections from '../components/pages/sections.vue';
@@ -21,8 +22,10 @@ router.map({
 });
 
 router.beforeEach((transition) => {
-    if (transition.to.auth && !store.get('jwt-token')) {
+    if (transition.to.auth && !userStore.isAuthenticated) {
         transition.redirect('/');
+    } else if (!transition.to.auth && userStore.isAuthenticated) {
+        transition.redirect('/sections');
     } else {
         transition.next();
     }

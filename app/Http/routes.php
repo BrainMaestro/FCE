@@ -27,7 +27,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 // Authentication Routes
 Route::post('/login', 'Auth\AuthController@login');
-Route::delete('/logout', ['uses' => 'Auth\AuthController@login', 'middleware' => 'jwt.auth']);
+Route::delete('/logout', ['uses' => 'Auth\AuthController@logout', 'middleware' => 'jwt.auth']);
 
 Route::group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function () {
 
