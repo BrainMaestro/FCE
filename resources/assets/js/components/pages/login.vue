@@ -52,12 +52,6 @@
             }
         },
 
-        ready() {
-            if (store.get('jwt-token')) {
-                router.go('/sections');
-            }
-        },
-
         methods: {
             switchTabs() {
                 this.evaluationTab = !this.evaluationTab;

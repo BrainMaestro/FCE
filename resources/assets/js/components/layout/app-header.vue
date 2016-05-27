@@ -18,12 +18,20 @@
             <!-- Right side -->
             <div class="header-right header-menu">
                 <span class="header-item">
-                    <!--<button class="button is-primary is-outlined">Login</button>-->
+                    <logout></logout>
                 </span>
             </div>
         </div>
     </header>
 </template>
+
+<script>
+    import Logout from '../logout.vue';
+
+    export default {
+        components: { Logout }
+    }
+</script>
 
 <style>
     .header {

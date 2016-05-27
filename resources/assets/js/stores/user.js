@@ -1,7 +1,10 @@
 import { http } from 'vue';
+import store from 'store';
 import router from '../config/router';
 
-export default {
+const userStore = {
+    isAuthenticated: !!store.get('jwt-token'),
+
     /**
      * Log a user in.
      *
@@ -10,7 +13,26 @@ export default {
      */
     login(email, password) {
         http.post('/login', { email, password })
-            .then(() => router.go('/sections'))
+            .then((res) => {
+                userStore.isAuthenticated = true;
+                store.set('jwt-token', res.data.token);
+                router.go('/sections');
+            })
             .catch((res) => console.log(res));
     },
+
+    /**
+     * Log a user out.
+     */
+    logout(successCb) {
+        http.delete('/logout')
+            .then(() => {
+                userStore.isAuthenticated = false;
+                store.remove('jwt-token');
+                router.go('/');
+            })
+            .catch((res) => console.log(res));
+    }
 };
+
+export default userStore;

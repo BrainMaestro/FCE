@@ -2,6 +2,7 @@ import Vue, { http } from 'vue';
 import resource from 'vue-resource';
 import store from 'store';
 import router from './router';
+import userStore from '../stores/user';
 
 Vue.use(resource);
 
@@ -25,14 +26,11 @@ http.interceptors.push({
             delete res.data;
         }
 
-        if (res.data && res.data.token) {
-            store.set('jwt-token', res.data.token);
-        }
-
         // Redirects user to home if token has expired.
-        if (res.error && res.error.message === 'Token has expired') {
+        if (res.error && res.status == 401) {
+            userStore.isAuthenticated = false;
             store.remove('jwt-token');
-            router.go('/');
+            return router.go('/');
         }
 
         return res;
