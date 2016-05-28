@@ -46,5 +46,7 @@ class TestSeeder extends Seeder
         $sections[2]->users()->attach([$users[2]->id, $users[3]->id, $users[4]->id]);
         $sections[3]->users()->attach([$users[3]->id, $users[0]->id]);
         $sections[4]->users()->attach($users[2]->id);
+
+        $users[0]->roles()->attach(1);
     }
 }

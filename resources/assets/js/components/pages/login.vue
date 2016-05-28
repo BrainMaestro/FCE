@@ -1,6 +1,6 @@
 <template>
     <div class="columns is-flex">
-        <div class="column is-half is-offset-one-quarter">
+        <div class="column is-tablet is-one-third is-offset-one-third">
             <!--Tab-->
             <div class="tabs is-centered is-boxed">
                 <ul>

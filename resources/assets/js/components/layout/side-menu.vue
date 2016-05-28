@@ -1,0 +1,16 @@
+<template>
+	<aside class="menu">
+		<p class="menu-label">
+	    	User's Name
+	  	</p>
+	  	<ul class="menu-list">
+	    	<li><a>Reports</a></li>
+	  	</ul>
+	  	<p class="menu-label">
+	    	Administration
+	  	</p>
+	  	<ul class="menu-list">
+	    	<li><a v-link="{ path: '/sections', activeClass: 'is-active'}">Sections</a></li>
+	  	</ul>
+	</aside>
+</template>
