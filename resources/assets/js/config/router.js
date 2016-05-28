@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from 'store';
 import userStore from '../stores/user';
 
 import Login from '../components/pages/login.vue';

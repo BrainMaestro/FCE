@@ -5,6 +5,18 @@ import router from '../config/router';
 const userStore = {
     isAuthenticated: !!store.get('jwt-token'),
 
+    get token() {
+        return store.get('jwt-token');
+    },
+
+    set token(token) {
+        store.set('jwt-token', token);
+    },
+
+    deleteToken() {
+        store.remove('jwt-token');
+    },
+
     /**
      * Log a user in.
      *
@@ -15,7 +27,7 @@ const userStore = {
         http.post('/login', { email, password })
             .then((res) => {
                 userStore.isAuthenticated = true;
-                store.set('jwt-token', res.data.token);
+                userStore.token = res.data.token;
                 router.go('/sections');
             })
             .catch((res) => console.log(res));
@@ -24,11 +36,11 @@ const userStore = {
     /**
      * Log a user out.
      */
-    logout(successCb) {
+    logout() {
         http.delete('/logout')
             .then(() => {
                 userStore.isAuthenticated = false;
-                store.remove('jwt-token');
+                userStore.deleteToken();
                 router.go('/');
             })
             .catch((res) => console.log(res));
