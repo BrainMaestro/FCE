@@ -17,7 +17,7 @@
                     </span>
 
                     <span v-else>
-                        <status v-if="key == 'status'" :item="item"></status>
+                        <status v-if="key == 'status' || key == 'current_semester'" :item="item"></status>
                         <span v-else>{{ item }}</span>
                     </span>
                 </span>
@@ -59,6 +59,14 @@
 
                             case 'users':
                                 item[key] = value.data.map(user => user.name);
+                                break;
+
+                            case 'questionSets':
+                                item[key] = value.data.map(questionSet => questionSet.name);
+                                break;
+
+                            case 'current_semester':
+                                value == true ? item[key] = 'current' : item[key] = '';
                                 break;
 
                             default:

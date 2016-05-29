@@ -10,3 +10,10 @@ export const section = {
     enrolled: 'Enrolled',
     users: 'Instructors',
 };
+
+export const semester = {
+    season: 'Season',
+    year: 'Year',
+    questionSets: 'Question Sets',
+    current_semester: 'Current',
+};

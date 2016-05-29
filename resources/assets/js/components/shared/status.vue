@@ -20,7 +20,8 @@
                     locked: { color: 'is-dark', icon: 'fa-lock' },
                     open: { color: 'is-info', icon: 'fa-unlock' },
                     done: { color: 'is-success', icon: 'fa-check-circle' },
-                    'in.progress': { color: 'is-warning', icon: 'fa-spinner' }
+                    'in.progress': { color: 'is-warning', icon: 'fa-spinner' },
+                    current : { color: 'is-success', icon: 'fa-check-circle' },
                 }
             };
         }

@@ -4,6 +4,7 @@ import userStore from '../stores/user';
 
 import Login from '../components/pages/login.vue';
 import Sections from '../components/pages/sections.vue';
+import Semesters from '../components/pages/semesters.vue';
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,12 @@ router.map({
         component: Sections,
         auth: true,
     },
+
+    '/semesters': {
+        component: Semesters,
+        auth: true,
+    },
+
 });
 
 router.beforeEach((transition) => {
