@@ -27,7 +27,7 @@
 
         methods: {
             refreshData(res) {
-                this.sections = res.data;
+                this.sections = res;
             }
         }
     }

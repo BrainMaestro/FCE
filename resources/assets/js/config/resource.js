@@ -19,6 +19,9 @@ http.interceptors.push({
     response(res) {
         // Remove duplicate data property.
         if (res.data.data) {
+            if (res.data.meta) {
+                res.meta = res.data.meta;
+            }
             res.data = res.data.data;
         } else if (res.data.error) {
             res.error = res.data.error;

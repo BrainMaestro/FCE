@@ -87,7 +87,7 @@ class EloquentUserRepositoryTest extends TestCase
     {
         $school = factory(Fce\Models\School::class)->create();
         $users = factory(Fce\Models\User::class, 2)->create()->each(function ($user) use ($school) {
-             $user->schools()->save($school);
+            $user->schools()->save($school);
         });
 
         $users = $this->repository->transform($users)['data'];

@@ -6,7 +6,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in formatedRows">
+        <tr v-for="row in formattedRows">
             <td v-for="pair in row">
                 <span v-for="(key, item) in pair">
                     <!--If item is an array or object, display the individual elements as tags-->
@@ -25,23 +25,25 @@
         </tr>
         </tbody>
     </table>
+
+    <pagination :pagination="rows.meta.pagination"></pagination>
 </template>
 
 <script>
     import Status from './status.vue';
-
+    import Pagination from './pagination.vue';
 
     export default {
         props: {
             columns: Object,
-            rows: Array
+            rows: Object,
         },
 
-        components: { Status },
+        components: { Status, Pagination },
 
         computed: {
-            formatedRows() {
-                return this.rows.map((row) => {
+            formattedRows() {
+                return this.rows.data.map((row) => {
                     return Object.keys(this.columns).map((key) => {
                         const value = row[key];
                         let item = {};
@@ -66,6 +68,12 @@
                         return item;
                     });
                 });
+            }
+        },
+
+        events: {
+            'page-changed': function(res) {
+                this.$set('rows', res);
             }
         }
     };
