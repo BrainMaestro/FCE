@@ -6,7 +6,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="row in formattedRows">
+        <tr v-for="row in formattedRows" :style="{ backgroundColor : row.active && '#97cd76' }">
             <td v-for="pair in row">
                 <span v-for="(key, item) in pair">
                     <!--If item is an array or object, display the individual elements as tags-->
@@ -17,7 +17,7 @@
                     </span>
 
                     <span v-else>
-                        <status v-if="key == 'status'" :item="item"></status>
+                        <status v-if="key == 'status' || key == 'current_semester'" :item="item"></status>
                         <span v-else>{{ item }}</span>
                     </span>
                 </span>
@@ -44,7 +44,7 @@
         computed: {
             formattedRows() {
                 return this.rows.data.map((row) => {
-                    return Object.keys(this.columns).map((key) => {
+                    const formattedRow = Object.keys(this.columns).map((key) => {
                         const value = row[key];
                         let item = {};
 
@@ -58,7 +58,8 @@
                                 break;
 
                             case 'users':
-                                item[key] = value.data.map(user => user.name);
+                            case 'questionSets':
+                                item[key] = value.data.map(val => val.name);
                                 break;
 
                             default:
@@ -67,6 +68,12 @@
 
                         return item;
                     });
+
+                    if (row.current_semester) {
+                        formattedRow.active = true;
+                    }
+
+                    return formattedRow;
                 });
             }
         },
@@ -82,6 +89,9 @@
 <style>
     .tag {
         margin-bottom: 0.25em;
+        display: block;
+        float: left;
+        clear: both;
     }
 
     tr:hover {
