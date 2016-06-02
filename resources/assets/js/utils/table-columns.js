@@ -16,3 +16,9 @@ export const semester = {
     year: 'Year',
     questionSets: 'Question Sets',
 };
+
+export const user = {
+    name: 'Name',
+    email: 'Email',
+    schools: 'School(s)',
+};
