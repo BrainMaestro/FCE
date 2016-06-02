@@ -62,6 +62,10 @@
                                 item[key] = value.data.map(val => val.name);
                                 break;
 
+                            case 'schools':
+                                item[key] = value.data.map(val => val.description);
+                                break;
+
                             default:
                                 item[key] = value;
                         }
