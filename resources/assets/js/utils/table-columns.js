@@ -20,5 +20,6 @@ export const semester = {
 export const user = {
     name: 'Name',
     email: 'Email',
+    roles: 'Role(s)',
     schools: 'School(s)',
 };

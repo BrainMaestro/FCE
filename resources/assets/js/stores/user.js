@@ -52,7 +52,7 @@ const userStore = {
      * @param  {Function} successCb
      */
     getAllUsers(successCb) {
-        http.get('/api/users')
+        http.get('/api/users?include=roles')
             .then(successCb)
             .catch();
     }
