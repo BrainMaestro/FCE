@@ -89,6 +89,9 @@
 <style>
     .tag {
         margin-bottom: 0.25em;
+        display: block;
+        float: left;
+        clear: both;
     }
 
     tr:hover {
