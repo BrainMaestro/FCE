@@ -44,6 +44,17 @@ const userStore = {
                 router.go('/');
             })
             .catch((res) => console.log(res));
+    },
+
+    /**
+     * Get all users.
+     *
+     * @param  {Function} successCb
+     */
+    getAllUsers(successCb) {
+        http.get('/api/users?include=roles')
+            .then(successCb)
+            .catch();
     }
 };
 

@@ -62,6 +62,14 @@
                                 item[key] = value.data.map(val => val.name);
                                 break;
 
+                            case 'schools':
+                                item[key] = value.data.map(val => val.school);
+                                break;
+
+                            case 'roles':
+                                item[key] = value.data.map(val => val.display_name);
+                                break;
+
                             default:
                                 item[key] = value;
                         }
