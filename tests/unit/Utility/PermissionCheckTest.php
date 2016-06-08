@@ -42,6 +42,11 @@ class PermissionCheckTest extends TestCase
         Section::where('id', $this->section->id)->first()->users()->attach($this->facultyUser->id);
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
+
     public function routeProvider()
     {
         return [

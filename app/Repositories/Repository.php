@@ -36,8 +36,10 @@ abstract class Repository
      */
     public function all()
     {
+        $order = $this->getOrder();
         $filtered = $this->search();
-        $paginated = $filtered->paginate($this->getLimit(), $this->getColumns(), 'page', $this->getPage());
+        $paginated = $filtered->orderBy($order['column'], $order['order'])->paginate($this->getLimit(), $this->getColumns(), 'page', $this->getPage())
+            ->setPageName('page')->appends(array_only(Input::all(), ['order', 'limit', 'query']));
 
         if ($paginated->isEmpty()) {
             throw (new ModelNotFoundException)->setModel(get_class($this->model));
@@ -70,8 +72,9 @@ abstract class Repository
      */
     protected function findBy(array $params, $count = self::PAGINATE, array $with = [])
     {
+        $order = $this->getOrder();
         $columns = $this->getColumns();
-        $items = $this->filter($params);
+        $items = $this->filter($params)->orderBy($order['column'], $order['order']);
 
         if (count($with) > 0) {
             $items = $items->with($with);
@@ -88,7 +91,8 @@ abstract class Repository
                 break;
 
             case self::PAGINATE:
-                $items = $items->paginate($this->getLimit(), $columns, 'page', $this->getPage());
+                $items = $items->paginate($this->getLimit(), $columns, 'page', $this->getPage())
+                    ->setPageName('page')->appends(array_only(Input::all(), ['order', 'limit', 'query']));
         }
 
         if (is_null($items) || ! count($items)) {
@@ -150,11 +154,28 @@ abstract class Repository
     /**
      * Get the query specified in the url string.
      *
-     * @return int
+     * @return string
      */
     private function getQuery()
     {
         return Input::get('query', null);
+    }
+
+    /**
+     * Get the sort and order specified in the url string.
+     *
+     * @return array
+     */
+    private function getOrder()
+    {
+        $columns = array_merge($this->model->getFillable(), ['created_at', 'updated_at']);
+        $order = explode(':', Input::get('order'));
+
+        if (! in_array($order[0], $columns) || ! isset($order[1]) || ! in_array(strtolower($order[1]), ['asc', 'desc'])) {
+            return ['column' => 'id', 'order' => 'asc'];
+        }
+
+        return ['column' => $order[0], 'order' => $order[1]];
     }
 
     /**
