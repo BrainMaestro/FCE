@@ -12,35 +12,35 @@ Vue.use(VueRouter);
 const router = new VueRouter();
 
 router.map({
-    '/': {
-        component: Login,
-    },
+    // '/': {
+    //     component: Login,
+    // },
 
     '/sections': {
         component: Sections,
-        auth: true,
+        //auth: true,
     },
 
     '/semesters': {
         component: Semesters,
-        auth: true,
+        //auth: true,
     },
 
     '/users': {
         component: Users,
-        auth: true,
+        //auth: true,
     },
 
 });
 
-router.beforeEach((transition) => {
-    if (transition.to.auth && !userStore.isAuthenticated) {
-        transition.redirect('/');
-    } else if (!transition.to.auth && userStore.isAuthenticated) {
-        transition.redirect('/sections');
-    } else {
-        transition.next();
-    }
-});
+// router.beforeEach((transition) => {
+//     if (transition.to.auth) {
+//         transition.redirect('/');
+//     } else if (!transition.to.auth) {
+//         transition.redirect('/sections');
+//     } else {
+//         transition.next();
+//     }
+// });
 
 export default router;

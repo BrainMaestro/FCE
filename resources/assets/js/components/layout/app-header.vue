@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import Logout from '../logout.vue';
+    import Logout from '../auth/logout.vue';
 
     export default {
         components: { Logout }
