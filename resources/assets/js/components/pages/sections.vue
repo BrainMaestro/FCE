@@ -1,5 +1,13 @@
 <template>
     <search :model="'section'" :on-search="refreshData" :columns="columns" :default="default"></search>
+    <div class="tabs is-right is-small">
+      <ul>
+        <li v-link="{ path: '/add-section', activeClass: 'is-active'}" class="is-active"><a>
+            <span class="icon is-small"><i class="fa fa-plus"></i></span>
+            <span>Add a section</span>
+        </a></li>
+      </ul>
+    </div>
     <bulma-table :columns="columns" :rows="sections"></bulma-table>
 </template>
 
@@ -20,8 +28,12 @@
                 default: sectionStore.getAllSections
             }
         },
-
+        /* I don't know if you wanted ready() here so I'll create mine */
         created() {
+            sectionStore.getAllSections(this.refreshData);
+        },
+
+        ready() {
             sectionStore.getAllSections(this.refreshData);
         },
 

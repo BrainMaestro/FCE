@@ -6,6 +6,7 @@ import Login from '../components/pages/login.vue';
 import Sections from '../components/pages/sections.vue';
 import Semesters from '../components/pages/semesters.vue';
 import Users from '../components/pages/users.vue';
+import SectionForm from '../components/pages/section-form.vue';
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,11 @@ router.map({
 
     '/sections': {
         component: Sections,
+        auth: true,
+    },
+
+    '/add-section': {
+        component: SectionForm,
         auth: true,
     },
 
