@@ -1,10 +1,6 @@
 ## FCE
 
-[![Build Status](https://travis-ci.org/BrainMaestro/FCE.svg)](https://travis-ci.org/BrainMaestro/FCE)
 [![codecov.io](https://img.shields.io/codecov/c/github/BrainMaestro/FCE/develop.svg?style=flat-square)](https://codecov.io/github/BrainMaestro/FCE?branch=develop)
-[![Style](https://styleci.io/repos/25135102/shield?branch=develop)](https://styleci.io/repos/25135102)
-[![Join the chat at https://gitter.im/BrainMaestro/FCE](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/BrainMaestro/FCE?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![license](https://img.shields.io/github/license/BrainMaestro/FCE.svg?style=flat-square)](http://creativecommons.org/licenses/by-nc-nd/3.0/)
 
 This system was designed to replace the existing paper-driven evaluations used by the university to save on costs and be more environmentally friendly.
 
